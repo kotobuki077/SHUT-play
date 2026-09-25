@@ -44,11 +44,30 @@
     tutorialDone:false,freeDone:false
   };
   let hadSave=false;
+  const WALLET_KEYS=new Set(['gold','gateKeys']);
+  function walletNatural(value){return Number.isSafeInteger(value)&&value>=0}
+  function assertWallet(state=S,label='wallet'){
+    if(!state||!walletNatural(state.gold)||!walletNatural(state.gateKeys))throw Error('Invalid wallet: '+label);
+    return state;
+  }
+  function addWallet(key,amount,label='wallet'){
+    if(!WALLET_KEYS.has(key)||!Number.isSafeInteger(amount)||amount<0)throw Error('Invalid wallet delta: '+label);
+    assertWallet(S,label+' before');
+    const next=S[key]+amount;
+    if(!walletNatural(next))throw Error('Wallet overflow: '+label);
+    S[key]=next;return next;
+  }
+  function spendWallet(key,amount,label='wallet'){
+    if(!WALLET_KEYS.has(key)||!Number.isSafeInteger(amount)||amount<0)throw Error('Invalid wallet spend: '+label);
+    assertWallet(S,label+' before');
+    if(S[key]<amount)return false;
+    S[key]-=amount;return true;
+  }
   function normalizeState(){
     S=Monsters.migrate(S,MASTER_DATA);S.schemaVersion=6;S.inventory=[];S.equipped=null;S.partners={};S.equippedPartner=null;S.normalTickets=0;S.captureUnlocked=false;S.freeDone=true;syncPartyHp();
     S.eventFlags=S.eventFlags||{};S.stageMissions=S.stageMissions||{};S.records=Object.assign({tower:0,endless:0},S.records);S.settings=Object.assign({sound:true,openOnly:false},S.settings);
     S.items=Object.assign({heal:1,high:0,elixir:0,expSmall:0,expMedium:0,expLarge:0,retry:0,chip:0,bossFrag:0},S.items||{});
-    if(!S.eventFlags.retiredItemsRefunded){for(const [id,key]of [['ITM008','retry'],['ITM009','chip'],['ITM011','bossFrag']]){const price=Number(MASTER_DATA.migrations.retiredItemRefunds[key]||0);S.gold+=(S.items[key]||0)*price;S.items[key]=0;}S.eventFlags.retiredItemsRefunded=true;}
+    if(!S.eventFlags.retiredItemsRefunded){for(const [id,key]of [['ITM008','retry'],['ITM009','chip'],['ITM011','bossFrag']]){const price=Number(MASTER_DATA.migrations.retiredItemRefunds[key]||0);addWallet('gold',Math.max(0,Math.floor(Number(S.items[key]||0)))*price,'retired item refund');S.items[key]=0;}S.eventFlags.retiredItemsRefunded=true;}
     S.inventory=Array.isArray(S.inventory)?S.inventory:[];
     S.materials=Object.assign({bossCore:0},S.materials||{}); delete S.materials.dust;
     S.codex=S.codex||{};S.codex.enemies=S.codex.enemies||{};S.codex.weapons=S.codex.weapons||{};S.codex.partners=S.codex.partners||{};
@@ -60,7 +79,7 @@
     if(!S.inventory.some(w=>w.id===S.equipped))S.equipped=S.inventory[0]?.id||null;
     if(!S.shopStock) refreshShopStock();
   }
-  function saveGame(){if(S.tutorialDone)SHUTSave.write(S);}
+  function saveGame(){if(!S.tutorialDone)return false;assertWallet(S,'save');return SHUTSave.write(S);}
   function loadGame(){const loaded=SHUTSave.read(S);if(!loaded)return false;S=loaded;normalizeState();return true;}
   function clearSave(){try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
 
@@ -83,7 +102,7 @@
   function applyReward(type,amount,monsterId){
     if(!Number.isSafeInteger(amount)||amount<=0)throw Error('Invalid reward amount');
     if(type==='monster'){Monsters.definition(monsterId,MASTER_DATA);const added=Array.from({length:amount},()=>Monsters.create(monsterId,crypto.randomUUID(),MASTER_DATA));S.monsters.push(...added);S.codex.monsters=S.codex.monsters||{};S.codex.monsters[monsterId]=true;}
-    else if(type==='gate_key')S.gateKeys+=amount;else if(type==='gold')S.gold+=amount;else if(type==='rank_xp')addRankXp(amount);else throw Error('Unsupported reward');
+    else if(type==='gate_key')addWallet('gateKeys',amount,'reward gate key');else if(type==='gold')addWallet('gold',amount,'reward gold');else if(type==='rank_xp')addRankXp(amount);else throw Error('Unsupported reward');
   }
   function updateGiftBadge(){const b=$('giftBadge');if(!b)return;const n=S.gifts.length;b.textContent=n;b.classList.toggle('show',n>0)}
   function questValue(q){const k=q.condition_key;if(k==='rank')return S.rank;if(k==='enemy_dex')return Object.keys(S.codex.enemies).length;if(k==='weapon_dex')return Object.keys(S.codex.weapons).length;if(k.startsWith('stage_clear:'))return S.stageClears[k.split(':')[1]]?1:0;if(k.startsWith('chapter_clear:')){const w=k.split(':')[1];return MASTER_DATA.stages.filter(x=>x.world_id===w).every(x=>S.stageClears[x.stage_id])?1:0}if(k.startsWith('gate_discover:'))return S.questProgress[k]||0;if(k.startsWith('gate_clear:'))return S.questProgress[k]||0;return S.questProgress[k]||0}
@@ -377,10 +396,10 @@
     for(const id of ['singlePullBtn','tenPullBtn','gachaHomeBtn'])$(id).style.display='inline-block';$('gachaTitle').textContent=t('gacha.gateTitle');$('gachaText').textContent=t('gacha.intro');$('gachaHomeBtn').textContent=t('gacha.back');updateGachaTop();
   }
   async function runGachaSequence(count){
-    if(gachaBusy||gachaStep===3)return;const rule=MASTER_DATA.monsterGacha.modes[gachaMode],cost=count===10?rule.tenCost:rule.singleCost,currency=rule.currency,owned=S[currency],currencyLabel=t(gachaMode==='gold'?'gacha.currencyGold':'gacha.currencyKeys');if(owned<cost){localeToast('gacha.insufficient',{currency:currencyLabel,needed:cost,owned});return;}
+    if(gachaBusy||gachaStep===3)return;assertWallet(S,'gacha entry');const rule=MASTER_DATA.monsterGacha.modes[gachaMode],cost=count===10?rule.tenCost:rule.singleCost,currency=rule.currency,owned=S[currency],currencyLabel=t(gachaMode==='gold'?'gacha.currencyGold':'gacha.currencyKeys');if(owned<cost){localeToast('gacha.insufficient',{currency:currencyLabel,needed:cost,owned});return;}
     gachaBusy=true;setGachaButtonsDisabled(true);hideDoorItem();$('weaponRevealOverlay').classList.remove('show');$('pullResults').classList.remove('show','tenMode');$('pullResults').innerHTML='';
     try{gachaStep=1;$('gKey').classList.add('inserted');sfx('door');await sleep(420);gachaStep=2;
-      const known=S.codex.monsters||{},result=Monsters.gacha(S,count,MASTER_DATA,gachaMode,Math.random,()=>crypto.randomUUID());S=result.state;pendingPulls=result.pulls.map(m=>{const d=Monsters.stats(m,MASTER_DATA);return {...d,lv:d.level,type:'MONSTER',passive:d.special.name,isNew:!known[m.monsterId],monsterInstance:m};});const highRare=pendingPulls.some(m=>m.rarity>=4);$('gachaScreen').classList.toggle('summon-rare',highRare);$('gachaText').textContent=t(highRare?'gacha.rareOmen':'gacha.openToReveal');sfx(highRare?'cue':'door');await sleep(highRare?720:360);
+      const known=S.codex.monsters||{},result=Monsters.gacha(S,count,MASTER_DATA,gachaMode,Math.random,()=>crypto.randomUUID());assertWallet(result.state,'gacha result');const nextPendingPulls=result.pulls.map(m=>{const d=Monsters.stats(m,MASTER_DATA);return {...d,lv:d.level,type:'MONSTER',passive:d.special.name,isNew:!known[m.monsterId],monsterInstance:m};});S=result.state;pendingPulls=nextPendingPulls;const highRare=pendingPulls.some(m=>m.rarity>=4);$('gachaScreen').classList.toggle('summon-rare',highRare);$('gachaText').textContent=t(highRare?'gacha.rareOmen':'gacha.openToReveal');sfx(highRare?'cue':'door');await sleep(highRare?720:360);
       S.codex.monsters=S.codex.monsters||{};for(const m of result.pulls)S.codex.monsters[m.monsterId]=true;if(gachaMode==='key'){bumpQuest('rare_gacha_pull',count);if(count===10)bumpQuest('rare_gacha_ten_pull');}saveGame();gachaCommitted=true;gachaSelectedCount=count;$('gachaHomeBtn').textContent=t('gacha.openResult');
     }catch(err){localeToast('gacha.failure');gachaStep=0;}finally{gachaBusy=false;setGachaButtonsDisabled(gachaStep===2);$('gachaHomeBtn').disabled=false;}
   }
@@ -493,7 +512,7 @@
   const shopIconAssets={ITM001:'assets/shop-itm001-repair-mist.png',ITM002:'assets/shop-itm002-high-repair.png',ITM003:'assets/shop-itm003-full-core.png'};
   function itemIcon(ref,size='large'){const name=t('shop.items.'+ref+'.name');return `<img class="itemIcon ${size}" data-asset-status="finished" src="${shopIconAssets[ref]}" alt="${name}">`}
   function shopDetail(entry,max){const item=itemById[entry.ref],owned=S.items[itemStateKey[entry.ref]]||0,total=shopQuantity*entry.price,afterGold=S.gold-total;return `<div class="shopDetail">${itemIcon(entry.ref)}<div><h3>${t('shop.items.'+entry.ref+'.name')}</h3><p><b>${t('shop.effect')}</b><br>${t('shop.items.'+entry.ref+'.effect')}</p><div class="shopFacts"><span>${t('shop.unitPrice',{price:entry.price})}</span><span>${t('shop.owned',{count:owned})}</span><span>${t('shop.inventoryCap',{cap:item.max_stack})}</span><span>${t('shop.stock',{count:shopStockRemaining(entry)})}</span></div></div><div class="quantityPanel"><b>${t('shop.quantity')}</b><output id="shopQuantity">${shopQuantity}</output><div class="quantitySteps">${[-10,-1,1,10].map(n=>`<button class="btn secondary" data-quantity-step="${n}">${n>0?'+':''}${n}</button>`).join('')}<button class="btn secondary" data-quantity-max>MAX</button></div><div class="purchaseSummary"><span>${t('shop.afterOwned',{count:owned+shopQuantity})}</span><span>${t('shop.total',{total})}</span><span>${t('shop.currentGold',{gold:S.gold})}</span><strong>${t('shop.afterGold',{gold:afterGold})}</strong></div><button id="confirmShopPurchase" class="btn gold" ${shopQuantity<1||shopQuantity>max?'disabled':''}>${max?t('shop.buy'):t('shop.soldOut')}</button></div></div>`}
-  function bindShop(entries,selected){document.querySelectorAll('[data-shop-select]').forEach(b=>b.onclick=()=>{shopSelection=b.dataset.shopSelect;shopQuantity=1;renderShop()});if(!selected)return;document.querySelectorAll('[data-quantity-step]').forEach(b=>b.onclick=()=>{shopQuantity=clamp(shopQuantity+Number(b.dataset.quantityStep),0,maxPurchase(selected));renderShop()});const maxButton=document.querySelector('[data-quantity-max]');if(maxButton)maxButton.onclick=()=>{shopQuantity=maxPurchase(selected);renderShop()};$('confirmShopPurchase').onclick=()=>{const current=shopEntries().find(e=>e.shop_id===selected.shop_id),allowed=current?maxPurchase(current):0,quantity=Math.floor(shopQuantity);if(!current||quantity<1||quantity>allowed)return;const key=itemStateKey[current.ref];S.gold-=current.price*quantity;S.items[key]=(S.items[key]||0)+quantity;S.shopStock[current.shop_id]=shopStockRemaining(current)-quantity;saveGame();updateHome();shopQuantity=1;renderShop()}}
+  function bindShop(entries,selected){document.querySelectorAll('[data-shop-select]').forEach(b=>b.onclick=()=>{shopSelection=b.dataset.shopSelect;shopQuantity=1;renderShop()});if(!selected)return;document.querySelectorAll('[data-quantity-step]').forEach(b=>b.onclick=()=>{shopQuantity=clamp(shopQuantity+Number(b.dataset.quantityStep),0,maxPurchase(selected));renderShop()});const maxButton=document.querySelector('[data-quantity-max]');if(maxButton)maxButton.onclick=()=>{shopQuantity=maxPurchase(selected);renderShop()};$('confirmShopPurchase').onclick=()=>{const current=shopEntries().find(e=>e.shop_id===selected.shop_id),allowed=current?maxPurchase(current):0,quantity=Math.floor(shopQuantity);if(!current||quantity<1||quantity>allowed)return;const key=itemStateKey[current.ref],total=current.price*quantity;if(!spendWallet('gold',total,'shop purchase'))return;S.items[key]=(S.items[key]||0)+quantity;S.shopStock[current.shop_id]=shopStockRemaining(current)-quantity;saveGame();updateHome();shopQuantity=1;renderShop()}}
   function renderPartner(){renderEquipment();}
 
   function renderGiftBox(){
@@ -552,7 +571,7 @@
     if(override)def={...def,hp:override.base_hp,atk:override.base_atk,attackEvery:override.attack_every};
     const stats=Combat.stats(def,isBoss,stage,S.rank,MASTER_DATA);if(activeGate&&MASTER_DATA.expeditions[activeGate].hpFactor)stats.hp=stats.maxHp=Math.round(stats.hp*MASTER_DATA.expeditions[activeGate].hpFactor);
     if(activeGate==='ENDLESS'){const extra=1+Math.min(2,(encounter-1)*.045);stats.hp=stats.maxHp=Math.round(stats.hp*extra);stats.atk=Math.round(stats.atk*Math.min(1.8,extra));}
-    return {...def,...stats,id:'e'+Date.now()+Math.random().toString(16).slice(2),attr:def.attr,prevHp:stats.hp,gold:rnd(def.gold[0],def.gold[1]),boss:isBoss,dead:false,animationState:'idle',popup:null,popupTimer:null,flashUntil:0,hpAnimTimer:null,captureReady:false};
+    return {...def,...stats,id:'e'+Date.now()+Math.random().toString(16).slice(2),attr:def.attr,prevHp:stats.hp,gold:rnd(def.gold[0],def.gold[1]),boss:isBoss,dead:false,animationState:'idle',popup:null,popupTimer:null,flashUntil:0,hpAnimTimer:null};
   }
   function generateEncounter(n){
     if(activeGate){const cfg=MASTER_DATA.expeditions[activeGate];let ids=[];
@@ -643,7 +662,6 @@
         <div class="eMeta">${t('battle.enemyMeta',{attribute:localizedAttribute(e.attr),attack:e.atk})}${e.poison?` · ${t('battle.poison')}`:''}${e.attackDown?` · ${t('battle.atkDown')}`:''}</div>
         <div class="attr" style="color:${attrColor[e.attr]}">${e.attr}</div>
         <div class="turnBadge ${ready?'ready':''}">${t(ready?'battle.enemyReady':'battle.enemyTurns')} <b>${ready?'!':e.turnsLeft}</b></div>
-        ${e.captureReady?`<button class="btn captureBtn" data-capture="${e.id}">捕獲する</button>`:''}
         ${e.boss?'':`<div class="ehp eBar"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div><div class="ehpText"><span>HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}</span><span class="hpPct">${Math.round(hpRatio*100)}%</span></div>`}`;
       card.onclick=(ev)=>{
         ev.stopPropagation();
@@ -841,7 +859,7 @@
     const monster=MASTER_DATA.monsters.find(m=>m.acquisition.enemyId===e.masterId);
     const egg=monster&&(monster.acquisition.guaranteedEgg===true||Math.random()<monster.acquisition.eggRate),monsterName=monster?localizedDataName(monster):'';
     if(egg){const wasOwned=S.monsters.some(x=>x.monsterId===monster.monster_id),instance=Monsters.create(monster.monster_id,crypto.randomUUID(),MASTER_DATA);S.monsters.push(instance);S.codex.monsters=S.codex.monsters||{};S.codex.monsters[monster.monster_id]=true;const label=t('battle.eggDrop',{name:monsterName});rewardDrops.push(label);rewardEntries.push({kind:'egg',label,rarity:monster.rarity,monsterId:monster.monster_id,isNew:!wasOwned});saveGame();}
-    const keyRule=MASTER_DATA.monsterRules.keyDrop,keyFound=keyRule.gates.includes(activeGate)&&Math.random()<keyRule.chance;if(keyFound){S.gateKeys+=keyRule.amount;const label=t('battle.keysDrop',{amount:keyRule.amount});rewardDrops.push(label);rewardEntries.push({kind:'key',label});}
+    const keyRule=MASTER_DATA.monsterRules.keyDrop,keyFound=keyRule.gates.includes(activeGate)&&Math.random()<keyRule.chance;if(keyFound){addWallet('gateKeys',keyRule.amount,'battle key drop');const label=t('battle.keysDrop',{amount:keyRule.amount});rewardDrops.push(label);rewardEntries.push({kind:'key',label});}
     showMonsterDrop(e,[{label:g+' G',kind:'gold'},...(drop?[{label:itemDefs[drop].name,kind:'item'}]:[]),...(egg?[{label:t('battle.eggDrop',{name:monsterName}),kind:monster.rarity>=4?'rare':'egg'}]:[]),...(keyFound?[{label:t('battle.keysDrop',{amount:keyRule.amount}),kind:'key'}]:[])]);
   }
   function showMonsterDrop(enemy,drops){
@@ -862,7 +880,7 @@
     const expResult=Monsters.grantBattleExp(S,[...S.party],rewardMonsterExp,MASTER_DATA);S=expResult.state;rewardExpChanges=expResult.changes;
     if(activeGate){finishExpeditionBattle();return;}
     healParty(MASTER_DATA.balance.storyRestRate);
-    phase='reward';resetDanger();$('timingBox').classList.remove('show');S.gold+=rewardGold;setMusicMode('victory');sfx('win');updateHome();updateBattleHeader();$('bossHpBox').classList.remove('show');
+    phase='reward';resetDanger();$('timingBox').classList.remove('show');addWallet('gold',rewardGold,'story battle reward');setMusicMode('victory');sfx('win');updateHome();updateBattleHeader();$('bossHpBox').classList.remove('show');
     if(encounter===encounterMax){
       const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}
       const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=Math.min(masterStages.length,idx+1);grantStageRewards(activeStageData.repeat_rewards);processStageUnlocks(activeStageId);unlockJourneyGates();settleMissions();rollSpecialGate();refreshShopStock();
@@ -894,16 +912,15 @@
   function renderTutorial(){const p=tutorialPages[tutorialIndex];$('tutorialStep').textContent=t('tutorial.step',{current:tutorialIndex+1,total:tutorialPages.length});$('tutorialTitle').textContent=t(p.t);$('tutorialBody').innerHTML=t(p.b);$('tutorialNext').textContent=t(tutorialIndex===tutorialPages.length-1?'tutorial.start':'tutorial.next');}
   async function finishTutorial(){
  if(!S.tutorialDone&&!practiceDone){practiceDone=true;$('tutorialTitle').textContent=t('tutorial.practiceTitle');$('tutorialBody').innerHTML='<span id="practiceCopy">'+t('tutorial.practiceBody')+'</span><div id="practiceLight" style="height:12px;background:#ead391;width:0;transition:width 1.1s linear;margin:20px 0"></div>';$('tutorialSkip').hidden=true;$('tutorialNext').textContent=t('tutorial.practiceAction');setTimeout(()=>$('practiceLight').style.width='100%',100);const practiceImpact=performance.now()+1200;let practiced=false;const hit=async()=>{if(practiced)return;practiced=true;removeEventListener('keydown',key);$('tutorialOverlay').classList.remove('show');const delta=performance.now()-practiceImpact,practiceRate=Combat.guardRate(delta,CFG),guardKey=Math.abs(delta)<=Number(CFG.perfect_guard_ms)?'tutorial.perfectGuard':practiceRate<1?'tutorial.guard':'tutorial.tryAgain';SHUTDevice.guard(guardKey,Combat.guardDamage(10,1,practiceRate));$('app').dataset.screen='battleScreen';await setDeviceClosed(true);$('closedMenu').classList.add('show');$('unfoldBattle').dataset.i18n='tutorial.openJourney';$('unfoldBattle').textContent=t('tutorial.openJourney');const original=$('unfoldBattle').onclick;const next=async()=>{$('closedMenu').classList.remove('show');await setDeviceClosed(false);$('unfoldBattle').onclick=original;$('unfoldBattle').dataset.i18n='battle.openNext';$('unfoldBattle').textContent=t('tutorial.openNext');finishTutorial();};$('unfoldBattle').onclick=next;};const key=e=>{if(e.code==='Space'&&!e.repeat){e.preventDefault();hit()}};addEventListener('keydown',key);$('tutorialNext').onclick=hit;return;}
- S.tutorialDone=true;S.questProgress.tutorial_complete=1;S.questProgress.account_first_start=1;addPartner('P028','story');evaluateQuests();saveGame();$('tutorialOverlay').classList.remove('show');enterOpenMenu();}
+ const firstCompletion=!S.tutorialDone;S.tutorialDone=true;S.questProgress.tutorial_complete=1;S.questProgress.account_first_start=1;addPartner('P028','story');if(firstCompletion){const initialGift=Number(MASTER_DATA.monsterGacha.initialGift||0);if(Number.isSafeInteger(initialGift)&&initialGift>0)addGift(t('tutorial.gachaTitle'),'gate_key',initialGift);}evaluateQuests();saveGame();$('tutorialOverlay').classList.remove('show');enterOpenMenu();}
   function startGameFlow(forceNew=false){
     try{initAudio();if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume()}catch(err){}
     const has=!!localStorage.getItem(SAVE_KEY);
     if(forceNew){clearSave();S={rank:1,rankXp:0,rankNeed:100,gold:0,gateKeys:0,stage:1,hp:100,maxHp:100,items:{heal:1,high:0,elixir:0,expSmall:0,expMedium:0,expLarge:0,retry:0,chip:0,bossFrag:0},inventory:[],equipped:null,materials:{bossCore:0},codex:{enemies:{},weapons:{},partners:{}},partners:{},equippedPartner:null,captureUnlocked:false,storyIndex:0,stageClears:{},readEvents:{},normalTickets:0,gifts:[],questProgress:{},questDelivered:{},gateUnlocked:{EXP:false,GOLD:false,HIDDEN:false,BOSSRUSH:false,TOWER:false,ENDLESS:false},gateAttempts:{EXP:0,GOLD:0,HIDDEN:0},shopStock:null,shopCycle:0,tutorialDone:false,freeDone:false};normalizeState();showTutorial();return;}
-    if(has){loadGame();updateHome();if(!S.tutorialDone){showTutorial();return;}if(!S.freeDone){enterGacha('starter');return;}enterOpenMenu();return;}
+    if(has){loadGame();updateHome();if(!S.tutorialDone){showTutorial();return;}enterOpenMenu();return;}
     showTutorial();
   }
   $('startBtn').onclick=(e)=>{e.stopPropagation();startGameFlow(false)};
-  const startCard=document.querySelector('#startScreen .startCard');if(startCard)startCard.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;startGameFlow(false)});
   $('tutorialNext').onclick=()=>{if(tutorialIndex<tutorialPages.length-1){tutorialIndex++;renderTutorial()}else finishTutorial()};
   $('tutorialSkip').onclick=finishTutorial;
   $('newGameBtn').onclick=(e)=>{e.stopPropagation();if(confirm(t('save.newGameConfirm')))startGameFlow(true)};
@@ -997,9 +1014,9 @@
     st.missions.forEach(m=>{if(saved[m.key]||!stageStats[m.key])return;saved[m.key]=true;addGift(st.name+' · '+m.name,'gold',m.reward)});S.stageMissions[st.stage_id]=saved;
   }
   function finishExpeditionBattle(){
-    const cfg=MASTER_DATA.expeditions[activeGate];phase='reward';resetDanger();$('timingBox').classList.remove('show');S.gold+=rewardGold;gateFinished=activeGate!=='ENDLESS'&&encounter>=encounterMax;
-    if(activeGate==='TOWER')S.records.tower=Math.max(S.records.tower,encounter);if(activeGate==='ENDLESS'){S.records.endless=Math.max(S.records.endless,encounter);S.gold+=cfg.reward.gold;}
-    if(gateFinished){const r=cfg.reward;S.gold+=r.gold||0;S.materials.bossCore+=r.core||0;S.gateKeys+=r.gateKeys||0;if(r.rankXp)addRankXp(r.rankXp);if(r.items)for(const [key,amount]of Object.entries(r.items))S.items[key]=Math.max(0,Number(S.items[key]||0)+Number(amount||0));if(r.monsters)for(const m of r.monsters)for(let i=0;i<m.amount;i++)S.monsters.push(Monsters.create(m.monsterId,crypto.randomUUID(),MASTER_DATA));bumpQuest('gate_clear:'+activeGate,1);if(activeGate==='BOSSRUSH'){bumpQuest('boss_rush_clear',1);bumpQuest('boss_rematch_win',1);}S.run=null;}
+    const cfg=MASTER_DATA.expeditions[activeGate];phase='reward';resetDanger();$('timingBox').classList.remove('show');addWallet('gold',rewardGold,'gate battle reward');gateFinished=activeGate!=='ENDLESS'&&encounter>=encounterMax;
+    if(activeGate==='TOWER')S.records.tower=Math.max(S.records.tower,encounter);if(activeGate==='ENDLESS'){S.records.endless=Math.max(S.records.endless,encounter);addWallet('gold',Number(cfg.reward.gold||0),'endless reward');}
+    if(gateFinished){const r=cfg.reward;addWallet('gold',Number(r.gold||0),'gate clear reward');S.materials.bossCore+=r.core||0;addWallet('gateKeys',Number(r.gateKeys||0),'gate clear keys');if(r.rankXp)addRankXp(r.rankXp);if(r.items)for(const [key,amount]of Object.entries(r.items))S.items[key]=Math.max(0,Number(S.items[key]||0)+Number(amount||0));if(r.monsters)for(const m of r.monsters)for(let i=0;i<m.amount;i++)S.monsters.push(Monsters.create(m.monsterId,crypto.randomUUID(),MASTER_DATA));bumpQuest('gate_clear:'+activeGate,1);if(activeGate==='BOSSRUSH'){bumpQuest('boss_rush_clear',1);bumpQuest('boss_rematch_win',1);}S.run=null;}
     else if(S.run)S.run.floor=encounter+1;
     const title=gateFinished?t('battle.gateClear'):activeGate==='TOWER'?t('battle.floorClear',{floor:encounter}):t('battle.gateFloorClear',{floor:encounter}),extra=`<p class="resultNote">${gateFinished?t('battle.expeditionReward'):t('battle.rewardObtained')}</p>${gateFinished?'':`<button id="extractGate" class="btn secondary">${t('battle.extract')}</button>`}`;
     renderRewardPresentation(title,cfg.name,gateFinished?t('battle.returnBase'):t('battle.deeper'),extra);if($('extractGate'))$('extractGate').onclick=()=>{S.run=null;activeGate=null;saveGame();$('rewardOverlay').classList.remove('show');enterOpenMenu()};saveGame();updateBattleHeader();

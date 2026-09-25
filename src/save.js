@@ -21,12 +21,12 @@ globalThis.SHUTSave={
    for(const [k,p]of Object.entries(out.partners))if(!p||typeof p!=='object')delete out.partners[k];
    for(const key of ['eventFlags','stageMissions','records','settings'])if(v[key]&&typeof v[key]==='object'&&!Array.isArray(v[key]))out[key]=v[key];
    if(v.run&&SHUT_MASTER_DATA.expeditions[v.run.kind]&&Number.isInteger(v.run.floor)&&v.run.floor>0)out.run={kind:v.run.kind,floor:v.run.floor,slots:Math.min(3,Math.max(0,Number.isFinite(v.run.slots)?v.run.slots:3))};
-   if(!out.inventory.length){out.freeDone=false;out.equipped=null;}
+   if(!out.inventory.length)out.equipped=null;
    for(const k of ['monsters','party','monsterMigration','legacyArchive'])if(v[k]!==undefined)out[k]=v[k];
    const migrated=SHUTMonsters.migrate(out,SHUT_MASTER_DATA);Object.assign(out,migrated);
    out.schemaVersion=this.schemaVersion;
    if(legacy||v.schemaVersion!==this.schemaVersion)localStorage.setItem(this.key,JSON.stringify(out));return out;
   }catch(e){this.recovered=true;try{if(raw)localStorage.setItem(this.key+'_recovery',raw);localStorage.removeItem(this.key)}catch{}return null}
  },
- write(state){try{localStorage.setItem(this.key,JSON.stringify({...state,schemaVersion:this.schemaVersion}));return true}catch{return false}}
+ write(state){try{if(!state||!Number.isSafeInteger(state.gold)||state.gold<0||!Number.isSafeInteger(state.gateKeys)||state.gateKeys<0)return false;localStorage.setItem(this.key,JSON.stringify({...state,schemaVersion:this.schemaVersion}));return true}catch{return false}}
 };

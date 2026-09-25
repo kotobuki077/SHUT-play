@@ -1,0 +1,29 @@
+/* One live inner workspace spanning two physical leaves. */
+(()=>{
+ const $=id=>document.getElementById(id),app=$('app');app.className='device device-closed closedDevice';
+ const shell=document.createElement('div');shell.className='inner-assembly';shell.innerHTML='<div class="panel left-panel"><div class="left-inner-display"></div></div><div class="hinge"><i></i><b>SHUT / DUO</b><i></i></div><div class="panel right-panel"><div class="right-inner-display"></div></div>';
+ const main=document.createElement('div');main.className='inner-workspace';
+ const outer=document.createElement('div');outer.className='outer-panel';outer.innerHTML='<div class="display-label">SHUT / OUTER DISPLAY</div><div class="outer-display"></div>';
+ app.append(shell,main,outer);const out=outer.querySelector('.outer-display');
+ const move=(id,to)=>{if($(id))to.append($(id))};
+ ['homeScreen','battleScreen','dialogueOverlay','tutorialOverlay','modal'].forEach(id=>move(id,main));
+ ['startScreen','gachaScreen','closeMenuScreen','closedMenu'].forEach(id=>move(id,out));
+ ['bg','hingeLine','dynamicIsland','screenCurtain'].forEach(id=>$(id)?.remove());
+ const controls=document.createElement('div');controls.id='battleControls';$('battleScreen').append(controls);
+ ['timingBox','battleMessage','battleSub','battleAction','guardTimeline'].forEach(id=>move(id,controls));move('rewardOverlay',main);
+ const status=document.createElement('div');status.id='deviceStatus';document.body.append(status);
+ const mark=document.createElement('div');mark.className='hardware-signature';mark.textContent='SHUT / OPEN TO EXPLORE · CLOSE TO PROTECT';document.body.append(mark);
+ let fold=1,target=1,raf=0,resolve=null,settled=Promise.resolve(true);
+ function geometry(){const mobile=innerWidth<600,w=mobile?innerWidth-20:Math.min(innerWidth-70,1080),h=mobile?Math.min(370,w*.94,innerHeight-130):Math.min(690,innerHeight-90),ow=mobile?Math.min(280,w*.72):Math.round(w*.5);app.style.setProperty('--open-w',w+'px');app.style.setProperty('--open-h',h+'px');app.style.setProperty('--outer-w',ow+'px');app.style.setProperty('--outer-h',h+'px');paint();}
+ function paint(){app.style.setProperty('--fold',fold);app.style.width=`calc(var(--open-w) * ${1-fold} + var(--outer-w) * ${fold})`;app.style.height='var(--open-h)';app.dataset.fold=fold.toFixed(3);shell.style.visibility=fold>.995?'hidden':'visible';main.style.visibility=fold===0?'visible':'hidden';outer.style.visibility=fold<.55?'hidden':'visible';outer.style.opacity=Math.max(0,(fold-.55)/.45);status.textContent=fold===0?'OPEN / ADVENTURE':fold===1?'CLOSED / OUTER DISPLAY':'FOLD / '+Math.round(fold*180)+'°';}
+ // Inert computed-style snapshots carry one coherent image around the hinge.
+ // No duplicate IDs or focusable controls: the interactive workspace exists once.
+ function snapshot(){for(const leaf of shell.querySelectorAll('.left-inner-display,.right-inner-display')){leaf.replaceChildren();const clone=main.cloneNode(true),src=[main,...main.querySelectorAll('*')],dst=[clone,...clone.querySelectorAll('*')];for(let i=0;i<src.length;i++){const st=getComputedStyle(src[i]);dst[i].style.cssText=Array.from(st).map(k=>k+':'+st.getPropertyValue(k)).join(';');dst[i].removeAttribute('id');dst[i].removeAttribute('name');dst[i].removeAttribute('autofocus');dst[i].tabIndex=-1;if(src[i].tagName==='CANVAS')dst[i].getContext('2d').drawImage(src[i],0,0);}clone.className='fold-copy';clone.inert=true;clone.setAttribute('aria-hidden','true');Object.assign(clone.style,{position:'absolute',left:leaf.classList.contains('right-inner-display')?'calc(-1 * (var(--open-w) - 28px) / 2)':'0px',top:'0px',transform:'none',visibility:'visible',width:'calc(var(--open-w) - 28px)',height:'calc(var(--open-h) - 34px)',pointerEvents:'none'});leaf.append(clone);}}
+ function setClosed(closed){const dest=closed?1:0;if(target===dest&&(raf||fold===dest))return settled;snapshot();target=dest;cancelAnimationFrame(raf);resolve?.(false);app.classList.remove('device-open','device-closed','device-opening','device-closing');app.classList.add(closed?'device-closing':'device-opening');app.classList.toggle('closedDevice',closed);app.classList.toggle('openDevice',!closed);const from=fold,start=performance.now(),duration=matchMedia('(prefers-reduced-motion: reduce)').matches?180:480;settled=new Promise(r=>resolve=r);function tick(t){const p=Math.min(1,(t-start)/duration);fold=from+(dest-from)*p*p*(3-2*p);paint();if(p<1)raf=requestAnimationFrame(tick);else{raf=0;app.classList.remove('device-closing','device-opening');app.classList.add(closed?'device-closed':'device-open');shell.querySelectorAll('.fold-copy').forEach(n=>n.remove());resolve?.(true);resolve=null;}}raf=requestAnimationFrame(tick);return settled;}
+ function route(id){app.dataset.screen=id;(['gachaScreen','closeMenuScreen','startScreen'].includes(id)?out:main).append($('modal'));}
+ function dialogue(active){app.classList.toggle('story-active',active);}
+ let lastGuard=null;
+ function paintGuard(){if(!lastGuard)return;const {labelKey,damage}=lastGuard,t=(key,values)=>globalThis.SHUTI18n?SHUTI18n.t(key,values):key,perfect=labelKey==='battle.perfectGuard'||labelKey==='tutorial.perfectGuard';let g=$('outerGuard');if(!g){g=document.createElement('div');g.id='outerGuard';out.prepend(g)}g.innerHTML='<span>'+t('battle.guardBrand')+'</span><strong>'+t(labelKey)+'</strong><b>'+t('battle.damageOnly',{damage})+'</b>';g.className=perfect?'perfect':'normal';}
+ function guard(labelKey,damage){lastGuard={labelKey,damage};paintGuard();const perfect=labelKey==='battle.perfectGuard'||labelKey==='tutorial.perfectGuard';app.classList.toggle('guard-perfect',perfect);setTimeout(()=>app.classList.remove('guard-perfect'),1200);}
+ window.SHUTDevice={setClosed,route,dialogue,guard,refreshLocale:paintGuard,get busy(){return !!raf},get closed(){return target===1},get settled(){return settled}};addEventListener('resize',geometry);geometry();route('startScreen');
+})();

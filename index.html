@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SHUT — The Gatebound Journey</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="src/game.css"><link rel="stylesheet" href="src/device.css"><link rel="stylesheet" href="src/experience.css">
+<link rel="stylesheet" href="src/monsters.css"><link rel="stylesheet" href="src/mikado.css"><link rel="stylesheet" href="src/title.css"><link rel="stylesheet" href="src/polish.css"><link rel="stylesheet" href="src/management.css"></head>
+<body>
+<div id="app" class="closedDevice">
+  <div id="screenCurtain" aria-hidden="true"></div>
+  <button id="soundToggle" class="utility" data-i18n="settings.button" data-i18n-aria-label="settings.buttonAria">設定</button>
+  <div id="dynamicIsland"></div>
+  <div id="hingeLine"></div>
+  <div id="uiStateBadge">OPEN MODE</div>
+  <div id="uiToast"></div>
+  <div id="bg">
+    <div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div>
+    <div id="mountains"></div><div id="field"></div>
+  </div>
+
+  <!-- START -->
+  <section id="startScreen" class="screen show">
+    <div class="glass startCard">
+      <div class="titleSystemBadge" data-i18n="title.deviceSystem">DUO GATE SYSTEM · 01</div>
+      <img class="titleMark" src="assets/shut-title-mark.svg" alt="SHUT">
+      <div class="titleTagline" data-i18n="title.tagline">閉じて、世界をひらく。</div>
+      <div class="titleWorldCopy"><span data-i18n="title.lead1">その一瞬が、運命を変える。</span><br><span data-i18n="title.lead2">失われた門を巡る、開閉の物語。</span></div>
+      <div class="titlePrompt" data-i18n="title.prompt">A STORY BEYOND THE DOOR</div>
+      <div class="startActions">
+        <button id="startBtn" class="btn" data-i18n="title.start">GAME START</button>
+        <button id="newGameBtn" class="btn secondary" data-i18n="title.newGame" style="display:none">NEW GAME</button>
+        <button id="continueUnavailable" class="btn secondary" data-i18n="title.continue" disabled>CONTINUE</button>
+      </div>
+      <div class="titleTools">
+        <button id="titleSettingsBtn" type="button" data-i18n="settings.button">設定</button>
+        <div class="titleLocale" role="group" data-i18n-aria-label="settings.language">
+          <span class="titleLocaleLabel" data-i18n="settings.language">言語</span>
+          <button type="button" data-title-language="ja">日本語</button>
+          <button type="button" data-title-language="en">EN</button>
+        </div>
+      </div>
+      <div class="tip"><span data-i18n="title.tip1">Space / タップで、その先へ。</span><br><span data-i18n="title.tip2">ヘッドホン推奨 · ローカル自動セーブ</span></div>
+    </div>
+  </section>
+
+  <!-- GACHA -->
+  <section id="gachaScreen" class="screen">
+    <div class="topbar">
+      <div class="pill" id="gachaTitleTop" data-i18n="gacha.titleTop"></div>
+      <div class="pillrow"><div class="pill rewardCurrency"><img src="assets/reward-gate-key.png" alt="" aria-hidden="true"><span id="gachaKeys"></span></div><div class="pill" id="gachaGold">0 G</div></div>
+    </div>
+    <div id="gachaStage">
+      <div id="gDoorFrame">
+        <div id="singleWeaponReveal">
+          <div class="small" data-i18n="gacha.inside"></div>
+          <canvas id="gDoorItemCanvas" width="96" height="96"></canvas>
+          <div id="gDoorItemStars"></div>
+          <div id="gDoorItemName"></div>
+        </div>
+        <div id="gDoor"><div id="gKey" data-i18n-aria-label="gacha.keyAria">⚿</div></div>
+      </div>
+    </div>
+    <div id="pullResults"></div>
+    <div id="weaponRevealOverlay">
+      <div class="weaponRevealCard">
+        <div class="small" data-i18n="gacha.newMonster"></div>
+        <canvas id="weaponRevealCanvas" width="128" height="128"></canvas>
+        <div id="weaponRevealStars"></div>
+        <div id="weaponRevealName"></div>
+        <div id="weaponRevealMeta"></div>
+        <button id="weaponRevealContinue" class="btn" data-i18n="gacha.receive"></button>
+      </div>
+    </div>
+    <div id="gachaPanel" class="glass">
+      <h2 id="gachaTitle" data-i18n="gacha.gateTitle"></h2>
+      <p id="gachaText" data-i18n="gacha.intro"></p>
+      <div id="gachaModeTabs" role="group" data-i18n-aria-label="gacha.modeLabel">
+        <button id="goldGachaMode" class="btn secondary" data-gacha-mode="gold"></button>
+        <button id="keyGachaMode" class="btn gold" data-gacha-mode="key"></button>
+      </div>
+      <div id="gachaButtons">
+        <button id="singlePullBtn" class="btn gold"></button>
+        <button id="tenPullBtn" class="btn gold"></button>
+        <button id="gachaHomeBtn" class="btn secondary" data-i18n="gacha.back"></button>
+      </div>
+      <div id="gachaCostNote" class="small"></div>
+    </div>
+  </section>
+
+  <!-- HOME -->
+  <section id="homeScreen" class="screen">
+    <div class="topbar">
+      <div class="pillrow"><div class="pill" id="rankPill">Rank 1</div><div class="pill" id="stagePill">Stage 1</div></div>
+      <div class="pillrow"><div class="pill" id="homeGold">0 G</div><div class="pill" id="homeKeys">鍵 0</div></div>
+    </div>
+    <div id="homeCenter">
+      <div id="journeyHero"><div class="eyebrow" data-i18n="menu.eyebrow">YOUR JOURNEY</div><h1 id="journeyTitle">風の向こうへ</h1><p id="journeyObjective"></p><button id="nextJourney" class="btn primary" data-i18n="menu.continueJourney">旅を続ける →</button><div id="journeyProgress"></div></div>
+      <canvas id="campPortrait" width="160" height="160" aria-label="案内役 ミナ"></canvas>
+      <div id="equipped" class="glass">
+        <div class="small">EQUIPPED</div>
+        <div id="eqStars">---</div><div id="eqName">未装備</div><div id="eqMeta">武器を装備してください</div>
+      </div>
+      <div class="menuTitleTag" data-i18n="menu.preparation">旅の支度</div>
+      <div class="menuGrid openMenuGrid">
+        <button id="battleBtn" class="menuBtn primary"><strong data-i18n="menu.story">STORY</strong><small data-i18n="menu.storyDesc">章・ステージを選んで出撃</small></button>
+        <button id="equipBtn" class="menuBtn"><strong data-i18n="menu.monsters">EQUIPMENT</strong><small data-i18n="menu.monstersDesc">編成・合成・進化</small></button>
+        <button id="synthesisBtn" class="menuBtn"><strong data-i18n="menu.synthesis">SYNTHESIS</strong><small data-i18n="menu.synthesisDesc">モンスターを強化</small></button>
+        <button id="shopBtn" class="menuBtn"><strong data-i18n="menu.shop">SHOP</strong><small data-i18n="menu.shopDesc">回復アイテム</small></button>
+        <button id="partnerBtn" class="menuBtn"><strong data-i18n="menu.partner">PARTNER</strong><small data-i18n="menu.partnerDesc">モンスター</small></button>
+        <button id="questBtn" class="menuBtn"><strong data-i18n="menu.quests">QUEST</strong><small data-i18n="menu.questsDesc">達成条件と報酬</small></button>
+        <button id="giftBtn" class="menuBtn"><strong data-i18n="menu.presents">PRESENT</strong><small data-i18n="menu.presentsDesc">報酬を受け取る</small><span id="giftBadge" class="notifyBadge">0</span></button>
+        <button id="gateBtn" class="menuBtn"><strong data-i18n="menu.gates">SPECIAL GATE</strong><small data-i18n="menu.gatesDesc">EXP・GOLD・隠しゲート</small></button>
+        <button id="collectionBtn" class="menuBtn"><strong data-i18n="menu.library">LIBRARY</strong><small data-i18n="menu.libraryDesc">モンスター図鑑</small></button>
+      </div>
+      <div class="menuHint"><button id="foldHome" class="btn secondary" data-i18n="menu.fold">扉を閉じる · GACHA</button><span data-i18n="menu.foldHint">Space で開く / 閉じる</span></div>
+    </div>
+  </section>
+
+  <!-- CLOSE MENU -->
+  <section id="closeMenuScreen" class="screen">
+    <div class="closeMenuShell">
+      <div class="closeMenuTop">
+        <div class="pill" data-i18n="closeMenu.title"></div>
+        <div class="pillrow">
+          <div class="pill" id="closeGold">0 G</div>
+          <div class="pill" id="closeKeys"></div>
+        </div>
+      </div>
+
+      <div class="closeMenuCenter">
+        <div class="closeDoorBadge">
+          <div class="closeDoorCore"></div>
+        </div>
+        <h2 data-i18n="closeMenu.gateTitle"></h2>
+        <p data-i18n="closeMenu.description"></p>
+
+        <button id="closeGachaBtn" class="menuBtn closeGachaBtn">
+          <strong data-i18n="closeMenu.gacha"></strong>
+          <small id="closeGachaCost"></small>
+        </button>
+
+        <div class="closeStatusCard glass">
+          <div class="closeStatusRow"><span data-i18n="closeMenu.stage"></span><b id="closeStage">1</b></div>
+          <div class="closeStatusRow"><span data-i18n="closeMenu.rank"></span><b id="closeRank">1</b></div>
+          <div class="closeStatusRow"><span data-i18n="closeMenu.party"></span><b id="closeEquip"></b></div>
+        </div>
+
+        <div class="closeMenuHint"><button id="unfoldHome" class="btn secondary" data-i18n="closeMenu.openJourney"></button><p data-i18n="closeMenu.foldHint"></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BATTLE -->
+  <section id="battleScreen" class="screen">
+    <div id="battleHeader">
+      <div id="playerBox" class="glass">
+        <div style="display:flex;justify-content:space-between;font-weight:900"><span id="battleRank">Rank 1</span><span id="battleWeapon">Weapon</span></div>
+        <div class="barline"><span>HP</span><div class="bar"><div id="playerHpFill" class="fill hp"></div></div><span id="playerHpText">100/100</span></div>
+        <div class="barline"><span>RANK</span><div class="bar"><div id="rankXpFill" class="fill xp"></div></div><span id="rankXpText">0/100</span></div>
+      </div>
+      <div id="stageBox" class="glass">
+        <div style="font-weight:950" id="battleStage">Stage 1</div>
+        <div class="small" id="battleEncounter">Battle 1 / 5</div>
+        <div class="small" id="battleCarry">ITEM SLOT 3/3</div>
+      </div>
+    </div>
+    <div id="encounterTrack"></div><div id="battlePartner"></div>
+
+    <div id="bossHpBox" class="glass">
+      <div id="bossHpHead"><span id="bossName">BOSS</span><span id="bossAttr" class="attr"></span></div>
+      <div class="ehp bossBar"><div id="bossHpLag"></div><div id="bossHpFill"></div></div>
+      <div id="bossHpText">0 / 0</div>
+    </div>
+
+    <canvas id="playerSprite" width="128" height="128" data-i18n-aria-label="battle.playerAria"></canvas><div id="enemyArea"></div>
+    <div id="attackFxLayer"></div>
+    <div id="bossIntro"><div id="bossIntroName">BOSS</div><div id="bossIntroSub">WARNING</div></div>
+    <div id="mikadoEncounter" aria-hidden="true">
+      <div id="mikadoPetals" aria-hidden="true"></div>
+      <div class="mikadoIdentity"><span data-i18n="mikado.classification"></span><strong data-i18n="mikado.name"></strong><small data-i18n="mikado.title"></small></div>
+      <div class="mikadoArrival"><span data-i18n="mikado.area"></span><strong data-i18n="mikado.arrival"></strong><small data-i18n="mikado.skill"></small></div>
+    </div>
+
+    <div id="timingBox">
+      <div id="timingLabel" data-i18n="battle.timingGuide"></div>
+      <div id="timingTrack"><div id="hitZone"></div><div id="perfectZone"></div><div id="cursor"></div></div>
+    </div>
+
+    <div id="guardTargetRing"><span data-i18n="battle.closeHere"></span></div><div id="dangerRing"></div><div id="closeNow" data-i18n="battle.closeNow"></div>
+    <div id="battleMessage"></div><div id="battleSub" data-i18n="battle.readyIdle"></div>
+    <div id="combatFeedback" aria-live="polite"></div>
+    <button id="battleAction" class="btn primary"></button><button id="retreatBtn" class="utility" data-i18n="battle.retreat"></button>
+    <div id="guardTimeline"><div id="guardProgress"></div><span data-i18n="battle.closeTimeline"></span></div>
+
+    <div id="closedMenu">
+      <div class="closedCard glass">
+        <h2 data-i18n="battle.closedTitle"></h2>
+        <div class="small" data-i18n="battle.closedDescription"></div>
+        <div class="itemButtons">
+          <button class="itemBtn" data-item="heal"><span data-i18n="battle.heal"></span><br><span id="cntHeal">×0</span></button>
+          <button class="itemBtn" data-item="high"><span data-i18n="battle.highHeal"></span><br><span id="cntHigh">×0</span></button>
+          <button class="itemBtn" data-item="elixir"><span data-i18n="battle.elixir"></span><br><span id="cntElixir">×0</span></button>
+        </div>
+        <div id="selectedItemText"></div>
+        <button id="unfoldBattle" class="btn primary" data-i18n="battle.openNext"></button>
+        <div style="margin-top:13px" class="small" data-i18n="battle.openHint"></div>
+      </div>
+    </div>
+
+    <div id="rewardOverlay">
+      <div class="rewardCard glass">
+        <h2 id="rewardTitle"></h2>
+        <div id="rewardBody"></div>
+        <button id="rewardNext" class="btn"></button>
+      </div>
+    </div>
+  </section>
+
+  <div id="tutorialOverlay">
+    <div class="tutorialCard glass">
+      <div class="small" id="tutorialStep"></div>
+      <h2 id="tutorialTitle"></h2>
+      <div id="tutorialBody"></div>
+      <div class="tutorialActions">
+        <button id="tutorialSkip" class="btn secondary" data-i18n="tutorial.skip"></button>
+        <button id="tutorialNext" class="btn"></button>
+      </div>
+    </div>
+  </div>
+  <section id="dialogueOverlay" role="dialog" aria-label="会話">
+    <div id="dialogueChapter"></div><canvas id="dialoguePortrait" width="160" height="160" aria-label="話しているキャラクター"></canvas><div id="dialogueMonogram"></div>
+    <div class="dialogueWindow"><div id="dialogueSpeaker"></div><p id="dialogueText"></p><div class="dialogueControls"><span id="dialogueCount"></span><button id="dialogueAuto" class="btn secondary">AUTO</button><button id="dialogueSkip" class="btn secondary">スキップ</button><button id="dialogueNext" class="btn primary">次へ ▷</button></div></div>
+  </section>
+
+  <!-- MODAL -->
+  <div id="modal">
+    <div class="modalCard glass">
+      <div id="modalTitle" class="modalTitle">TITLE</div>
+      <div id="modalBody"></div>
+      <div style="margin-top:16px;text-align:right"><button id="modalClose" class="btn secondary" data-i18n="common.close">閉じる</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="locales/ja.js"></script><script src="locales/en.js"></script><script src="src/i18n.js"></script><script src="src/master-data.js"></script><script src="src/monsters.js"></script><script src="src/combat.js"></script><script src="src/systems.js"></script><script src="src/narrative.js"></script><script src="src/device.js"></script><script src="src/save.js"></script><script src="src/art.js"></script><script src="src/mikado.js"></script><script>SHUTArt.ready.then(()=>{const s=document.createElement("script");s.src="src/game.js";document.body.append(s)})</script>
+</body>
+</html>
+
+
+

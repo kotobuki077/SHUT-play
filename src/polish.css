@@ -1,0 +1,64 @@
+/* Battle/UI polish. Loaded last so the stable layout remains the fallback. */
+:root{--panel-ink:#071b24;--panel-mid:#102f37;--panel-edge:#dbc98e;--panel-light:#f2e4b4}
+body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;font-feature-settings:"palt" 1}
+.glass,.modalCard,.rewardCard,.tutorialCard,.weaponCard{border-radius:2px;background:linear-gradient(#12353bf2,#0a252ff7);border:1px solid var(--panel-edge);box-shadow:inset 0 0 0 2px #071b24,0 5px 0 #061a21b0}
+.btn,.menuBtn,.itemBtn{border-radius:2px;letter-spacing:.03em}.btn:focus-visible,.menuBtn:focus-visible,.itemBtn:focus-visible{outline:2px solid #fff3b7;outline-offset:2px}
+
+/* A quiet idle comes only from authored frames; no CSS bounce, rotation or stretch. */
+.enemyCard canvas,.monsterHud canvas{transform:none!important;rotate:0deg!important;scale:1!important}
+
+/* The same primary-action rail is used for start, stop, guard, and reopen. */
+#battleControls{min-height:116px;justify-content:flex-end}
+#battleAction,#unfoldBattle{min-height:46px;border-color:#ead58f;box-shadow:inset 0 -3px #8c713c;background:#315a55;color:#fff7dc}
+#app[data-phase="attackArmed"] #battleAction{background:#416c61}
+#app[data-phase="attack"] #battleAction{background:#8a5b39}
+#app[data-phase="defense"] #battleAction{background:#365d72}
+#app.open-only[data-phase="defense"] #battleAction{box-shadow:0 0 0 2px #9de7db,inset 0 -3px #244a59}
+#enemyArea{bottom:235px}
+#app[data-phase="attackArmed"] #enemyArea,#app[data-phase="attack"] #enemyArea{bottom:305px}
+#app[data-phase="attackArmed"] .enemySpriteWrap,#app[data-phase="attack"] .enemySpriteWrap{height:130px}
+#app[data-phase="attackArmed"] .enemyCard canvas,#app[data-phase="attack"] .enemyCard canvas{width:130px;height:130px}
+#app[data-phase="attackArmed"] .bossCard .enemySpriteWrap,#app[data-phase="attack"] .bossCard .enemySpriteWrap{height:165px}
+#app[data-phase="attackArmed"] .bossCard canvas,#app[data-phase="attack"] .bossCard canvas{width:165px;height:165px}
+.enemyCard .ehp,.enemyCard .ehpText{position:relative;z-index:3}
+#timingBox{position:relative;z-index:5}
+
+/* Individual special gauges. */
+.skillGauge{position:relative;height:10px;margin-top:3px;background:#06191e;border:1px solid #607b78;overflow:hidden}
+.skillGauge>i{display:block;height:100%;background:linear-gradient(90deg,#52a6a0,#f1d578);transition:width .18s steps(4)}
+.skillGauge>em{position:absolute;inset:-1px 2px auto;font-style:normal;font-size:7px;line-height:10px;color:#fff8dc;text-shadow:1px 1px #09222a;white-space:nowrap}
+.monsterHud.skillReady{border-color:#f5d77f;box-shadow:0 0 12px #f5c95a80,inset 0 0 0 1px #f5d77f}.monsterHud.skillReady .skillGauge>i{animation:skillReadyPulse .55s steps(2) infinite}
+@keyframes skillReadyPulse{50%{filter:brightness(1.5)}}
+
+/* A dedicated special sequence: held authored frames plus layered attribute seals. */
+.ultimateMotion{--ultimate:#70d7a0;position:absolute;inset:0;z-index:58;pointer-events:none;display:grid;place-items:center;animation:ultimateCurtain 1s steps(6) var(--delay) both;background:radial-gradient(circle,#fff7 0 2%,transparent 35%)}
+.ultimateMotion.attr-fire{--ultimate:#ef765f}.ultimateMotion.attr-water{--ultimate:#6bc7ed}.ultimateMotion.attr-thunder{--ultimate:#d2a4f2}.ultimateMotion.attr-earth{--ultimate:#d0a75b}
+.ultimateMotion strong{font:900 clamp(21px,4vw,44px) Georgia,serif;color:#fff5cf;text-shadow:3px 3px #102733;letter-spacing:.16em}.ultimateMotion span{position:absolute;top:62%;color:#fff;font-weight:800;background:#0a2630dc;border:1px solid var(--ultimate);padding:5px 18px}
+.ultimateSeal{position:absolute;width:180px;height:180px;border:5px double var(--ultimate);clip-path:polygon(50% 0,90% 20%,100% 50%,80% 90%,50% 100%,10% 80%,0 50%,20% 10%);animation:sealBurst .75s steps(6) both}.ultimateSeal i{position:absolute;inset:22%;border:2px solid #fff8}.ultimateSeal i:nth-child(2){inset:36%;border-color:var(--ultimate)}.ultimateSeal i:nth-child(3){inset:46%;background:#fff}
+@keyframes ultimateCurtain{0%{opacity:0}12%,72%{opacity:1}100%{opacity:0}}@keyframes sealBurst{from{opacity:0;scale:.35}35%{opacity:1}to{opacity:0;scale:1.25}}
+
+/* Closed gate reads the result, then the physical OPEN transition reveals it here. */
+#gachaScreen.result-open:before{background:radial-gradient(circle at 50% 42%,#ffe9a933,transparent 48%),linear-gradient(#09252db0,#071b24e8)}
+#gachaScreen.summon-rare #gDoorFrame{filter:drop-shadow(0 0 18px #ffdf7d) brightness(1.15)}
+#gachaScreen.summon-rare #gKey{color:#fff4b0;filter:drop-shadow(0 0 12px #fff2a0)}
+#pullResults .weaponCard.highRare{border-color:#efd780;box-shadow:inset 0 0 0 1px #efd780,0 0 14px #eacb6160;background:#243a3a}.weaponCard.rarity-5 .wStars{color:#fff0a8;text-shadow:0 0 8px #ffd45f}
+#gachaScreen.summon-rare:not(.result-open):after{content:'★★★★';position:absolute;left:0;right:0;top:42%;z-index:35;text-align:center;color:#ffe795;font-size:25px;letter-spacing:.35em;text-shadow:0 0 16px #fff;animation:rareOmen .7s steps(4)}
+@keyframes rareOmen{from{opacity:0;letter-spacing:.8em}to{opacity:1;letter-spacing:.35em}}
+
+/* Victory and hatch sequence. */
+#rewardOverlay{background:#061c24e8;backdrop-filter:blur(2px)}.rewardCard{max-width:820px;text-align:center;overflow:auto}
+.resultVictory{font:900 clamp(24px,5vw,48px) Georgia,serif;color:#ffe29a;letter-spacing:.22em;text-shadow:3px 3px #17303b;animation:resultStamp .45s steps(4)}
+.resultLoot{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin:14px 0}.resultDrop{min-width:105px;padding:10px;border:1px solid #728e82;background:#0b2830;display:grid;place-items:center;gap:5px;animation:lootIn .36s calc(var(--i)*90ms) steps(4) backwards}.resultDrop>b{font-size:21px;color:#f3d682}.resultDrop>span{font-size:12px}.resultNote{color:#f2d88d;font-weight:800}.rewardPixelIcon{display:block;width:54px;height:54px;object-fit:contain;image-rendering:pixelated}.resultIcon{width:58px;height:58px}.rewardCurrency{display:flex!important;align-items:center;gap:4px}.rewardCurrency img{width:22px;height:22px;object-fit:contain;image-rendering:pixelated}.monsterDrop{display:flex;align-items:center;gap:3px}.monsterDrop .dropIcon{width:28px;height:28px;flex:none}
+.eggReward{position:relative;min-width:150px}.eggReward canvas{display:block;width:88px;height:88px;opacity:0;image-rendering:pixelated;animation:hatchReveal .4s 1.35s steps(4) forwards}.eggReward>em{opacity:0;font-style:normal;color:#c9f4de;font-size:10px;animation:hatchReveal .3s 1.55s forwards}.rarityEgg{position:relative;width:68px;height:68px;display:grid;place-items:center;border:2px solid #d8dddc;background:#071d26;box-shadow:0 5px #06171c;animation:eggHatch 1.5s .25s steps(6) forwards}.rarityEgg .eggIcon{width:64px;height:64px}.rarityEgg:after{content:attr(data-rarity);position:absolute;right:-7px;bottom:-6px;min-width:24px;padding:2px 3px;border:1px solid currentColor;background:#071d26;color:#e9ece9;font:700 8px/1 monospace}.rarity-2 .rarityEgg{border-color:#77bce8;color:#9ad8ff}.rarity-3 .rarityEgg{border-color:#ce824d;color:#e9a66f}.rarity-4 .rarityEgg{border-color:#dfe8ee;color:#fff;box-shadow:0 5px #06171c,0 0 0 2px #8796a2}.rarity-5 .rarityEgg{border-color:#ffe48b;color:#ffe48b;box-shadow:0 5px #06171c,0 0 10px #d8a930}.rarity-6 .rarityEgg{border-color:#e6b1ff;color:#ffe58e;box-shadow:0 5px #06171c,0 0 0 2px #d68eff,0 0 14px #ffe06b}
+@keyframes resultStamp{from{opacity:0;translate:0 -10px}to{opacity:1}}@keyframes lootIn{from{opacity:0;translate:0 12px}to{opacity:1}}@keyframes eggHatch{0%,65%{translate:0 0;opacity:1}20%,45%{translate:-2px 0}30%,55%{translate:2px 0}78%{filter:brightness(2);opacity:1}100%{opacity:0;translate:0 -8px}}@keyframes hatchReveal{to{opacity:1}}
+
+@media(max-width:600px){
+ #battleControls{min-height:92px;bottom:57px!important}#battleScreen #enemyArea,#app[data-phase="attackArmed"] #battleScreen #enemyArea,#app[data-phase="attack"] #battleScreen #enemyArea{bottom:168px!important}#battleScreen:has(#bossHpBox.show) #enemyArea{bottom:168px!important}#app[data-phase="attackArmed"] .enemySpriteWrap,#app[data-phase="attack"] .enemySpriteWrap{height:58px}#app[data-phase="attackArmed"] .enemyCard canvas,#app[data-phase="attack"] .enemyCard canvas{width:64px;height:64px}.monsterHud{height:52px}.monsterHud canvas{width:28px;height:34px}.monsterHud span,.monsterHud small{font-size:8px}.skillGauge{height:8px}.skillGauge>em{font-size:6px;line-height:8px}#battleAction{min-height:34px}
+ .ultimateSeal{width:100px;height:100px}.ultimateMotion span{top:60%;font-size:10px}#rewardOverlay{padding:3px}.rewardCard{max-height:100%;padding:6px;overflow:auto}#rewardTitle{font-size:15px;margin:0 0 3px}.resultVictory{font-size:24px;line-height:1.05}.rewardLine{font-size:11px;margin:2px}.resultLoot{gap:4px;margin:5px 0;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start}.resultDrop{flex:0 0 76px;min-width:76px;padding:4px;min-height:112px}.resultDrop>b{font-size:16px}.resultDrop>span{font-size:9px}.resultIcon{width:42px;height:42px}.eggReward{flex-basis:94px;min-width:94px}.rarityEgg{width:46px;height:46px}.rarityEgg .eggIcon{width:44px;height:44px}.rarityEgg:after{right:-5px;bottom:-4px;font-size:6px;min-width:18px}.eggReward canvas{width:50px;height:50px}.eggReward>em{font-size:8px}.resultNote,.rewardCard>.small{font-size:9px;margin:3px}#rewardNext{position:sticky;bottom:0;min-height:32px}
+}
+
+/* Noctia uses the shared person-sprite scale and clears the boss HUD/action rail. */
+#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 .enemySpriteWrap,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 .enemySpriteWrap{height:192px!important}#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 canvas,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 canvas{width:192px!important;height:192px!important}
+@media(min-width:1401px){#battleScreen:has(.enemyCard.kind-E027) #timingBox,#battleScreen:has(.enemyCard.kind-E028) #timingBox{top:60px}}
+@media(min-width:601px) and (max-width:1400px){#battleScreen:has(.enemyCard.kind-E027) #enemyArea,#battleScreen:has(.enemyCard.kind-E028) #enemyArea{top:24%!important}#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 .enemySpriteWrap,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 .enemySpriteWrap{height:92px!important}#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 canvas,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 canvas{width:92px!important;height:92px!important}}
+@media(max-width:600px){#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 .enemySpriteWrap,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 .enemySpriteWrap{height:58px!important}#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 canvas,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 canvas{width:58px!important;height:58px!important}}

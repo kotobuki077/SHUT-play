@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 228" role="img" aria-labelledby="title desc" shape-rendering="crispEdges">
+  <title id="title">SHUT</title>
+  <desc id="desc">SHUT official pixel title mark with a central fold hinge.</desc>
+  <rect x="8" y="8" width="684" height="212" fill="#071e29" stroke="#d7bb78" stroke-width="8"/>
+  <path d="M20 32h660M20 196h660" stroke="#4f735f" stroke-width="4"/>
+  <g fill="#254d4d" transform="translate(0 8)">
+    <path d="M45 38h112v25H70v38h87v88H45v-25h87v-38H45z"/>
+    <path d="M190 38h25v63h68V38h25v151h-25v-63h-68v63h-25z"/>
+    <path d="M386 38h25v126h63V38h25v151H386z"/>
+    <path d="M530 38h125v25h-50v126h-25V63h-50z"/>
+  </g>
+  <g fill="#fff0c2">
+    <path d="M45 38h112v25H70v38h87v88H45v-25h87v-38H45z"/>
+    <path d="M190 38h25v63h68V38h25v151h-25v-63h-68v63h-25z"/>
+    <path d="M386 38h25v126h63V38h25v151H386z"/>
+    <path d="M530 38h125v25h-50v126h-25V63h-50z"/>
+  </g>
+  <g fill="#d7bb78">
+    <rect x="338" y="21" width="7" height="186"/>
+    <rect x="355" y="21" width="7" height="186"/>
+    <rect x="329" y="51" width="42" height="9"/>
+    <rect x="329" y="169" width="42" height="9"/>
+    <rect x="343" y="101" width="15" height="27"/>
+  </g>
+</svg>

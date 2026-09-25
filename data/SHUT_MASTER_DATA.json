@@ -1,0 +1,7497 @@
+{
+  "meta": {
+    "title": "SHUT Monster Master Data",
+    "generated_at": "2026-09-19T12:24:55",
+    "note": "データファースト設計。HTML/JS側はこのマスターデータを読み込む前提。",
+    "version": "5.0.0-monster-dev"
+  },
+  "worlds": [
+    {
+      "world_id": "W01",
+      "name": "翠環草原アルボラ",
+      "description": "風が運ぶ花の香り。白い遺跡の向こうで、眠る門が呼んでいる。"
+    },
+    {
+      "world_id": "W02",
+      "name": "蒼玻璃水都リュミナ",
+      "description": "水路に灯りが揺れる街。止まった流れを、もう一度動かそう。"
+    },
+    {
+      "world_id": "W03",
+      "name": "雷天遺構ヴォルタ",
+      "description": "雲の上に残された空の道。遠い鍵の音を追って、最後の門へ。"
+    },
+    {
+      "world_id": "W04",
+      "name": "エデン",
+      "nameKey": "mikado.world",
+      "description": "空に残された庭園。静かな風の中で、幻の気配が揺れる。",
+      "descriptionKey": "mikado.worldDescription"
+    }
+  ],
+  "stages": [
+    {
+      "stage_id": "S01-01",
+      "world_id": "W01",
+      "stage_no": 1,
+      "name": "風渡りの入口",
+      "stage_type": "tutorial",
+      "recommended_rank": 1,
+      "difficulty": 1,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": [
+          "E008"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        },
+        {
+          "type": "rank_xp",
+          "amount": 45
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 120
+        }
+      ],
+      "description": "風の門から旅が始まる。",
+      "chapter": 1,
+      "recommended_monster_level": 1
+    },
+    {
+      "stage_id": "S01-02",
+      "world_id": "W01",
+      "stage_no": 2,
+      "name": "五色の小径",
+      "stage_type": "normal",
+      "recommended_rank": 1,
+      "difficulty": 2,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M001",
+          "amount": 1
+        },
+        {
+          "type": "rank_xp",
+          "amount": 50
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 150
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 1,
+      "recommended_monster_level": 2
+    },
+    {
+      "stage_id": "S01-03",
+      "world_id": "W01",
+      "stage_no": 3,
+      "name": "樹根の番所",
+      "stage_type": "midboss",
+      "recommended_rank": 2,
+      "difficulty": 2,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": [
+          "E012"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        },
+        {
+          "type": "rank_xp",
+          "amount": 56
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 220
+        }
+      ],
+      "description": "道を守る強敵を越えよう。",
+      "chapter": 1,
+      "recommended_monster_level": 3
+    },
+    {
+      "stage_id": "S01-04",
+      "world_id": "W01",
+      "stage_no": 4,
+      "name": "獣道の契り",
+      "stage_type": "egg_discovery",
+      "recommended_rank": 2,
+      "difficulty": 3,
+      "special_gate_check": true,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M001",
+          "amount": 2
+        },
+        {
+          "type": "rank_xp",
+          "amount": 63
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 180
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 1,
+      "recommended_monster_level": 4
+    },
+    {
+      "stage_id": "S01-05",
+      "world_id": "W01",
+      "stage_no": 5,
+      "name": "封鎖執行",
+      "stage_type": "forced_loss",
+      "recommended_rank": 3,
+      "difficulty": 3,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 1,
+        "bosses": [
+          "E027"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 0
+        }
+      ],
+      "description": "静かな門に、ひとつの影。",
+      "chapter": 1,
+      "recommended_monster_level": 5
+    },
+    {
+      "stage_id": "S01-06",
+      "world_id": "W01",
+      "stage_no": 6,
+      "name": "再起の遺跡",
+      "stage_type": "event",
+      "recommended_rank": 3,
+      "difficulty": 4,
+      "special_gate_check": true,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M001",
+          "amount": 2
+        },
+        {
+          "type": "rank_xp",
+          "amount": 79
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 260
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 1,
+      "recommended_monster_level": 6
+    },
+    {
+      "stage_id": "S01-07",
+      "world_id": "W01",
+      "stage_no": 7,
+      "name": "翠環の大門",
+      "stage_type": "boss",
+      "recommended_rank": 4,
+      "difficulty": 5,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": [
+          "E013"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        },
+        {
+          "type": "monster",
+          "monsterId": "M006",
+          "amount": 1
+        },
+        {
+          "type": "rank_xp",
+          "amount": 89
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 450
+        }
+      ],
+      "description": "この世界の門を開こう。",
+      "chapter": 1,
+      "recommended_monster_level": 8
+    },
+    {
+      "stage_id": "S02-01",
+      "world_id": "W02",
+      "stage_no": 1,
+      "name": "沈み橋",
+      "stage_type": "normal",
+      "recommended_rank": 5,
+      "difficulty": 4,
+      "special_gate_check": true,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M001",
+          "amount": 2
+        },
+        {
+          "type": "rank_xp",
+          "amount": 99
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 260
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 2,
+      "recommended_monster_level": 9
+    },
+    {
+      "stage_id": "S02-02",
+      "world_id": "W02",
+      "stage_no": 2,
+      "name": "透明回廊",
+      "stage_type": "partner",
+      "recommended_rank": 5,
+      "difficulty": 5,
+      "special_gate_check": true,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        },
+        {
+          "type": "rank_xp",
+          "amount": 111
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 300
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 2,
+      "recommended_monster_level": 10
+    },
+    {
+      "stage_id": "S02-03",
+      "world_id": "W02",
+      "stage_no": 3,
+      "name": "珊瑚兵舎",
+      "stage_type": "midboss",
+      "recommended_rank": 6,
+      "difficulty": 5,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": [
+          "E018"
+        ],
+        "minions": [
+          "E014"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        },
+        {
+          "type": "rank_xp",
+          "amount": 125
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 380
+        }
+      ],
+      "description": "道を守る強敵を越えよう。",
+      "chapter": 2,
+      "recommended_monster_level": 12
+    },
+    {
+      "stage_id": "S02-04",
+      "world_id": "W02",
+      "stage_no": 4,
+      "name": "青晶市場",
+      "stage_type": "event",
+      "recommended_rank": 6,
+      "difficulty": 6,
+      "special_gate_check": true,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M001",
+          "amount": 4
+        },
+        {
+          "type": "rank_xp",
+          "amount": 140
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 400
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 2,
+      "recommended_monster_level": 13
+    },
+    {
+      "stage_id": "S02-05",
+      "world_id": "W02",
+      "stage_no": 5,
+      "name": "水路包囲戦",
+      "stage_type": "survival",
+      "recommended_rank": 7,
+      "difficulty": 6,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 1,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "survival_turns": 5,
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        },
+        {
+          "type": "rank_xp",
+          "amount": 157
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 420
+        }
+      ],
+      "description": "仲間が門を開くまで、持ちこたえよう。",
+      "chapter": 2,
+      "recommended_monster_level": 14
+    },
+    {
+      "stage_id": "S02-06",
+      "world_id": "W02",
+      "stage_no": 6,
+      "name": "執行官再臨",
+      "stage_type": "rival",
+      "recommended_rank": 8,
+      "difficulty": 7,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": [
+          "E028"
+        ],
+        "bossOverrides": {
+          "E028": {
+            "base_hp": 340,
+            "base_atk": 34,
+            "attack_every": 2
+          }
+        }
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 3
+        },
+        {
+          "type": "rank_xp",
+          "amount": 175
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 500
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 2,
+      "recommended_monster_level": 15
+    },
+    {
+      "stage_id": "S02-07",
+      "world_id": "W02",
+      "stage_no": 7,
+      "name": "蒼玻璃の海門",
+      "stage_type": "boss",
+      "recommended_rank": 9,
+      "difficulty": 8,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": [
+          "E019"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        },
+        {
+          "type": "monster",
+          "monsterId": "M006",
+          "amount": 1
+        },
+        {
+          "type": "rank_xp",
+          "amount": 196
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 650
+        }
+      ],
+      "description": "この世界の門を開こう。",
+      "chapter": 2,
+      "recommended_monster_level": 16
+    },
+    {
+      "stage_id": "S03-01",
+      "world_id": "W03",
+      "stage_no": 1,
+      "name": "雷橋の前線",
+      "stage_type": "normal",
+      "recommended_rank": 10,
+      "difficulty": 7,
+      "special_gate_check": true,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M001",
+          "amount": 4
+        },
+        {
+          "type": "rank_xp",
+          "amount": 220
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 480
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 3,
+      "recommended_monster_level": 17
+    },
+    {
+      "stage_id": "S03-02",
+      "world_id": "W03",
+      "stage_no": 2,
+      "name": "浮遊歯車街",
+      "stage_type": "normal",
+      "recommended_rank": 11,
+      "difficulty": 8,
+      "special_gate_check": true,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        },
+        {
+          "type": "rank_xp",
+          "amount": 246
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 520
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 3,
+      "recommended_monster_level": 18
+    },
+    {
+      "stage_id": "S03-03",
+      "world_id": "W03",
+      "stage_no": 3,
+      "name": "双雷の門",
+      "stage_type": "midboss",
+      "recommended_rank": 12,
+      "difficulty": 8,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": [
+          "E024",
+          "E025"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 3
+        },
+        {
+          "type": "rank_xp",
+          "amount": 276
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 700
+        }
+      ],
+      "description": "道を守る強敵を越えよう。",
+      "chapter": 3,
+      "recommended_monster_level": 20
+    },
+    {
+      "stage_id": "S03-04",
+      "world_id": "W03",
+      "stage_no": 4,
+      "name": "試練回廊",
+      "stage_type": "event",
+      "recommended_rank": 13,
+      "difficulty": 9,
+      "special_gate_check": true,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M001",
+          "amount": 4
+        },
+        {
+          "type": "rank_xp",
+          "amount": 309
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 650
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 3,
+      "recommended_monster_level": 21
+    },
+    {
+      "stage_id": "S03-05",
+      "world_id": "W03",
+      "stage_no": 5,
+      "name": "決着・封鎖執行官",
+      "stage_type": "rival_final",
+      "recommended_rank": 14,
+      "difficulty": 10,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": [
+          "E028"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        },
+        {
+          "type": "rank_xp",
+          "amount": 346
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 850
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 3,
+      "recommended_monster_level": 22
+    },
+    {
+      "stage_id": "S03-06",
+      "world_id": "W03",
+      "stage_no": 6,
+      "name": "天鍵中枢",
+      "stage_type": "event",
+      "recommended_rank": 15,
+      "difficulty": 10,
+      "special_gate_check": true,
+      "encounters": {
+        "count": 3,
+        "bosses": []
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M006",
+          "amount": 1
+        },
+        {
+          "type": "rank_xp",
+          "amount": 388
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 800
+        }
+      ],
+      "description": "新しい道の向こうへ。",
+      "chapter": 3,
+      "recommended_monster_level": 23
+    },
+    {
+      "stage_id": "S03-07",
+      "world_id": "W03",
+      "stage_no": 7,
+      "name": "ゼノゲート",
+      "stage_type": "boss",
+      "recommended_rank": 16,
+      "difficulty": 12,
+      "special_gate_check": false,
+      "encounters": {
+        "count": 3,
+        "bosses": [
+          "E026"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 10
+        },
+        {
+          "type": "monster",
+          "monsterId": "M006",
+          "amount": 2
+        },
+        {
+          "type": "rank_xp",
+          "amount": 434
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 1200
+        }
+      ],
+      "description": "この世界の門を開こう。",
+      "chapter": 3,
+      "recommended_monster_level": 24
+    },
+    {
+      "stage_id": "S04-01",
+      "world_id": "W04",
+      "stage_no": 1,
+      "name": "エデンの庭",
+      "nameKey": "mikado.stage",
+      "stage_type": "normal",
+      "recommended_rank": 17,
+      "difficulty": 12,
+      "special_gate_check": false,
+      "mikado_encounter": true,
+      "encounters": {
+        "count": 3,
+        "bosses": [],
+        "pool": [
+          "E020",
+          "E021",
+          "E022"
+        ]
+      },
+      "missions": [
+        {
+          "key": "clear",
+          "name": "ステージを突破",
+          "reward": 40
+        },
+        {
+          "key": "perfect",
+          "name": "PERFECTを1回決める",
+          "reward": 60
+        },
+        {
+          "key": "guard",
+          "name": "PERFECT GUARDを1回決める",
+          "reward": 60
+        }
+      ],
+      "first_clear_rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        },
+        {
+          "type": "rank_xp",
+          "amount": 480
+        }
+      ],
+      "repeat_rewards": [
+        {
+          "type": "gold",
+          "amount": 1350
+        }
+      ],
+      "description": "空に残された庭園を進む。静かな風の向こうに、幻の気配がある。",
+      "descriptionKey": "mikado.stageDescription",
+      "chapter": 9,
+      "recommended_monster_level": 60
+    }
+  ],
+  "enemies": [
+    {
+      "enemy_id": "E001",
+      "name": "フローティアイ",
+      "category": "monster",
+      "world": "W01",
+      "attribute": "雷",
+      "tier": 1,
+      "base_hp": 56,
+      "base_atk": 13,
+      "attack_every": 3,
+      "rank_exp": 9,
+      "gold_base": 14,
+      "attack_pattern": "単発照準",
+      "scripted_only": false,
+      "pattern_id": "single",
+      "sprite": "E001"
+    },
+    {
+      "enemy_id": "E002",
+      "name": "ミントビー",
+      "category": "monster",
+      "world": "W01",
+      "attribute": "風",
+      "tier": 1,
+      "base_hp": 52,
+      "base_atk": 14,
+      "attack_every": 3,
+      "rank_exp": 9,
+      "gold_base": 15,
+      "attack_pattern": "高速突進",
+      "scripted_only": false,
+      "pattern_id": "fast",
+      "sprite": "E002"
+    },
+    {
+      "enemy_id": "E003",
+      "name": "バブルス",
+      "category": "monster",
+      "world": "W01",
+      "attribute": "水",
+      "tier": 1,
+      "base_hp": 66,
+      "base_atk": 12,
+      "attack_every": 4,
+      "rank_exp": 10,
+      "gold_base": 16,
+      "attack_pattern": "膨張→破裂",
+      "scripted_only": false,
+      "pattern_id": "charge",
+      "sprite": "E003"
+    },
+    {
+      "enemy_id": "E004",
+      "name": "ゆらりん",
+      "category": "monster",
+      "world": "W01",
+      "attribute": "風",
+      "tier": 2,
+      "base_hp": 86,
+      "base_atk": 18,
+      "attack_every": 3,
+      "rank_exp": 14,
+      "gold_base": 28,
+      "attack_pattern": "遅延フェイント",
+      "scripted_only": false,
+      "pattern_id": "feint",
+      "sprite": "E004"
+    },
+    {
+      "enemy_id": "E005",
+      "name": "ガードッグ",
+      "category": "monster",
+      "world": "W01",
+      "attribute": "地",
+      "tier": 2,
+      "base_hp": 108,
+      "base_atk": 22,
+      "attack_every": 2,
+      "rank_exp": 16,
+      "gold_base": 32,
+      "attack_pattern": "二段突進",
+      "scripted_only": false,
+      "pattern_id": "double",
+      "sprite": "E005"
+    },
+    {
+      "enemy_id": "E006",
+      "name": "スクエア",
+      "category": "machine",
+      "world": "W01",
+      "attribute": "雷",
+      "tier": 2,
+      "base_hp": 98,
+      "base_atk": 20,
+      "attack_every": 2,
+      "rank_exp": 15,
+      "gold_base": 30,
+      "attack_pattern": "予告点滅→射撃",
+      "scripted_only": false,
+      "pattern_id": "barrier",
+      "sprite": "E006"
+    },
+    {
+      "enemy_id": "E007",
+      "name": "フラワット",
+      "category": "monster",
+      "world": "W01",
+      "attribute": "風",
+      "tier": 2,
+      "base_hp": 92,
+      "base_atk": 17,
+      "attack_every": 3,
+      "rank_exp": 14,
+      "gold_base": 26,
+      "attack_pattern": "花粉フェイント",
+      "scripted_only": false,
+      "pattern_id": "heal",
+      "sprite": "E007"
+    },
+    {
+      "enemy_id": "E008",
+      "name": "ストーンロン",
+      "category": "monster",
+      "world": "W01",
+      "attribute": "地",
+      "tier": 3,
+      "base_hp": 132,
+      "base_atk": 24,
+      "attack_every": 3,
+      "rank_exp": 22,
+      "gold_base": 55,
+      "attack_pattern": "重撃",
+      "scripted_only": false,
+      "pattern_id": "charge",
+      "phases": [
+        {
+          "threshold": 1,
+          "name": "静かな門衛",
+          "pattern": "charge",
+          "damage": 1
+        },
+        {
+          "threshold": 0.5,
+          "name": "門脈覚醒",
+          "pattern": "double",
+          "damage": 1.05
+        }
+      ],
+      "sprite": "E008"
+    },
+    {
+      "enemy_id": "E009",
+      "name": "ラビット",
+      "category": "machine",
+      "world": "W01",
+      "attribute": "雷",
+      "tier": 2,
+      "base_hp": 88,
+      "base_atk": 21,
+      "attack_every": 2,
+      "rank_exp": 16,
+      "gold_base": 34,
+      "attack_pattern": "跳躍高速撃",
+      "scripted_only": false,
+      "pattern_id": "fast",
+      "sprite": "E009"
+    },
+    {
+      "enemy_id": "E010",
+      "name": "キノポン",
+      "category": "monster",
+      "world": "W01",
+      "attribute": "地",
+      "tier": 1,
+      "base_hp": 62,
+      "base_atk": 15,
+      "attack_every": 4,
+      "rank_exp": 11,
+      "gold_base": 18,
+      "attack_pattern": "胞子予告",
+      "scripted_only": false,
+      "pattern_id": "delayed",
+      "sprite": "E010",
+      "onHitStatus": {
+        "name": "胞子",
+        "attackMultiplier": 0.85,
+        "turns": 2
+      }
+    },
+    {
+      "enemy_id": "E011",
+      "name": "リーファン",
+      "category": "monster",
+      "world": "W01",
+      "attribute": "風",
+      "tier": 2,
+      "base_hp": 78,
+      "base_atk": 19,
+      "attack_every": 3,
+      "rank_exp": 13,
+      "gold_base": 26,
+      "attack_pattern": "旋風連撃",
+      "scripted_only": false,
+      "pattern_id": "double",
+      "sprite": "E011"
+    },
+    {
+      "enemy_id": "E012",
+      "name": "門番獣グラドッグ",
+      "category": "midboss",
+      "world": "W01",
+      "attribute": "地",
+      "tier": 4,
+      "base_hp": 260,
+      "base_atk": 31,
+      "attack_every": 2,
+      "rank_exp": 48,
+      "gold_base": 150,
+      "attack_pattern": "二段重撃/フェイント",
+      "scripted_only": false,
+      "pattern_id": "double",
+      "phases": [
+        {
+          "threshold": 1,
+          "name": "静かな門衛",
+          "pattern": "double",
+          "damage": 1
+        },
+        {
+          "threshold": 0.5,
+          "name": "門脈覚醒",
+          "pattern": "double",
+          "damage": 1.05
+        }
+      ],
+      "sprite": "E012"
+    },
+    {
+      "enemy_id": "E013",
+      "name": "樹門王ヴェルデロン",
+      "category": "boss",
+      "world": "W01",
+      "attribute": "風",
+      "tier": 5,
+      "base_hp": 420,
+      "base_atk": 38,
+      "attack_every": 2,
+      "rank_exp": 70,
+      "gold_base": 240,
+      "attack_pattern": "傷を負うと根の槍を引き、速い風圧を放つ。",
+      "scripted_only": false,
+      "pattern_id": "barrier",
+      "phases": [
+        {
+          "threshold": 1,
+          "name": "静かな門衛",
+          "pattern": "barrier",
+          "damage": 1
+        },
+        {
+          "threshold": 0.5,
+          "name": "門脈覚醒",
+          "pattern": "double",
+          "damage": 1.05
+        }
+      ],
+      "sprite": "E013"
+    },
+    {
+      "enemy_id": "E014",
+      "name": "アクアミム",
+      "category": "monster",
+      "world": "W02",
+      "attribute": "水",
+      "tier": 1,
+      "base_hp": 72,
+      "base_atk": 17,
+      "attack_every": 3,
+      "rank_exp": 12,
+      "gold_base": 22,
+      "attack_pattern": "水弾3連予告",
+      "scripted_only": false,
+      "pattern_id": "double",
+      "sprite": "E014"
+    },
+    {
+      "enemy_id": "E015",
+      "name": "コイルフィン",
+      "category": "machine",
+      "world": "W02",
+      "attribute": "雷",
+      "tier": 2,
+      "base_hp": 104,
+      "base_atk": 23,
+      "attack_every": 2,
+      "rank_exp": 17,
+      "gold_base": 36,
+      "attack_pattern": "蓄電→放電",
+      "scripted_only": false,
+      "pattern_id": "charge",
+      "sprite": "E015"
+    },
+    {
+      "enemy_id": "E016",
+      "name": "クラゲット",
+      "category": "monster",
+      "world": "W02",
+      "attribute": "水",
+      "tier": 2,
+      "base_hp": 96,
+      "base_atk": 20,
+      "attack_every": 3,
+      "rank_exp": 15,
+      "gold_base": 31,
+      "attack_pattern": "遅延パルス",
+      "scripted_only": false,
+      "pattern_id": "delayed",
+      "sprite": "E016"
+    },
+    {
+      "enemy_id": "E017",
+      "name": "シェルン",
+      "category": "monster",
+      "world": "W02",
+      "attribute": "地",
+      "tier": 3,
+      "base_hp": 138,
+      "base_atk": 26,
+      "attack_every": 3,
+      "rank_exp": 22,
+      "gold_base": 58,
+      "attack_pattern": "殻閉じ→反撃",
+      "scripted_only": false,
+      "pattern_id": "barrier",
+      "sprite": "E017"
+    },
+    {
+      "enemy_id": "E018",
+      "name": "潮刃ネレイス",
+      "category": "midboss",
+      "world": "W02",
+      "attribute": "水",
+      "tier": 4,
+      "base_hp": 300,
+      "base_atk": 34,
+      "attack_every": 2,
+      "rank_exp": 52,
+      "gold_base": 170,
+      "attack_pattern": "二連斬/遅延斬",
+      "scripted_only": false,
+      "pattern_id": "double",
+      "phases": [
+        {
+          "threshold": 1,
+          "name": "静かな門衛",
+          "pattern": "double",
+          "damage": 1
+        },
+        {
+          "threshold": 0.5,
+          "name": "門脈覚醒",
+          "pattern": "double",
+          "damage": 1.05
+        }
+      ],
+      "sprite": "E018"
+    },
+    {
+      "enemy_id": "E019",
+      "name": "海門機アクエリア",
+      "category": "boss",
+      "world": "W02",
+      "attribute": "水",
+      "tier": 5,
+      "base_hp": 480,
+      "base_atk": 42,
+      "attack_every": 2,
+      "rank_exp": 78,
+      "gold_base": 270,
+      "attack_pattern": "水圧砲を止めると、雷の機関が動き始める。",
+      "scripted_only": false,
+      "pattern_id": "shift",
+      "phases": [
+        {
+          "threshold": 1,
+          "name": "静かな門衛",
+          "pattern": "shift",
+          "damage": 1
+        },
+        {
+          "threshold": 0.5,
+          "name": "門脈覚醒",
+          "pattern": "shift",
+          "damage": 1.05
+        }
+      ],
+      "sprite": "E019"
+    },
+    {
+      "enemy_id": "E020",
+      "name": "スパークモス",
+      "category": "monster",
+      "world": "W03",
+      "attribute": "雷",
+      "tier": 2,
+      "base_hp": 102,
+      "base_atk": 25,
+      "attack_every": 2,
+      "rank_exp": 18,
+      "gold_base": 40,
+      "attack_pattern": "高速点滅→突撃",
+      "scripted_only": false,
+      "pattern_id": "fast",
+      "sprite": "E020"
+    },
+    {
+      "enemy_id": "E021",
+      "name": "フレアギア",
+      "category": "machine",
+      "world": "W03",
+      "attribute": "火",
+      "tier": 3,
+      "base_hp": 144,
+      "base_atk": 29,
+      "attack_every": 2,
+      "rank_exp": 23,
+      "gold_base": 62,
+      "attack_pattern": "予熱→爆発",
+      "scripted_only": false,
+      "pattern_id": "charge",
+      "sprite": "E021"
+    },
+    {
+      "enemy_id": "E022",
+      "name": "ボルトホーン",
+      "category": "monster",
+      "world": "W03",
+      "attribute": "雷",
+      "tier": 3,
+      "base_hp": 152,
+      "base_atk": 30,
+      "attack_every": 2,
+      "rank_exp": 24,
+      "gold_base": 66,
+      "attack_pattern": "フェイント角撃",
+      "scripted_only": false,
+      "pattern_id": "feint",
+      "sprite": "E022"
+    },
+    {
+      "enemy_id": "E023",
+      "name": "アッシュウィスプ",
+      "category": "monster",
+      "world": "W03",
+      "attribute": "火",
+      "tier": 2,
+      "base_hp": 110,
+      "base_atk": 26,
+      "attack_every": 3,
+      "rank_exp": 19,
+      "gold_base": 43,
+      "attack_pattern": "遅延火球",
+      "scripted_only": false,
+      "pattern_id": "delayed",
+      "sprite": "E023"
+    },
+    {
+      "enemy_id": "E024",
+      "name": "双雷機ライラ",
+      "category": "midboss",
+      "world": "W03",
+      "attribute": "雷",
+      "tier": 4,
+      "base_hp": 320,
+      "base_atk": 36,
+      "attack_every": 2,
+      "rank_exp": 54,
+      "gold_base": 180,
+      "attack_pattern": "素早い刃の後に、もう一撃。",
+      "scripted_only": false,
+      "pattern_id": "double",
+      "phases": [
+        {
+          "threshold": 1,
+          "name": "静かな門衛",
+          "pattern": "double",
+          "damage": 1
+        },
+        {
+          "threshold": 0.5,
+          "name": "門脈覚醒",
+          "pattern": "double",
+          "damage": 1.05
+        }
+      ],
+      "sprite": "E024"
+    },
+    {
+      "enemy_id": "E025",
+      "name": "双雷機レム",
+      "category": "midboss",
+      "world": "W03",
+      "attribute": "雷",
+      "tier": 4,
+      "base_hp": 320,
+      "base_atk": 36,
+      "attack_every": 2,
+      "rank_exp": 54,
+      "gold_base": 180,
+      "attack_pattern": "盾を構えた後、遅れて槍が走る。",
+      "scripted_only": false,
+      "pattern_id": "delayed",
+      "phases": [
+        {
+          "threshold": 1,
+          "name": "静かな門衛",
+          "pattern": "delayed",
+          "damage": 1
+        },
+        {
+          "threshold": 0.5,
+          "name": "門脈覚醒",
+          "pattern": "double",
+          "damage": 1.05
+        }
+      ],
+      "sprite": "E025"
+    },
+    {
+      "enemy_id": "E026",
+      "name": "天鍵機ゼノゲート",
+      "category": "boss",
+      "world": "W03",
+      "attribute": "雷",
+      "tier": 5,
+      "base_hp": 560,
+      "base_atk": 47,
+      "attack_every": 2,
+      "rank_exp": 90,
+      "gold_base": 340,
+      "attack_pattern": "鍵の回転とともに、攻撃のリズムが三度変わる。",
+      "scripted_only": false,
+      "pattern_id": "triple",
+      "phases": [
+        {
+          "threshold": 1,
+          "name": "第一封鎖",
+          "pattern": "single",
+          "damage": 1
+        },
+        {
+          "threshold": 0.66,
+          "name": "第二封鎖・反転",
+          "pattern": "shift",
+          "damage": 1.05
+        },
+        {
+          "threshold": 0.33,
+          "name": "最終封鎖",
+          "pattern": "triple",
+          "damage": 1.1
+        }
+      ],
+      "sprite": "E026"
+    },
+    {
+      "enemy_id": "E027",
+      "name": "封鎖執行官ノクティア",
+      "category": "humanoid",
+      "world": "W01/W02/W03",
+      "attribute": "火",
+      "tier": 5,
+      "base_hp": 9999,
+      "base_atk": 99,
+      "attack_every": 1,
+      "rank_exp": 0,
+      "gold_base": 0,
+      "attack_pattern": "刃も門も退ける、圧倒的な封鎖の力。",
+      "scripted_only": true,
+      "pattern_id": "charge",
+      "sprite": "E027"
+    },
+    {
+      "enemy_id": "E028",
+      "name": "封鎖執行官ノクティア・決着",
+      "category": "humanoid_boss",
+      "world": "W03",
+      "attribute": "火",
+      "tier": 5,
+      "base_hp": 520,
+      "base_atk": 44,
+      "attack_every": 2,
+      "rank_exp": 85,
+      "gold_base": 300,
+      "attack_pattern": "迷いを捨てた剣。傷を負うほど激しくなる。",
+      "scripted_only": false,
+      "pattern_id": "double",
+      "phases": [
+        {
+          "threshold": 1,
+          "name": "第一封鎖",
+          "pattern": "single",
+          "damage": 1
+        },
+        {
+          "threshold": 0.66,
+          "name": "第二封鎖・反転",
+          "pattern": "shift",
+          "damage": 1.05
+        },
+        {
+          "threshold": 0.33,
+          "name": "最終封鎖",
+          "pattern": "triple",
+          "damage": 1.1
+        }
+      ],
+      "sprite": "E028"
+    },
+    {
+      "enemy_id": "E029",
+      "name": "みかど",
+      "nameKey": "mikado.name",
+      "category": "boss",
+      "world": "W04",
+      "attribute": "風",
+      "tier": 6,
+      "base_hp": 680,
+      "base_atk": 52,
+      "attack_every": 2,
+      "rank_exp": 120,
+      "gold_base": 500,
+      "attack_pattern": "None but shot",
+      "scripted_only": false,
+      "pattern_id": "none_but_shot",
+      "sprite": "E029"
+    }
+  ],
+  "items": [
+    {
+      "item_id": "ITM001",
+      "name": "リペアミスト",
+      "category": "heal",
+      "effect": "HP30%回復",
+      "max_stack": 99
+    },
+    {
+      "item_id": "ITM002",
+      "name": "ハイリペア",
+      "category": "heal",
+      "effect": "HP60%回復",
+      "max_stack": 99
+    },
+    {
+      "item_id": "ITM003",
+      "name": "フルコア",
+      "category": "heal",
+      "effect": "HP100%回復",
+      "max_stack": 99
+    },
+    {
+      "item_id": "ITM010",
+      "name": "鍵",
+      "category": "rare_gacha",
+      "effect": "5個で1回/45個で10連",
+      "max_stack": 999
+    }
+  ],
+  "quests": [
+    {
+      "quest_id": "Q001",
+      "name": "チュートリアル完了",
+      "condition_key": "tutorial_complete",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "quest_id": "Q006",
+      "name": "PERFECT ATTACK 5回",
+      "condition_key": "perfect_attack_count",
+      "target": 5,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "quest_id": "Q007",
+      "name": "PERFECT GUARD 5回",
+      "condition_key": "perfect_guard_count",
+      "target": 5,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "quest_id": "Q008",
+      "name": "PERFECT合計25回",
+      "condition_key": "perfect_total",
+      "target": 25,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q009",
+      "name": "属性有利で10体撃破",
+      "condition_key": "weak_kill_count",
+      "target": 10,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "quest_id": "Q010",
+      "name": "敵50体撃破",
+      "condition_key": "enemy_kill_count",
+      "target": 50,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q011",
+      "name": "敵100体撃破",
+      "condition_key": "enemy_kill_count",
+      "target": 100,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 3
+        }
+      ]
+    },
+    {
+      "quest_id": "Q012",
+      "name": "初ボス撃破",
+      "condition_key": "boss_kill_count",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q013",
+      "name": "Stage 1初クリア",
+      "condition_key": "stage_clear:S01-01",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q014",
+      "name": "Chapter 1クリア",
+      "condition_key": "chapter_clear:W01",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "quest_id": "Q015",
+      "name": "Chapter 2クリア",
+      "condition_key": "chapter_clear:W02",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "quest_id": "Q016",
+      "name": "Chapter 3クリア",
+      "condition_key": "chapter_clear:W03",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "quest_id": "Q017",
+      "name": "Rank 5到達",
+      "condition_key": "rank",
+      "target": 5,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q018",
+      "name": "Rank 10到達",
+      "condition_key": "rank",
+      "target": 10,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "quest_id": "Q019",
+      "name": "Rank 20到達",
+      "condition_key": "rank",
+      "target": 20,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "quest_id": "Q020",
+      "name": "敵図鑑10種",
+      "condition_key": "enemy_dex",
+      "target": 10,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q021",
+      "name": "敵図鑑20種",
+      "condition_key": "enemy_dex",
+      "target": 20,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 3
+        }
+      ]
+    },
+    {
+      "quest_id": "Q024",
+      "name": "EXPゲート初発見",
+      "condition_key": "gate_discover:EXP",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "quest_id": "Q025",
+      "name": "EXPゲート5回クリア",
+      "condition_key": "gate_clear:EXP",
+      "target": 5,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q026",
+      "name": "GOLDゲート初発見",
+      "condition_key": "gate_discover:GOLD",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "quest_id": "Q027",
+      "name": "隠しゲート初発見",
+      "condition_key": "gate_discover:HIDDEN",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q028",
+      "name": "中ボス3体撃破",
+      "condition_key": "midboss_kill_count",
+      "target": 3,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q029",
+      "name": "ボス再戦勝利",
+      "condition_key": "boss_rematch_win",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q035",
+      "name": "Stageミッション10個達成",
+      "condition_key": "stage_mission_count",
+      "target": 10,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "quest_id": "Q036",
+      "name": "Stageミッション30個達成",
+      "condition_key": "stage_mission_count",
+      "target": 30,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "quest_id": "Q037",
+      "name": "BOSS RUSH初クリア",
+      "condition_key": "boss_rush_clear",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "quest_id": "Q038",
+      "name": "試練の塔10F到達",
+      "condition_key": "tower_floor",
+      "target": 10,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 3
+        }
+      ]
+    },
+    {
+      "quest_id": "Q040",
+      "name": "エンドレスBattle20",
+      "condition_key": "endless_battle",
+      "target": 20,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 3
+        }
+      ]
+    },
+    {
+      "quest_id": "Q041",
+      "name": "エンドレスBattle50",
+      "condition_key": "endless_battle",
+      "target": 50,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "quest_id": "Q042",
+      "name": "初心者クエスト全達成",
+      "condition_key": "beginner_set_complete",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "quest_id": "Q043",
+      "name": "初回プレゼント",
+      "condition_key": "account_first_start",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "gate_key",
+          "amount": 45
+        }
+      ]
+    },
+    {
+      "quest_id": "Q044",
+      "name": "ガチャ初利用",
+      "condition_key": "rare_gacha_pull",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M001",
+          "amount": 4
+        }
+      ]
+    },
+    {
+      "quest_id": "Q045",
+      "name": "10連ガチャ初利用",
+      "condition_key": "rare_gacha_ten_pull",
+      "target": 1,
+      "repeat_type": "one_time",
+      "delivery": "giftbox",
+      "rewards": [
+        {
+          "type": "monster",
+          "monsterId": "M006",
+          "amount": 1
+        }
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "GATE_EXP",
+      "name": "EXPゲート",
+      "attempts": 3,
+      "appearance_rate": 0.22
+    },
+    {
+      "gate_id": "GATE_GOLD",
+      "name": "GOLDゲート",
+      "attempts": 3,
+      "appearance_rate": 0.14
+    },
+    {
+      "gate_id": "GATE_HIDDEN",
+      "name": "隠しゲート",
+      "attempts": 1
+    },
+    {
+      "gate_id": "GATE_BOSSRUSH",
+      "name": "BOSS RUSH",
+      "attempts": 999
+    },
+    {
+      "gate_id": "GATE_TOWER",
+      "name": "試練の塔",
+      "attempts": 999
+    },
+    {
+      "gate_id": "GATE_ENDLESS",
+      "name": "エンドレスゲート",
+      "attempts": 999
+    },
+    {
+      "gate_id": "GATE_REWARD",
+      "name": "報酬ゲート",
+      "attempts": 1
+    }
+  ],
+  "shop": [
+    {
+      "shop_id": "SHOP004",
+      "category": "item",
+      "display_name": "リペアミスト",
+      "ref": "ITM001",
+      "price": 100,
+      "stock": 99,
+      "refresh": "none",
+      "enabled": "yes",
+      "unlock_rank": 1
+    },
+    {
+      "shop_id": "SHOP005",
+      "category": "item",
+      "display_name": "ハイリペア",
+      "ref": "ITM002",
+      "price": 250,
+      "stock": 99,
+      "refresh": "none",
+      "enabled": "yes",
+      "unlock_rank": 1
+    },
+    {
+      "shop_id": "SHOP006",
+      "category": "item",
+      "display_name": "フルコア",
+      "ref": "ITM003",
+      "price": 700,
+      "stock": 99,
+      "refresh": "none",
+      "enabled": "yes",
+      "unlock_rank": 5
+    }
+  ],
+  "story_events": [
+    {
+      "event_id": "EV001",
+      "stage_id": "S01-01",
+      "timing": "before_battle",
+      "title": "ミナとの遭遇",
+      "speaker": "ミナ",
+      "event_type": "tutorial_start",
+      "result": "P028_join_temp",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "surprised",
+          "text": "わっ……開いた。今、触っただけ？",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "happy",
+          "text": "私、ミナ。ねえ、向こうを見に行かない？",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV002",
+      "stage_id": "S01-01",
+      "timing": "after_clear",
+      "title": "最初のゲート",
+      "speaker": "ミナ",
+      "event_type": "story_progress",
+      "result": "gift:Q001",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "happy",
+          "text": "抜けた！ ……あはは、足が震えてる。",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "neutral",
+          "text": "ちょっと休もう。荷物も増えたしね。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV003",
+      "stage_id": "S01-02",
+      "timing": "before_battle",
+      "title": "五属性",
+      "speaker": "ミナ",
+      "event_type": "tutorial_attribute",
+      "result": "none",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "serious",
+          "text": "しっ。草の陰、見て。",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "surprised",
+          "text": "小さいのに、ずいぶん怒ってる……。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV004",
+      "stage_id": "S01-03",
+      "timing": "before_boss",
+      "title": "樹根の番人",
+      "speaker": "門番獣グラドッグ",
+      "event_type": "midboss_intro",
+      "result": "none",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "surprised",
+          "text": "大きい……道いっぱいだ。",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "serious",
+          "text": "唸り声が止まった。来るよ！",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV005",
+      "stage_id": "S01-04",
+      "timing": "after_battle2",
+      "title": "捕獲チャンス",
+      "speaker": "ミナ",
+      "event_type": "tutorial_capture",
+      "result": "capture_unlock",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "sad",
+          "text": "待って。この子、もう戦いたくなさそう。",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "happy",
+          "text": "おいで。一緒に行こう？",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV006",
+      "stage_id": "S01-05",
+      "timing": "before_battle",
+      "title": "封鎖執行官",
+      "speaker": "ノクティア",
+      "event_type": "forced_loss_setup",
+      "result": "none",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ノクティア",
+          "expression": "serious",
+          "text": "止まりなさい。この先は封鎖中よ。",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "angry",
+          "text": "街へ行くだけだよ。どうして？",
+          "position": "center"
+        },
+        {
+          "speaker": "ノクティア",
+          "expression": "angry",
+          "text": "二度は言わない。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV007",
+      "stage_id": "S01-05",
+      "timing": "battle_turn3",
+      "title": "届かない攻撃",
+      "speaker": "ノクティア",
+      "event_type": "forced_loss",
+      "result": "story_continue",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "hurt",
+          "text": "っ……全然、届かない！",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "serious",
+          "text": "下がって！ 私も走るから！",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV008",
+      "stage_id": "S01-06",
+      "timing": "after_clear",
+      "title": "再起",
+      "speaker": "ミナ",
+      "event_type": "hidden_gate_hint",
+      "result": "gate_hidden_hint",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "sad",
+          "text": "まだ、手が痛む？",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "happy",
+          "text": "……うん。じゃあ、今日はゆっくり歩こう。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV009",
+      "stage_id": "S01-07",
+      "timing": "before_boss",
+      "title": "翠環の主",
+      "speaker": "樹門王ヴェルデロン",
+      "event_type": "boss_intro",
+      "result": "none",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "surprised",
+          "text": "葉っぱが、こっちを向いた。",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "serious",
+          "text": "樹門王……通らせてもらうよ。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV010",
+      "stage_id": "S01-07",
+      "timing": "after_clear",
+      "title": "第一門解放",
+      "speaker": "ミナ",
+      "event_type": "chapter_clear",
+      "result": "W02_unlock",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "happy",
+          "text": "海だ！ ねえ、見える？",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "surprised",
+          "text": "しょっぱい風って、本当にあるんだ。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV011",
+      "stage_id": "S02-01",
+      "timing": "before_battle",
+      "title": "水都リュミナ",
+      "speaker": "セラ",
+      "event_type": "story_intro",
+      "result": "P029_join_temp",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "セラ",
+          "expression": "angry",
+          "text": "そこ、濡れる！ 一歩下がって。",
+          "position": "center"
+        },
+        {
+          "speaker": "セラ",
+          "expression": "neutral",
+          "text": "……よし。私はセラ。門を開けたのは君？",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV012",
+      "stage_id": "S02-02",
+      "timing": "after_clear",
+      "title": "PARTNER契約",
+      "speaker": "セラ",
+      "event_type": "partner_unlock",
+      "result": "partner_system_unlock",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "セラ",
+          "expression": "happy",
+          "text": "手、貸して。留め具を締める。",
+          "position": "center"
+        },
+        {
+          "speaker": "セラ",
+          "expression": "serious",
+          "text": "これで外れない。次は私も行く。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV013",
+      "stage_id": "S02-03",
+      "timing": "before_boss",
+      "title": "潮刃",
+      "speaker": "ネレイス",
+      "event_type": "midboss_intro",
+      "result": "none",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "セラ",
+          "expression": "serious",
+          "text": "水音が消えた。ネレイスだ。",
+          "position": "center"
+        },
+        {
+          "speaker": "セラ",
+          "expression": "angry",
+          "text": "まだ引くな、二波目が来る！",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV014",
+      "stage_id": "S02-04",
+      "timing": "after_clear",
+      "title": "黄金の反応",
+      "speaker": "セラ",
+      "event_type": "gold_gate_unlock",
+      "result": "GATE_GOLD_unlock",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "セラ",
+          "expression": "surprised",
+          "text": "こんな所に点検口？ 図面にない。",
+          "position": "center"
+        },
+        {
+          "speaker": "セラ",
+          "expression": "happy",
+          "text": "金色に光ってる……開けてみよう。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV015",
+      "stage_id": "S02-05",
+      "timing": "before_battle",
+      "title": "水路包囲",
+      "speaker": "セラ",
+      "event_type": "survival_intro",
+      "result": "none",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "セラ",
+          "expression": "angry",
+          "text": "ああ、歯車が噛んでる！",
+          "position": "center"
+        },
+        {
+          "speaker": "セラ",
+          "expression": "serious",
+          "text": "工具を取って。……いや、前を頼む！",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV016",
+      "stage_id": "S02-06",
+      "timing": "before_battle",
+      "title": "再びノクティア",
+      "speaker": "ノクティア",
+      "event_type": "rival_rematch",
+      "result": "none",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ノクティア",
+          "expression": "serious",
+          "text": "またあなたたち。懲りないのね。",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "angry",
+          "text": "今度は、引き返さない。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV017",
+      "stage_id": "S02-06",
+      "timing": "after_clear",
+      "title": "まだ先へ",
+      "speaker": "ノクティア",
+      "event_type": "rival_escape",
+      "result": "none",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ノクティア",
+          "expression": "surprised",
+          "text": "私の刃を……止めた？",
+          "position": "center"
+        },
+        {
+          "speaker": "ノクティア",
+          "expression": "hurt",
+          "text": "追わないの？ ……そう。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV018",
+      "stage_id": "S02-07",
+      "timing": "before_boss",
+      "title": "海門機",
+      "speaker": "アクエリア",
+      "event_type": "boss_intro",
+      "result": "none",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "セラ",
+          "expression": "sad",
+          "text": "アクエリア。こんな音、出すなよ。",
+          "position": "center"
+        },
+        {
+          "speaker": "セラ",
+          "expression": "serious",
+          "text": "止めてくれ。修理は私がやる。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV019",
+      "stage_id": "S02-07",
+      "timing": "after_clear",
+      "title": "第二門解放",
+      "speaker": "セラ",
+      "event_type": "chapter_clear",
+      "result": "W03_unlock",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "セラ",
+          "expression": "surprised",
+          "text": "動いた……！",
+          "position": "center"
+        },
+        {
+          "speaker": "セラ",
+          "expression": "happy",
+          "text": "ほら、噴水まで戻った。間に合ったんだ。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV020",
+      "stage_id": "S03-01",
+      "timing": "before_battle",
+      "title": "雷律の少女",
+      "speaker": "カナデ",
+      "event_type": "story_intro",
+      "result": "P030_join_temp",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "カナデ",
+          "expression": "surprised",
+          "text": "あ、今の音、聞こえた？",
+          "position": "center"
+        },
+        {
+          "speaker": "カナデ",
+          "expression": "happy",
+          "text": "私、カナデ。静かな道なら案内できるよ。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV021",
+      "stage_id": "S03-02",
+      "timing": "after_battle2",
+      "title": "フェイント",
+      "speaker": "カナデ",
+      "event_type": "tutorial_feint",
+      "result": "none",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "カナデ",
+          "expression": "serious",
+          "text": "今のは違う。待って……",
+          "position": "center"
+        },
+        {
+          "speaker": "カナデ",
+          "expression": "angry",
+          "text": "そっち！ 次の音！",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV022",
+      "stage_id": "S03-03",
+      "timing": "before_boss",
+      "title": "双雷機",
+      "speaker": "ライラ&レム",
+      "event_type": "midboss_intro",
+      "result": "none",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "カナデ",
+          "expression": "surprised",
+          "text": "ライラ？ レムまで？",
+          "position": "center"
+        },
+        {
+          "speaker": "カナデ",
+          "expression": "serious",
+          "text": "右は私が見る。左をお願い。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV023",
+      "stage_id": "S03-04",
+      "timing": "after_clear",
+      "title": "再戦の門",
+      "speaker": "カナデ",
+      "event_type": "boss_rush_unlock",
+      "result": "GATE_BOSSRUSH_unlock",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "カナデ",
+          "expression": "neutral",
+          "text": "この音、前にも聞いた。森の門だ。",
+          "position": "center"
+        },
+        {
+          "speaker": "カナデ",
+          "expression": "happy",
+          "text": "もう一回、会いに行く？",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV024",
+      "stage_id": "S03-05",
+      "timing": "before_battle",
+      "title": "封鎖の理由",
+      "speaker": "ノクティア",
+      "event_type": "rival_final",
+      "result": "none",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ノクティア",
+          "expression": "sad",
+          "text": "門を閉じれば、守れると思っていた。",
+          "position": "center"
+        },
+        {
+          "speaker": "ノクティア",
+          "expression": "angry",
+          "text": "……最後まで、私を止めて。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV025",
+      "stage_id": "S03-05",
+      "timing": "after_clear",
+      "title": "契約",
+      "speaker": "ノクティア",
+      "event_type": "contract",
+      "result": "P027_join",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ノクティア",
+          "expression": "hurt",
+          "text": "手を……貸してもらえる？",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "happy",
+          "text": "もちろん。ほら、つかまって。",
+          "position": "center"
+        },
+        {
+          "speaker": "ノクティア",
+          "expression": "happy",
+          "text": "ありがとう。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV026",
+      "stage_id": "S03-06",
+      "timing": "after_clear",
+      "title": "終わらない門",
+      "speaker": "カナデ",
+      "event_type": "endless_unlock",
+      "result": "GATE_ENDLESS_unlock",
+      "skippable_after_read": "yes",
+      "lines": [
+        {
+          "speaker": "カナデ",
+          "expression": "surprised",
+          "text": "うわ、まだ続いてる。",
+          "position": "center"
+        },
+        {
+          "speaker": "カナデ",
+          "expression": "neutral",
+          "text": "今日はどこまで行こうか。帰りの分も残してね。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV027",
+      "stage_id": "S03-07",
+      "timing": "before_boss",
+      "title": "天鍵",
+      "speaker": "ゼノゲート",
+      "event_type": "final_boss_intro",
+      "result": "none",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "serious",
+          "text": "あれがゼノゲート。",
+          "position": "center"
+        },
+        {
+          "speaker": "セラ",
+          "expression": "serious",
+          "text": "留め具、よし。行ける。",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "happy",
+          "text": "うん。みんなで帰ろう。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV028",
+      "stage_id": "S03-07",
+      "timing": "boss_phase2",
+      "title": "天鍵変形",
+      "speaker": "ゼノゲート",
+      "event_type": "boss_phase",
+      "result": "phase2",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "カナデ",
+          "expression": "surprised",
+          "text": "待って、音が変わった！",
+          "position": "center"
+        },
+        {
+          "speaker": "カナデ",
+          "expression": "serious",
+          "text": "大丈夫。もう一度、合わせる。",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV029",
+      "stage_id": "S03-07",
+      "timing": "boss_phase3",
+      "title": "最後のCLOSE",
+      "speaker": "ゼノゲート",
+      "event_type": "boss_phase",
+      "result": "phase3",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ノクティア",
+          "expression": "serious",
+          "text": "来るわ。手を離さないで。",
+          "position": "center"
+        },
+        {
+          "speaker": "ミナ",
+          "expression": "angry",
+          "text": "まだ、負けない！",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "event_id": "EV030",
+      "stage_id": "S03-07",
+      "timing": "after_clear",
+      "title": "第三門解放",
+      "speaker": "ミナ/セラ/カナデ/ノクティア",
+      "event_type": "chapter_clear",
+      "result": "postgame_unlock",
+      "skippable_after_read": "no",
+      "lines": [
+        {
+          "speaker": "ミナ",
+          "expression": "surprised",
+          "text": "……空だ。",
+          "position": "center"
+        },
+        {
+          "speaker": "セラ",
+          "expression": "happy",
+          "text": "よくやった。ほんとに。",
+          "position": "center"
+        },
+        {
+          "speaker": "カナデ",
+          "expression": "happy",
+          "text": "静か。やっと、歌えそう。",
+          "position": "center"
+        },
+        {
+          "speaker": "ノクティア",
+          "expression": "happy",
+          "text": "ええ。聞かせて。",
+          "position": "center"
+        }
+      ]
+    }
+  ],
+  "config": [
+    {
+      "key": "attack_ready_seconds",
+      "value": 0.55,
+      "type": "number",
+      "notes": "攻撃タイミング開始前のREADY?猶予"
+    },
+    {
+      "key": "perfect_attack_width",
+      "value": 0.03,
+      "type": "number",
+      "notes": "PERFECTゾーン基準幅"
+    },
+    {
+      "key": "hit_attack_width",
+      "value": 0.16,
+      "type": "number",
+      "notes": "HITゾーン基準幅"
+    },
+    {
+      "key": "perfect_guard_ms",
+      "value": 80,
+      "type": "number",
+      "notes": "PERFECT判定幅 ±80ms"
+    },
+    {
+      "key": "good_guard_ms",
+      "value": 170,
+      "type": "number",
+      "notes": "GOOD判定幅 ±170ms"
+    },
+    {
+      "key": "normal_guard_ms",
+      "value": 290,
+      "type": "number",
+      "notes": "MEDIUM判定幅 ±290ms"
+    },
+    {
+      "key": "bad_guard_ms",
+      "value": 430,
+      "type": "number",
+      "notes": "BAD判定幅 ±430ms"
+    },
+    {
+      "key": "miss_guard_rate",
+      "value": 1,
+      "type": "number",
+      "notes": "MISS / no guardは基礎damageの100%"
+    },
+    {
+      "key": "perfect_guard_rate",
+      "value": 0.1,
+      "type": "number",
+      "notes": "PERFECTは基礎damageの10%（最低1）"
+    },
+    {
+      "key": "good_guard_rate",
+      "value": 0.3,
+      "type": "number",
+      "notes": "GOODは基礎damageの30%"
+    },
+    {
+      "key": "normal_guard_rate",
+      "value": 0.55,
+      "type": "number",
+      "notes": "MEDIUMは基礎damageの55%"
+    },
+    {
+      "key": "bad_guard_rate",
+      "value": 0.8,
+      "type": "number",
+      "notes": "BADは基礎damageの80%"
+    }
+  ],
+  "balance": {
+    "referenceAttack": 44,
+    "referenceGrowth": 0.06,
+    "hpStage": 0.07,
+    "hpRank": 0.02,
+    "atkStage": 0.045,
+    "atkRank": 0.015,
+    "normalHitCap": 2.25,
+    "bossHitCap": 6,
+    "bossHpMultiplier": 1,
+    "normalDamageCap": 0.22,
+    "bossDamageCap": 0.32,
+    "tierStep": 2,
+    "maxBudget": 7,
+    "budgetStage": 0.5,
+    "budgetRank": 8,
+    "maxEnemies": 3,
+    "weaponLevelGrowth": 0.035,
+    "awakeningGrowth": 0.05,
+    "storyRestRate": 0.3,
+    "scaling": "stage-and-recommended-monster-level-only",
+    "referencePartyAttack": 48,
+    "referenceMonsterHp": 84,
+    "normalCycles": 2.15,
+    "eliteCycles": 6,
+    "midbossCycles": 8,
+    "bossCycles": 14.5,
+    "normalDamageShare": 0.2,
+    "eliteDamageShare": 0.25,
+    "bossDamageShare": 0.34,
+    "baseStatVariance": 0.18
+  },
+  "sprites": {
+    "E001": {
+      "source": "assets/field-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 8,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 150
+    },
+    "E002": {
+      "source": "assets/creatures-a.png",
+      "cell": 1,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          1
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E003": {
+      "source": "assets/creatures-a.png",
+      "cell": 2,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          2
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E004": {
+      "source": "assets/creatures-a.png",
+      "cell": 3,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          3
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E005": {
+      "source": "assets/creatures-a.png",
+      "cell": 4,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          4
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E006": {
+      "source": "assets/field-animation.png",
+      "cell": 16,
+      "columns": 4,
+      "rows": 8,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          16,
+          17,
+          18,
+          19
+        ],
+        "attack": [
+          20,
+          21,
+          22,
+          23
+        ],
+        "hit": [
+          24,
+          25
+        ],
+        "death": [
+          28,
+          29,
+          30,
+          31
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 150
+    },
+    "E007": {
+      "source": "assets/creatures-a.png",
+      "cell": 6,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          6
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E008": {
+      "source": "assets/creatures-a.png",
+      "cell": 7,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          7
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames",
+      "trimBottom": 0.09
+    },
+    "E009": {
+      "source": "assets/creatures-a.png",
+      "cell": 8,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          8
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E010": {
+      "source": "assets/creatures-a.png",
+      "cell": 9,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          9
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E011": {
+      "source": "assets/creatures-a.png",
+      "cell": 10,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          10
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E012": {
+      "source": "assets/midboss-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 8,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 150
+    },
+    "E013": {
+      "source": "assets/tree-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 150
+    },
+    "E014": {
+      "source": "assets/creatures-a.png",
+      "cell": 13,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          13
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E015": {
+      "source": "assets/creatures-a.png",
+      "cell": 14,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          14
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E016": {
+      "source": "assets/creatures-a.png",
+      "cell": 15,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          15
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E017": {
+      "source": "assets/creatures-b.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          0
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E018": {
+      "source": "assets/nereis-person-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 118,
+      "logicalHeight": 118,
+      "footInset": 5,
+      "frameSize": 330,
+      "sourceCellSize": 330,
+      "personSpriteSpec": "SHUT_PERSON_V2_MIKADO",
+      "styleReference": "E029_MIKADO",
+      "safeMarginBaked": true,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "Identity-preserving Nereis redraw using shipped Mikado E029 as the sole SHUT style standard; imagegen exec-a83e49aa-0d30-4d51-b783-b966eb8dc757; normalized to 1320x1320/330px cells, 2026-09-24",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 150
+    },
+    "E019": {
+      "source": "assets/aquaria-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 150
+    },
+    "E020": {
+      "source": "assets/creatures-b.png",
+      "cell": 3,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          3
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E021": {
+      "source": "assets/creatures-b.png",
+      "cell": 4,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          4
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E022": {
+      "source": "assets/creatures-b.png",
+      "cell": 5,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          5
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E023": {
+      "source": "assets/creatures-b.png",
+      "cell": 6,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          6
+        ],
+        "attack": null,
+        "hit": null,
+        "death": null
+      },
+      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+    },
+    "E024": {
+      "source": "assets/twins-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 8,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 150
+    },
+    "E025": {
+      "source": "assets/twins-animation.png",
+      "cell": 16,
+      "columns": 4,
+      "rows": 8,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          16,
+          17,
+          18,
+          19
+        ],
+        "attack": [
+          20,
+          21,
+          22,
+          23
+        ],
+        "hit": [
+          24,
+          25
+        ],
+        "death": [
+          28,
+          29,
+          30,
+          31
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 150
+    },
+    "E026": {
+      "source": "assets/zeno-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 150
+    },
+    "E027": {
+      "source": "assets/noctia-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "Noctia identity locked to the adopted current dist Noctia assets; SHUT_PERSON_V2_MIKADO style generation exec-b839520f-6687-4653-bfc3-d98387ab3aca; packed and alpha-audited 2026-09-24. Legacy user portrait remained excluded.",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 340,
+      "identity": "Noctia",
+      "frameSize": 330,
+      "sourceCellSize": 330,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "displayScale": {
+        "desktop": 2,
+        "mobile": 0.5
+      },
+      "personSpriteSpec": "SHUT_PERSON_V2_MIKADO",
+      "styleReference": "E029_MIKADO",
+      "safeMarginBaked": true
+    },
+    "E028": {
+      "source": "assets/noctia-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "Noctia identity locked to the adopted current dist Noctia assets; SHUT_PERSON_V2_MIKADO style generation exec-b839520f-6687-4653-bfc3-d98387ab3aca; packed and alpha-audited 2026-09-24. Legacy user portrait remained excluded.",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "animated_finished",
+      "frameMs": 340,
+      "identity": "Noctia",
+      "frameSize": 330,
+      "sourceCellSize": 330,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "displayScale": {
+        "desktop": 2,
+        "mobile": 0.5
+      },
+      "personSpriteSpec": "SHUT_PERSON_V2_MIKADO",
+      "styleReference": "E029_MIKADO",
+      "safeMarginBaked": true
+    },
+    "E029": {
+      "source": "assets/mikado-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 118,
+      "logicalHeight": 118,
+      "footInset": 5,
+      "placeholder": false,
+      "status": "animated_finished",
+      "animationStatus": "animated_finished",
+      "frameMs": 150,
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "guard": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "identity": "Mikado",
+      "provenance": "Pixel sprite sheet generated from the user-supplied canonical Mikado illustration without redesign; imagegen exec-c553abff-0417-4883-9880-b73ef1175780; repacked without scaling to a 1320x1320 transparent canvas with 330px cells and audited margins."
+    },
+    "M101": {
+      "source": "assets/mina-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "animationStatus": "animated_finished",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "frameSize": 330,
+      "sourceCellSize": 330,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "displayScale": {
+        "desktop": 2,
+        "mobile": 0.5
+      },
+      "frameMs": 340,
+      "identity": "Mina",
+      "personSpriteSpec": "SHUT_PERSON_V2_MIKADO",
+      "styleReference": "E029_MIKADO",
+      "safeMarginBaked": true,
+      "provenance": "Mina identity locked to current shipped expressions.png and the matching archived project player sheet; SHUT_PERSON_V2_MIKADO generation exec-da3e9bd8-28d1-4dad-83d7-cb1ad58bf9eb; packed and alpha-audited 2026-09-24. Legacy user portrait remained excluded."
+    },
+    "M102": {
+      "source": "assets/expressions.png",
+      "cell": 7,
+      "columns": 7,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "animationStatus": "static_only",
+      "states": {
+        "idle": [
+          7
+        ],
+        "attack": [
+          7
+        ],
+        "hit": [
+          7
+        ],
+        "death": [
+          7
+        ]
+      }
+    },
+    "M103": {
+      "source": "assets/expressions.png",
+      "cell": 14,
+      "columns": 7,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "static_only",
+      "animationStatus": "static_only",
+      "states": {
+        "idle": [
+          14
+        ],
+        "attack": [
+          14
+        ],
+        "hit": [
+          14
+        ],
+        "death": [
+          14
+        ]
+      }
+    },
+    "EV0A": {
+      "source": "assets/orbit-eye-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "animationStatus": "idle/attack/hit/death: 4 authored frames each",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "provenance": "Original project evolution reference only; imagegen exec-c9002daf-ca68-47ef-b884-d5ce61d07ed1; alpha and cell margins audited."
+    },
+    "EV0B": {
+      "source": "assets/astral-eye-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "animationStatus": "idle/attack/hit/death: 4 authored frames each",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "provenance": "Original project evolution reference only; built-in imagegen exec-8eccdc05-8375-4435-9f01-262c3e7e26fd; alpha and all 16 cell margins audited."
+    },
+    "EV1A": {
+      "source": "assets/mint-guardian-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "animationStatus": "idle/attack/hit/death: 4 authored frames each",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "provenance": "Original project evolution reference only; imagegen exec-5ea6b475-ab79-4ae7-a33d-cd9631dd2322; real PNG alpha/cell audit passed. Preview edge artifacts are not present in saved alpha composite."
+    },
+    "EV1B": {
+      "source": "assets/jade-queen-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "animationStatus": "idle/attack/hit/death: 4 authored frames each",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "provenance": "Original project evolution reference only; built-in imagegen exec-aae991b8-06a4-4564-a965-eb9a917c151b; alpha and all 16 cell margins audited."
+    },
+    "EV2A": {
+      "source": "assets/bubble-hopper-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "animationStatus": "idle/attack/hit/death: 4 authored frames each",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "provenance": "Original project evolution reference only; built-in imagegen exec-a366f75d-499a-414e-a086-7835c07b99aa; alpha and all 16 cell margins audited."
+    },
+    "EV2B": {
+      "source": "assets/pearl-water-dragon-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "animationStatus": "idle/attack/hit/death: 4 authored frames each",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "provenance": "Original project evolution reference only; built-in imagegen exec-f3aa8e49-bbf0-4939-85b9-f60592a23a1b; alpha and all 16 cell margins audited."
+    }
+  },
+  "presentation": {
+    "edition": "THE GATEBOUND JOURNEY",
+    "palette": "ivory / jade / antique gold",
+    "backgrounds": {
+      "W01": "assets/verdant-gate.png",
+      "W02": "assets/tidal-gate.png",
+      "W03": "assets/sky-gate.png",
+      "W04": "assets/eden-mikado-bg.png"
+    },
+    "specialEncounters": {
+      "mikado": {
+        "enemyId": "E029",
+        "aliases": [
+          "みかど",
+          "Mikado"
+        ],
+        "worldId": "W04",
+        "encounterRate": 0.01,
+        "background": "assets/eden-mikado-bg.png",
+        "introMs": 15000,
+        "characterAsset": "assets/mikado-animation.png",
+        "characterAssetStatus": "finished"
+      }
+    },
+    "portraits": {
+      "ミナ": {
+        "src": "assets/expressions.png",
+        "columns": 7,
+        "rows": 4,
+        "cell": 0,
+        "status": "finished",
+        "placeholder": false,
+        "safeZone": 0.1,
+        "expressions": {
+          "neutral": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 0,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "happy": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 1,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "serious": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 2,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "surprised": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 3,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "angry": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 4,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "sad": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 5,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "hurt": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 6,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          }
+        }
+      },
+      "ノクティア": {
+        "src": "assets/expressions.png",
+        "columns": 7,
+        "rows": 4,
+        "cell": 21,
+        "status": "finished",
+        "placeholder": false,
+        "safeZone": 0.1,
+        "expressions": {
+          "neutral": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 21,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "happy": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 22,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "serious": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 23,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "surprised": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 24,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "angry": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 25,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "sad": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 26,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "hurt": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 27,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          }
+        }
+      },
+      "セラ": {
+        "src": "assets/expressions.png",
+        "columns": 7,
+        "rows": 4,
+        "cell": 7,
+        "status": "finished",
+        "placeholder": false,
+        "safeZone": 0.1,
+        "expressions": {
+          "neutral": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 7,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "happy": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 8,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "serious": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 9,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "surprised": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 10,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "angry": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 11,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "sad": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 12,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "hurt": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 13,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          }
+        }
+      },
+      "カナデ": {
+        "src": "assets/expressions.png",
+        "columns": 7,
+        "rows": 4,
+        "cell": 14,
+        "status": "finished",
+        "placeholder": false,
+        "safeZone": 0.1,
+        "expressions": {
+          "neutral": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 14,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "happy": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 15,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "serious": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 16,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "surprised": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 17,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "angry": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 18,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "sad": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 19,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          },
+          "hurt": {
+            "src": "assets/expressions.png",
+            "columns": 7,
+            "rows": 4,
+            "cell": 20,
+            "status": "finished",
+            "placeholder": false,
+            "safeZone": 0.1
+          }
+        }
+      }
+    },
+    "weaponArt": {
+      "status": "mixed",
+      "description": "20 individual rare/major weapons; 50 varied procedural placeholders"
+    }
+  },
+  "combat_patterns": {
+    "single": {
+      "name": "照準撃",
+      "beats": [
+        1200
+      ],
+      "factors": [
+        1
+      ],
+      "hint": "光の輪が重なる瞬間に閉じる"
+    },
+    "fast": {
+      "name": "疾風突進",
+      "beats": [
+        900
+      ],
+      "factors": [
+        1
+      ],
+      "hint": "速い一撃。小さくなる輪に集中"
+    },
+    "delayed": {
+      "name": "残響の一撃",
+      "beats": [
+        1650
+      ],
+      "factors": [
+        1
+      ],
+      "hint": "長い溜め。金色の輪まで待つ"
+    },
+    "feint": {
+      "name": "虚影 → 本命",
+      "beats": [
+        1700
+      ],
+      "factors": [
+        1
+      ],
+      "feint": 600,
+      "hint": "最初の白い閃光は囮。金色が本命"
+    },
+    "double": {
+      "name": "双連撃",
+      "beats": [
+        1150,
+        720
+      ],
+      "factors": [
+        0.55,
+        0.55
+      ],
+      "hint": "閉じる → 開く → もう一度閉じる"
+    },
+    "triple": {
+      "name": "三重の封鎖",
+      "beats": [
+        1350,
+        850,
+        700
+      ],
+      "factors": [
+        0.4,
+        0.4,
+        0.4
+      ],
+      "hint": "三連撃。各撃の後に開いて備える"
+    },
+    "charge": {
+      "name": "力を溜める → 重撃",
+      "beats": [
+        1800
+      ],
+      "factors": [
+        1.12
+      ],
+      "hint": "長い溜めの大技。完全防御なら被害ゼロ"
+    },
+    "barrier": {
+      "name": "結晶障壁 → 射撃",
+      "beats": [
+        1450
+      ],
+      "factors": [
+        0.9
+      ],
+      "barrier": 0.22,
+      "hint": "障壁はPERFECT攻撃で砕ける"
+    },
+    "heal": {
+      "name": "花療 → 花粉弾",
+      "beats": [
+        1400
+      ],
+      "factors": [
+        0.8
+      ],
+      "heal": 0.07,
+      "hint": "回復は二度まで。連続攻撃で押し切ろう"
+    },
+    "shift": {
+      "name": "属性転換 → 放電",
+      "beats": [
+        1350
+      ],
+      "factors": [
+        1
+      ],
+      "shift": true,
+      "hint": "属性が変わった。仲間それぞれの相性を確認"
+    },
+    "none_but_shot": {
+      "name": "None but shot",
+      "nameKey": "mikado.skill",
+      "beats": [
+        1800
+      ],
+      "factors": [
+        1
+      ],
+      "hint": "砲口が光る瞬間に閉じる",
+      "hintKey": "mikado.attackHint"
+    }
+  },
+  "expeditions": {
+    "EXP": {
+      "name": "翠光の書庫",
+      "count": 2,
+      "unlock": "S01-02",
+      "limited": true,
+      "reward": {
+        "rankXp": 160,
+        "gold": 60,
+        "monsters": [
+          {
+            "monsterId": "M006",
+            "amount": 3
+          }
+        ],
+        "items": {
+          "expSmall": 3,
+          "expMedium": 1
+        }
+      },
+      "description": "短い2戦で育成用モンスター3体とRank EXP。合成で仲間を育てよう。",
+      "hpFactor": 0.65
+    },
+    "GOLD": {
+      "name": "黄金の水路",
+      "count": 2,
+      "unlock": "S02-04",
+      "limited": true,
+      "reward": {
+        "gold": 850
+      },
+      "description": "2戦で金脈を回収。短時間でGoldを集めよう。",
+      "hpFactor": 0.75,
+      "pool": [
+        "E006",
+        "E009",
+        "E015",
+        "E021"
+      ]
+    },
+    "HIDDEN": {
+      "name": "名もなき庭",
+      "count": 3,
+      "unlock": "S01-06",
+      "limited": true,
+      "reward": {
+        "gold": 350,
+        "gateKeys": 2,
+        "monsters": [
+          {
+            "monsterId": "M006",
+            "amount": 1
+          }
+        ]
+      },
+      "boss": "E012",
+      "description": "庭の番人との再戦。特別な編成と希少な卵が待つ。",
+      "pool": [
+        "E011",
+        "E017",
+        "E023"
+      ]
+    },
+    "BOSSRUSH": {
+      "name": "記憶の門",
+      "count": 3,
+      "unlock": "S01-07",
+      "limited": false,
+      "bosses": [
+        "E008",
+        "E012",
+        "E013",
+        "E018",
+        "E019",
+        "E024",
+        "E026"
+      ],
+      "reward": {
+        "gold": 500,
+        "monsters": [
+          {
+            "monsterId": "M006",
+            "amount": 1
+          }
+        ]
+      },
+      "description": "倒した門衛と連戦。回復は限られる。"
+    },
+    "TOWER": {
+      "name": "天測の塔",
+      "count": 10,
+      "unlock": "S02-07",
+      "limited": false,
+      "reward": {
+        "gold": 1200,
+        "gateKeys": 3,
+        "monsters": [
+          {
+            "monsterId": "M006",
+            "amount": 2
+          }
+        ]
+      },
+      "description": "全10階。5階ごとのチェックポイントから再挑戦。"
+    },
+    "ENDLESS": {
+      "name": "果てなき回廊",
+      "count": 0,
+      "unlock": "S03-06",
+      "limited": false,
+      "reward": {
+        "gold": 120
+      },
+      "description": "一戦ごとに進むか帰還を選ぶ。勝利報酬を持ち帰ろう。"
+    }
+  },
+  "progression": {
+    "shop": "S01-01",
+    "partner": "S01-01",
+    "quests": "S01-01",
+    "library": "S01-02",
+    "capture": "S01-04",
+    "beginnerQuests": [
+      "Q001",
+      "Q006",
+      "Q007",
+      "Q013"
+    ]
+  },
+  "rules": {
+    "items": {
+      "heal": {
+        "name": "リペアミスト",
+        "heal": 0.3,
+        "max": 99
+      },
+      "high": {
+        "name": "ハイリペア",
+        "heal": 0.6,
+        "max": 99
+      },
+      "elixir": {
+        "name": "フルコア",
+        "heal": 1,
+        "max": 99
+      }
+    }
+  },
+  "migrations": {
+    "retiredItemRefunds": {
+      "retry": 700,
+      "chip": 300,
+      "bossFrag": 1000
+    },
+    "legacyCurrencyItem": "ITM012"
+  },
+  "monsters": [
+    {
+      "monster_id": "M001",
+      "name": "フローティアイ",
+      "attribute": "雷",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 79,
+      "atk": 13,
+      "sprite": "E001",
+      "materialExp": 40,
+      "skill": {
+        "name": "照準のひらめき",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.15,
+        "description": "PERFECT時、攻撃力1.15倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E001",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": {
+        "level": 8,
+        "to": "EV0A"
+      },
+      "legacyPartnerId": "P001",
+      "special": {
+        "type": "atk_down",
+        "nameKey": "skills.atk_down.name",
+        "descriptionKey": "skills.atk_down.description",
+        "power": 1.05,
+        "status": {
+          "turns": 3,
+          "multiplier": 0.78
+        }
+      }
+    },
+    {
+      "monster_id": "M002",
+      "name": "ミントビー",
+      "attribute": "風",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 83,
+      "atk": 14,
+      "sprite": "E002",
+      "materialExp": 40,
+      "skill": {
+        "name": "追い風",
+        "trigger": "weakness",
+        "effect": "attack",
+        "multiplier": 1.12,
+        "description": "属性有利の相手に、攻撃力1.12倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E002",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": {
+        "level": 8,
+        "to": "EV1A"
+      },
+      "legacyPartnerId": "P002",
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.damage.name",
+        "descriptionKey": "skills.damage.description",
+        "power": 1.5
+      }
+    },
+    {
+      "monster_id": "M003",
+      "name": "バブルス",
+      "attribute": "水",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 87,
+      "atk": 15,
+      "sprite": "E003",
+      "materialExp": 40,
+      "skill": {
+        "name": "最後の波",
+        "trigger": "low_hp",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "自分のHPが半分以下の時、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E003",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": {
+        "level": 8,
+        "to": "EV2A"
+      },
+      "legacyPartnerId": "P003",
+      "special": {
+        "type": "heal",
+        "nameKey": "skills.heal.name",
+        "descriptionKey": "skills.heal.description",
+        "power": 1,
+        "healRate": 0.3
+      }
+    },
+    {
+      "monster_id": "M004",
+      "name": "ゆらりん",
+      "attribute": "風",
+      "family": "creature",
+      "rarity": 2,
+      "hp": 100,
+      "atk": 15,
+      "sprite": "E004",
+      "materialExp": 55,
+      "skill": {
+        "name": "三拍子",
+        "trigger": "third",
+        "effect": "attack",
+        "multiplier": 1.18,
+        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E004",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P004",
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.damage.name",
+        "descriptionKey": "skills.damage.description",
+        "power": 1.5
+      }
+    },
+    {
+      "monster_id": "M005",
+      "name": "ガードッグ",
+      "attribute": "地",
+      "family": "creature",
+      "rarity": 2,
+      "hp": 88,
+      "atk": 16,
+      "sprite": "E005",
+      "materialExp": 55,
+      "skill": {
+        "name": "反響",
+        "trigger": "guard",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E005",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P005",
+      "special": {
+        "type": "regen",
+        "nameKey": "skills.regen.name",
+        "descriptionKey": "skills.regen.description",
+        "power": 1,
+        "status": {
+          "turns": 3,
+          "rate": 0.08
+        }
+      }
+    },
+    {
+      "monster_id": "M006",
+      "name": "スクエア",
+      "attribute": "雷",
+      "family": "machine",
+      "rarity": 2,
+      "hp": 92,
+      "atk": 17,
+      "sprite": "E006",
+      "materialExp": 55,
+      "skill": {
+        "name": "照準のひらめき",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.15,
+        "description": "PERFECT時、攻撃力1.15倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E006",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P006",
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.damage.name",
+        "descriptionKey": "skills.damage.description",
+        "power": 1.5
+      }
+    },
+    {
+      "monster_id": "M007",
+      "name": "フラワット",
+      "attribute": "風",
+      "family": "creature",
+      "rarity": 2,
+      "hp": 96,
+      "atk": 15,
+      "sprite": "E007",
+      "materialExp": 55,
+      "skill": {
+        "name": "追い風",
+        "trigger": "weakness",
+        "effect": "attack",
+        "multiplier": 1.12,
+        "description": "属性有利の相手に、攻撃力1.12倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E007",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P007",
+      "special": {
+        "type": "heal",
+        "nameKey": "skills.heal.name",
+        "descriptionKey": "skills.heal.description",
+        "power": 1,
+        "healRate": 0.3
+      }
+    },
+    {
+      "monster_id": "M008",
+      "name": "ストーンロン",
+      "attribute": "地",
+      "family": "creature",
+      "rarity": 3,
+      "hp": 109,
+      "atk": 18,
+      "sprite": "E008",
+      "materialExp": 70,
+      "skill": {
+        "name": "最後の波",
+        "trigger": "low_hp",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "自分のHPが半分以下の時、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E008",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P008",
+      "special": {
+        "type": "atk_down",
+        "nameKey": "skills.atk_down.name",
+        "descriptionKey": "skills.atk_down.description",
+        "power": 1.05,
+        "status": {
+          "turns": 3,
+          "multiplier": 0.78
+        }
+      }
+    },
+    {
+      "monster_id": "M009",
+      "name": "ラビット",
+      "attribute": "雷",
+      "family": "machine",
+      "rarity": 2,
+      "hp": 88,
+      "atk": 17,
+      "sprite": "E009",
+      "materialExp": 55,
+      "skill": {
+        "name": "三拍子",
+        "trigger": "third",
+        "effect": "attack",
+        "multiplier": 1.18,
+        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E009",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P009",
+      "special": {
+        "type": "atk_down",
+        "nameKey": "skills.atk_down.name",
+        "descriptionKey": "skills.atk_down.description",
+        "power": 1.05,
+        "status": {
+          "turns": 3,
+          "multiplier": 0.78
+        }
+      }
+    },
+    {
+      "monster_id": "M010",
+      "name": "キノポン",
+      "attribute": "地",
+      "family": "creature",
+      "rarity": 3,
+      "hp": 83,
+      "atk": 13,
+      "sprite": "E010",
+      "materialExp": 40,
+      "skill": {
+        "name": "反響",
+        "trigger": "guard",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E010",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P010",
+      "special": {
+        "type": "atk_down",
+        "nameKey": "skills.atk_down.name",
+        "descriptionKey": "skills.atk_down.description",
+        "power": 1.05,
+        "status": {
+          "turns": 3,
+          "multiplier": 0.78
+        }
+      }
+    },
+    {
+      "monster_id": "M011",
+      "name": "リーファン",
+      "attribute": "風",
+      "family": "creature",
+      "rarity": 2,
+      "hp": 96,
+      "atk": 16,
+      "sprite": "E011",
+      "materialExp": 55,
+      "skill": {
+        "name": "照準のひらめき",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.15,
+        "description": "PERFECT時、攻撃力1.15倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E011",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P011",
+      "special": {
+        "type": "heal",
+        "nameKey": "skills.heal.name",
+        "descriptionKey": "skills.heal.description",
+        "power": 1,
+        "healRate": 0.3
+      }
+    },
+    {
+      "monster_id": "M012",
+      "name": "門番獣グラドッグ",
+      "attribute": "地",
+      "family": "creature",
+      "rarity": 4,
+      "hp": 118,
+      "atk": 21,
+      "sprite": "E012",
+      "materialExp": 85,
+      "skill": {
+        "name": "追い風",
+        "trigger": "weakness",
+        "effect": "attack",
+        "multiplier": 1.12,
+        "description": "属性有利の相手に、攻撃力1.12倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E012",
+        "eggRate": 0.025,
+        "kind": "rare"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P012",
+      "special": {
+        "type": "atk_down",
+        "nameKey": "skills.atk_down.name",
+        "descriptionKey": "skills.atk_down.description",
+        "power": 1.05,
+        "status": {
+          "turns": 3,
+          "multiplier": 0.78
+        }
+      }
+    },
+    {
+      "monster_id": "M013",
+      "name": "樹門王ヴェルデロン",
+      "attribute": "風",
+      "family": "creature",
+      "rarity": 5,
+      "hp": 115,
+      "atk": 21,
+      "sprite": "E013",
+      "materialExp": 100,
+      "skill": {
+        "name": "最後の波",
+        "trigger": "low_hp",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "自分のHPが半分以下の時、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E013",
+        "eggRate": 0,
+        "kind": "gacha_exclusive"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P013",
+      "special": {
+        "type": "heal",
+        "nameKey": "skills.heal.name",
+        "descriptionKey": "skills.heal.description",
+        "power": 1,
+        "healRate": 0.3
+      }
+    },
+    {
+      "monster_id": "M014",
+      "name": "アクアミム",
+      "attribute": "水",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 83,
+      "atk": 14,
+      "sprite": "E014",
+      "materialExp": 40,
+      "skill": {
+        "name": "三拍子",
+        "trigger": "third",
+        "effect": "attack",
+        "multiplier": 1.18,
+        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E014",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P014",
+      "special": {
+        "type": "regen",
+        "nameKey": "skills.regen.name",
+        "descriptionKey": "skills.regen.description",
+        "power": 1,
+        "status": {
+          "turns": 3,
+          "rate": 0.08
+        }
+      }
+    },
+    {
+      "monster_id": "M015",
+      "name": "コイルフィン",
+      "attribute": "雷",
+      "family": "machine",
+      "rarity": 2,
+      "hp": 96,
+      "atk": 17,
+      "sprite": "E015",
+      "materialExp": 55,
+      "skill": {
+        "name": "反響",
+        "trigger": "guard",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E015",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P015",
+      "special": {
+        "type": "atk_down",
+        "nameKey": "skills.atk_down.name",
+        "descriptionKey": "skills.atk_down.description",
+        "power": 1.05,
+        "status": {
+          "turns": 3,
+          "multiplier": 0.78
+        }
+      }
+    },
+    {
+      "monster_id": "M016",
+      "name": "クラゲット",
+      "attribute": "水",
+      "family": "creature",
+      "rarity": 2,
+      "hp": 100,
+      "atk": 15,
+      "sprite": "E016",
+      "materialExp": 55,
+      "skill": {
+        "name": "照準のひらめき",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.15,
+        "description": "PERFECT時、攻撃力1.15倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E016",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P016",
+      "special": {
+        "type": "regen",
+        "nameKey": "skills.regen.name",
+        "descriptionKey": "skills.regen.description",
+        "power": 1,
+        "status": {
+          "turns": 3,
+          "rate": 0.08
+        }
+      }
+    },
+    {
+      "monster_id": "M017",
+      "name": "シェルン",
+      "attribute": "地",
+      "family": "creature",
+      "rarity": 3,
+      "hp": 97,
+      "atk": 18,
+      "sprite": "E017",
+      "materialExp": 70,
+      "skill": {
+        "name": "追い風",
+        "trigger": "weakness",
+        "effect": "attack",
+        "multiplier": 1.12,
+        "description": "属性有利の相手に、攻撃力1.12倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E017",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P017",
+      "special": {
+        "type": "regen",
+        "nameKey": "skills.regen.name",
+        "descriptionKey": "skills.regen.description",
+        "power": 1,
+        "status": {
+          "turns": 3,
+          "rate": 0.08
+        }
+      }
+    },
+    {
+      "monster_id": "M018",
+      "name": "潮刃ネレイス",
+      "attribute": "水",
+      "family": "creature",
+      "rarity": 4,
+      "hp": 110,
+      "atk": 21,
+      "sprite": "E018",
+      "materialExp": 85,
+      "skill": {
+        "name": "最後の波",
+        "trigger": "low_hp",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "自分のHPが半分以下の時、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E018",
+        "eggRate": 0.025,
+        "kind": "rare"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P018",
+      "special": {
+        "type": "regen",
+        "nameKey": "skills.regen.name",
+        "descriptionKey": "skills.regen.description",
+        "power": 1,
+        "status": {
+          "turns": 3,
+          "rate": 0.08
+        }
+      }
+    },
+    {
+      "monster_id": "M019",
+      "name": "海門機アクエリア",
+      "attribute": "水",
+      "family": "creature",
+      "rarity": 5,
+      "hp": 123,
+      "atk": 21,
+      "sprite": "E019",
+      "materialExp": 100,
+      "skill": {
+        "name": "三拍子",
+        "trigger": "third",
+        "effect": "attack",
+        "multiplier": 1.18,
+        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E019",
+        "eggRate": 0,
+        "kind": "gacha_exclusive"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P019",
+      "special": {
+        "type": "heal",
+        "nameKey": "skills.heal.name",
+        "descriptionKey": "skills.heal.description",
+        "power": 1,
+        "healRate": 0.3
+      }
+    },
+    {
+      "monster_id": "M020",
+      "name": "スパークモス",
+      "attribute": "雷",
+      "family": "creature",
+      "rarity": 2,
+      "hp": 100,
+      "atk": 16,
+      "sprite": "E020",
+      "materialExp": 55,
+      "skill": {
+        "name": "反響",
+        "trigger": "guard",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E020",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P020",
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.damage.name",
+        "descriptionKey": "skills.damage.description",
+        "power": 1.5
+      }
+    },
+    {
+      "monster_id": "M021",
+      "name": "フレアギア",
+      "attribute": "火",
+      "family": "machine",
+      "rarity": 3,
+      "hp": 97,
+      "atk": 19,
+      "sprite": "E021",
+      "materialExp": 70,
+      "skill": {
+        "name": "照準のひらめき",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.15,
+        "description": "PERFECT時、攻撃力1.15倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E021",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P021",
+      "special": {
+        "type": "poison",
+        "nameKey": "skills.poison.name",
+        "descriptionKey": "skills.poison.description",
+        "power": 1.1,
+        "status": {
+          "turns": 3,
+          "rate": 0.06
+        }
+      }
+    },
+    {
+      "monster_id": "M022",
+      "name": "ボルトホーン",
+      "attribute": "雷",
+      "family": "creature",
+      "rarity": 3,
+      "hp": 101,
+      "atk": 17,
+      "sprite": "E022",
+      "materialExp": 70,
+      "skill": {
+        "name": "追い風",
+        "trigger": "weakness",
+        "effect": "attack",
+        "multiplier": 1.12,
+        "description": "属性有利の相手に、攻撃力1.12倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E022",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P022",
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.damage.name",
+        "descriptionKey": "skills.damage.description",
+        "power": 1.5
+      }
+    },
+    {
+      "monster_id": "M023",
+      "name": "アッシュウィスプ",
+      "attribute": "火",
+      "family": "creature",
+      "rarity": 2,
+      "hp": 96,
+      "atk": 16,
+      "sprite": "E023",
+      "materialExp": 55,
+      "skill": {
+        "name": "最後の波",
+        "trigger": "low_hp",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "自分のHPが半分以下の時、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E023",
+        "eggRate": 0.18,
+        "kind": "common"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P023",
+      "special": {
+        "type": "poison",
+        "nameKey": "skills.poison.name",
+        "descriptionKey": "skills.poison.description",
+        "power": 1.1,
+        "status": {
+          "turns": 3,
+          "rate": 0.06
+        }
+      }
+    },
+    {
+      "monster_id": "M024",
+      "name": "双雷機ライラ",
+      "attribute": "雷",
+      "family": "creature",
+      "rarity": 4,
+      "hp": 118,
+      "atk": 21,
+      "sprite": "E024",
+      "materialExp": 85,
+      "skill": {
+        "name": "三拍子",
+        "trigger": "third",
+        "effect": "attack",
+        "multiplier": 1.18,
+        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E024",
+        "eggRate": 0.025,
+        "kind": "rare"
+      },
+      "evolution": null,
+      "legacyPartnerId": null,
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.damage.name",
+        "descriptionKey": "skills.damage.description",
+        "power": 1.5
+      }
+    },
+    {
+      "monster_id": "M025",
+      "name": "双雷機レム",
+      "attribute": "雷",
+      "family": "creature",
+      "rarity": 4,
+      "hp": 106,
+      "atk": 19,
+      "sprite": "E025",
+      "materialExp": 85,
+      "skill": {
+        "name": "反響",
+        "trigger": "guard",
+        "effect": "attack",
+        "multiplier": 1.2,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E025",
+        "eggRate": 0.025,
+        "kind": "rare"
+      },
+      "evolution": null,
+      "legacyPartnerId": null,
+      "special": {
+        "type": "atk_down",
+        "nameKey": "skills.atk_down.name",
+        "descriptionKey": "skills.atk_down.description",
+        "power": 1.05,
+        "status": {
+          "turns": 3,
+          "multiplier": 0.78
+        }
+      }
+    },
+    {
+      "monster_id": "M026",
+      "name": "天鍵機ゼノゲート",
+      "attribute": "雷",
+      "family": "creature",
+      "rarity": 5,
+      "hp": 119,
+      "atk": 22,
+      "sprite": "E026",
+      "materialExp": 100,
+      "skill": {
+        "name": "照準のひらめき",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.15,
+        "description": "PERFECT時、攻撃力1.15倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E026",
+        "eggRate": 0,
+        "kind": "gacha_exclusive"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P026",
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.damage.name",
+        "descriptionKey": "skills.damage.description",
+        "power": 1.5
+      }
+    },
+    {
+      "monster_id": "M028",
+      "name": "封鎖執行官ノクティア・決着",
+      "attribute": "火",
+      "family": "humanoid",
+      "rarity": 5,
+      "hp": 123,
+      "atk": 23,
+      "sprite": "E028",
+      "materialExp": 100,
+      "skill": {
+        "name": "追い風",
+        "trigger": "weakness",
+        "effect": "attack",
+        "multiplier": 1.12,
+        "description": "属性有利の相手に、攻撃力1.12倍。"
+      },
+      "acquisition": {
+        "gacha": true,
+        "enemyId": "E028",
+        "eggRate": 0,
+        "kind": "gacha_exclusive"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P027",
+      "special": {
+        "type": "poison",
+        "nameKey": "skills.poison.name",
+        "descriptionKey": "skills.poison.description",
+        "power": 1.1,
+        "status": {
+          "turns": 3,
+          "rate": 0.06
+        }
+      }
+    },
+    {
+      "monster_id": "M029",
+      "name": "みかど",
+      "nameKey": "mikado.name",
+      "attribute": "風",
+      "family": "humanoid",
+      "rarity": 6,
+      "hp": 142,
+      "atk": 28,
+      "sprite": "E029",
+      "materialExp": 150,
+      "skill": {
+        "name": "None but shot",
+        "nameKey": "mikado.skill",
+        "trigger": "always",
+        "effect": "attack",
+        "multiplier": 1,
+        "description": "刀を大型バズーカへ変形させて攻撃する。",
+        "descriptionKey": "mikado.skillDescription"
+      },
+      "acquisition": {
+        "gacha": false,
+        "enemyId": "E029",
+        "eggRate": 1,
+        "guaranteedEgg": true,
+        "kind": "mythic"
+      },
+      "evolution": null,
+      "important": true,
+      "legacyPartnerId": null,
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.noneButShot.name",
+        "descriptionKey": "skills.noneButShot.description",
+        "power": 1
+      }
+    },
+    {
+      "monster_id": "M101",
+      "name": "ミナ",
+      "attribute": "風",
+      "family": "humanoid",
+      "rarity": 4,
+      "hp": 100,
+      "atk": 19,
+      "sprite": "M101",
+      "materialExp": 85,
+      "skill": {
+        "name": "門の共鳴",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.15,
+        "description": "PERFECT時、攻撃力1.15倍。"
+      },
+      "acquisition": {
+        "gacha": false,
+        "eggRate": 0,
+        "kind": "story"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P028",
+      "important": true,
+      "special": {
+        "type": "heal",
+        "nameKey": "skills.heal.name",
+        "descriptionKey": "skills.heal.description",
+        "power": 1,
+        "healRate": 0.3
+      }
+    },
+    {
+      "monster_id": "M102",
+      "name": "セラ",
+      "attribute": "水",
+      "family": "humanoid",
+      "rarity": 4,
+      "hp": 100,
+      "atk": 19,
+      "sprite": "M102",
+      "materialExp": 85,
+      "skill": {
+        "name": "門の共鳴",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.15,
+        "description": "PERFECT時、攻撃力1.15倍。"
+      },
+      "acquisition": {
+        "gacha": false,
+        "eggRate": 0,
+        "kind": "story"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P029",
+      "important": true,
+      "special": {
+        "type": "regen",
+        "nameKey": "skills.regen.name",
+        "descriptionKey": "skills.regen.description",
+        "power": 1,
+        "status": {
+          "turns": 3,
+          "rate": 0.08
+        }
+      }
+    },
+    {
+      "monster_id": "M103",
+      "name": "カナデ",
+      "attribute": "雷",
+      "family": "humanoid",
+      "rarity": 4,
+      "hp": 100,
+      "atk": 19,
+      "sprite": "M103",
+      "materialExp": 85,
+      "skill": {
+        "name": "門の共鳴",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.15,
+        "description": "PERFECT時、攻撃力1.15倍。"
+      },
+      "acquisition": {
+        "gacha": false,
+        "eggRate": 0,
+        "kind": "story"
+      },
+      "evolution": null,
+      "legacyPartnerId": "P030",
+      "important": true,
+      "special": {
+        "type": "atk_down",
+        "nameKey": "skills.atk_down.name",
+        "descriptionKey": "skills.atk_down.description",
+        "power": 1.05,
+        "status": {
+          "turns": 3,
+          "multiplier": 0.78
+        }
+      }
+    },
+    {
+      "monster_id": "EV0A",
+      "name": "オービットアイ",
+      "attribute": "雷",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 95,
+      "atk": 15,
+      "sprite": "EV0A",
+      "materialExp": 40,
+      "skill": {
+        "name": "照準のひらめき＋",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.23,
+        "description": "PERFECT時、攻撃力1.23倍。"
+      },
+      "acquisition": {
+        "gacha": false,
+        "eggRate": 0,
+        "kind": "evolution"
+      },
+      "evolution": {
+        "level": 18,
+        "to": "EV0B"
+      },
+      "legacyPartnerId": null,
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.damage.name",
+        "descriptionKey": "skills.damage.description",
+        "power": 1.5
+      }
+    },
+    {
+      "monster_id": "EV0B",
+      "name": "アストラアイ",
+      "attribute": "雷",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 119,
+      "atk": 18,
+      "sprite": "EV0B",
+      "materialExp": 40,
+      "skill": {
+        "name": "星門の共鳴",
+        "trigger": "perfect",
+        "effect": "attack",
+        "multiplier": 1.3299999999999998,
+        "description": "PERFECT時、攻撃力1.33倍。"
+      },
+      "acquisition": {
+        "gacha": false,
+        "eggRate": 0,
+        "kind": "evolution"
+      },
+      "evolution": null,
+      "legacyPartnerId": null,
+      "special": {
+        "type": "atk_down",
+        "nameKey": "skills.atk_down.name",
+        "descriptionKey": "skills.atk_down.description",
+        "power": 1.05,
+        "status": {
+          "turns": 3,
+          "multiplier": 0.78
+        }
+      }
+    },
+    {
+      "monster_id": "EV1A",
+      "name": "ミントガーディアン",
+      "attribute": "風",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 100,
+      "atk": 16,
+      "sprite": "EV1A",
+      "materialExp": 40,
+      "skill": {
+        "name": "追い風＋",
+        "trigger": "weakness",
+        "effect": "attack",
+        "multiplier": 1.2000000000000002,
+        "description": "属性有利の相手に、攻撃力1.2倍。"
+      },
+      "acquisition": {
+        "gacha": false,
+        "eggRate": 0,
+        "kind": "evolution"
+      },
+      "evolution": {
+        "level": 18,
+        "to": "EV1B"
+      },
+      "legacyPartnerId": null,
+      "special": {
+        "type": "damage",
+        "nameKey": "skills.damage.name",
+        "descriptionKey": "skills.damage.description",
+        "power": 1.5
+      }
+    },
+    {
+      "monster_id": "EV1B",
+      "name": "翡翠の蜂王",
+      "attribute": "風",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 125,
+      "atk": 20,
+      "sprite": "EV1B",
+      "materialExp": 40,
+      "skill": {
+        "name": "星門の共鳴",
+        "trigger": "weakness",
+        "effect": "attack",
+        "multiplier": 1.3,
+        "description": "属性有利の相手に、攻撃力1.3倍。"
+      },
+      "acquisition": {
+        "gacha": false,
+        "eggRate": 0,
+        "kind": "evolution"
+      },
+      "evolution": null,
+      "legacyPartnerId": null,
+      "special": {
+        "type": "heal",
+        "nameKey": "skills.heal.name",
+        "descriptionKey": "skills.heal.description",
+        "power": 1,
+        "healRate": 0.3
+      }
+    },
+    {
+      "monster_id": "EV2A",
+      "name": "バブルホッパー",
+      "attribute": "水",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 104,
+      "atk": 17,
+      "sprite": "EV2A",
+      "materialExp": 40,
+      "skill": {
+        "name": "最後の波＋",
+        "trigger": "low_hp",
+        "effect": "attack",
+        "multiplier": 1.28,
+        "description": "自分のHPが半分以下の時、攻撃力1.28倍。"
+      },
+      "acquisition": {
+        "gacha": false,
+        "eggRate": 0,
+        "kind": "evolution"
+      },
+      "evolution": {
+        "level": 18,
+        "to": "EV2B"
+      },
+      "legacyPartnerId": null,
+      "special": {
+        "type": "regen",
+        "nameKey": "skills.regen.name",
+        "descriptionKey": "skills.regen.description",
+        "power": 1,
+        "status": {
+          "turns": 3,
+          "rate": 0.08
+        }
+      }
+    },
+    {
+      "monster_id": "EV2B",
+      "name": "真珠の水竜",
+      "attribute": "水",
+      "family": "creature",
+      "rarity": 1,
+      "hp": 131,
+      "atk": 21,
+      "sprite": "EV2B",
+      "materialExp": 40,
+      "skill": {
+        "name": "星門の共鳴",
+        "trigger": "low_hp",
+        "effect": "attack",
+        "multiplier": 1.38,
+        "description": "自分のHPが半分以下の時、攻撃力1.38倍。"
+      },
+      "acquisition": {
+        "gacha": false,
+        "eggRate": 0,
+        "kind": "evolution"
+      },
+      "evolution": null,
+      "legacyPartnerId": null,
+      "special": {
+        "type": "heal",
+        "nameKey": "skills.heal.name",
+        "descriptionKey": "skills.heal.description",
+        "power": 1,
+        "healRate": 0.3
+      }
+    }
+  ],
+  "monsterRules": {
+    "maxLevel": 80,
+    "hpGrowth": 0.035,
+    "atkGrowth": 0.035,
+    "beats": {
+      "火": "風",
+      "風": "地",
+      "地": "雷",
+      "雷": "水",
+      "水": "火"
+    },
+    "advantage": 1.5,
+    "disadvantage": 0.75,
+    "timing": {
+      "MISS": 0,
+      "HIT": 1,
+      "PERFECT": 1.5
+    },
+    "starters": [
+      "M001",
+      "M002",
+      "M003"
+    ],
+    "synthesis": {
+      "materialBaseByRarity": {
+        "1": 10,
+        "2": 14,
+        "3": 20,
+        "4": 28,
+        "5": 40,
+        "6": 60
+      },
+      "materialLevelGrowth": 0,
+      "expRecovery": 0,
+      "goldBase": 12,
+      "goldPerRarity": 8,
+      "goldPerLevel": 2,
+      "warningRarity": 4,
+      "warningLevel": 10,
+      "nextLevelRatioByRarity": {
+        "1": 0.22,
+        "2": 0.3,
+        "3": 0.42,
+        "4": 0.58,
+        "5": 0.78,
+        "6": 1
+      },
+      "expStones": {
+        "expSmall": {
+          "ratio": 0.35,
+          "gold": 10
+        },
+        "expMedium": {
+          "ratio": 1.1,
+          "gold": 25
+        },
+        "expLarge": {
+          "ratio": 3.5,
+          "gold": 60
+        }
+      }
+    },
+    "itemDrops": [
+      {
+        "key": "elixir",
+        "chance": 0.005
+      },
+      {
+        "key": "high",
+        "chance": 0.03
+      },
+      {
+        "key": "heal",
+        "chance": 0.1
+      }
+    ],
+    "keyDrop": {
+      "gates": [
+        "HIDDEN"
+      ],
+      "chance": 0.04,
+      "amount": 1
+    },
+    "levelCurve": [
+      {
+        "from": 1,
+        "to": 19,
+        "base": 36,
+        "step": 4
+      },
+      {
+        "from": 20,
+        "to": 39,
+        "base": 132,
+        "step": 12
+      },
+      {
+        "from": 40,
+        "to": 59,
+        "base": 396,
+        "step": 25
+      },
+      {
+        "from": 60,
+        "to": 79,
+        "base": 930,
+        "step": 55
+      }
+    ],
+    "battleExp": {
+      "normalShare": 0.1,
+      "eliteShare": 0.18,
+      "midbossShare": 0.42,
+      "bossShare": 0.75,
+      "tierBonus": 0.04
+    },
+    "special": {
+      "maxSp": 100,
+      "gain": {
+        "MISS": 12,
+        "HIT": 34,
+        "PERFECT": 42,
+        "damaged": 8
+      },
+      "defaultDamageMultiplier": 1.25
+    }
+  },
+  "monsterGacha": {
+    "initialGift": 45,
+    "modes": {
+      "gold": {
+        "currency": "gold",
+        "singleCost": 500,
+        "tenCost": 4500,
+        "minRarity": 1,
+        "maxRarity": 3,
+        "weights": [
+          {
+            "rarity": 1,
+            "weight": 52
+          },
+          {
+            "rarity": 2,
+            "weight": 33
+          },
+          {
+            "rarity": 3,
+            "weight": 15
+          }
+        ]
+      },
+      "key": {
+        "currency": "gateKeys",
+        "singleCost": 5,
+        "tenCost": 45,
+        "minRarity": 4,
+        "maxRarity": 5,
+        "weights": [
+          {
+            "rarity": 4,
+            "weight": 80
+          },
+          {
+            "rarity": 5,
+            "weight": 20
+          }
+        ]
+      }
+    }
+  },
+  "audio": {
+    "tickMs": 150,
+    "form": {
+      "intro": 2,
+      "A": 8,
+      "B": 8,
+      "variation": 8
+    },
+    "themes": {
+      "title": {
+        "root": 96,
+        "prog": [
+          0,
+          5,
+          7,
+          3
+        ],
+        "lead": [
+          12,
+          17,
+          19,
+          24,
+          21,
+          19,
+          17,
+          12,
+          10,
+          12,
+          17,
+          19,
+          24,
+          21,
+          19,
+          17
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          12
+        ],
+        "arpPattern": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "arpWave": "triangle",
+        "leadWave": "sine",
+        "arpVol": 0.018,
+        "leadVol": 0.024,
+        "bassVol": 0.032,
+        "drums": "light",
+        "pad": 7
+      },
+      "open": {
+        "root": 116,
+        "prog": [
+          0,
+          5,
+          8,
+          3
+        ],
+        "lead": [
+          7,
+          10,
+          12,
+          15,
+          17,
+          15,
+          12,
+          10,
+          7,
+          10,
+          12,
+          15,
+          19,
+          17,
+          15,
+          12
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          11
+        ],
+        "arpPattern": [
+          0,
+          1,
+          2,
+          1
+        ],
+        "arpWave": "square",
+        "leadWave": "triangle",
+        "arpVol": 0.024,
+        "leadVol": 0.03,
+        "bassVol": 0.04,
+        "drums": "light",
+        "pad": 12
+      },
+      "close": {
+        "root": 78,
+        "prog": [
+          0,
+          3,
+          7,
+          10
+        ],
+        "lead": [
+          10,
+          12,
+          15,
+          17,
+          15,
+          12,
+          10,
+          7,
+          9,
+          10,
+          12,
+          15,
+          17,
+          15,
+          12,
+          10
+        ],
+        "chord": [
+          0,
+          3,
+          7,
+          10
+        ],
+        "arpPattern": [
+          0,
+          3,
+          1,
+          2
+        ],
+        "arpWave": "triangle",
+        "leadWave": "sine",
+        "arpVol": 0.018,
+        "leadVol": 0.022,
+        "bassVol": 0.03,
+        "drums": "mystic",
+        "pad": 15
+      },
+      "gacha": {
+        "root": 128,
+        "prog": [
+          0,
+          7,
+          9,
+          12
+        ],
+        "lead": [
+          12,
+          16,
+          19,
+          24,
+          28,
+          24,
+          19,
+          16,
+          12,
+          16,
+          21,
+          24,
+          28,
+          31,
+          28,
+          24
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          12
+        ],
+        "arpPattern": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "arpWave": "square",
+        "leadWave": "triangle",
+        "arpVol": 0.03,
+        "leadVol": 0.036,
+        "bassVol": 0.032,
+        "drums": "sparkle",
+        "pad": 19
+      },
+      "battle": {
+        "root": 108,
+        "prog": [
+          0,
+          2,
+          5,
+          7
+        ],
+        "lead": [
+          12,
+          15,
+          17,
+          19,
+          17,
+          15,
+          12,
+          10,
+          12,
+          15,
+          19,
+          22,
+          19,
+          17,
+          15,
+          12
+        ],
+        "chord": [
+          0,
+          3,
+          7,
+          10
+        ],
+        "arpPattern": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "arpWave": "square",
+        "leadWave": "triangle",
+        "arpVol": 0.028,
+        "leadVol": 0.034,
+        "bassVol": 0.042,
+        "drums": "battle",
+        "pad": 7
+      },
+      "boss": {
+        "root": 84,
+        "prog": [
+          0,
+          1,
+          5,
+          6
+        ],
+        "lead": [
+          12,
+          15,
+          18,
+          22,
+          21,
+          18,
+          15,
+          12,
+          10,
+          12,
+          15,
+          18,
+          22,
+          25,
+          22,
+          18
+        ],
+        "chord": [
+          0,
+          1,
+          7,
+          10
+        ],
+        "arpPattern": [
+          0,
+          1,
+          3,
+          2
+        ],
+        "arpWave": "sawtooth",
+        "leadWave": "triangle",
+        "arpVol": 0.035,
+        "leadVol": 0.042,
+        "bassVol": 0.05,
+        "drums": "boss",
+        "pad": 1
+      },
+      "mikado": {
+        "root": 102,
+        "prog": [
+          0,
+          5,
+          9,
+          7
+        ],
+        "lead": [
+          12,
+          16,
+          19,
+          24,
+          21,
+          19,
+          16,
+          14,
+          12,
+          17,
+          21,
+          26,
+          24,
+          21,
+          19,
+          17
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          11
+        ],
+        "arpPattern": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "arpWave": "triangle",
+        "leadWave": "sine",
+        "arpVol": 0.028,
+        "leadVol": 0.034,
+        "bassVol": 0.04,
+        "drums": "mystic",
+        "pad": 12
+      },
+      "shop": {
+        "root": 100,
+        "prog": [
+          0,
+          5,
+          9,
+          5
+        ],
+        "lead": [
+          7,
+          9,
+          12,
+          14,
+          12,
+          9,
+          7,
+          5,
+          7,
+          9,
+          12,
+          16,
+          14,
+          12,
+          9,
+          7
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          12
+        ],
+        "arpPattern": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "arpWave": "triangle",
+        "leadWave": "sine",
+        "arpVol": 0.017,
+        "leadVol": 0.021,
+        "bassVol": 0.028,
+        "drums": "light",
+        "pad": 12
+      },
+      "equip": {
+        "root": 94,
+        "prog": [
+          0,
+          5,
+          8,
+          3
+        ],
+        "lead": [
+          12,
+          14,
+          15,
+          19,
+          17,
+          15,
+          14,
+          12,
+          10,
+          12,
+          14,
+          15,
+          17,
+          19,
+          17,
+          14
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          11
+        ],
+        "arpPattern": [
+          0,
+          1,
+          2,
+          1
+        ],
+        "arpWave": "triangle",
+        "leadWave": "sine",
+        "arpVol": 0.018,
+        "leadVol": 0.022,
+        "bassVol": 0.03,
+        "drums": "light",
+        "pad": 7
+      },
+      "victory": {
+        "root": 136,
+        "prog": [
+          0,
+          5,
+          7,
+          12
+        ],
+        "lead": [
+          12,
+          16,
+          19,
+          24,
+          21,
+          19,
+          16,
+          12,
+          14,
+          17,
+          21,
+          26,
+          24,
+          21,
+          17,
+          14
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          12
+        ],
+        "arpPattern": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "arpWave": "square",
+        "leadWave": "triangle",
+        "arpVol": 0.026,
+        "leadVol": 0.034,
+        "bassVol": 0.038,
+        "drums": "victory",
+        "pad": 12
+      },
+      "exp": {
+        "root": 132,
+        "prog": [
+          0,
+          5,
+          2,
+          7
+        ],
+        "lead": [
+          12,
+          16,
+          19,
+          16,
+          14,
+          17,
+          21,
+          17,
+          16,
+          19,
+          24,
+          19,
+          14,
+          17,
+          19,
+          24
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          11
+        ],
+        "arpPattern": [
+          0,
+          1,
+          2,
+          1
+        ],
+        "arpWave": "square",
+        "leadWave": "triangle",
+        "arpVol": 0.024,
+        "leadVol": 0.03,
+        "bassVol": 0.04,
+        "drums": "light",
+        "pad": 12
+      },
+      "gold": {
+        "root": 146,
+        "prog": [
+          0,
+          7,
+          5,
+          9
+        ],
+        "lead": [
+          12,
+          12,
+          16,
+          19,
+          14,
+          14,
+          17,
+          21,
+          16,
+          19,
+          24,
+          21,
+          19,
+          17,
+          16,
+          12
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          12
+        ],
+        "arpPattern": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "arpWave": "triangle",
+        "leadWave": "sine",
+        "arpVol": 0.017,
+        "leadVol": 0.021,
+        "bassVol": 0.028,
+        "drums": "light",
+        "pad": 12
+      },
+      "hidden": {
+        "root": 104,
+        "prog": [
+          0,
+          5,
+          3,
+          7
+        ],
+        "lead": [
+          12,
+          15,
+          19,
+          22,
+          24,
+          22,
+          19,
+          15,
+          10,
+          14,
+          17,
+          22,
+          19,
+          17,
+          14,
+          10
+        ],
+        "chord": [
+          0,
+          3,
+          7,
+          10
+        ],
+        "arpPattern": [
+          0,
+          3,
+          1,
+          2
+        ],
+        "arpWave": "triangle",
+        "leadWave": "sine",
+        "arpVol": 0.018,
+        "leadVol": 0.022,
+        "bassVol": 0.03,
+        "drums": "mystic",
+        "pad": 15
+      },
+      "tower": {
+        "root": 118,
+        "prog": [
+          0,
+          3,
+          5,
+          7
+        ],
+        "lead": [
+          12,
+          14,
+          15,
+          17,
+          19,
+          21,
+          22,
+          24,
+          22,
+          21,
+          19,
+          17,
+          15,
+          14,
+          12,
+          10
+        ],
+        "chord": [
+          0,
+          3,
+          7,
+          10
+        ],
+        "arpPattern": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "arpWave": "square",
+        "leadWave": "triangle",
+        "arpVol": 0.028,
+        "leadVol": 0.034,
+        "bassVol": 0.042,
+        "drums": "battle",
+        "pad": 7
+      },
+      "endless": {
+        "root": 98,
+        "prog": [
+          0,
+          5,
+          2,
+          8
+        ],
+        "lead": [
+          12,
+          19,
+          15,
+          22,
+          17,
+          24,
+          19,
+          26,
+          24,
+          17,
+          22,
+          15,
+          19,
+          12,
+          17,
+          10
+        ],
+        "chord": [
+          0,
+          3,
+          7,
+          10
+        ],
+        "arpPattern": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "arpWave": "square",
+        "leadWave": "triangle",
+        "arpVol": 0.028,
+        "leadVol": 0.034,
+        "bassVol": 0.042,
+        "drums": "battle",
+        "pad": 7
+      },
+      "bossrush": {
+        "root": 92,
+        "prog": [
+          0,
+          5,
+          1,
+          7
+        ],
+        "lead": [
+          12,
+          12,
+          19,
+          18,
+          15,
+          22,
+          21,
+          18,
+          24,
+          22,
+          19,
+          18,
+          15,
+          12,
+          10,
+          7
+        ],
+        "chord": [
+          0,
+          1,
+          7,
+          10
+        ],
+        "arpPattern": [
+          0,
+          1,
+          3,
+          2
+        ],
+        "arpWave": "sawtooth",
+        "leadWave": "triangle",
+        "arpVol": 0.035,
+        "leadVol": 0.042,
+        "bassVol": 0.05,
+        "drums": "boss",
+        "pad": 1
+      },
+      "story": {
+        "root": 110,
+        "prog": [
+          0,
+          5,
+          3,
+          7
+        ],
+        "lead": [
+          12,
+          16,
+          19,
+          17,
+          16,
+          14,
+          12,
+          7,
+          9,
+          12,
+          16,
+          14,
+          12,
+          10,
+          9,
+          7
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          12
+        ],
+        "arpPattern": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "arpWave": "triangle",
+        "leadWave": "sine",
+        "arpVol": 0.018,
+        "leadVol": 0.024,
+        "bassVol": 0.032,
+        "drums": "light",
+        "pad": 7
+      },
+      "synthesis": {
+        "root": 124,
+        "prog": [
+          0,
+          5,
+          9,
+          7
+        ],
+        "lead": [
+          7,
+          12,
+          16,
+          19,
+          12,
+          16,
+          21,
+          24,
+          16,
+          19,
+          24,
+          28,
+          19,
+          24,
+          28,
+          31
+        ],
+        "chord": [
+          0,
+          4,
+          7,
+          12
+        ],
+        "arpPattern": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "arpWave": "square",
+        "leadWave": "triangle",
+        "arpVol": 0.03,
+        "leadVol": 0.036,
+        "bassVol": 0.032,
+        "drums": "sparkle",
+        "pad": 19
+      }
+    }
+  },
+  "chapterProgression": [
+    {
+      "chapter": 1,
+      "minLevel": 1,
+      "maxLevel": 8,
+      "hpMultiplier": 1,
+      "atkMultiplier": 1,
+      "expMultiplier": 1,
+      "goldMultiplier": 1,
+      "patternTier": 1
+    },
+    {
+      "chapter": 2,
+      "minLevel": 9,
+      "maxLevel": 16,
+      "hpMultiplier": 1.08,
+      "atkMultiplier": 1.06,
+      "expMultiplier": 1.02,
+      "goldMultiplier": 1.1,
+      "patternTier": 2
+    },
+    {
+      "chapter": 3,
+      "minLevel": 17,
+      "maxLevel": 24,
+      "hpMultiplier": 1.16,
+      "atkMultiplier": 1.12,
+      "expMultiplier": 1.04,
+      "goldMultiplier": 1.2,
+      "patternTier": 3
+    },
+    {
+      "chapter": 4,
+      "minLevel": 25,
+      "maxLevel": 32,
+      "hpMultiplier": 1.24,
+      "atkMultiplier": 1.18,
+      "expMultiplier": 1.06,
+      "goldMultiplier": 1.3,
+      "patternTier": 3
+    },
+    {
+      "chapter": 5,
+      "minLevel": 33,
+      "maxLevel": 40,
+      "hpMultiplier": 1.32,
+      "atkMultiplier": 1.24,
+      "expMultiplier": 1.08,
+      "goldMultiplier": 1.4,
+      "patternTier": 4
+    },
+    {
+      "chapter": 6,
+      "minLevel": 41,
+      "maxLevel": 48,
+      "hpMultiplier": 1.4,
+      "atkMultiplier": 1.3,
+      "expMultiplier": 1.1,
+      "goldMultiplier": 1.5,
+      "patternTier": 4
+    },
+    {
+      "chapter": 7,
+      "minLevel": 49,
+      "maxLevel": 54,
+      "hpMultiplier": 1.48,
+      "atkMultiplier": 1.36,
+      "expMultiplier": 1.12,
+      "goldMultiplier": 1.6,
+      "patternTier": 5
+    },
+    {
+      "chapter": 8,
+      "minLevel": 55,
+      "maxLevel": 60,
+      "hpMultiplier": 1.56,
+      "atkMultiplier": 1.42,
+      "expMultiplier": 1.14,
+      "goldMultiplier": 1.7,
+      "patternTier": 5
+    },
+    {
+      "chapter": 9,
+      "minLevel": 60,
+      "maxLevel": 80,
+      "hpMultiplier": 1.68,
+      "atkMultiplier": 1.5,
+      "expMultiplier": 1.16,
+      "goldMultiplier": 1.85,
+      "patternTier": 6
+    }
+  ]
+}

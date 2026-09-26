@@ -1,7 +1,7 @@
 /* Pure Monster rules. Planning never mutates state; transactions return a new state. */
 (function(root){
   'use strict';
-  const copy=x=>structuredClone(x);
+  const copy=x=>JSON.parse(JSON.stringify(x));
   const natural=(n,min=0)=>Number.isSafeInteger(n)&&n>=min;
   function definition(id,data){const d=data.monsters.find(m=>m.monster_id===id);if(!d)throw Error('Unknown monster: '+id);return d;}
   function xpForLevel(level,data){

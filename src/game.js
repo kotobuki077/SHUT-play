@@ -188,7 +188,7 @@
     $('battleSub').textContent=t(currentBattleCopy.subKey,values);
   }
   function setBattleCopy(messageKey,subKey,values={}){currentBattleCopy={messageKey,subKey,values};refreshBattleCopy()}
-  function setDeviceClosed(isClosed){return SHUTDevice.setClosed(isClosed);}
+  function setDeviceClosed(isClosed,options){return SHUTDevice.setClosed(isClosed,options);}
   function openOnlyMode(){return !!S.settings?.openOnly}
 
   // ---------- AUDIO ----------
@@ -299,32 +299,46 @@
 
   function sfx(k){
     if(!audioCtx) return;
-    const motifs={egg:[523,659,784],rare:[659,988,1318,1568],gold:[1109,1397],key:[740,1110,1480],item:[587,784],synthesis:[262,330,392,523],evolution:[392,523,659,784,1046],level:[523,659,1046],ui:[440],confirm:[660,880],cancel:[392,294]};
-    if(motifs[k]){motifs[k].forEach((freq,i)=>tone(freq,k==='evolution'?.35:k==='ui'?.045:.13,'triangle',k==='ui'?.018:.035,sfxGain,i*.055));return;}
-    if(k==='door'){tone(120,.15,'square',.05);tone(76,.24,'triangle',.04,sfxGain,.02)}
-    if(k==='slash'){tone(680,.06,'sawtooth',.06);tone(310,.13,'square',.045,sfxGain,.03)}
-    if(k==='hit'){tone(170,.16,'sawtooth',.05);tone(92,.22,'triangle',.035,sfxGain,.02)}
-    if(k==='guard'){tone(520,.09,'triangle',.05);tone(820,.15,'sine',.04,sfxGain,.03)}
-    if(k==='cue'){tone(980,.075,'sine',.04);tone(1320,.09,'sine',.035,sfxGain,.045)}
-    if(k==='win'){[0,4,7,12,16].forEach((n,i)=>tone(294*Math.pow(2,n/12),.34,'triangle',.04,sfxGain,i*.07))}
-    if(k==='gacha'){[0,7,12,16,19].forEach((n,i)=>tone(330*Math.pow(2,n/12),.46,'triangle',.045,sfxGain,i*.065))}
+    try{
+      const motifs={egg:[523,659,784],rare:[659,988,1318,1568],gold:[1109,1397],key:[740,1110,1480],item:[587,784],synthesis:[262,330,392,523],evolution:[392,523,659,784,1046],level:[523,659,1046],ui:[440],confirm:[660,880],cancel:[392,294]};
+      if(motifs[k]){motifs[k].forEach((freq,i)=>tone(freq,k==='evolution'?.35:k==='ui'?.045:.13,'triangle',k==='ui'?.018:.035,sfxGain,i*.055));return;}
+      if(k==='door'){tone(120,.15,'square',.05);tone(76,.24,'triangle',.04,sfxGain,.02)}
+      if(k==='slash'){tone(680,.06,'sawtooth',.06);tone(310,.13,'square',.045,sfxGain,.03)}
+      if(k==='hit'){tone(170,.16,'sawtooth',.05);tone(92,.22,'triangle',.035,sfxGain,.02)}
+      if(k==='guard'){tone(520,.09,'triangle',.05);tone(820,.15,'sine',.04,sfxGain,.03)}
+      if(k==='cue'){tone(980,.075,'sine',.04);tone(1320,.09,'sine',.035,sfxGain,.045)}
+      if(k==='win'){[0,4,7,12,16].forEach((n,i)=>tone(294*Math.pow(2,n/12),.34,'triangle',.04,sfxGain,i*.07))}
+      if(k==='gacha'){[0,7,12,16,19].forEach((n,i)=>tone(330*Math.pow(2,n/12),.46,'triangle',.045,sfxGain,i*.065))}
+    }catch{}
   }
 
 
 
 
   function drawWeapon(canvas,w){if(canvas&&w?.monsterInstance)monsterIcon(canvas,w.monsterInstance);}
-
+  function compactTouchDevice(){return Math.min(innerWidth,innerHeight)<600}
+  function drawGachaResultMonster(canvas,w){
+    if(!canvas||!w?.monsterInstance)return;
+    if(!compactTouchDevice()){canvas.style.background='';drawWeapon(canvas,w);return;}
+    const stats=Monsters.stats(w.monsterInstance,MASTER_DATA),sprite=MASTER_DATA.sprites[stats.sprite];if(!sprite)return;
+    const frames=sprite.states?.idle||[sprite.cell||0],cell=frames[0]??sprite.cell??0,cols=Number(sprite.columns||1),rows=Number(sprite.rows||1),col=cell%cols,row=Math.floor(cell/cols);
+    canvas.getContext('2d')?.clearRect(0,0,canvas.width,canvas.height);
+    canvas.style.backgroundImage=`url("${new URL(sprite.source,location.href).href}")`;
+    canvas.style.backgroundSize=`${cols*100}% ${rows*100}%`;
+    canvas.style.backgroundPosition=`${cols>1?col/(cols-1)*100:0}% ${rows>1?row/(rows-1)*100:0}%`;
+    canvas.style.backgroundRepeat='no-repeat';canvas.style.imageRendering='pixelated';
+    canvas.dataset.animationState='idle';canvas.dataset.frame=String(cell);canvas.dataset.assetStatus=sprite.status;
+  }
 
   function showSingleWeaponReveal(w){
     $('weaponRevealStars').textContent=stars(w.rarity);
     $('weaponRevealName').textContent=w.name;
     $('weaponRevealMeta').textContent=t('gacha.resultMeta',{attribute:localizedAttribute(w.attr),type:w.type,attack:w.atk,level:w.lv||1,skill:w.passive||''});
-    drawWeapon($('weaponRevealCanvas'),w,true);
+    drawGachaResultMonster($('weaponRevealCanvas'),w);
     $('weaponRevealOverlay').classList.add('show');
   }
   function showDoorItem(w){
-    drawWeapon($('gDoorItemCanvas'),w,true);
+    drawGachaResultMonster($('gDoorItemCanvas'),w);
     $('gDoorItemStars').textContent=stars(w.rarity);
     $('gDoorItemName').textContent=w.name;
     $('singleWeaponReveal').classList.add('show');
@@ -336,6 +350,21 @@
     const c=$('gDoorItemCanvas').getContext('2d'); c.clearRect(0,0,96,96);
   }
   function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+  function bindTouchSafeButton(id,handler){
+    const el=$(id);if(!el)return;let touchAt=-Infinity,directAt=-Infinity;
+    const fireTouch=e=>{
+      if(el.disabled)return;
+      const now=performance.now();if(now-directAt<80){e.preventDefault();return;}
+      directAt=now;touchAt=now;e.preventDefault();
+      setTimeout(()=>{if(!el.disabled||id==='gachaHomeBtn')handler();},0);
+    };
+    el.addEventListener('pointerup',e=>{if(e.pointerType==='touch')fireTouch(e)});
+    el.addEventListener('touchend',fireTouch,{passive:false});
+    el.addEventListener('click',e=>{
+      if(performance.now()-touchAt<700){e.preventDefault();return;}
+      if(el.disabled)return;handler(e);
+    });
+  }
   function setGachaButtonsDisabled(flag){
     ['singlePullBtn','tenPullBtn','gachaHomeBtn','goldGachaMode','keyGachaMode'].forEach(id=>{ if($(id)) $(id).disabled=flag; });
   }
@@ -367,7 +396,7 @@
       d.innerHTML=`<canvas class="weaponMiniCanvas" width="128" height="128" data-widx="${i}"></canvas><div class="newTag">${t(w.isNew?'gacha.newDiscovery':'gacha.reunion')}</div><div class="wStars">${stars(w.rarity)}</div><div class="wName">${w.name}</div><div class="wMeta">${t('gacha.resultMeta',{attribute:localizedAttribute(w.attr),type:w.type,attack:w.atk,level:w.lv||1,skill:w.passive||''})}</div>`;
       $('pullResults').appendChild(d);
     });
-    $('pullResults').querySelectorAll('.weaponMiniCanvas').forEach(cv=>drawWeapon(cv,pendingPulls[Number(cv.dataset.widx)]));
+    $('pullResults').querySelectorAll('.weaponMiniCanvas').forEach(cv=>drawGachaResultMonster(cv,pendingPulls[Number(cv.dataset.widx)]));
 
     if(count===10){
       hideDoorItem();
@@ -390,22 +419,47 @@
       setTimeout(()=>showSingleWeaponReveal(pendingPulls[0]),520);
     }
   }
-  function enterGacha(){
-    routeAfterGacha='close';document.querySelector('.outer-display').append($('gachaScreen'));show('gachaScreen');setDeviceClosed(true);gachaMode='key';gachaStep=0;pendingPulls=[];gachaBusy=false;gachaSelectedCount=null;
+  async function enterGacha(){
+    routeAfterGacha='close';await setDeviceClosed(true);document.querySelector('.outer-display').append($('gachaScreen'));show('gachaScreen');gachaMode='key';gachaStep=0;pendingPulls=[];gachaBusy=false;gachaSelectedCount=null;
     $('pullResults').classList.remove('show','tenMode');$('pullResults').innerHTML='';$('weaponRevealOverlay').classList.remove('show');$('gDoorFrame').style.opacity='';$('gDoorFrame').classList.add('built');$('gDoor').classList.remove('open');$('gKey').classList.remove('inserted');hideDoorItem();setGachaButtonsDisabled(false);
     for(const id of ['singlePullBtn','tenPullBtn','gachaHomeBtn'])$(id).style.display='inline-block';$('gachaTitle').textContent=t('gacha.gateTitle');$('gachaText').textContent=t('gacha.intro');$('gachaHomeBtn').textContent=t('gacha.back');updateGachaTop();
   }
-  async function runGachaSequence(count){
-    if(gachaBusy||gachaStep===3)return;assertWallet(S,'gacha entry');const rule=MASTER_DATA.monsterGacha.modes[gachaMode],cost=count===10?rule.tenCost:rule.singleCost,currency=rule.currency,owned=S[currency],currencyLabel=t(gachaMode==='gold'?'gacha.currencyGold':'gacha.currencyKeys');if(owned<cost){localeToast('gacha.insufficient',{currency:currencyLabel,needed:cost,owned});return;}
+  function runGachaSequence(count){
+    if(gachaBusy||gachaStep===3)return;
+    assertWallet(S,'gacha entry');
+    const mode=gachaMode,rule=MASTER_DATA.monsterGacha.modes[mode],cost=count===10?rule.tenCost:rule.singleCost,currency=rule.currency,owned=S[currency],currencyLabel=t(mode==='gold'?'gacha.currencyGold':'gacha.currencyKeys');
+    if(owned<cost){localeToast('gacha.insufficient',{currency:currencyLabel,needed:cost,owned});return;}
     gachaBusy=true;setGachaButtonsDisabled(true);hideDoorItem();$('weaponRevealOverlay').classList.remove('show');$('pullResults').classList.remove('show','tenMode');$('pullResults').innerHTML='';
-    try{gachaStep=1;$('gKey').classList.add('inserted');sfx('door');await sleep(420);gachaStep=2;
-      const known=S.codex.monsters||{},result=Monsters.gacha(S,count,MASTER_DATA,gachaMode,Math.random,()=>crypto.randomUUID());assertWallet(result.state,'gacha result');const nextPendingPulls=result.pulls.map(m=>{const d=Monsters.stats(m,MASTER_DATA);return {...d,lv:d.level,type:'MONSTER',passive:d.special.name,isNew:!known[m.monsterId],monsterInstance:m};});S=result.state;pendingPulls=nextPendingPulls;const highRare=pendingPulls.some(m=>m.rarity>=4);$('gachaScreen').classList.toggle('summon-rare',highRare);$('gachaText').textContent=t(highRare?'gacha.rareOmen':'gacha.openToReveal');sfx(highRare?'cue':'door');await sleep(highRare?720:360);
-      S.codex.monsters=S.codex.monsters||{};for(const m of result.pulls)S.codex.monsters[m.monsterId]=true;if(gachaMode==='key'){bumpQuest('rare_gacha_pull',count);if(count===10)bumpQuest('rare_gacha_ten_pull');}saveGame();gachaCommitted=true;gachaSelectedCount=count;$('gachaHomeBtn').textContent=t('gacha.openResult');
-    }catch(err){localeToast('gacha.failure');gachaStep=0;}finally{gachaBusy=false;setGachaButtonsDisabled(gachaStep===2);$('gachaHomeBtn').disabled=false;}
+    const previousState=S,previousPulls=pendingPulls,previousCount=gachaSelectedCount,previousStep=gachaStep;
+    try{
+      const known=S.codex.monsters||{},result=Monsters.gacha(S,count,MASTER_DATA,mode,Math.random);
+      assertWallet(result.state,'gacha result');
+      const nextPendingPulls=result.pulls.map(m=>{const d=Monsters.stats(m,MASTER_DATA);return {...d,lv:d.level,type:'MONSTER',passive:d.special.name,isNew:!known[m.monsterId],monsterInstance:m};});
+      S=result.state;pendingPulls=nextPendingPulls;gachaSelectedCount=count;gachaStep=2;
+      S.codex.monsters=S.codex.monsters||{};for(const m of result.pulls)S.codex.monsters[m.monsterId]=true;
+      if(mode==='key'){bumpQuest('rare_gacha_pull',count);if(count===10)bumpQuest('rare_gacha_ten_pull');}
+      if(!saveGame())throw Error('Gacha save failed');
+      gachaCommitted=true;
+      const highRare=pendingPulls.some(m=>m.rarity>=4);
+      $('gKey').classList.add('inserted');
+      $('gachaScreen').classList.toggle('summon-rare',highRare);
+      $('gachaText').textContent=t(highRare?'gacha.rareOmen':'gacha.openToReveal');
+      $('gachaHomeBtn').textContent=t('gacha.openResult');
+      try{sfx(highRare?'cue':'door')}catch{}
+    }catch(err){
+      S=previousState;pendingPulls=previousPulls;gachaSelectedCount=previousCount;gachaStep=previousStep;
+      localeToast('gacha.failure');
+    }finally{
+      gachaBusy=false;setGachaButtonsDisabled(gachaStep===2);$('gachaHomeBtn').disabled=false;updateGachaTop();
+    }
   }
   async function revealGachaResults(){
     if(gachaBusy||gachaStep!==2||!pendingPulls.length)return;
-    gachaBusy=true;setGachaButtonsDisabled(true);gachaStep=3;document.querySelector('.inner-workspace').append($('gachaScreen'));$('gachaScreen').classList.add('result-open');$('gDoor').classList.add('open');await setDeviceClosed(false);renderPullResults(gachaSelectedCount);updateHome();updateGachaTop();sfx('gacha');gachaBusy=false;setGachaButtonsDisabled(false);$('gachaHomeBtn').textContent=t('gacha.back');
+    gachaBusy=true;setGachaButtonsDisabled(true);gachaStep=3;$('gachaScreen').classList.add('result-open');$('gDoor').classList.add('open');
+    const instantMobileOpen=Math.min(innerWidth,innerHeight)<600;
+    await setDeviceClosed(false,{skipSnapshot:true,instant:instantMobileOpen});
+    document.querySelector('.inner-workspace').append($('gachaScreen'));
+    renderPullResults(gachaSelectedCount);updateGachaTop();sfx('gacha');gachaBusy=false;setGachaButtonsDisabled(false);$('gachaHomeBtn').textContent=t('gacha.back');
   }
   function updateGachaTop(){const r=MASTER_DATA.monsterGacha.modes[gachaMode],currency=t(gachaMode==='gold'?'gacha.currencyGold':'gacha.currencyKeys');$('gachaKeys').textContent=t('currency.keys',{count:S.gateKeys});$('gachaGold').textContent=`${S.gold} G`;$('singlePullBtn').textContent=t('gacha.singlePull',{cost:r.singleCost,currency});$('tenPullBtn').textContent=t('gacha.tenPull',{cost:r.tenCost,currency});$('gachaCostNote').textContent=t('gacha.costNote',{currency,min:r.minRarity,max:r.maxRarity});$('goldGachaMode').textContent=t('gacha.goldMode');$('keyGachaMode').textContent=t('gacha.keyMode');for(const mode of ['gold','key']){$(mode+'GachaMode').classList.toggle('gold',gachaMode===mode);$(mode+'GachaMode').classList.toggle('secondary',gachaMode!==mode);$(mode+'GachaMode').setAttribute('aria-pressed',String(gachaMode===mode));}}
   function refreshGachaCopy(){
@@ -442,8 +496,8 @@
     }
   }
 
-  function enterCloseMenu(){
-    setDeviceClosed(true);
+  async function enterCloseMenu(){
+    await setDeviceClosed(true);
     show('closeMenuScreen');
     updateCloseMenu();
   }
@@ -935,17 +989,17 @@
 
     closeTenPullResults();enterOpenMenu();
   };
-  $('singlePullBtn').onclick=()=>runGachaSequence(1);
-  $('tenPullBtn').onclick=()=>runGachaSequence(10);
-  $('goldGachaMode').onclick=()=>{if(!gachaBusy&&gachaStep===0){gachaMode='gold';updateGachaTop()}};
-  $('keyGachaMode').onclick=()=>{if(!gachaBusy&&gachaStep===0){gachaMode='key';updateGachaTop()}};
-    $('gachaHomeBtn').onclick=()=>{
+  bindTouchSafeButton('singlePullBtn',()=>runGachaSequence(1));
+  bindTouchSafeButton('tenPullBtn',()=>runGachaSequence(10));
+  bindTouchSafeButton('goldGachaMode',()=>{if(!gachaBusy&&gachaStep===0){gachaMode='gold';updateGachaTop()}});
+  bindTouchSafeButton('keyGachaMode',()=>{if(!gachaBusy&&gachaStep===0){gachaMode='key';updateGachaTop()}});
+  bindTouchSafeButton('gachaHomeBtn',()=>{
     if(gachaStep===2){revealGachaResults();return;}
     if(routeAfterGacha==='open') enterOpenMenu();
     else enterCloseMenu();
-  };
-  if($('gachaBtn')) $('gachaBtn').onclick=()=>enterGacha('hub');
-  $('closeGachaBtn').onclick=()=>enterGacha('hub');
+  });
+  bindTouchSafeButton('gachaBtn',()=>enterGacha('hub'));
+  bindTouchSafeButton('closeGachaBtn',()=>enterGacha('hub'));
   $('equipBtn').onclick=renderEquipment;
   $('synthesisBtn').onclick=renderSynthesis;
   $('shopBtn').onclick=()=>renderShop('weapon');

@@ -302,3 +302,78 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
  #timingJudges{font-size:6px;margin:4px 10% 0}#timingJudges b{padding:0 6px}
  #timingTapHint{margin-top:5px;font-size:6px;gap:1px}#timingTapHint>span{font-size:12px}
 }
+
+
+/* Battle focus v7: rank-only header, unified guard rail, recovery tray, compact utilities. */
+/* Rank: one line only. Progress moves to results. */
+.rankHudRow{display:flex!important;align-items:center!important;height:24px!important;padding:0 3px 5px!important;border-bottom:1px solid #d8c47a55}
+#battleRank{font-size:15px!important}
+.rankHudTrack,#rankXpText{display:none!important}
+
+/* ITEM is contextual: JS only unhides it during recovery. */
+#battleCarry[hidden]{display:none!important}
+
+/* ATTACK and GUARD share this single timing rail. */
+#guardTimeline,#guardTargetRing,#dangerRing,#closeNow{display:none!important}
+#app[data-phase="defense"] #battleMessage,#app[data-phase="defense"] #battleSub{display:none!important}
+#timingPhase{opacity:0!important;min-height:40px}
+#timingPhase.phaseFlash{animation:battlePhaseFlash .62s ease-out forwards}
+@keyframes battlePhaseFlash{0%{opacity:0;translate:0 8px}18%,55%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -5px}}
+#timingBox.guardMode #hitZone{background:linear-gradient(90deg,#4dbfb0,#9ae7cf,#4dbfb0)!important;box-shadow:inset 0 0 12px #eafff188,0 0 14px #65d8ba66!important}
+#timingBox.guardMode #perfectZone{background:linear-gradient(90deg,#d8e7d7,#fffbe0,#d8e7d7)!important;box-shadow:0 0 16px #dbffe8aa,inset 0 0 8px #fff!important}
+#timingBox.guardMode #timingJudges span{color:#9ee4d0!important}
+#timingBox.guardMode #timingJudges b{color:#efffe9!important}
+.enemyCard.attacking canvas{filter:brightness(1.28) drop-shadow(0 0 14px #f5d978cc) drop-shadow(0 6px 0 #073c3025)!important}
+.enemyCard.attacking .enemyTurnBadge{scale:1.12;box-shadow:0 0 14px #f5d978aa}
+
+/* Enemy HUD: attribute above, turn count top-right, name/HP below, ATK last. */
+.enemyCard{position:relative!important}
+.enemyTurnBadge{position:absolute;top:31px;right:5px;display:grid;place-items:center;width:31px;height:31px;border-radius:50%;background:#0b2733ee;border:1px solid #d8c47a;color:#f7db78;z-index:8;box-shadow:0 3px 10px #00192399;font-variant-numeric:tabular-nums}
+.enemyTurnBadge b{font-size:16px;line-height:1}
+.enemyTurnBadge.ready{border-color:#fff0a4;color:#fff2a1}
+.enemyCard .eMeta{min-height:20px!important;padding:2px 5px!important;font-size:9px!important}
+.enemyCard .turnBadge{display:none!important}
+
+/* Recovery is a bottom tray, never a centered modal. */
+#closedMenu,#battleScreen>#closedMenu.openRecovery{align-items:flex-end!important;justify-content:center!important;background:transparent!important;padding:0 18px 18px!important;box-sizing:border-box}
+#closedMenu.show,#battleScreen>#closedMenu.openRecovery.show{display:flex!important}
+#closedMenu .closedCard,#battleScreen>#closedMenu.openRecovery .closedCard{width:min(760px,96%)!important;max-width:760px!important;padding:10px 12px!important;margin:0!important;background:#0b2a33f2!important;border:1px solid #d1bd78!important;box-shadow:0 -8px 28px #00151dcc!important;display:grid;grid-template-columns:1fr auto;grid-template-areas:"items next" "selected next";gap:5px 10px;align-items:center}
+#closedMenu .closedCard h2,#closedMenu .closedCard>.small{display:none!important}
+#closedMenu .itemButtons{grid-area:items;display:flex!important;gap:7px!important;margin:0!important}
+#closedMenu .itemBtn{min-height:48px!important;padding:7px 9px!important;font-size:11px!important;background:#113840!important;border:1px solid #628b7e!important}
+#closedMenu .itemBtn.selected{border-color:#f1d475!important;box-shadow:inset 0 0 0 1px #f1d47555,0 0 12px #f1d47533}
+#selectedItemText{grid-area:selected;margin:0!important;min-height:14px;font-size:9px!important;text-align:left;color:#bcd8d2!important}
+#unfoldBattle{grid-area:next;width:auto!important;min-width:74px!important;min-height:48px!important;margin:0!important;padding:8px 11px!important;font-size:10px!important}
+.resultRankProgress{display:flex;justify-content:center;gap:16px;align-items:center;margin:12px auto 0;font-weight:800;color:#f2d98b;font-size:13px}
+.resultRankProgress span{color:#d8e9df;font-variant-numeric:tabular-nums}
+
+/* Settings / retreat: visually secondary, but keep >= 32px hit boxes. */
+.iconUtility{display:grid!important;place-items:center!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;padding:0!important;font-size:17px!important;line-height:1!important}
+#soundToggle{opacity:.72}
+#retreatBtn{opacity:.72}
+#soundToggle:hover,#retreatBtn:hover,#soundToggle:focus-visible,#retreatBtn:focus-visible{opacity:1}
+
+/* Mobile: remove low-priority text instead of shrinking core status below readability. */
+@media(max-width:600px){
+ .rankHudRow{height:18px!important;padding:0 2px 3px!important}
+ #battleRank{font-size:9px!important}
+ #battlePartner .monsterHud{height:38px!important;padding:3px 4px!important;gap:4px!important}
+ #battlePartner .allyFaceCanvas{width:32px!important;height:32px!important;flex-basis:32px!important}
+ #battlePartner .allyHudTop{grid-template-columns:minmax(0,1fr) auto auto!important;gap:3px!important}
+ #battlePartner .allyHudTop b{font-size:8px!important}
+ #battlePartner .allyHudTop .allyMeta{font-size:8px!important}
+ #battlePartner .allyHudTop small{grid-column:auto!important;font-size:7px!important;line-height:1!important}
+ #battlePartner .allyLevel,#battlePartner .allyStatus{display:none!important}
+ #battlePartner .allyHp{height:3px!important;margin:2px 0!important}
+ #battlePartner .skillGauge{height:7px!important}
+ #battlePartner .skillGauge>em{font-size:6px!important;line-height:7px!important}
+ .enemyTurnBadge{top:18px;right:0;width:20px;height:20px}.enemyTurnBadge b{font-size:10px}
+ .enemyCard .eMeta{font-size:7px!important;min-height:14px!important}
+ #closedMenu,#battleScreen>#closedMenu.openRecovery{padding:0 5px 7px!important}
+ #closedMenu .closedCard,#battleScreen>#closedMenu.openRecovery .closedCard{width:99%!important;padding:7px!important;grid-template-columns:1fr auto;gap:4px}
+ #closedMenu .itemButtons{gap:4px!important}
+ #closedMenu .itemBtn{min-height:42px!important;font-size:9px!important;padding:5px 3px!important}
+ #unfoldBattle{min-width:55px!important;min-height:42px!important;font-size:8px!important;padding:5px!important}
+ #selectedItemText{font-size:7px!important}
+ .iconUtility{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;font-size:14px!important}
+}

@@ -11,10 +11,20 @@
  ['bg','hingeLine','dynamicIsland','screenCurtain'].forEach(id=>$(id)?.remove());
  const controls=document.createElement('div');controls.id='battleControls';$('battleScreen').append(controls);
  ['timingBox','battleMessage','battleSub','battleAction','guardTimeline'].forEach(id=>move(id,controls));move('rewardOverlay',main);
+ const battleRoot=$('battleScreen');
+ function syncBattleSafeZone(){
+  if(!battleRoot||!controls)return;
+  const br=battleRoot.getBoundingClientRect(),cr=controls.getBoundingClientRect();
+  if(!br.height||!cr.height)return;
+  const safeBottom=Math.max(0,Math.ceil(br.bottom-cr.top+12));
+  battleRoot.style.setProperty('--battle-controls-safe-bottom',safeBottom+'px');
+ }
+ const safeZoneObserver=typeof ResizeObserver==='function'?new ResizeObserver(()=>requestAnimationFrame(syncBattleSafeZone)):null;
+ safeZoneObserver?.observe(controls);safeZoneObserver?.observe(battleRoot);
  const status=document.createElement('div');status.id='deviceStatus';document.body.append(status);
  const mark=document.createElement('div');mark.className='hardware-signature';mark.textContent='SHUT / OPEN TO EXPLORE · CLOSE TO PROTECT';document.body.append(mark);
  let fold=1,target=1,raf=0,resolve=null,settled=Promise.resolve(true),watchdog=0,transitionToken=0;
- function geometry(){const mobile=Math.min(innerWidth,innerHeight)<600,landscape=mobile&&innerWidth>innerHeight,w=landscape?innerWidth-12:mobile?innerWidth-20:Math.min(innerWidth-70,1080),h=landscape?innerHeight-12:mobile?Math.min(370,w*.94,innerHeight-130):Math.min(690,innerHeight-90),ow=mobile?Math.min(280,w*.72):Math.round(w*.5);app.style.setProperty('--open-w',w+'px');app.style.setProperty('--open-h',h+'px');app.style.setProperty('--outer-w',ow+'px');app.style.setProperty('--outer-h',h+'px');paint();}
+ function geometry(){const mobile=Math.min(innerWidth,innerHeight)<600,landscape=mobile&&innerWidth>innerHeight,w=landscape?innerWidth-12:mobile?innerWidth-20:Math.min(innerWidth-70,1080),h=landscape?innerHeight-12:mobile?Math.min(370,w*.94,innerHeight-130):Math.min(690,innerHeight-90),ow=mobile?Math.min(280,w*.72):Math.round(w*.5);app.style.setProperty('--open-w',w+'px');app.style.setProperty('--open-h',h+'px');app.style.setProperty('--outer-w',ow+'px');app.style.setProperty('--outer-h',h+'px');paint();requestAnimationFrame(syncBattleSafeZone);}
  function paint(){app.style.setProperty('--fold',fold);app.style.width=`calc(var(--open-w) * ${1-fold} + var(--outer-w) * ${fold})`;app.style.height='var(--open-h)';app.dataset.fold=fold.toFixed(3);shell.style.visibility=fold>.995?'hidden':'visible';main.style.visibility=fold===0?'visible':'hidden';outer.style.visibility=fold<.55?'hidden':'visible';outer.style.opacity=Math.max(0,(fold-.55)/.45);status.textContent=fold===0?'OPEN / ADVENTURE':fold===1?'CLOSED / OUTER DISPLAY':'FOLD / '+Math.round(fold*180)+'°';}
  // Inert computed-style snapshots carry one coherent image around the hinge.
  // No duplicate IDs or focusable controls: the interactive workspace exists once.

@@ -444,3 +444,41 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
     max-width:100%!important;
   }
 }
+
+
+/* Battle semantics v9: real attack assignments, guard victim, skill turns, learned hints, adaptive enemy top, progress dots. */
+.enemyCard.target{outline:none!important;box-shadow:none!important}
+.attackAssignmentLine{position:absolute;height:2px;transform-origin:0 50%;background:linear-gradient(90deg,var(--assign),#ffffffdd);box-shadow:0 0 7px var(--assign);pointer-events:none;z-index:42;opacity:.86;animation:assignmentLine .34s ease-out forwards}
+@keyframes assignmentLine{0%{opacity:0;scale:.25 1}28%{opacity:.95;scale:1 1}100%{opacity:0;scale:1 1}}
+.monsterHud.assignmentSource{border-color:#fff4bd!important;box-shadow:0 0 12px #fff2a966!important}
+.enemyCard.assignmentTarget .enemySpriteWrap{filter:brightness(1.16) drop-shadow(0 0 10px #fff0a888)}
+
+#battlePartner .monsterHud.guardTargetAlly{border-color:#f3d47a!important;box-shadow:0 0 0 1px #f3d47a88,0 0 18px #f3d47a88,inset 0 0 14px #f3d47a22!important}
+#battlePartner .monsterHud.guardTargetAlly .allyFaceCanvas{box-shadow:0 0 13px #f5d87c!important}
+
+#battlePartner .skillGauge.skillSegments{display:flex!important;align-items:center!important;gap:4px!important;padding:1px 3px!important;height:11px!important;overflow:visible!important}
+.skillSegmentTrack{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;flex:1;height:6px}
+.skillSegment{display:block;min-width:0;border:1px solid #52716f;background:#071c24;box-sizing:border-box}
+.skillSegment.filled{background:linear-gradient(180deg,#78e6df,#39b8c5);border-color:#9eecea;box-shadow:0 0 4px #67dfe3aa}
+#battlePartner .skillGauge.skillSegments>em{position:static!important;inset:auto!important;flex:0 0 auto;font-size:6px!important;line-height:1!important}
+.monsterHud.skillReady .skillSegment.filled{background:linear-gradient(180deg,#fff1a7,#dfbd4d);border-color:#fff3af;animation:skillCellReady .7s ease-in-out infinite alternate}
+@keyframes skillCellReady{to{filter:brightness(1.3);box-shadow:0 0 7px #f6d769}}
+
+#timingTapHint[hidden]{display:none!important}
+
+#enemyArea[data-enemy-count="3"]{top:var(--enemy-safe-top,150px)!important}
+@media(min-width:601px) and (max-width:1540px){#enemyArea[data-enemy-count="3"]{top:var(--enemy-safe-top,150px)!important}}
+@media(max-width:600px){#enemyArea[data-enemy-count="3"]{top:var(--enemy-safe-top,150px)!important}}
+
+#battleEncounter.battleProgressDots{display:flex!important;align-items:center;gap:5px;margin-top:5px;min-height:10px}
+#battleEncounter.battleProgressDots i{display:block;width:7px;height:7px;border-radius:50%;border:1px solid #9aaea4;background:#071c25;box-sizing:border-box}
+#battleEncounter.battleProgressDots i.done{background:#8ed6c0;border-color:#b7ead8}
+#battleEncounter.battleProgressDots i.current{background:#f0d46f;border-color:#fff0a0;box-shadow:0 0 7px #efd46f99;scale:1.18}
+
+@media(max-width:600px){
+ #battlePartner .skillGauge.skillSegments{height:9px!important;gap:2px!important;padding:1px 2px!important}
+ .skillSegmentTrack{height:5px;gap:1px}
+ #battlePartner .skillGauge.skillSegments>em{font-size:5px!important}
+ #battleEncounter.battleProgressDots{gap:3px;margin-top:3px}
+ #battleEncounter.battleProgressDots i{width:5px;height:5px}
+}

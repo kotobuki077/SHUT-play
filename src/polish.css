@@ -381,3 +381,66 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
 
 /* Phase label ownership: once timing begins, only the transient timingPhase label may say ATTACK/GUARD. */
 #app[data-phase="attackArmed"] #battleMessage,#app[data-phase="attack"] #battleMessage,#app[data-phase="attackArmed"] #battleSub,#app[data-phase="attack"] #battleSub,#app[data-phase="defense"] #battleMessage,#app[data-phase="defense"] #battleSub{display:none!important}
+
+
+/* Enemy formation v8: center the middle enemy in 3-unit formations and protect ally HUD space. */
+/* Exactly three living enemies use a symmetric three-column grid over the physical screen center.
+   Equal columns guarantee enemy #2 is centered at 50% of the battle screen. */
+#enemyArea[data-enemy-count="3"]{
+  display:grid!important;
+  grid-template-columns:repeat(3,210px)!important;
+  justify-content:center!important;
+  align-items:end!important;
+  column-gap:34px!important;
+  left:0!important;
+  right:0!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+#enemyArea[data-enemy-count="3"]>.enemyCard,
+#enemyArea[data-enemy-count="3"]>.enemyCard.compact,
+#enemyArea[data-enemy-count="3"]>.enemyCard.bossCard{
+  width:210px!important;
+  min-width:210px!important;
+  max-width:210px!important;
+  justify-self:center!important;
+  margin:0!important;
+}
+
+/* On widths where the left enemy would horizontally intersect the ally HUD,
+   move the whole enemy row below the ally HUD instead of shifting it right.
+   The center enemy therefore remains centered. */
+@media(min-width:601px) and (max-width:1540px){
+  #enemyArea[data-enemy-count="3"]{
+    grid-template-columns:repeat(3,170px)!important;
+    column-gap:18px!important;
+    top:238px!important;
+  }
+  #enemyArea[data-enemy-count="3"]>.enemyCard,
+  #enemyArea[data-enemy-count="3"]>.enemyCard.compact,
+  #enemyArea[data-enemy-count="3"]>.enemyCard.bossCard{
+    width:170px!important;
+    min-width:170px!important;
+    max-width:170px!important;
+  }
+}
+
+/* Mobile keeps the same symmetry, but starts below the stacked ally status block.
+   This avoids enemies and their HP/ATK badges being hidden under the left HUD. */
+@media(max-width:600px){
+  #enemyArea[data-enemy-count="3"]{
+    grid-template-columns:repeat(3,31%)!important;
+    column-gap:2%!important;
+    top:158px!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+  }
+  #enemyArea[data-enemy-count="3"]>.enemyCard,
+  #enemyArea[data-enemy-count="3"]>.enemyCard.compact,
+  #enemyArea[data-enemy-count="3"]>.enemyCard.bossCard{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+}

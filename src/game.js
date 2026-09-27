@@ -873,7 +873,7 @@
   // ---------- BATTLE UI ----------
   function updateBattleHeader(){
     const w=null;
-    $('battleRank').textContent=`Rank ${S.rank}`;$('battleWeapon').textContent=t('battle.monstersCount',{count:S.party.length});
+    $('battleRank').textContent=`RANK ${S.rank}`;$('battleWeapon').textContent=t('battle.monstersCount',{count:S.party.length});
     $('playerHpFill').style.width=`${Math.min(100,S.hp/playerMaxHp()*100)}%`;$('playerHpText').textContent=`${Math.ceil(S.hp)}/${playerMaxHp()}`;
     $('playerHpFill').style.background=hpBarGradient(w?.attr||'風');
     $('rankXpFill').style.width=`${S.rankXp/S.rankNeed*100}%`;$('rankXpText').textContent=`${S.rankXp}/${S.rankNeed}`;
@@ -925,8 +925,9 @@
       const barNow=hpBarGradient(e.attr);
       const canvasW=MASTER_DATA.sprites[e.kind].canvasSize||64, canvasH=canvasW;
       card.innerHTML=`
+        <div class="enemyAttrBadge">${attributeIcon(e.attr)}</div>
         <div class="enemySpriteWrap">${popupHTML}<canvas width="${canvasW}" height="${canvasH}" data-id="${e.id}"></canvas></div>
-        <div class="eName"><span>${e.boss?'BOSS ':''}${displayedEnemyName(e)}</span><span class="attr">${attributeIcon(e.attr)}</span></div>
+        <div class="eName"><span>${e.boss?'BOSS ':''}${displayedEnemyName(e)}</span></div>
         <div class="ehp eBar"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div>
         <div class="ehpText" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><span>HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}</span></div>
         <div class="eMeta"><span>ATK ${e.atk}${e.poison?` · ${t('battle.poison')}`:''}${e.attackDown?` · ${t('battle.atkDown')}`:''}</span><span class="turnBadge ${ready?'ready':''}">${t('battle.enemyTurns')} <b>${Math.max(0,e.turnsLeft)}</b></span></div>`;

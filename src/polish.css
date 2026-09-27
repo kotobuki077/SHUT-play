@@ -241,3 +241,64 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
  #guardTimeline{bottom:64px!important;width:82%!important;height:11px!important}
  #retreatBtn{right:5px!important;bottom:5px!important}
 }
+
+
+/* Reference-match pass v6: screenshot-proportioned HUD, enemy badges, attack rail labels. */
+.legacyPlayerHp{display:none!important}
+#playerBox{border:1px solid #d8c47a!important;box-shadow:inset 0 0 0 2px #071d26,0 0 0 1px #071d26,0 5px 16px #00131c66!important;border-radius:4px!important}
+.rankHudRow{display:grid;grid-template-columns:auto minmax(90px,1fr) 66px;align-items:center;gap:10px;height:28px;padding:0 4px 6px;border-bottom:1px solid #d8c47a55;font-weight:900}
+#battleRank{font-size:15px!important;color:#f4d998!important;white-space:nowrap}
+.rankHudTrack{height:10px;background:#071d27;border:1px solid #6c785d;overflow:hidden;box-shadow:inset 0 0 0 1px #00151d}
+.rankHudTrack #rankXpFill{height:100%;background:linear-gradient(90deg,#f0d485,#f5e7aa)!important}
+#rankXpText{font-size:10px;text-align:right;color:#ecf4ea;font-variant-numeric:tabular-nums}
+#battlePartner .monsterHud{border-color:#d0bb73aa!important;box-shadow:inset 0 0 0 1px #071b24!important;border-radius:3px!important}
+#battlePartner .allyFaceCanvas{border:1px solid #d9bd6c!important}
+#battlePartner .allyHp{background:#061b24!important;border:1px solid #173a43}
+#battlePartner .allyHp i{background:linear-gradient(90deg,#47d4a0,#8cf0b8)!important}
+#battlePartner .skillGauge{border-color:#7b8d7e!important;background:#061a24!important}
+#battlePartner .skillGauge>i{background:linear-gradient(90deg,#53d7e6,#7ae6e8 56%,#f0d572 56%,#f0d572)!important}
+
+#stageBox{border:1px solid #d8c47a!important;box-shadow:inset 0 0 0 2px #071d26,0 5px 16px #00131c66!important;border-radius:4px!important}
+#battleStage{font-size:16px!important;color:#fff4d0!important;letter-spacing:.02em}
+#battleEncounter,#battleCarry{font-size:11px!important;color:#cde6e3!important;line-height:1.55}
+
+.enemyAttrBadge{display:grid;place-items:center;width:34px;height:34px;margin:0 auto -2px;border-radius:50%;background:#0a2a37ee;border:1px solid #d8c47a;box-shadow:0 2px 8px #00192399;position:relative;z-index:5}
+.enemyAttrBadge .attrIcon{width:18px!important;height:18px!important;flex-basis:18px!important}
+.enemyCard .eName{border-top:0!important;font-weight:800!important;text-shadow:0 2px 5px #00141d}
+.enemyCard .ehp{border-color:#245449!important;background:#081c22!important}
+.enemyCard .ehpNow{background:linear-gradient(90deg,#54d59c,#7de8ac)!important}
+.enemyCard .ehpText{color:#fff!important;font-weight:800!important;text-shadow:0 2px 5px #00141d}
+.enemyCard .eMeta{border-top:1px solid #d8c47a22!important;color:#f4f0d9!important}
+.enemyCard .turnBadge b{display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid #d8c47a;border-radius:50%;color:#f4d66f!important;margin-left:3px}
+
+#timingPhase{display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:8px;color:#fff;line-height:1.05;text-shadow:0 3px 10px #001923}
+#timingPhase strong{font-family:Georgia,'Yu Mincho',serif;font-size:29px;letter-spacing:.08em;font-weight:700}
+#timingPhase small{font-size:11px;margin-top:4px;color:#fff7e3;letter-spacing:.08em}
+#timingTrack{overflow:visible!important;background:linear-gradient(180deg,#051d2a,#082c3a)!important;border:2px solid #d5bd68!important;border-radius:4px!important;box-shadow:0 0 0 3px #08232dbb,0 0 18px #1ccad055,0 7px 20px #00131dbb!important}
+#timingTrack:before,#timingTrack:after{content:'✦';position:absolute;top:50%;translate:0 -50%;color:#efd47a;font-size:22px;text-shadow:0 0 8px #efd47aaa}
+#timingTrack:before{left:-28px}#timingTrack:after{right:-28px}
+#hitZone{background:linear-gradient(90deg,#0ec5df,#59ecf2,#23c7da)!important;box-shadow:inset 0 0 12px #cfffff88,0 0 14px #25dce877}
+#perfectZone{background:linear-gradient(90deg,#e6c457,#fff5a8,#e7c34f)!important;box-shadow:0 0 16px #f7d66aaa,inset 0 0 8px #fff8cf}
+#cursor{width:4px!important;background:#fff!important;box-shadow:0 0 7px #fff,0 0 14px #ffeaa3!important}
+#timingJudges{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin:8px 16% 0;font-size:10px;text-align:center;color:#aeefff;letter-spacing:.04em}
+#timingJudges b{color:#f5d675;font-weight:800;padding:0 20px}
+#timingTapHint{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:12px;color:#d8f0ff;text-shadow:0 2px 6px #001923;font-size:10px}
+#timingTapHint>span{font-size:22px;color:#fff}
+#timingTapHint em{font-style:normal}
+#timingLabel{display:none!important}
+
+@media(max-width:1100px){
+ .rankHudRow{grid-template-columns:auto minmax(70px,1fr) 52px;gap:6px}
+ #battleRank{font-size:12px!important}
+ #timingPhase strong{font-size:24px}
+ #timingJudges{margin-inline:12%}
+}
+@media(max-width:600px){
+ .rankHudRow{height:19px;grid-template-columns:auto 1fr 36px;gap:3px;padding-bottom:2px}
+ #battleRank{font-size:7px!important}#rankXpText{font-size:5px}.rankHudTrack{height:5px}
+ .enemyAttrBadge{width:18px;height:18px;margin-bottom:-1px}.enemyAttrBadge .attrIcon{width:9px!important;height:9px!important;flex-basis:9px!important}
+ #timingPhase{margin-bottom:4px}#timingPhase strong{font-size:16px}#timingPhase small{font-size:6px;margin-top:2px}
+ #timingTrack:before,#timingTrack:after{font-size:12px}#timingTrack:before{left:-14px}#timingTrack:after{right:-14px}
+ #timingJudges{font-size:6px;margin:4px 10% 0}#timingJudges b{padding:0 6px}
+ #timingTapHint{margin-top:5px;font-size:6px;gap:1px}#timingTapHint>span{font-size:12px}
+}

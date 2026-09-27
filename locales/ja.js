@@ -71,7 +71,7 @@ globalThis.SHUT_LOCALES.ja={
   skills:{damage:{name:'ブレイクアーツ',description:'高威力の一撃。'},heal:{name:'レスキューヒール',description:'残HP割合が最も低い味方を30%回復。'},poison:{name:'ヴェノムストライク',description:'攻撃し、3ターン毒を与える。'},regen:{name:'リジェネレート',description:'残HP割合が最も低い味方を3ターン継続回復。'},atk_down:{name:'ブレイクシール',description:'攻撃し、敵ATKを3ターン低下。'},noneButShot:{name:'None but shot',description:'刀を大型バズーカへ変形させて攻撃する。'}},
   mikado:{name:'みかど',titleAria:'タイトル画面のみかど',classification:'幻 · ★★★★★★',title:'園芸師',area:'エデン · 幻との遭遇',arrival:'みかど が あらわれた！',skill:'None but shot',skillDescription:'刀を大型バズーカへ変形させて攻撃する。',attackHint:'砲口が光る瞬間に閉じる',world:'エデン',worldDescription:'空に残された庭園。静かな風の中で、幻の気配が揺れる。',stage:'エデンの庭',stageDescription:'空に残された庭園を進む。静かな風の向こうに、幻の気配がある。'},
   common:{confirm:'確認',cancel:'キャンセル',close:'閉じる'},
-  save:{newGameConfirm:'現在の冒険を消して、新しい旅を始めますか？',recovery:'保存を読み込めませんでした。退避コピーを残し、新しい旅を始められます。'},
+  save:{newGameConfirm:'現在の冒険を消して、新しい旅を始めますか？',recovery:'保存を読み込めませんでした。退避コピーを残し、新しい旅を始められます。',transactionFailure:'保存できなかったため、変更を元に戻しました。'},
   currency:{keys:'鍵 {count}'},
   fallback:{japaneseOnly:'日本語の代替テキスト'}
 };

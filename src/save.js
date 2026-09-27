@@ -2,8 +2,8 @@
 globalThis.SHUTSave={
  key:'shut_save_v2',schemaVersion:6,
  read(defaults){
-  let raw=null,legacy=false;
-  try{raw=localStorage.getItem(this.key);if(!raw){raw=localStorage.getItem('shut_save_v37_master');legacy=!!raw}if(!raw)return null;
+  let raw=null,legacy=false,sourceKey=this.key;
+  try{raw=localStorage.getItem(this.key);if(!raw){sourceKey='shut_save_v37_master';raw=localStorage.getItem(sourceKey);legacy=!!raw}if(!raw)return null;
    const v=JSON.parse(raw);if(!v||typeof v!=='object'||Array.isArray(v))throw Error('shape');
    const out=structuredClone(defaults);for(const key of Object.keys(out))if(v[key]!==undefined)out[key]=v[key];
    // Aliases describe the SAME wallet. Never sum aliases or mint currency on reload.
@@ -25,8 +25,9 @@ globalThis.SHUTSave={
    for(const k of ['monsters','party','monsterMigration','legacyArchive'])if(v[k]!==undefined)out[k]=v[k];
    const migrated=SHUTMonsters.migrate(out,SHUT_MASTER_DATA);Object.assign(out,migrated);
    out.schemaVersion=this.schemaVersion;
-   if(legacy||v.schemaVersion!==this.schemaVersion)localStorage.setItem(this.key,JSON.stringify(out));return out;
-  }catch(e){this.recovered=true;try{if(raw)localStorage.setItem(this.key+'_recovery',raw);localStorage.removeItem(this.key)}catch{}return null}
+   if(legacy||v.schemaVersion!==this.schemaVersion){try{localStorage.setItem(this.key,JSON.stringify(out));this.migrationWriteFailed=false}catch{this.migrationWriteFailed=true}}
+   return out;
+  }catch(e){this.recovered=true;try{if(raw)localStorage.setItem(this.key+'_recovery',raw);if(sourceKey)localStorage.removeItem(sourceKey)}catch{}return null}
  },
  write(state){try{if(!state||!Number.isSafeInteger(state.gold)||state.gold<0||!Number.isSafeInteger(state.gateKeys)||state.gateKeys<0)return false;localStorage.setItem(this.key,JSON.stringify({...state,schemaVersion:this.schemaVersion}));return true}catch{return false}}
 };

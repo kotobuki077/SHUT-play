@@ -15,11 +15,10 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
 #app[data-phase="defense"] #battleAction{background:#365d72}
 #app.open-only[data-phase="defense"] #battleAction{box-shadow:0 0 0 2px #9de7db,inset 0 -3px #244a59}
 #enemyArea{bottom:235px}
-#app[data-phase="attackArmed"] #enemyArea,#app[data-phase="attack"] #enemyArea{bottom:305px}
 .enemyCard .ehp,.enemyCard .ehpText{position:relative;z-index:3}
 #timingBox{position:relative;z-index:5}
 
-/* Timing-bar invariant: enemy and boss sprite dimensions stay unchanged across attackArmed/attack phases. */
+/* Timing-bar invariant: enemy and boss sprite dimensions and battlefield position stay unchanged across attackArmed/attack phases. */
 
 /* Individual special gauges. */
 .skillGauge{position:relative;height:10px;margin-top:3px;background:#06191e;border:1px solid #607b78;overflow:hidden}

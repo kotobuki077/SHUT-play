@@ -228,7 +228,55 @@
 
   // ---------- AUDIO ----------
   let noiseBuffer=null, musicMode='title', musicDelay=null, musicDelayGain=null, lastBaseMusicMode='title';
-  function setMusicMode(mode){if(musicMode!==mode)musicStep=0;musicMode=mode; if(!['victory','equip','shop','synthesis','story'].includes(mode)) lastBaseMusicMode=mode; }
+  let musicAssetTracks=[],musicAssetActive=null,musicAssetMode=null,musicAssetUsing=false,musicAssetToken=0,audioResumeBound=false;
+  function productionMusicConfig(mode){const cfg=MASTER_DATA.audio?.assets?.[mode];return cfg&&typeof cfg.src==='string'&&cfg.src?cfg:null}
+  function assetMusicVolume(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;return S.settings.sound?value('masterVolume',.56)*value('bgmVolume',.24):0}
+  function applyAssetMusicVolume(){const base=assetMusicVolume();for(const track of musicAssetTracks)track.volume=clamp(base*Number(track._fade??0),0,1)}
+  function initMusicAssets(){
+    if(musicAssetTracks.length||typeof Audio==='undefined')return;
+    musicAssetTracks=[new Audio(),new Audio()];
+    for(const track of musicAssetTracks){
+      track.preload='auto';track.loop=true;track.playsInline=true;track._fade=0;
+      track.addEventListener('error',()=>{if(track===musicAssetActive){musicAssetUsing=false;musicAssetMode=null;musicAssetActive=null;}});
+    }
+    applyAssetMusicVolume();
+  }
+  function stopAssetMusic(){
+    musicAssetToken++;musicAssetUsing=false;musicAssetMode=null;
+    for(const track of musicAssetTracks){try{track.pause()}catch{}track._fade=0;}
+    musicAssetActive=null;applyAssetMusicVolume();
+  }
+  async function playMusicAsset(mode){
+    const cfg=productionMusicConfig(mode);
+    if(!cfg){stopAssetMusic();return false;}
+    initMusicAssets();if(!musicAssetTracks.length)return false;
+    const token=++musicAssetToken,old=musicAssetActive,next=musicAssetTracks.find(t=>t!==old)||musicAssetTracks[0];
+    try{
+      const url=new URL(cfg.src,location.href).href;
+      if(next.src!==url){next.src=url;next.load();}
+      next.loop=cfg.loop!==false;next._fade=0;applyAssetMusicVolume();
+      if(Number.isFinite(cfg.start)&&cfg.start>=0)next.currentTime=cfg.start;else next.currentTime=0;
+      await next.play();
+      if(token!==musicAssetToken){next.pause();return false;}
+      musicAssetActive=next;musicAssetMode=mode;musicAssetUsing=true;
+      const duration=Math.max(0,Number(cfg.crossfadeMs??650)),started=performance.now();
+      const fade=now=>{
+        if(token!==musicAssetToken)return;
+        const p=duration?Math.min(1,(now-started)/duration):1;
+        next._fade=p;if(old&&old!==next)old._fade=1-p;applyAssetMusicVolume();
+        if(p<1)requestAnimationFrame(fade);else if(old&&old!==next){old.pause();old._fade=0;applyAssetMusicVolume();}
+      };
+      requestAnimationFrame(fade);return true;
+    }catch{
+      if(token===musicAssetToken){musicAssetUsing=false;musicAssetMode=null;if(next)try{next.pause()}catch{}}
+      return false;
+    }
+  }
+  function resumeAudioPlayback(){
+    try{if(audioCtx?.state==='suspended')audioCtx.resume().catch(()=>{})}catch{}
+    if(musicAssetUsing&&musicAssetActive?.paused)musicAssetActive.play().catch(()=>{musicAssetUsing=false;musicAssetMode=null;});
+  }
+  function setMusicMode(mode){const changed=musicMode!==mode;if(changed)musicStep=0;musicMode=mode;if(!['victory','equip','shop','synthesis','story'].includes(mode))lastBaseMusicMode=mode;if(audioCtx&&changed)void playMusicAsset(mode)}
 
   function initAudio(){
     if(audioCtx) return;
@@ -237,6 +285,7 @@
     master=audioCtx.createGain();master.connect(audioCtx.destination);
     musicGain=audioCtx.createGain();musicGain.connect(master);
     sfxGain=audioCtx.createGain();sfxGain.connect(master);applyAudioSettings();
+    initMusicAssets();void playMusicAsset(musicMode);if(!audioResumeBound){audioResumeBound=true;window.addEventListener('pointerdown',resumeAudioPlayback,{passive:true});window.addEventListener('pageshow',resumeAudioPlayback);document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAudioPlayback()});}
 
     // Small echo bus for a more produced chiptune sound.
     musicDelay=audioCtx.createDelay(.6); musicDelay.delayTime.value=.19;
@@ -250,6 +299,7 @@
     const tick=MASTER_DATA.audio.tickMs; // 100 BPM, 16th note
     musicTimer=setInterval(()=>{
       if(!audioCtx || document.hidden) return;
+      if(musicAssetUsing&&musicAssetMode===musicMode)return;
       const step=musicStep%16;
       const form=MASTER_DATA.audio.form,measure=Math.floor(musicStep/16)%Object.values(form).reduce((n,v)=>n+v,0),bar=measure%4;
       const section=measure<form.intro?'intro':measure<form.intro+form.A?'A':measure<form.intro+form.A+form.B?'B':'variation';
@@ -1146,7 +1196,7 @@
   $('unfoldBattle').onclick=openFromClosed;$('foldHome').onclick=enterCloseMenu;$('unfoldHome').onclick=enterOpenMenu;
   $('nextJourney').onclick=()=>{if(S.run)runGateExpedition(S.run.kind,true);else if(currentStoryStage())showStoryEventAndStart(currentStoryStage().stage_id);else renderGates()};
   $('retreatBtn').onclick=()=>{if(!confirm(t('battle.retreatConfirm')))return;attackReadyToken++;defenseToken++;phase='idle';encounterSettled=true;patternBeat=null;S.run=null;activeGate=null;saveGame();$('rewardOverlay').classList.remove('show');$('closedMenu').classList.remove('show');enterOpenMenu()};
-  function applyAudioSettings(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;if(master)master.gain.value=S.settings.sound?value('masterVolume',.56):0;if(musicGain)musicGain.gain.value=value('bgmVolume',.24);if(sfxGain)sfxGain.gain.value=value('seVolume',.5);}
+  function applyAudioSettings(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;if(master)master.gain.value=S.settings.sound?value('masterVolume',.56):0;if(musicGain)musicGain.gain.value=value('bgmVolume',.24);if(sfxGain)sfxGain.gain.value=value('seVolume',.5);applyAssetMusicVolume();}
   let settingsOriginalLanguage=null;
   function updateLocalizedUi(){
     I18n.apply(document);

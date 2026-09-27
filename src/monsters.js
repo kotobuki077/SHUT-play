@@ -86,11 +86,12 @@
   function grantBattleExp(state,partyIds,amount,data){if(!natural(amount)||!Array.isArray(partyIds))throw Error('Invalid battle EXP');const next=copy(state),changes=[];for(const id of partyIds){const m=next.monsters.find(x=>x.id===id);if(!m)continue;const before=levelAt(m.xp,data);m.xp+=amount;const after=levelAt(m.xp,data);changes.push({id,amount,beforeLevel:before.level,afterLevel:after.level,beforeXp:before.xpIntoLevel,afterXp:after.xpIntoLevel,next:after.next,levelUp:after.level>before.level});}return {state:recordDiscoveries(next,data),changes};}
   function specialPlan(actor,allies,enemy){
     const special=actor?.special||{type:'damage',power:1},alive=(allies||[]).filter(x=>x&&x.hp>0),lowest=alive.sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
-    const result={type:special.type||'damage',damageMultiplier:Number(special.power||1),allyId:null,heal:0,status:null};
-    if(result.type==='heal'&&lowest){result.allyId=lowest.id;result.heal=Math.max(1,Math.round(lowest.maxHp*Number(special.healRate||.3)));}
-    if(result.type==='regen'&&lowest){result.allyId=lowest.id;result.status={kind:'regen',turns:Number(special.status?.turns||3),rate:Number(special.status?.rate||.08)};}
-    if(result.type==='poison')result.status={kind:'poison',turns:Number(special.status?.turns||3),rate:Number(special.status?.rate||.06)};
-    if(result.type==='atk_down')result.status={kind:'atk_down',turns:Number(special.status?.turns||3),multiplier:Number(special.status?.multiplier||.78)};
+    const rarity=Math.max(1,Math.min(6,Number(actor?.rarity||1))),rarityScale=1+(rarity-1)*.05,basePower=Number(special.power||1);
+    const result={type:special.type||'damage',damageMultiplier:1+(basePower-1)*rarityScale,allyId:null,heal:0,status:null};
+    if(result.type==='heal'&&lowest){result.allyId=lowest.id;result.heal=Math.max(1,Math.round(lowest.maxHp*Number(special.healRate||.3)*rarityScale));}
+    if(result.type==='regen'&&lowest){result.allyId=lowest.id;result.status={kind:'regen',turns:Number(special.status?.turns||3),rate:Number(special.status?.rate||.08)*rarityScale};}
+    if(result.type==='poison')result.status={kind:'poison',turns:Number(special.status?.turns||3),rate:Number(special.status?.rate||.06)*rarityScale};
+    if(result.type==='atk_down'){const base=Number(special.status?.multiplier||.78);result.status={kind:'atk_down',turns:Number(special.status?.turns||3),multiplier:Math.max(.5,1-(1-base)*rarityScale)};}
     return result;
   }
   function migrate(state,data){

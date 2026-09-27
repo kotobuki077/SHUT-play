@@ -706,7 +706,7 @@
     $('partnerBtn').hidden=true;
     $('gateBtn').hidden=!Object.values(S.gateUnlocked).some(Boolean);
     $('homeCenter').style.setProperty('--menu-rows',Math.ceil([...document.querySelectorAll('.menuGrid .menuBtn')].filter(b=>!b.hidden).length/2));
-    $('soundToggle').textContent=t('settings.button');$('soundToggle').setAttribute('aria-label',t('settings.buttonAria'));
+    $('soundToggle').textContent='⚙';$('soundToggle').setAttribute('aria-label',t('settings.buttonAria'));
   }
   function openModal(title,html){document.querySelector(SHUTDevice.closed?'.outer-display':'.inner-workspace').append($('modal'));$('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modal').classList.add('show');}
   const monsterView={sort:'acquired',direction:-1,attributes:new Set(),rarity:0,favorite:false,locked:false};
@@ -876,10 +876,9 @@
     $('battleRank').textContent=`RANK ${S.rank}`;$('battleWeapon').textContent=t('battle.monstersCount',{count:S.party.length});
     $('playerHpFill').style.width=`${Math.min(100,S.hp/playerMaxHp()*100)}%`;$('playerHpText').textContent=`${Math.ceil(S.hp)}/${playerMaxHp()}`;
     $('playerHpFill').style.background=hpBarGradient(w?.attr||'風');
-    $('rankXpFill').style.width=`${S.rankXp/S.rankNeed*100}%`;$('rankXpText').textContent=`${S.rankXp}/${S.rankNeed}`;
     const bossNow=enemies.some(e=>e.boss&&!e.dead);$('battleStage').textContent=activeStageData?`${activeStageData.stage_id} ${localizedDataName(activeStageData)}`:`Stage ${S.stage}`;$('battleEncounter').textContent=t('battle.battleCount',{current:encounter,total:encounterMax,boss:bossNow?'  BOSS':''});
     if(activeGate==='ENDLESS')$('battleEncounter').textContent=t('battle.endlessGate',{floor:encounter});
-    $('battleCarry').textContent=t('battle.itemSlots',{slots:carrySlots});
+    $('battleCarry').textContent=t('battle.itemSlots',{slots:carrySlots});$('battleCarry').hidden=phase!=='closed';
   }
   function updateBossBar(){
     const bosses=enemies.filter(e=>e.boss);
@@ -926,11 +925,12 @@
       const canvasW=MASTER_DATA.sprites[e.kind].canvasSize||64, canvasH=canvasW;
       card.innerHTML=`
         <div class="enemyAttrBadge">${attributeIcon(e.attr)}</div>
+        <div class="enemyTurnBadge ${ready?'ready':''}" aria-label="${t('battle.enemyTurns')} ${Math.max(0,e.turnsLeft)}"><b>${Math.max(0,e.turnsLeft)}</b></div>
         <div class="enemySpriteWrap">${popupHTML}<canvas width="${canvasW}" height="${canvasH}" data-id="${e.id}"></canvas></div>
         <div class="eName"><span>${e.boss?'BOSS ':''}${displayedEnemyName(e)}</span></div>
         <div class="ehp eBar"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div>
         <div class="ehpText" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><span>HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}</span></div>
-        <div class="eMeta"><span>ATK ${e.atk}${e.poison?` · ${t('battle.poison')}`:''}${e.attackDown?` · ${t('battle.atkDown')}`:''}</span><span class="turnBadge ${ready?'ready':''}">${t('battle.enemyTurns')} <b>${Math.max(0,e.turnsLeft)}</b></span></div>`;
+        <div class="eMeta"><span>ATK ${e.atk}${e.poison?` · ${t('battle.poison')}`:''}${e.attackDown?` · ${t('battle.atkDown')}`:''}</span></div>`;
       area.appendChild(card);
       drawEnemy(card.querySelector('canvas'),e,animFrame);
       const nowBar=card.querySelector('.ehpNow');
@@ -971,6 +971,14 @@
   }
 
   // ---------- ATTACK ----------
+  function prepareTimingUi(mode){
+    const box=$('timingBox'),phaseEl=$('timingPhase');
+    box.dataset.mode=mode;box.classList.toggle('guardMode',mode==='guard');
+    const strong=phaseEl?.querySelector('strong'),small=phaseEl?.querySelector('small');
+    if(strong)strong.textContent=mode==='guard'?'◆ GUARD':'⚔ ATTACK';
+    if(small)small.textContent=t('battle.timingTap');
+    phaseEl?.classList.remove('phaseFlash');if(phaseEl){void phaseEl.offsetWidth;phaseEl.classList.add('phaseFlash');}
+  }
   function beginAttack(){
     if(!$('battleScreen').classList.contains('show')||['idle','test','gameover','reward'].includes(phase))return;
     if(!living().length){finishEncounter();return}
@@ -978,7 +986,7 @@
     const token=++attackReadyToken;phase='attackReady';battleInputLocked=false;updateBattleAction();opened=true;$('timingBox').classList.remove('show');
     setBattleCopy('battle.ready','battle.readyHint');
     setTimeout(()=>{if(token!==attackReadyToken||phase!=='attackReady')return;setBattleCopy('battle.go','battle.startTimingHint');sfx('cue');
-      setTimeout(()=>{if(token!==attackReadyToken||phase!=='attackReady')return;phase='attackArmed';updateBattleAction();$('timingBox').classList.add('show');$('cursor').style.left='0%';setBattleCopy('battle.attack','battle.startTimingHint');
+      setTimeout(()=>{if(token!==attackReadyToken||phase!=='attackReady')return;phase='attackArmed';updateBattleAction();$('timingBox').classList.add('show');prepareTimingUi('attack');$('cursor').style.left='0%';setBattleCopy('battle.attack','battle.startTimingHint');
         const hitWidth=Number(CFG.hit_attack_width),perfWidth=Number(CFG.perfect_attack_width);
         $('hitZone').style.left=`${50-hitWidth*50}%`;$('hitZone').style.width=`${hitWidth*100}%`;$('perfectZone').style.left=`${50-perfWidth*50}%`;$('perfectZone').style.width=`${perfWidth*100}%`;startTimingBar();
       },240);
@@ -1052,20 +1060,18 @@
     if(!patternBeat)return;const {enemy:e,action,index}=patternBeat;
     if(e.dead){patternBeat=null;nextEnemyAttack();return;}
     phase='defense';battleInputLocked=false;opened=true;setDeviceClosed(false);defenseEnemyId=e.id;const token=++defenseToken;
-    const windup=action.beats[index];defenseImpact=performance.now()+windup;
-    $('dangerRing').style.setProperty('--ring-duration',Math.min(920,windup)+'ms');
-    const actionName=action.nameKey?t(action.nameKey):action.name,actionHint=action.hintKey?t(action.hintKey):action.hint;
-    currentBattleCopy=null;$('battleMessage').textContent=actionName;$('battleSub').textContent=actionHint+' · '+(index+1)+'/'+action.beats.length;
-    renderEnemies();playEnemyAttackMotion(e);$('guardTargetRing').classList.add('show');$('guardTimeline').classList.add('show');updateBattleAction();
-    const draw=()=>{if(token!==defenseToken||phase!=='defense')return;const p=clamp(1-(defenseImpact-performance.now())/windup,0,1);$('guardProgress').style.width=p*100+'%';requestAnimationFrame(draw)};requestAnimationFrame(draw);
-    if(action.feint)setTimeout(()=>{if(token===defenseToken)feedback(t('battle.feintWait'),'miss')},action.feint);
-    setTimeout(()=>{if(token!==defenseToken)return;$('dangerRing').classList.remove('charge');void $('dangerRing').offsetWidth;$('dangerRing').classList.add('charge')},Math.max(0,windup-920));
-    setTimeout(()=>{if(token!==defenseToken)return;$('closeNow').classList.add('show');sfx('cue')},windup-80);
+    const windup=action.beats[index],guardBad=Math.max(1,Number(CFG.bad_guard_ms)),guardPerfect=Math.max(1,Number(CFG.perfect_guard_ms));defenseImpact=performance.now()+windup;
+    currentBattleCopy=null;$('battleMessage').textContent='';$('battleSub').textContent='';
+    renderEnemies();playEnemyAttackMotion(e);updateBattleAction();$('timingBox').classList.add('show');prepareTimingUi('guard');
+    const guardGoodWidth=.42,guardPerfectWidth=Math.max(.05,guardGoodWidth*Math.min(.45,guardPerfect/guardBad));
+    $('hitZone').style.left=`${50-guardGoodWidth*50}%`;$('hitZone').style.width=`${guardGoodWidth*100}%`;$('perfectZone').style.left=`${50-guardPerfectWidth*50}%`;$('perfectZone').style.width=`${guardPerfectWidth*100}%`;
+    const guardStart=performance.now();cancelAnimationFrame(meterRAF);
+    const drawGuard=now=>{if(token!==defenseToken||phase!=='defense')return;const p=now<=defenseImpact?.5*clamp((now-guardStart)/Math.max(1,defenseImpact-guardStart),0,1):.5+.5*clamp((now-defenseImpact)/guardBad,0,1);$('cursor').style.left=`${p*100}%`;meterRAF=requestAnimationFrame(drawGuard)};meterRAF=requestAnimationFrame(drawGuard);
     setTimeout(()=>{if(token===defenseToken&&phase==='defense')resolveDefense(Number(CFG.bad_guard_ms)+10,false)},windup+Number(CFG.bad_guard_ms)+1);
   }
   function executeDefense(){if(phase==='defense'&&!battleInputLocked)resolveDefense(performance.now()-defenseImpact,!openOnlyMode());}
   function resolveDefense(delta,playerClosed=true){
-    if(battleInputLocked)return;battleInputLocked=true;const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;const shouldPhysicallyClose=!!playerClosed&&!openOnlyMode();phase='defenseResolved';defenseToken++;opened=!shouldPhysicallyClose;if(shouldPhysicallyClose){setDeviceClosed(true);sfx('door');}else setDeviceClosed(false,{skipSnapshot:true});e.turnsLeft=e.attackEvery;resetDanger();
+    if(battleInputLocked)return;battleInputLocked=true;cancelAnimationFrame(meterRAF);const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;const shouldPhysicallyClose=!!playerClosed&&!openOnlyMode();phase='defenseResolved';defenseToken++;opened=!shouldPhysicallyClose;if(shouldPhysicallyClose){setDeviceClosed(true);sfx('door');}else setDeviceClosed(false,{skipSnapshot:true});e.turnsLeft=e.attackEvery;resetDanger();
     const rate=Combat.guardRate(delta,CFG),perfect=Math.abs(delta)<=Number(CFG.perfect_guard_ms),a=patternBeat?.action,factor=a?a.factors[patternBeat.index]*a.damage:1,alive=partyMembers().filter(m=>m.hp>0),target=alive[(stageStats.guardHits||0)%alive.length],dmg=Combat.guardDamage(e.atk,factor,rate,e.attackDown?.multiplier||1);stageStats.guardHits=(stageStats.guardHits||0)+1;
     if(target){const owned=S.monsters.find(m=>m.id===target.id);owned.hp=Math.max(0,target.hp-dmg);if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':rate<=.3?'battle.goodGuard':rate<1?'battle.guard':'battle.miss';if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}
     SHUTDevice.guard(labelKey,dmg);feedback(t(labelKey),perfect?'guard':'hit');setBattleCopy(labelKey,'battle.damage',{name:target?.name||'',damage:dmg});updateBattleHeader();renderEnemies();if(S.hp<=0){setTimeout(gameOver,250);return;}
@@ -1073,10 +1079,8 @@
   }
 
   function resetDanger(){
-    $('guardTimeline').classList.remove('show');
-    $('dangerRing').classList.remove('charge');
-    $('guardTargetRing').classList.remove('show');
-    $('closeNow').classList.remove('show');
+    $('timingBox').classList.remove('show','guardMode');$('timingPhase')?.classList.remove('phaseFlash');
+    $('guardTimeline').classList.remove('show');$('dangerRing').classList.remove('charge');$('guardTargetRing').classList.remove('show');$('closeNow').classList.remove('show');
     document.querySelectorAll('.enemyCard').forEach(x=>x.classList.remove('attacking'));
   }
   function openClosedMenu(reason){
@@ -1096,7 +1100,7 @@
     $('closedMenu').classList.remove('openRecovery');
     setDeviceClosed(true);
     resetDanger();
-    updateItemMenu();
+    updateItemMenu();updateBattleHeader();
     $('closedMenu').classList.add('show');
     sfx('door');
   }
@@ -1123,7 +1127,7 @@
     $('closedMenu').classList.add('openRecovery');
     SHUTDevice.setClosed(false,{skipSnapshot:true,instant:true});
     $('app').dataset.screen='battleScreen';
-    updateItemMenu();
+    updateItemMenu();updateBattleHeader();
     $('closedMenu').classList.add('show');
   }
 
@@ -1140,7 +1144,7 @@
   async function openFromClosed(){
     if(phase!=='closed'||SHUTDevice.busy)return;
     const openRecovery=$('closedMenu').classList.contains('openRecovery');
-    opened=true;phase='transition';$('closedMenu').classList.remove('show');
+    opened=true;phase='transition';$('closedMenu').classList.remove('show');updateBattleHeader();
     if(openRecovery){$('closedMenu').classList.remove('openRecovery');document.querySelector('.outer-display')?.append($('closedMenu'));const card=$('closedMenu').querySelector('.closedCard'),smalls=card?.querySelectorAll('.small')||[];if(card?.querySelector('h2'))card.querySelector('h2').dataset.i18n='battle.closedTitle';if(smalls[0])smalls[0].dataset.i18n='battle.closedDescription';if(smalls[smalls.length-1])smalls[smalls.length-1].dataset.i18n='battle.openHint';$('unfoldBattle').dataset.i18n='battle.openNext';sfx('confirm');}
     else{sfx('door');await setDeviceClosed(false);}
     if(pendingItem){
@@ -1170,8 +1174,8 @@
   function grantStageRewards(rewards){for(const r of rewards||[])addGift(activeStageData.name,r.type,r.amount,'',r.monsterId);}
   function renderRewardPresentation(title,subtitle,buttonLabel,extra=''){
     $('rewardTitle').textContent=title;const entries=[{kind:'gold',label:`+${rewardGold} G`},...rewardEntries],eggs=entries.filter(x=>x.kind==='egg');
-    const expHtml=rewardExpChanges.length?`<div class="resultMonsterExp">${rewardExpChanges.map(change=>{const m=S.monsters.find(x=>x.id===change.id),s=m&&Monsters.stats(m,MASTER_DATA),pct=change.next?Math.round(change.afterXp/change.next*100):100;return `<div><b>${s?.name||change.id} ${t('battle.monsterExp',{exp:change.amount})}</b><span>Lv.${change.beforeLevel} → Lv.${change.afterLevel}</span><i><em style="width:${pct}%"></em></i>${change.levelUp?`<strong>${t('battle.levelUp',{name:s?.name||change.id,level:change.afterLevel})}</strong>`:''}</div>`}).join('')}</div>`:'';
-    $('rewardBody').innerHTML=`<div class="resultVictory">${t('battle.victory')}</div><div class="rewardLine">${subtitle}</div><div class="resultLoot">${entries.map((x,i)=>x.kind==='egg'?`<div class="resultDrop eggReward rarity-${x.rarity}" style="--i:${i}" data-hatch="${x.monsterId}"><div class="rarityEgg" data-rarity="★${x.rarity}">${rewardIcon('egg',x.rarity,'eggIcon')}</div><b>${stars(x.rarity)}</b><span>${x.label}</span><canvas width="96" height="96"></canvas><em>${t(x.isNew?'battle.newMonster':'battle.monsterJoined')}</em></div>`:`<div class="resultDrop ${x.kind}" style="--i:${i}">${x.kind==='gold'?'<b>G</b>':rewardIcon(x.kind,1,'resultIcon')}<span>${x.label}</span></div>`).join('')}</div>${expHtml}${extra}`;
+    const expHtml=rewardExpChanges.length?`<div class="resultMonsterExp">${rewardExpChanges.map(change=>{const m=S.monsters.find(x=>x.id===change.id),s=m&&Monsters.stats(m,MASTER_DATA),pct=change.next?Math.round(change.afterXp/change.next*100):100;return `<div><b>${s?.name||change.id} ${t('battle.monsterExp',{exp:change.amount})}</b><span>Lv.${change.beforeLevel} → Lv.${change.afterLevel}</span><i><em style="width:${pct}%"></em></i>${change.levelUp?`<strong>${t('battle.levelUp',{name:s?.name||change.id,level:change.afterLevel})}</strong>`:''}</div>`}).join('')}</div>`:'',rankHtml=`<div class="resultRankProgress">RANK ${S.rank}<span>${S.rankXp} / ${S.rankNeed}</span></div>`;
+    $('rewardBody').innerHTML=`<div class="resultVictory">${t('battle.victory')}</div><div class="rewardLine">${subtitle}</div><div class="resultLoot">${entries.map((x,i)=>x.kind==='egg'?`<div class="resultDrop eggReward rarity-${x.rarity}" style="--i:${i}" data-hatch="${x.monsterId}"><div class="rarityEgg" data-rarity="★${x.rarity}">${rewardIcon('egg',x.rarity,'eggIcon')}</div><b>${stars(x.rarity)}</b><span>${x.label}</span><canvas width="96" height="96"></canvas><em>${t(x.isNew?'battle.newMonster':'battle.monsterJoined')}</em></div>`:`<div class="resultDrop ${x.kind}" style="--i:${i}">${x.kind==='gold'?'<b>G</b>':rewardIcon(x.kind,1,'resultIcon')}<span>${x.label}</span></div>`).join('')}</div>${expHtml}${rankHtml}${extra}`;
     $('rewardNext').textContent=buttonLabel;$('rewardNext').disabled=true;$('rewardOverlay').classList.add('show');
     document.querySelectorAll('[data-hatch]').forEach(node=>{const def=Monsters.definition(node.dataset.hatch,MASTER_DATA),sprite=MASTER_DATA.sprites[def.sprite],canvas=node.querySelector('canvas');SHUTArt.image(sprite.source,img=>SHUTArt.drawCell(canvas,img,{...sprite,cell:sprite.states.idle?.[0]??sprite.cell},.08))});
     setTimeout(()=>{$('rewardNext').disabled=false;if(eggs.length)sfx('gacha')},eggs.length?1900:850);
@@ -1268,6 +1272,8 @@
     else{const timing='after_battle'+encounter;playEvents(activeStageId,timing,()=>{encounter++;startEncounter()})}
   };
   document.querySelectorAll('.itemBtn').forEach(b=>b.onclick=()=>{if(b.disabled)return;pendingItem=pendingItem===b.dataset.item?null:b.dataset.item;updateItemMenu()});
+  // recovery tray tap: item buttons select; any other valid tray/screen tap continues.
+  $('closedMenu').addEventListener('pointerdown',e=>{if(phase!=='closed'||e.target.closest('.itemBtn,#unfoldBattle,[data-system-control]'))return;e.preventDefault();openFromClosed()});
 
   // Keyboard/click = physical fold action during battle; in gacha, buttons advance sequence.
   window.addEventListener('keydown',e=>{
@@ -1413,7 +1419,7 @@
   }
 
   function drawPartyHud(){
-    const el=$('battlePartner');el.className='monsterPartyHud';el.innerHTML=partyMembers().map(m=>{const charge=skillCharge[m.id]||0,required=skillTurnsRequired(m),pct=Math.min(100,charge/required*100),ready=charge>=required,motion=allyFrames[m.id],active=motion&&performance.now()<motion.until,owned=S.monsters.find(x=>x.id===m.id);return `<div class="monsterHud ${m.hp<=0?'fainted':''} ${active&&motion.state==='attack'?'attacking':''} ${active&&motion.state==='ultimate'?'ultimate':''} ${ready?'skillReady':''}" data-ally="${m.id}"><canvas class="allyFaceCanvas" width="64" height="64"></canvas><div class="allyHudBody"><div class="allyHudTop"><b>${m.name}</b><span class="allyMeta">${attributeIcon(m.attr)} Lv.${m.level}${m.status?' ↓'+m.status.name:''}${owned?.regen?' · '+t('battle.regen'):''}</span><small>HP ${m.hp}/${m.maxHp}</small></div><div class="allyHp"><i style="width:${m.hp/m.maxHp*100}%;background:${attrColor[m.attr]}"></i></div><div class="skillGauge" aria-label="${t('battle.skillGauge',{value:charge+' / '+required})}"><i style="width:${pct}%"></i><em>${ready?t('battle.skillReady'):'SKILL '+charge+'/'+required}</em></div></div></div>`}).join('');el.querySelectorAll('[data-ally]').forEach(n=>monsterFaceIcon(n.querySelector('canvas'),S.monsters.find(m=>m.id===n.dataset.ally)));
+    const el=$('battlePartner');el.className='monsterPartyHud';el.innerHTML=partyMembers().map(m=>{const charge=skillCharge[m.id]||0,required=skillTurnsRequired(m),pct=Math.min(100,charge/required*100),ready=charge>=required,motion=allyFrames[m.id],active=motion&&performance.now()<motion.until,owned=S.monsters.find(x=>x.id===m.id);return `<div class="monsterHud ${m.hp<=0?'fainted':''} ${active&&motion.state==='attack'?'attacking':''} ${active&&motion.state==='ultimate'?'ultimate':''} ${ready?'skillReady':''}" data-ally="${m.id}"><canvas class="allyFaceCanvas" width="64" height="64"></canvas><div class="allyHudBody"><div class="allyHudTop"><b>${m.name}</b><span class="allyMeta">${attributeIcon(m.attr)}<span class="allyLevel">Lv.${m.level}</span><span class="allyStatus">${m.status?'↓'+m.status.name:''}${owned?.regen?' · '+t('battle.regen'):''}</span></span><small>HP ${m.hp}/${m.maxHp}</small></div><div class="allyHp"><i style="width:${m.hp/m.maxHp*100}%;background:${attrColor[m.attr]}"></i></div><div class="skillGauge" aria-label="${t('battle.skillGauge',{value:charge+' / '+required})}"><i style="width:${pct}%"></i><em>${ready?t('battle.skillReady'):'SKILL '+charge+'/'+required}</em></div></div></div>`}).join('');el.querySelectorAll('[data-ally]').forEach(n=>monsterFaceIcon(n.querySelector('canvas'),S.monsters.find(m=>m.id===n.dataset.ally)));
   }
 
   function drawMonsterRoster(){document.querySelectorAll('[data-monster]').forEach(cv=>{const m=S.monsters.find(m=>m.id===cv.dataset.monster);if(m)monsterIcon(cv,m);});}

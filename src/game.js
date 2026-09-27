@@ -1086,6 +1086,11 @@
   }
   function openClosedMenu(reason){
     if(openOnlyMode()){openRecoveryMenu(reason);return;}
+    const card=$('closedMenu').querySelector('.closedCard'),smalls=card?.querySelectorAll('.small')||[];
+    if(card?.querySelector('h2'))card.querySelector('h2').dataset.i18n='battle.closedTitle';
+    if(smalls[0])smalls[0].dataset.i18n='battle.closedDescription';
+    if(smalls[smalls.length-1])smalls[smalls.length-1].dataset.i18n='battle.openHint';
+    $('unfoldBattle').dataset.i18n='battle.openNext';
     closedReason=reason;
     battleInputLocked=true;
     phase='closed';
@@ -1101,6 +1106,11 @@
     sfx('door');
   }
   function openRecoveryMenu(reason){
+    const card=$('closedMenu').querySelector('.closedCard'),smalls=card?.querySelectorAll('.small')||[];
+    if(card?.querySelector('h2'))card.querySelector('h2').dataset.i18n='battle.recoveryTitle';
+    if(smalls[0])smalls[0].dataset.i18n='battle.recoveryDescription';
+    if(smalls[smalls.length-1])smalls[smalls.length-1].dataset.i18n='battle.recoveryHint';
+    $('unfoldBattle').dataset.i18n='battle.continueNext';
     closedReason=reason;
     battleInputLocked=true;
     phase='closed';
@@ -1130,7 +1140,7 @@
     if(phase!=='closed'||SHUTDevice.busy)return;
     const openRecovery=$('closedMenu').classList.contains('openRecovery');
     opened=true;phase='transition';$('closedMenu').classList.remove('show');
-    if(openRecovery){$('closedMenu').classList.remove('openRecovery');document.querySelector('.outer-display')?.append($('closedMenu'));sfx('confirm');}
+    if(openRecovery){$('closedMenu').classList.remove('openRecovery');document.querySelector('.outer-display')?.append($('closedMenu'));const card=$('closedMenu').querySelector('.closedCard'),smalls=card?.querySelectorAll('.small')||[];if(card?.querySelector('h2'))card.querySelector('h2').dataset.i18n='battle.closedTitle';if(smalls[0])smalls[0].dataset.i18n='battle.closedDescription';if(smalls[smalls.length-1])smalls[smalls.length-1].dataset.i18n='battle.openHint';$('unfoldBattle').dataset.i18n='battle.openNext';sfx('confirm');}
     else{sfx('door');await setDeviceClosed(false);}
     if(pendingItem){
       const it=itemDefs[pendingItem],itemName=t({heal:'battle.heal',high:'battle.highHeal',elixir:'battle.elixir'}[pendingItem]);S.items[pendingItem]--;carrySlots--;if(S.run)S.run.slots=carrySlots;healParty(it.heal);setBattleCopy('battle.itemUsed','battle.hpRecovered',{item:itemName,percent:Math.round(it.heal*100)});pendingItem=null;updateBattleHeader();

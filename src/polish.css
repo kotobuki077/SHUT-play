@@ -59,3 +59,7 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
 @media(min-width:1401px){#battleScreen:has(.enemyCard.kind-E027) #timingBox,#battleScreen:has(.enemyCard.kind-E028) #timingBox{top:60px}}
 @media(min-width:601px) and (max-width:1400px){#battleScreen:has(.enemyCard.kind-E027) #enemyArea,#battleScreen:has(.enemyCard.kind-E028) #enemyArea{top:24%!important}#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 .enemySpriteWrap,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 .enemySpriteWrap{height:92px!important}#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 canvas,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 canvas{width:92px!important;height:92px!important}}
 @media(max-width:600px){#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 .enemySpriteWrap,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 .enemySpriteWrap{height:58px!important}#battleScreen:has(.enemyCard.kind-E027) .enemyCard.kind-E027 canvas,#battleScreen:has(.enemyCard.kind-E028) .enemyCard.kind-E028 canvas{width:58px!important;height:58px!important}}
+/* Keep combatants above the live control rail on every viewport. The timing bar already reserves its own space, so showing it does not move enemies. */
+#battleScreen #enemyArea{bottom:var(--battle-controls-safe-bottom,235px)!important}
+@media(max-width:600px){#battleScreen #enemyArea{bottom:var(--battle-controls-safe-bottom,168px)!important}}
+

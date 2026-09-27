@@ -909,7 +909,7 @@
         <div class="eMeta">${t('battle.enemyMeta',{attribute:localizedAttribute(e.attr),attack:e.atk})}${e.poison?` · ${t('battle.poison')}`:''}${e.attackDown?` · ${t('battle.atkDown')}`:''}</div>
         <div class="attr" style="color:${attrColor[e.attr]}">${e.attr}</div>
         <div class="turnBadge ${ready?'ready':''}">${t(ready?'battle.enemyReady':'battle.enemyTurns')} <b>${ready?'!':e.turnsLeft}</b></div>
-        ${e.boss?'':`<div class="ehp eBar"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div><div class="ehpText" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><span>${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}</span></div>`}`;
+        ${e.boss?'':`<div class="ehp eBar"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div><div class="ehpText" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><span>HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}</span></div>`}`;
       card.onclick=(ev)=>{
         ev.stopPropagation();
         if(phase==='defense'){executeDefense();return;}

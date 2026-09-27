@@ -907,6 +907,7 @@
     const alive=living();
     area.className='';
     area.id='enemyArea';
+    area.dataset.enemyCount=String(alive.length);
     if(alive.length===1 && alive[0].boss) area.classList.add('bossOnly');
     else if(alive.length===1) area.classList.add('single');
     else area.classList.add('multi');

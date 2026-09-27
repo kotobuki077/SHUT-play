@@ -933,7 +933,7 @@
     const expResult=Monsters.grantBattleExp(S,[...S.party],rewardMonsterExp,MASTER_DATA);S=expResult.state;rewardExpChanges=expResult.changes;
     if(activeGate){finishExpeditionBattle();return;}
     healParty(MASTER_DATA.balance.storyRestRate);
-    phase='reward';resetDanger();$('timingBox').classList.remove('show');addWallet('gold',rewardGold,'story battle reward');setMusicMode('victory');sfx('win');updateHome();updateBattleHeader();$('bossHpBox').classList.remove('show');
+    phase='reward';resetDanger();$('timingBox').classList.remove('show');addWallet('gold',rewardGold,'story battle reward');saveGame();setMusicMode('victory');sfx('win');updateHome();updateBattleHeader();$('bossHpBox').classList.remove('show');
     if(encounter===encounterMax){
       const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}
       const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=Math.min(masterStages.length,idx+1);grantStageRewards(activeStageData.repeat_rewards);processStageUnlocks(activeStageId);unlockJourneyGates();settleMissions();rollSpecialGate();refreshShopStock();
@@ -947,9 +947,9 @@
     attackReadyToken++;defenseToken++;patternBeat=null;
     if(activeGate){S.run=null;saveGame();}
     if(activeStageData&&activeStageData.stage_type==='forced_loss'){
-      phase='reward';resetDanger();const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=idx+1;processStageUnlocks(activeStageId);evaluateQuests();saveGame();openModal('STORY CONTINUES',`<div style="text-align:center"><h3>届かなかった一撃</h3><p class="storySummary">攻撃は届かなかった。しかし物語はここで終わらない。</p><p class="small">ミナがあなたの手を握った。もう一度、歩き出そう。</p><button id="forcedContinue" class="btn gold">ホームへ</button></div>`);setTimeout(()=>{$('forcedContinue').onclick=()=>{$('modal').classList.remove('show');S.hp=S.maxHp;playEvents(activeStageId,'battle_turn3',enterOpenMenu)}},0);return;
+      phase='reward';resetDanger();const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=idx+1;processStageUnlocks(activeStageId);evaluateQuests();saveGame();openModal('STORY CONTINUES',`<div style="text-align:center"><h3>届かなかった一撃</h3><p class="storySummary">攻撃は届かなかった。しかし物語はここで終わらない。</p><p class="small">ミナがあなたの手を握った。もう一度、歩き出そう。</p><button id="forcedContinue" class="btn gold">ホームへ</button></div>`);setTimeout(()=>{$('forcedContinue').onclick=()=>{$('modal').classList.remove('show');S.hp=S.maxHp;saveGame();playEvents(activeStageId,'battle_turn3',enterOpenMenu)}},0);return;
     }
-    phase='gameover';resetDanger();openModal(t('battle.defeat'),`<div style="text-align:center"><h3>${activeStageData?activeStageData.stage_id:'Stage'} / Battle ${encounter}</h3><p class="small">${t('battle.rewardsKept')}</p><button id="returnHome" class="btn">${t('battle.returnHome')}</button></div>`);setTimeout(()=>{$('returnHome').onclick=()=>{$('modal').classList.remove('show');S.hp=S.maxHp;enterOpenMenu()}},0)
+    phase='gameover';resetDanger();saveGame();openModal(t('battle.defeat'),`<div style="text-align:center"><h3>${activeStageData?activeStageData.stage_id:'Stage'} / Battle ${encounter}</h3><p class="small">${t('battle.rewardsKept')}</p><button id="returnHome" class="btn">${t('battle.returnHome')}</button></div>`);setTimeout(()=>{$('returnHome').onclick=()=>{$('modal').classList.remove('show');S.hp=S.maxHp;saveGame();enterOpenMenu()}},0)
   }
 
   // ---------- EVENTS ----------

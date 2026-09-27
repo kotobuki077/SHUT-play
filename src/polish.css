@@ -89,3 +89,10 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
 .enemyCard .ehpText{display:block;width:100%;max-width:100%;box-sizing:border-box;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:clip;font-variant-numeric:tabular-nums;line-height:1.2;padding-inline:2px}
 .enemyCard .ehpText>span{display:block;width:100%;overflow:hidden;text-overflow:clip}
 @media(max-width:600px){.enemyCard .ehpText{font-size:8px!important;letter-spacing:-.02em;padding-inline:0}}
+
+
+/* Attack badge / HP invariant: non-boss ATTACK badge stays in document flow above HP. */
+.enemyCard:not(.bossCard) .turnBadge{position:static!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;translate:none!important;display:table;margin:5px auto 4px!important;max-width:100%;box-sizing:border-box}
+.enemyCard:not(.bossCard) .ehp{margin-top:4px!important;clear:both}
+.enemyCard:not(.bossCard) .ehpText{margin-top:4px!important;clear:both}
+@media(max-width:600px){.enemyCard:not(.bossCard) .turnBadge{margin:2px auto 3px!important}.enemyCard:not(.bossCard) .ehp{margin-top:2px!important}.enemyCard:not(.bossCard) .ehpText{margin-top:2px!important}}

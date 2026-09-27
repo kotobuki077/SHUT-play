@@ -80,6 +80,17 @@
     if(!S.shopStock) refreshShopStock();
   }
   function saveGame(){if(!S.tutorialDone)return false;assertWallet(S,'save');return SHUTSave.write(S);}
+  function commitStateTransaction(label,mutate){
+    const before=structuredClone(S);
+    try{
+      const result=mutate();
+      assertWallet(S,label);
+      if(!saveGame()){S=before;updateHome();return {ok:false,kind:'save'};}
+      return {ok:true,result};
+    }catch(error){
+      S=before;updateHome();return {ok:false,kind:'mutation',error};
+    }
+  }
   function loadGame(){const loaded=SHUTSave.read(S);if(!loaded)return false;S=loaded;normalizeState();return true;}
   function clearSave(){try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
 
@@ -566,14 +577,40 @@
   const shopIconAssets={ITM001:'assets/shop-itm001-repair-mist.png',ITM002:'assets/shop-itm002-high-repair.png',ITM003:'assets/shop-itm003-full-core.png'};
   function itemIcon(ref,size='large'){const name=t('shop.items.'+ref+'.name');return `<img class="itemIcon ${size}" data-asset-status="finished" src="${shopIconAssets[ref]}" alt="${name}">`}
   function shopDetail(entry,max){const item=itemById[entry.ref],owned=S.items[itemStateKey[entry.ref]]||0,total=shopQuantity*entry.price,afterGold=S.gold-total;return `<div class="shopDetail">${itemIcon(entry.ref)}<div><h3>${t('shop.items.'+entry.ref+'.name')}</h3><p><b>${t('shop.effect')}</b><br>${t('shop.items.'+entry.ref+'.effect')}</p><div class="shopFacts"><span>${t('shop.unitPrice',{price:entry.price})}</span><span>${t('shop.owned',{count:owned})}</span><span>${t('shop.inventoryCap',{cap:item.max_stack})}</span><span>${t('shop.stock',{count:shopStockRemaining(entry)})}</span></div></div><div class="quantityPanel"><b>${t('shop.quantity')}</b><output id="shopQuantity">${shopQuantity}</output><div class="quantitySteps">${[-10,-1,1,10].map(n=>`<button class="btn secondary" data-quantity-step="${n}">${n>0?'+':''}${n}</button>`).join('')}<button class="btn secondary" data-quantity-max>MAX</button></div><div class="purchaseSummary"><span>${t('shop.afterOwned',{count:owned+shopQuantity})}</span><span>${t('shop.total',{total})}</span><span>${t('shop.currentGold',{gold:S.gold})}</span><strong>${t('shop.afterGold',{gold:afterGold})}</strong></div><button id="confirmShopPurchase" class="btn gold" ${shopQuantity<1||shopQuantity>max?'disabled':''}>${max?t('shop.buy'):t('shop.soldOut')}</button></div></div>`}
-  function bindShop(entries,selected){document.querySelectorAll('[data-shop-select]').forEach(b=>b.onclick=()=>{shopSelection=b.dataset.shopSelect;shopQuantity=1;renderShop()});if(!selected)return;document.querySelectorAll('[data-quantity-step]').forEach(b=>b.onclick=()=>{shopQuantity=clamp(shopQuantity+Number(b.dataset.quantityStep),0,maxPurchase(selected));renderShop()});const maxButton=document.querySelector('[data-quantity-max]');if(maxButton)maxButton.onclick=()=>{shopQuantity=maxPurchase(selected);renderShop()};$('confirmShopPurchase').onclick=()=>{const current=shopEntries().find(e=>e.shop_id===selected.shop_id),allowed=current?maxPurchase(current):0,quantity=Math.floor(shopQuantity);if(!current||quantity<1||quantity>allowed)return;const key=itemStateKey[current.ref],total=current.price*quantity;if(!spendWallet('gold',total,'shop purchase'))return;S.items[key]=(S.items[key]||0)+quantity;S.shopStock[current.shop_id]=shopStockRemaining(current)-quantity;saveGame();updateHome();shopQuantity=1;renderShop()}}
+  function bindShop(entries,selected){
+    document.querySelectorAll('[data-shop-select]').forEach(b=>b.onclick=()=>{shopSelection=b.dataset.shopSelect;shopQuantity=1;renderShop()});
+    if(!selected)return;
+    document.querySelectorAll('[data-quantity-step]').forEach(b=>b.onclick=()=>{shopQuantity=clamp(shopQuantity+Number(b.dataset.quantityStep),0,maxPurchase(selected));renderShop()});
+    const maxButton=document.querySelector('[data-quantity-max]');if(maxButton)maxButton.onclick=()=>{shopQuantity=maxPurchase(selected);renderShop()};
+    $('confirmShopPurchase').onclick=()=>{
+      const current=shopEntries().find(e=>e.shop_id===selected.shop_id),allowed=current?maxPurchase(current):0,quantity=Math.floor(shopQuantity);
+      if(!current||quantity<1||quantity>allowed)return;
+      const key=itemStateKey[current.ref],total=current.price*quantity;
+      const tx=commitStateTransaction('shop purchase',()=>{
+        if(!spendWallet('gold',total,'shop purchase'))throw Error('Shop wallet changed');
+        S.items[key]=(S.items[key]||0)+quantity;
+        S.shopStock[current.shop_id]=shopStockRemaining(current)-quantity;
+      });
+      if(!tx.ok){localeToast('save.transactionFailure');renderShop();return;}
+      updateHome();shopQuantity=1;renderShop();
+    };
+  }
   function renderPartner(){renderEquipment();}
 
   function renderGiftBox(){
     const rows=S.gifts.map((g,i)=>`<div class="giftRow"><div><b>${g.title}</b><span class="small">${rewardName(g.rewardType)} ×${g.rewardAmount}${g.desc?`<br>${g.desc}`:''}</span></div><button class="btn gold" data-gift="${i}">受取</button></div>`).join('');
     openModal('PRESENT BOX',`${S.gifts.length?`<button id="claimAllGift" class="btn gold" style="margin-bottom:10px">一括受取</button>`:''}${rows||'<div class="small">未受取のプレゼントはありません。</div>'}`);
-    document.querySelectorAll('[data-gift]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.gift),g=S.gifts[i];if(!g)return;applyReward(g.rewardType,g.rewardAmount,g.monsterId);S.gifts.splice(i,1);saveGame();updateHome();renderGiftBox()});
-    if($('claimAllGift'))$('claimAllGift').onclick=()=>{const batch=S.gifts.splice(0);batch.forEach(g=>applyReward(g.rewardType,g.rewardAmount,g.monsterId));saveGame();updateHome();renderGiftBox()};
+    document.querySelectorAll('[data-gift]').forEach(b=>b.onclick=()=>{
+      const i=Number(b.dataset.gift),g=S.gifts[i];if(!g)return;
+      const tx=commitStateTransaction('gift claim',()=>{applyReward(g.rewardType,g.rewardAmount,g.monsterId);S.gifts.splice(i,1)});
+      if(!tx.ok){localeToast('save.transactionFailure');renderGiftBox();return;}
+      updateHome();renderGiftBox();
+    });
+    if($('claimAllGift'))$('claimAllGift').onclick=()=>{
+      const tx=commitStateTransaction('gift claim all',()=>{const batch=[...S.gifts];batch.forEach(g=>applyReward(g.rewardType,g.rewardAmount,g.monsterId));S.gifts=[]});
+      if(!tx.ok){localeToast('save.transactionFailure');renderGiftBox();return;}
+      updateHome();renderGiftBox();
+    };
   }
   function renderQuests(view='active'){
     if(typeof view!=='string')view='active';evaluateQuests();
@@ -1159,7 +1196,7 @@
   function synthesisWarning(reason){return t({高レア:'synthesis.warningRare',高レベル:'synthesis.warningLevel',進化済み:'synthesis.warningEvolved',お気に入り:'synthesis.warningFavorite',重要:'synthesis.warningImportant'}[reason]||'synthesis.warning')}
   function renderSynthesisConfirmation(preview){
     const materials=preview.materialIds.map(id=>{const m=S.monsters.find(x=>x.id===id),s=Monsters.stats(m,MASTER_DATA),warning=preview.warnings.find(w=>w.id===id);return `<div class="confirmMaterial"><canvas width="72" height="72" data-monster="${id}"></canvas><span><b>${s.name}</b><small>${t('monsters.level',{level:s.level})} · ★${s.rarity}</small>${warning?`<em>${warning.reasons.map(synthesisWarning).join(' · ')}</em>`:''}</span></div>`}).join('')+Object.entries(preview.stones||{}).filter(([,count])=>count).map(([key,count])=>`<div class="confirmMaterial stone"><span><b>${t({expSmall:'synthesis.stoneSmall',expMedium:'synthesis.stoneMedium',expLarge:'synthesis.stoneLarge'}[key])}</b><small>×${count}</small></span></div>`).join('');
-    openModal(t('synthesis.confirmTitle'),`<div class="synthesisConfirm"><div class="confirmSummary"><b>${preview.before.name}</b><span>${t('synthesis.levelChange',{before:preview.before.level,after:preview.after.level})}</span><span>${t('synthesis.expGain',{exp:preview.exp})}</span><span>${t('synthesis.goldCost',{cost:preview.cost})}</span><strong class="${preview.affordable?'':'warning'}">${t('synthesis.goldAfter',{gold:preview.goldAfter})}</strong>${preview.evolves?`<em>${t('synthesis.evolutionReady',{name:preview.after.name})}</em>`:''}</div><h3>${t('synthesis.consumed')}</h3><div class="confirmMaterials">${materials}</div><p class="warning">${t('synthesis.confirmWarning')}</p><div class="confirmActions"><button id="confirmSynthesis" class="btn gold" ${preview.affordable?'':'disabled'}>${t('synthesis.execute')}</button><button id="cancelSynthesis" class="btn secondary">${t('common.cancel')}</button></div></div>`);drawMonsterRoster();$('cancelSynthesis').onclick=()=>renderSynthesisMaterials(preview.baseId,new Set(preview.materialIds),preview.stones);$('confirmSynthesis').onclick=()=>{try{S=Monsters.synthesize(S,preview,MASTER_DATA);syncPartyHp(true);saveGame();presentSynthesis(preview,preview.baseId)}catch(err){localeToast('synthesis.changed');renderSynthesisMaterials(preview.baseId,new Set())}};
+    openModal(t('synthesis.confirmTitle'),`<div class="synthesisConfirm"><div class="confirmSummary"><b>${preview.before.name}</b><span>${t('synthesis.levelChange',{before:preview.before.level,after:preview.after.level})}</span><span>${t('synthesis.expGain',{exp:preview.exp})}</span><span>${t('synthesis.goldCost',{cost:preview.cost})}</span><strong class="${preview.affordable?'':'warning'}">${t('synthesis.goldAfter',{gold:preview.goldAfter})}</strong>${preview.evolves?`<em>${t('synthesis.evolutionReady',{name:preview.after.name})}</em>`:''}</div><h3>${t('synthesis.consumed')}</h3><div class="confirmMaterials">${materials}</div><p class="warning">${t('synthesis.confirmWarning')}</p><div class="confirmActions"><button id="confirmSynthesis" class="btn gold" ${preview.affordable?'':'disabled'}>${t('synthesis.execute')}</button><button id="cancelSynthesis" class="btn secondary">${t('common.cancel')}</button></div></div>`);drawMonsterRoster();$('cancelSynthesis').onclick=()=>renderSynthesisMaterials(preview.baseId,new Set(preview.materialIds),preview.stones);$('confirmSynthesis').onclick=()=>{const tx=commitStateTransaction('synthesis',()=>{S=Monsters.synthesize(S,preview,MASTER_DATA);syncPartyHp(true)});if(!tx.ok){syncPartyHp(true);localeToast(tx.kind==='save'?'save.transactionFailure':'synthesis.changed');renderSynthesisMaterials(preview.baseId,new Set());return;}presentSynthesis(preview,preview.baseId)};
   }
 
   function damageMonsterTarget(e,hit){

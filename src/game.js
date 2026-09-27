@@ -228,10 +228,92 @@
 
   // ---------- AUDIO ----------
   let noiseBuffer=null, musicMode='title', musicDelay=null, musicDelayGain=null, lastBaseMusicMode='title';
+  let toneMusicReady=false,toneMusicInitPromise=null,toneBus=null,toneChorus=null,toneReverb=null,toneWidener=null,toneCompressor=null,toneLimiter=null,toneArp=null,toneBass=null,toneLead=null,tonePad=null,toneKick=null,toneSnare=null,toneHat=null,toneSnareFilter=null,toneHatFilter=null;
   let musicAssetTracks=[],musicAssetActive=null,musicAssetMode=null,musicAssetUsing=false,musicAssetToken=0,audioResumeBound=false;
   function productionMusicConfig(mode){const cfg=MASTER_DATA.audio?.assets?.[mode];return cfg&&typeof cfg.src==='string'&&cfg.src?cfg:null}
   function assetMusicVolume(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;return S.settings.sound?value('masterVolume',.56)*value('bgmVolume',.24):0}
   function applyAssetMusicVolume(){const base=assetMusicVolume();for(const track of musicAssetTracks)track.volume=clamp(base*Number(track._fade??0),0,1)}
+  function toneMusicVolume(){return assetMusicVolume()}
+  function applyToneMusicVolume(){
+    if(!toneBus)return;
+    const value=toneMusicVolume();
+    try{toneBus.gain.rampTo(value,.08)}catch{toneBus.gain.value=value}
+  }
+  function disposeToneMusic(){
+    const nodes=[toneArp,toneBass,toneLead,tonePad,toneKick,toneSnare,toneHat,toneSnareFilter,toneHatFilter,toneBus,toneChorus,toneReverb,toneWidener,toneCompressor,toneLimiter];
+    for(const node of nodes){try{node?.dispose?.()}catch{}}
+    toneMusicReady=false;toneMusicInitPromise=null;
+    toneBus=toneChorus=toneReverb=toneWidener=toneCompressor=toneLimiter=toneArp=toneBass=toneLead=tonePad=toneKick=toneSnare=toneHat=toneSnareFilter=toneHatFilter=null;
+    document.documentElement.dataset.bgmEngine='native';
+  }
+  function initToneMusic(){
+    if(toneMusicReady)return true;
+    const T=globalThis.Tone;if(!T){document.documentElement.dataset.bgmEngine='native';return false;}
+    if(!toneMusicInitPromise){
+      toneMusicInitPromise=(async()=>{
+        try{
+          toneLimiter=new T.Limiter(-1).toDestination();
+          toneCompressor=new T.Compressor({threshold:-18,ratio:3,attack:.004,release:.16}).connect(toneLimiter);
+          toneWidener=new T.StereoWidener(.62).connect(toneCompressor);
+          toneReverb=new T.Reverb({decay:2.2,preDelay:.012,wet:.16});
+          await toneReverb.ready;
+          toneReverb.connect(toneWidener);
+          toneChorus=new T.Chorus(2.6,2.8,.18).start();
+          toneChorus.wet.value=.14;
+          toneChorus.connect(toneReverb);
+          toneBus=new T.Gain(0).connect(toneChorus);
+          toneArp=new T.PolySynth(T.Synth,{oscillator:{type:'square'},envelope:{attack:.004,decay:.08,sustain:.16,release:.12}}).connect(toneBus);
+          toneBass=new T.MonoSynth({oscillator:{type:'sawtooth'},filter:{Q:1,type:'lowpass',rolloff:-24},envelope:{attack:.006,decay:.12,sustain:.34,release:.16},filterEnvelope:{attack:.004,decay:.14,sustain:.12,release:.12,baseFrequency:110,octaves:2.8}}).connect(toneBus);
+          toneLead=new T.PolySynth(T.FMSynth,{harmonicity:2,modulationIndex:3.2,oscillator:{type:'sine'},modulation:{type:'triangle'},envelope:{attack:.008,decay:.08,sustain:.26,release:.18},modulationEnvelope:{attack:.01,decay:.12,sustain:.12,release:.2}}).connect(toneBus);
+          tonePad=new T.PolySynth(T.Synth,{oscillator:{type:'triangle'},envelope:{attack:.12,decay:.2,sustain:.42,release:.55}}).connect(toneBus);
+          toneKick=new T.MembraneSynth({pitchDecay:.035,octaves:6,oscillator:{type:'sine'},envelope:{attack:.001,decay:.18,sustain:0,release:.08}}).connect(toneBus);
+          toneSnareFilter=new T.Filter(1200,'highpass').connect(toneBus);
+          toneSnare=new T.NoiseSynth({noise:{type:'white'},envelope:{attack:.001,decay:.12,sustain:0,release:.06}}).connect(toneSnareFilter);
+          toneHatFilter=new T.Filter(6200,'highpass').connect(toneBus);
+          toneHat=new T.NoiseSynth({noise:{type:'white'},envelope:{attack:.001,decay:.035,sustain:0,release:.02}}).connect(toneHatFilter);
+          toneMusicReady=true;
+          applyToneMusicVolume();
+          document.documentElement.dataset.bgmEngine='tone';
+        }catch{disposeToneMusic()}
+      })();
+    }
+    return false;
+  }
+  function releaseToneMusic(){
+    if(!toneMusicReady)return;
+    try{toneArp?.releaseAll?.();toneLead?.releaseAll?.();tonePad?.releaseAll?.();toneBass?.triggerRelease?.()}catch{}
+  }
+  function toneVelocity(vol){return clamp(Number(vol||0)*16,.06,.9)}
+  function musicNote(role,freq,dur,wave,vol,delay=0){
+    if(initToneMusic()&&toneMusicReady){
+      try{
+        const T=globalThis.Tone;
+        const time=T.now()+Math.max(0,delay);
+        const synth=role==='bass'?toneBass:role==='lead'?toneLead:role==='pad'?tonePad:toneArp;
+        synth?.triggerAttackRelease(freq,Math.max(.04,dur),time,toneVelocity(vol));
+        return;
+      }catch{disposeToneMusic()}
+    }
+    tone(freq,dur,wave,vol,musicGain,delay);
+  }
+  function musicKick(vol=.05){
+    if(initToneMusic()&&toneMusicReady){
+      try{toneKick.triggerAttackRelease('C1',.13,globalThis.Tone.now(),toneVelocity(vol));return}catch{disposeToneMusic()}
+    }
+    kick(vol);
+  }
+  function musicSnare(vol=.03){
+    if(initToneMusic()&&toneMusicReady){
+      try{toneSnare.triggerAttackRelease(.1,globalThis.Tone.now(),toneVelocity(vol));return}catch{disposeToneMusic()}
+    }
+    snare(vol);
+  }
+  function musicHat(vol=.012){
+    if(initToneMusic()&&toneMusicReady){
+      try{toneHat.triggerAttackRelease(.03,globalThis.Tone.now(),toneVelocity(vol));return}catch{disposeToneMusic()}
+    }
+    hat(vol);
+  }
   function initMusicAssets(){
     if(musicAssetTracks.length||typeof Audio==='undefined')return;
     musicAssetTracks=[new Audio(),new Audio()];
@@ -274,9 +356,10 @@
   }
   function resumeAudioPlayback(){
     try{if(audioCtx?.state==='suspended')audioCtx.resume().catch(()=>{})}catch{}
+    try{globalThis.Tone?.start?.().then(()=>initToneMusic()).catch(()=>{})}catch{}
     if(musicAssetUsing&&musicAssetActive?.paused)musicAssetActive.play().catch(()=>{musicAssetUsing=false;musicAssetMode=null;});
   }
-  function setMusicMode(mode){const changed=musicMode!==mode;if(changed)musicStep=0;musicMode=mode;if(!['victory','equip','shop','synthesis','story'].includes(mode))lastBaseMusicMode=mode;if(audioCtx&&changed)void playMusicAsset(mode)}
+  function setMusicMode(mode){const changed=musicMode!==mode;if(changed){musicStep=0;releaseToneMusic();}musicMode=mode;if(!['victory','equip','shop','synthesis','story'].includes(mode))lastBaseMusicMode=mode;if(audioCtx&&changed)void playMusicAsset(mode)}
 
   function initAudio(){
     if(audioCtx) return;
@@ -285,7 +368,7 @@
     master=audioCtx.createGain();master.connect(audioCtx.destination);
     musicGain=audioCtx.createGain();musicGain.connect(master);
     sfxGain=audioCtx.createGain();sfxGain.connect(master);applyAudioSettings();
-    initMusicAssets();void playMusicAsset(musicMode);if(!audioResumeBound){audioResumeBound=true;window.addEventListener('pointerdown',resumeAudioPlayback,{passive:true});window.addEventListener('pageshow',resumeAudioPlayback);document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAudioPlayback()});}
+    initMusicAssets();initToneMusic();try{globalThis.Tone?.start?.().then(()=>initToneMusic()).catch(()=>{})}catch{}void playMusicAsset(musicMode);if(!audioResumeBound){audioResumeBound=true;window.addEventListener('pointerdown',resumeAudioPlayback,{passive:true});window.addEventListener('pageshow',resumeAudioPlayback);document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAudioPlayback()});}
 
     // Small echo bus for a more produced chiptune sound.
     musicDelay=audioCtx.createDelay(.6); musicDelay.delayTime.value=.19;
@@ -311,48 +394,48 @@
       const arpPattern = config.arpPattern || [0,1,2,3];
       const arp=chord[arpPattern[step%4]]+(step>=8?12:0);
 
-      if(section!=='intro'||step%2===0)tone(root*Math.pow(2,arp/12),.18,config.arpWave,config.arpVol*(section==='intro'?.65:1),musicGain);
+      if(section!=='intro'||step%2===0)musicNote('arp',root*Math.pow(2,arp/12),.18,config.arpWave,config.arpVol*(section==='intro'?.65:1));
       if(step%4===0){
-        tone(root/2,.48,'triangle',config.bassVol,musicGain);
-        tone(root*Math.pow(2,3/12),.55,'sine',.012,musicGain,.01);
-        tone(root*Math.pow(2,7/12),.55,'sine',.010,musicGain,.02);
+        musicNote('bass',root/2,.48,'triangle',config.bassVol);
+        musicNote('pad',root*Math.pow(2,3/12),.55,'sine',.012,.01);
+        musicNote('pad',root*Math.pow(2,7/12),.55,'sine',.010,.02);
       }
       if(section!=='intro'&&step%2===0){
         const n=config.lead[section==='B'?(14-step+16)%16:section==='variation'?(step+4)%16:step]+(section==='variation'&&bar===3?12:0);
-        tone(config.root*Math.pow(2,n/12),.24,config.leadWave,config.leadVol,musicGain);
-        if(section==='B'&&step%4===0)tone(config.root*Math.pow(2,(n-5)/12),.36,'triangle',config.leadVol*.3,musicGain,.075);
+        musicNote('lead',config.root*Math.pow(2,n/12),.24,config.leadWave,config.leadVol);
+        if(section==='B'&&step%4===0)musicNote('pad',config.root*Math.pow(2,(n-5)/12),.36,'triangle',config.leadVol*.3,.075);
       }
-      if(config.pad && step%8===0){ tone(root*Math.pow(2,config.pad/12),.72,'triangle',.012,musicGain,.02); }
+      if(config.pad && step%8===0){ musicNote('pad',root*Math.pow(2,config.pad/12),.72,'triangle',.012,.02); }
 
-      if(section==='intro'){if(step===0)kick(.025);}
+      if(section==='intro'){if(step===0)musicKick(.025);}
       else if(config.drums==='battle'){
-        if(step===0||step===8) kick(.055);
-        if(step===4||step===12) snare(.035);
-        if(step%2===1) hat(.013);
-        if(step===6||step===14) hat(.022);
+        if(step===0||step===8) musicKick(.055);
+        if(step===4||step===12) musicSnare(.035);
+        if(step%2===1) musicHat(.013);
+        if(step===6||step===14) musicHat(.022);
       }else if(config.drums==='boss'){
-        if(step===0||step===8) kick(.065);
-        if(step===4||step===12) snare(.042);
-        if(step%2===1) hat(.016);
-        if(step===2||step===6||step===10||step===14) hat(.022);
+        if(step===0||step===8) musicKick(.065);
+        if(step===4||step===12) musicSnare(.042);
+        if(step%2===1) musicHat(.016);
+        if(step===2||step===6||step===10||step===14) musicHat(.022);
       }else if(config.drums==='sparkle'){
-        if(step===0||step===8) kick(.038);
-        if(step===4||step===12) snare(.024);
-        if(step%2===1) hat(.011);
-        if(step===3||step===7||step===11||step===15) tone(root*2,.06,'sine',.012,musicGain);
+        if(step===0||step===8) musicKick(.038);
+        if(step===4||step===12) musicSnare(.024);
+        if(step%2===1) musicHat(.011);
+        if(step===3||step===7||step===11||step===15) musicNote('arp',root*2,.06,'sine',.012);
       }else if(config.drums==='mystic'){
-        if(step===0||step===8) kick(.034);
-        if(step===4||step===12) snare(.020);
-        if(step===2||step===10) hat(.010);
+        if(step===0||step===8) musicKick(.034);
+        if(step===4||step===12) musicSnare(.020);
+        if(step===2||step===10) musicHat(.010);
       }else if(config.drums==='victory'){
-        if(step===0||step===8) kick(.050);
-        if(step===4||step===12) snare(.032);
-        if(step%2===1) hat(.012);
-        if(step===0||step===8) tone(root*2,.10,'triangle',.018,musicGain);
+        if(step===0||step===8) musicKick(.050);
+        if(step===4||step===12) musicSnare(.032);
+        if(step%2===1) musicHat(.012);
+        if(step===0||step===8) musicNote('lead',root*2,.10,'triangle',.018);
       }else{
-        if(step===0||step===8) kick(.032);
-        if(step===4||step===12) snare(.020);
-        if(step===3||step===11) hat(.010);
+        if(step===0||step===8) musicKick(.032);
+        if(step===4||step===12) musicSnare(.020);
+        if(step===3||step===11) musicHat(.010);
       }
       musicStep++;
     },tick);
@@ -1196,7 +1279,7 @@
   $('unfoldBattle').onclick=openFromClosed;$('foldHome').onclick=enterCloseMenu;$('unfoldHome').onclick=enterOpenMenu;
   $('nextJourney').onclick=()=>{if(S.run)runGateExpedition(S.run.kind,true);else if(currentStoryStage())showStoryEventAndStart(currentStoryStage().stage_id);else renderGates()};
   $('retreatBtn').onclick=()=>{if(!confirm(t('battle.retreatConfirm')))return;attackReadyToken++;defenseToken++;phase='idle';encounterSettled=true;patternBeat=null;S.run=null;activeGate=null;saveGame();$('rewardOverlay').classList.remove('show');$('closedMenu').classList.remove('show');enterOpenMenu()};
-  function applyAudioSettings(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;if(master)master.gain.value=S.settings.sound?value('masterVolume',.56):0;if(musicGain)musicGain.gain.value=value('bgmVolume',.24);if(sfxGain)sfxGain.gain.value=value('seVolume',.5);applyAssetMusicVolume();}
+  function applyAudioSettings(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;if(master)master.gain.value=S.settings.sound?value('masterVolume',.56):0;if(musicGain)musicGain.gain.value=value('bgmVolume',.24);if(sfxGain)sfxGain.gain.value=value('seVolume',.5);applyAssetMusicVolume();applyToneMusicVolume();}
   let settingsOriginalLanguage=null;
   function updateLocalizedUi(){
     I18n.apply(document);

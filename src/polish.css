@@ -137,3 +137,107 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
 #battleScreen>#closedMenu.openRecovery.show{display:flex}
 #battleScreen>#closedMenu.openRecovery .closedCard{width:min(520px,92%);max-width:520px;margin:0;padding:24px;background:#173b3f;box-shadow:0 18px 45px #00171dcc}
 @media(max-width:600px){#battleScreen>#closedMenu.openRecovery{padding:6px}#battleScreen>#closedMenu.openRecovery .closedCard{width:96%;padding:12px 8px}.openRecovery .itemButtons{margin:10px 0}.openRecovery .itemBtn{min-height:42px}}
+
+
+/* Battle UI v5: timing-first layout, face HUD, ripple feedback, cosmetic open-only guard door. */
+#battleWeapon{display:none!important}
+#encounterTrack{display:none!important}
+#bossHpBox{display:none!important}
+#battleAction{display:none!important}
+#timingLabel{display:none!important}
+#app[data-phase="attack"] #battleSub,#app[data-phase="attackArmed"] #battleSub{display:none!important}
+
+#battleHeader{inset:14px 22px auto!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:18px!important;pointer-events:none}
+#playerBox{width:390px!important;max-width:390px!important;padding:10px 12px!important;background:#0b2831e8!important;box-sizing:border-box}
+#stageBox{width:auto!important;max-width:250px!important;padding:10px 14px!important;text-align:left!important;background:#0b2831e8!important;box-sizing:border-box}
+#battleStage{font-size:14px!important}#battleEncounter,#battleCarry{font-size:10px!important}
+#playerBox>.barline:has(#rankXpFill){margin-top:6px!important}
+
+#battlePartner.monsterPartyHud{display:grid!important;grid-template-columns:1fr!important;gap:5px!important;width:100%!important;margin:7px 0 0!important}
+#battlePartner .monsterHud{height:52px!important;padding:4px 6px!important;gap:7px!important;border:1px solid #8fa48d!important;background:#0d3035ed!important}
+#battlePartner .allyFaceCanvas{display:block!important;width:44px!important;height:44px!important;flex:0 0 44px!important;border:1px solid #d6c88d88;background:#102f36;object-fit:cover;image-rendering:auto!important}
+#battlePartner .allyHudTop{grid-template-columns:minmax(0,1fr) auto auto!important;gap:6px!important}
+#battlePartner .allyHudTop b{font-size:10px!important}
+#battlePartner .allyHudTop .allyMeta,#battlePartner .allyHudTop small{font-size:8px!important}
+#battlePartner .allyHp{height:5px!important;margin:3px 0 2px!important}
+#battlePartner .skillGauge{height:9px!important;margin:0!important}
+#battlePartner .skillGauge>em{font-size:6px!important;line-height:9px!important}
+
+#enemyArea{left:410px!important;right:110px!important;top:150px!important;bottom:220px!important;gap:34px!important;align-items:flex-end!important;justify-content:center!important}
+.enemyCard,.enemyCard.compact{width:210px!important;flex:0 1 210px!important;max-width:210px!important;min-width:150px!important;background:transparent!important}
+.enemyCard:not(.bossCard) .enemySpriteWrap{height:178px!important}
+.enemyCard:not(.bossCard) canvas{width:168px!important;height:168px!important;max-width:168px!important;max-height:168px!important}
+.enemyCard.bossCard{width:260px!important;max-width:260px!important;flex-basis:260px!important}
+.enemyCard.bossCard .enemySpriteWrap{height:220px!important}
+.enemyCard.bossCard canvas{width:210px!important;height:210px!important;max-width:210px!important;max-height:210px!important}
+#battleScreen:has(.enemyCard.kind-E018) #enemyArea,#battleScreen:has(.enemyCard.kind-E027) #enemyArea,#battleScreen:has(.enemyCard.kind-E028) #enemyArea{top:150px!important;align-items:flex-end!important}
+#battleScreen .enemyCard.kind-E018 .enemySpriteWrap,#battleScreen .enemyCard.kind-E027 .enemySpriteWrap,#battleScreen .enemyCard.kind-E028 .enemySpriteWrap{height:178px!important}
+#battleScreen .enemyCard.kind-E018 canvas,#battleScreen .enemyCard.kind-E027 canvas,#battleScreen .enemyCard.kind-E028 canvas{width:168px!important;height:168px!important;max-width:168px!important;max-height:168px!important}
+.enemyCard .eName{display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;min-height:27px;padding:4px 7px!important;font-size:12px!important;background:#0c2a33e8!important}
+.enemyCard .eName>.attr{position:static!important;display:inline-grid!important;place-items:center!important;min-width:18px!important;min-height:18px!important;padding:0!important;background:transparent!important}
+.enemyCard .ehp{margin:5px 9px 0!important;height:6px!important}
+.enemyCard .ehpText{margin:3px 0 0!important;font-size:10px!important;text-align:center!important}
+.enemyCard .eMeta{display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;min-height:24px;padding:3px 6px!important;font-size:10px!important;background:#0c2a33d9!important}
+.enemyCard .turnBadge,.enemyCard:not(.bossCard) .turnBadge{position:static!important;display:inline!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;font-size:10px!important;color:#dbe5d3!important}
+.enemyCard .turnBadge.ready{color:#ffe19a!important}
+.enemyCard .turnBadge b{font-size:11px!important}
+
+#battleMessage{left:50%!important;right:auto!important;width:auto!important;min-width:0!important;bottom:126px!important;translate:-50% 0!important;font-size:26px!important;letter-spacing:.12em!important;text-shadow:0 3px 12px #001a24!important;white-space:nowrap}
+#battleSub{left:50%!important;width:min(560px,70vw)!important;bottom:106px!important;translate:-50% 0!important;font-size:11px!important}
+#timingBox{position:absolute!important;left:50%!important;right:auto!important;bottom:58px!important;width:min(760px,62vw)!important;translate:-50% 0!important;margin:0!important;padding:0!important;visibility:hidden;opacity:0;pointer-events:none;z-index:31!important}
+#timingBox.show{visibility:visible!important;opacity:1!important}
+#timingTrack{height:24px!important;border:1px solid #d7c27e!important;box-shadow:0 0 0 3px #07283399,0 5px 20px #001a24aa!important}
+#guardTimeline{position:absolute!important;left:50%!important;right:auto!important;bottom:64px!important;width:min(660px,55vw)!important;translate:-50% 0!important;margin:0!important;height:14px!important;z-index:31!important}
+#retreatBtn{position:absolute!important;left:auto!important;right:18px!important;bottom:16px!important;z-index:50!important}
+
+.battleTapRipple{position:absolute;width:18px;height:18px;border:2px solid #dffdf5;border-radius:50%;box-shadow:0 0 0 4px #61d8cf33,0 0 18px #f0d27c88;translate:-50% -50%;scale:.45;opacity:.9;pointer-events:none;z-index:70;animation:battleTapRipple .36s ease-out forwards}
+@keyframes battleTapRipple{0%{scale:.45;opacity:.9}70%{scale:1.8;opacity:.45}100%{scale:2.35;opacity:0}}
+
+#openOnlyGuardDoor{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:43;display:none}
+#openOnlyGuardDoor.play{display:block}
+#openOnlyGuardDoor i{position:absolute;top:0;bottom:0;width:51%;background:linear-gradient(90deg,#082b34f4,#123d43f8);border:1px solid #d5c48866;box-shadow:inset 0 0 40px #00191fcc}
+#openOnlyGuardDoor i:first-child{left:0;translate:-102% 0;animation:guardDoorLeft .43s ease-in-out forwards}
+#openOnlyGuardDoor i:last-child{right:0;translate:102% 0;animation:guardDoorRight .43s ease-in-out forwards}
+@keyframes guardDoorLeft{0%{translate:-102% 0}62%{translate:0 0}100%{translate:0 0;opacity:.96}}
+@keyframes guardDoorRight{0%{translate:102% 0}62%{translate:0 0}100%{translate:0 0;opacity:.96}}
+
+@media(max-width:1100px){
+ #playerBox{width:330px!important;max-width:330px!important}
+ #enemyArea{left:340px!important;right:30px!important;gap:18px!important}
+ .enemyCard,.enemyCard.compact{width:170px!important;flex-basis:170px!important;max-width:170px!important}
+ .enemyCard:not(.bossCard) .enemySpriteWrap{height:142px!important}
+ .enemyCard:not(.bossCard) canvas{width:136px!important;height:136px!important;max-width:136px!important;max-height:136px!important}
+ #battleScreen .enemyCard.kind-E018 .enemySpriteWrap,#battleScreen .enemyCard.kind-E027 .enemySpriteWrap,#battleScreen .enemyCard.kind-E028 .enemySpriteWrap{height:142px!important}
+ #battleScreen .enemyCard.kind-E018 canvas,#battleScreen .enemyCard.kind-E027 canvas,#battleScreen .enemyCard.kind-E028 canvas{width:136px!important;height:136px!important;max-width:136px!important;max-height:136px!important}
+ #timingBox{width:min(700px,72vw)!important}
+}
+@media(max-width:600px){
+ #battleHeader{inset:5px!important;display:flex!important;gap:5px!important}
+ #playerBox{width:60%!important;max-width:60%!important;padding:4px!important}
+ #stageBox{width:38%!important;max-width:38%!important;padding:5px!important}
+ #battlePartner .monsterHud{height:32px!important;padding:2px 3px!important;gap:3px!important}
+ #battlePartner .allyFaceCanvas{display:block!important;width:28px!important;height:28px!important;flex-basis:28px!important}
+ #battlePartner .allyHudTop{grid-template-columns:minmax(0,1fr) auto!important;gap:2px!important}
+ #battlePartner .allyHudTop small{grid-column:1 / -1;font-size:5px!important;line-height:1!important}
+ #battlePartner .allyHudTop b{font-size:6px!important}.allyHudTop .allyMeta{font-size:5px!important}
+ #battlePartner .allyHp{height:2px!important;margin:1px 0!important}
+ #battlePartner .skillGauge{height:5px!important}#battlePartner .skillGauge>em{font-size:4px!important;line-height:5px!important}
+ #enemyArea{left:2%!important;right:2%!important;top:118px!important;bottom:170px!important;gap:4px!important}
+ .enemyCard,.enemyCard.compact{width:31%!important;min-width:0!important;max-width:31%!important;flex:0 1 31%!important}
+ .enemyCard:not(.bossCard) .enemySpriteWrap,#battleScreen .enemyCard.kind-E018 .enemySpriteWrap,#battleScreen .enemyCard.kind-E027 .enemySpriteWrap,#battleScreen .enemyCard.kind-E028 .enemySpriteWrap{height:72px!important}
+ .enemyCard:not(.bossCard) canvas,#battleScreen .enemyCard.kind-E018 canvas,#battleScreen .enemyCard.kind-E027 canvas,#battleScreen .enemyCard.kind-E028 canvas{width:68px!important;height:68px!important;max-width:68px!important;max-height:68px!important}
+ .enemyCard.bossCard{width:62%!important;max-width:62%!important;flex-basis:62%!important}
+ .enemyCard.bossCard .enemySpriteWrap{height:96px!important}.enemyCard.bossCard canvas{width:92px!important;height:92px!important;max-width:92px!important;max-height:92px!important}
+ .enemyCard .eName{font-size:6px!important;padding:2px!important;min-height:14px!important;gap:2px!important}
+ .enemyCard .eName>.attr{min-width:9px!important;min-height:9px!important}
+ .enemyCard .ehp{height:3px!important;margin:2px 2px 0!important}
+ .enemyCard .ehpText{font-size:5px!important;margin-top:1px!important}
+ .enemyCard .eMeta{font-size:5px!important;gap:3px!important;min-height:12px!important;padding:1px!important}
+ .enemyCard .turnBadge,.enemyCard:not(.bossCard) .turnBadge{font-size:5px!important}.enemyCard .turnBadge b{font-size:6px!important}
+ #battleMessage{bottom:119px!important;font-size:15px!important}
+ #battleSub{bottom:104px!important;width:88%!important;font-size:7px!important}
+ #timingBox{bottom:62px!important;width:88%!important}
+ #timingTrack{height:18px!important}
+ #guardTimeline{bottom:64px!important;width:82%!important;height:11px!important}
+ #retreatBtn{right:5px!important;bottom:5px!important}
+}

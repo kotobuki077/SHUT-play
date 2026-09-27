@@ -6,11 +6,11 @@
 <title>SHUT — The Gatebound Journey</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="src/game.css?v=20260926-ios-gacha-final"><link rel="stylesheet" href="src/device.css?v=20260927-stable-timing-layout"><link rel="stylesheet" href="src/experience.css">
-<link rel="stylesheet" href="src/monsters.css"><link rel="stylesheet" href="src/mikado.css"><link rel="stylesheet" href="src/title.css"><link rel="stylesheet" href="src/polish.css?v=20260928-battle-ui-v6"><link rel="stylesheet" href="src/management.css"></head>
+<link rel="stylesheet" href="src/monsters.css"><link rel="stylesheet" href="src/mikado.css"><link rel="stylesheet" href="src/title.css"><link rel="stylesheet" href="src/polish.css?v=20260928-battle-focus-v7"><link rel="stylesheet" href="src/management.css"></head>
 <body>
 <div id="app" class="closedDevice">
   <div id="screenCurtain" aria-hidden="true"></div>
-  <button id="soundToggle" class="utility" data-i18n="settings.button" data-i18n-aria-label="settings.buttonAria">設定</button>
+  <button id="soundToggle" class="utility iconUtility" data-system-control data-i18n-aria-label="settings.buttonAria">⚙</button>
   <div id="dynamicIsland"></div>
   <div id="hingeLine"></div>
   <div id="uiStateBadge">OPEN MODE</div>
@@ -156,7 +156,7 @@
   <section id="battleScreen" class="screen">
     <div id="battleHeader">
       <div id="playerBox" class="glass">
-        <div class="rankHudRow"><span id="battleRank">RANK 1</span><div class="rankHudTrack"><div id="rankXpFill" class="fill xp"></div></div><span id="rankXpText">0/100</span><span id="battleWeapon" hidden></span></div>
+        <div class="rankHudRow"><span id="battleRank">RANK 1</span><span id="battleWeapon" hidden></span></div>
         <div id="battlePartner"></div>
         <div class="legacyPlayerHp" aria-hidden="true"><div id="playerHpFill"></div><span id="playerHpText">100/100</span></div>
       </div>
@@ -194,7 +194,7 @@
     <div id="guardTargetRing"><span data-i18n="battle.closeHere"></span></div><div id="dangerRing"></div><div id="closeNow" data-i18n="battle.closeNow"></div>
     <div id="battleMessage"></div><div id="battleSub" data-i18n="battle.readyIdle"></div>
     <div id="combatFeedback" aria-live="polite"></div>
-    <button id="battleAction" class="btn primary"></button><button id="retreatBtn" class="utility" data-i18n="battle.retreat"></button>
+    <button id="battleAction" class="btn primary"></button><button id="retreatBtn" class="utility iconUtility" data-system-control data-i18n-aria-label="battle.retreat">↩</button>
     <div id="guardTimeline"><div id="guardProgress"></div><span data-i18n="battle.closeTimeline"></span></div>
 
     <div id="closedMenu">
@@ -247,7 +247,7 @@
   </div>
 </div>
 
-<script async src="vendor/tone-15.1.22.js"></script><script src="locales/ja.js"></script><script src="locales/en.js"></script><script src="src/i18n.js"></script><script src="src/master-data.js"></script><script src="src/monsters.js"></script><script src="src/combat.js"></script><script src="src/systems.js"></script><script src="src/narrative.js"></script><script src="src/device.js?v=20260928-open-only-raceproof"></script><script src="src/save.js?v=20260927-save-migration-resilience"></script><script src="src/art.js"></script><script src="src/mikado.js"></script><script>SHUTArt.ready.then(()=>{const s=document.createElement("script");s.src="src/game.js?v=20260928-battle-ui-v6";document.body.append(s)})</script>
+<script async src="vendor/tone-15.1.22.js"></script><script src="locales/ja.js"></script><script src="locales/en.js"></script><script src="src/i18n.js"></script><script src="src/master-data.js"></script><script src="src/monsters.js"></script><script src="src/combat.js"></script><script src="src/systems.js"></script><script src="src/narrative.js"></script><script src="src/device.js?v=20260928-open-only-raceproof"></script><script src="src/save.js?v=20260927-save-migration-resilience"></script><script src="src/art.js"></script><script src="src/mikado.js"></script><script>SHUTArt.ready.then(()=>{const s=document.createElement("script");s.src="src/game.js?v=20260928-battle-focus-v7";document.body.append(s)})</script>
 </body>
 </html>
 

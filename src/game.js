@@ -799,8 +799,10 @@
     if(!resume)syncPartyHp(true);
     const resumeHp=S.hp,resumeSlots=S.run?.slots??3;
     if(!resume&&!Systems.gateAvailable(kind,S,MASTER_DATA))return;
-    const cfg=MASTER_DATA.expeditions[kind];if(!resume){if(cfg.limited)S.gateAttempts[kind]--;S.run={kind,floor:kind==='TOWER'?Math.floor(S.records.tower/5)*5+1:1,bank:0};if(S.run.floor>10)S.run.floor=1;}
-    activeGate=kind;const unlocked=masterStages.filter(st=>S.stageClears[st.stage_id]&&st.stage_type!=='forced_loss');const base=unlocked.at(-1)||masterStages[0];
+    const cfg=MASTER_DATA.expeditions[kind];if(!resume){if(cfg.limited)S.gateAttempts[kind]--;S.run={kind,floor:kind==='TOWER'?Math.floor(S.records.tower/5)*5+1:1,bank:0,summary:{gold:0,goldCredited:0,entries:[],monsterExp:0,monsterExpCredited:0,expChanges:[]}};if(S.run.floor>10)S.run.floor=1;}
+    S.run.summary=S.run.summary||{gold:0,goldCredited:0,entries:[],monsterExp:0,monsterExpCredited:0,expChanges:[]};
+    rewardGold=Number(S.run.summary.gold||0);rewardGoldCredited=Number(S.run.summary.goldCredited||0);rewardEntries=Array.isArray(S.run.summary.entries)?structuredClone(S.run.summary.entries):[];rewardDrops=[];rewardMonsterExp=Number(S.run.summary.monsterExp||0);rewardMonsterExpCredited=Number(S.run.summary.monsterExpCredited||0);rewardExpChanges=Array.isArray(S.run.summary.expChanges)?structuredClone(S.run.summary.expChanges):[];
+    activeGate=kind;gateFinished=false;const unlocked=masterStages.filter(st=>S.stageClears[st.stage_id]&&st.stage_type!=='forced_loss');const base=unlocked.at(-1)||masterStages[0];
     activeStageId='GATE_'+kind;activeStageData=JSON.parse(JSON.stringify(base));activeStageData.stage_id=activeStageId;activeStageData.name=cfg.name;activeStageData.stage_type='expedition';activeStageData.encounters={count:cfg.count||999999,bosses:[]};
     encounterMax=cfg.count||999999;encounter=S.run.floor;carrySlots=resume?resumeSlots:3;S.run.slots=carrySlots;pendingItem=null;if(!resume)skillCharge=Object.fromEntries(S.party.map(id=>[id,0]));S.hp=resume?Math.max(1,Math.min(playerMaxHp(),resumeHp)):playerMaxHp();$('modal').classList.remove('show');setDeviceClosed(false);show('battleScreen');saveGame();startEncounter();
   }
@@ -961,7 +963,7 @@
   function startEncounter(){
     clearTimeout(toast._timer);$('uiToast').classList.remove('show');$('combatFeedback').classList.remove('show');document.querySelectorAll('.monsterDrop,.monsterAttackSpark').forEach(node=>node.remove());
     defenseToken++;attackReadyToken++;encounterSettled=false;patternBeat=null;defenseQueue=[];
-    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter);targetId=enemies[0].id;if(activeGate){rewardGold=0;rewardGoldCredited=0;rewardDrops=[];rewardEntries=[];rewardMonsterExp=0;rewardMonsterExpCredited=0;rewardExpChanges=[];}opened=true;phase='attackReady';setMusicMode(activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');updateBattleHeader();updateBossBar();renderEnemies();
+    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter);targetId=enemies[0].id;rewardDrops=[];opened=true;phase='attackReady';setMusicMode(activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');updateBattleHeader();updateBossBar();renderEnemies();
     $('closedMenu').classList.remove('show');$('rewardOverlay').classList.remove('show');
     enemies.forEach(e=>{if(e.masterId)S.codex.enemies[e.masterId]=true});evaluateQuests();setBattleCopy(enemies.some(e=>e.boss)?'battle.bossBattle':'battle.encounter','battle.encounterHint',()=>({instruction:attackInstruction()}));
     $('app').style.setProperty('--world','url("'+new URL(MASTER_DATA.presentation.backgrounds[activeStageData.world_id],location.href).href+'")');
@@ -1143,7 +1145,7 @@
   }
   function finishEncounter(){
     if(encounterSettled)return;encounterSettled=true;attackReadyToken++;defenseToken++;battleInputLocked=true;stageStats.clear=true;
-    if(activeGate){const expResult=Monsters.grantBattleExp(S,[...S.party],rewardMonsterExp,MASTER_DATA);S=expResult.state;rewardExpChanges=expResult.changes;finishExpeditionBattle();return;}
+    if(activeGate){creditGateEncounterRewards();finishExpeditionBattle();return;}
     creditStoryEncounterRewards();healParty(MASTER_DATA.balance.storyRestRate);resetDanger();$('timingBox').classList.remove('show');$('bossHpBox').classList.remove('show');saveGame();updateBattleHeader();
     if(encounter<encounterMax){phase='transition';const timing='after_battle'+encounter;playEvents(activeStageId,timing,()=>{encounter++;startEncounter()});return;}
     phase='reward';setMusicMode('victory');sfx('win');updateHome();
@@ -1273,13 +1275,33 @@
     const st=activeStageData;if(!st.missions)return;const saved=S.stageMissions[st.stage_id]||{};
     st.missions.forEach(m=>{if(saved[m.key]||!stageStats[m.key])return;saved[m.key]=true;addGift(st.name+' · '+m.name,'gold',m.reward)});S.stageMissions[st.stage_id]=saved;
   }
+  function persistGateSummary(){
+    if(!S.run)return;S.run.summary={gold:rewardGold,goldCredited:rewardGoldCredited,entries:structuredClone(rewardEntries),monsterExp:rewardMonsterExp,monsterExpCredited:rewardMonsterExpCredited,expChanges:structuredClone(rewardExpChanges)};
+  }
+  function creditGateEncounterRewards(){
+    const pendingGold=Math.max(0,rewardGold-rewardGoldCredited);if(pendingGold){addWallet('gold',pendingGold,'gate battle reward');rewardGoldCredited=rewardGold;}
+    const pendingExp=Math.max(0,rewardMonsterExp-rewardMonsterExpCredited);if(pendingExp){const expResult=Monsters.grantBattleExp(S,[...S.party],pendingExp,MASTER_DATA);S=expResult.state;rewardMonsterExpCredited=rewardMonsterExp;mergeRewardExpChanges(expResult.changes);}
+    persistGateSummary();
+  }
+  function appendGateClearRewards(cfg){
+    const r=cfg.reward||{},clearGold=Number(r.gold||0);
+    if(clearGold){addWallet('gold',clearGold,'gate clear reward');rewardGold+=clearGold;rewardGoldCredited=rewardGold;}
+    S.materials.bossCore+=r.core||0;
+    if(r.gateKeys){addWallet('gateKeys',Number(r.gateKeys),'gate clear keys');rewardEntries.push({kind:'key',label:t('battle.keysDrop',{amount:Number(r.gateKeys)})});}
+    if(r.rankXp)addRankXp(r.rankXp);
+    if(r.items)for(const [key,amount]of Object.entries(r.items)){S.items[key]=Math.max(0,Number(S.items[key]||0)+Number(amount||0));rewardEntries.push({kind:'item',label:`${itemDefs[key]?.name||key} ×${amount}`});}
+    if(r.monsters)for(const reward of r.monsters){const def=Monsters.definition(reward.monsterId,MASTER_DATA),wasOwned=S.monsters.some(x=>x.monsterId===reward.monsterId);for(let i=0;i<reward.amount;i++)S.monsters.push(Monsters.create(reward.monsterId,crypto.randomUUID(),MASTER_DATA));rewardEntries.push({kind:'egg',label:`${localizedDataName(def)} ×${reward.amount}`,rarity:def.rarity,monsterId:reward.monsterId,isNew:!wasOwned});}
+  }
   function finishExpeditionBattle(){
-    const cfg=MASTER_DATA.expeditions[activeGate];phase='reward';resetDanger();$('timingBox').classList.remove('show');addWallet('gold',rewardGold,'gate battle reward');gateFinished=activeGate!=='ENDLESS'&&encounter>=encounterMax;
-    if(activeGate==='TOWER')S.records.tower=Math.max(S.records.tower,encounter);if(activeGate==='ENDLESS'){S.records.endless=Math.max(S.records.endless,encounter);addWallet('gold',Number(cfg.reward.gold||0),'endless reward');}
-    if(gateFinished){const r=cfg.reward;addWallet('gold',Number(r.gold||0),'gate clear reward');S.materials.bossCore+=r.core||0;addWallet('gateKeys',Number(r.gateKeys||0),'gate clear keys');if(r.rankXp)addRankXp(r.rankXp);if(r.items)for(const [key,amount]of Object.entries(r.items))S.items[key]=Math.max(0,Number(S.items[key]||0)+Number(amount||0));if(r.monsters)for(const m of r.monsters)for(let i=0;i<m.amount;i++)S.monsters.push(Monsters.create(m.monsterId,crypto.randomUUID(),MASTER_DATA));bumpQuest('gate_clear:'+activeGate,1);if(activeGate==='BOSSRUSH'){bumpQuest('boss_rush_clear',1);bumpQuest('boss_rematch_win',1);}S.run=null;}
-    else if(S.run)S.run.floor=encounter+1;
-    const title=gateFinished?t('battle.gateClear'):activeGate==='TOWER'?t('battle.floorClear',{floor:encounter}):t('battle.gateFloorClear',{floor:encounter}),extra=`<p class="resultNote">${gateFinished?t('battle.expeditionReward'):t('battle.rewardObtained')}</p>${gateFinished?'':`<button id="extractGate" class="btn secondary">${t('battle.extract')}</button>`}`;
-    renderRewardPresentation(title,cfg.name,gateFinished?t('battle.returnBase'):t('battle.deeper'),extra);if($('extractGate'))$('extractGate').onclick=()=>{S.run=null;activeGate=null;saveGame();$('rewardOverlay').classList.remove('show');enterOpenMenu()};saveGame();updateBattleHeader();
+    const cfg=MASTER_DATA.expeditions[activeGate];phase='transition';resetDanger();$('timingBox').classList.remove('show');gateFinished=activeGate!=='ENDLESS'&&encounter>=encounterMax;
+    if(activeGate==='TOWER')S.records.tower=Math.max(S.records.tower,encounter);
+    if(activeGate==='ENDLESS'){S.records.endless=Math.max(S.records.endless,encounter);const bonus=Number(cfg.reward.gold||0);if(bonus){addWallet('gold',bonus,'endless reward');rewardGold+=bonus;rewardGoldCredited=rewardGold;}}
+    if(gateFinished){
+      appendGateClearRewards(cfg);bumpQuest('gate_clear:'+activeGate,1);if(activeGate==='BOSSRUSH'){bumpQuest('boss_rush_clear',1);bumpQuest('boss_rematch_win',1);}
+      phase='reward';setMusicMode('victory');sfx('win');const finishedGate=activeGate;S.run=null;saveGame();updateBattleHeader();renderRewardPresentation(t('battle.gateClear'),cfg.name,t('battle.returnBase'),`<p class="resultNote">${t('battle.expeditionReward')}</p>`);activeGate=finishedGate;return;
+    }
+    if(S.run){S.run.floor=encounter+1;persistGateSummary();saveGame();}
+    encounter++;setTimeout(startEncounter,420);
   }
   function updateBattleAction(){
     $('app').dataset.phase=phase;

@@ -171,10 +171,23 @@
   let gachaMode='key', gachaStep=0, pendingPulls=[], gachaSelectedCount=null, gachaBusy=false;
   let encounter=1, enemies=[], targetId=null, phase='idle', opened=true;
   let attackStart=0, attackDuration=1750, meterRAF=null, defenseImpact=0, defenseEnemyId=null, attackReadyToken=0;
-  let defenseQueue=[], pendingItem=null, carrySlots=3, animFrame=0, rewardGold=0, rewardDrops=[], rewardEntries=[], rewardMonsterExp=0, rewardExpChanges=[];
-  const SPECIAL_RULES=MASTER_DATA.monsterRules.special,SKILL_MAX=Number(SPECIAL_RULES.maxSp),SKILL_GAIN=SPECIAL_RULES.gain,ULTIMATE_MULTIPLIER=Number(SPECIAL_RULES.defaultDamageMultiplier);
-  let skillCharge={};
+  let defenseQueue=[], pendingItem=null, carrySlots=3, animFrame=0, rewardGold=0, rewardGoldCredited=0, rewardDrops=[], rewardEntries=[], rewardMonsterExp=0, rewardMonsterExpCredited=0, rewardExpChanges=[];
+  const SPECIAL_RULES=MASTER_DATA.monsterRules.special,ULTIMATE_MULTIPLIER=Number(SPECIAL_RULES.defaultDamageMultiplier);
+  let skillCharge={},battleInputLocked=false;
   let closedReason='roundEnd', defenseToken=0;
+  function skillStrength(member){
+    const special=member?.special||{},type=special.type||'damage';
+    if(type==='heal')return 1+Number(special.healRate||.3);
+    if(type==='regen')return 1+Number(special.status?.rate||.08)*Number(special.status?.turns||3)*1.4;
+    if(type==='poison')return 1+Number(special.status?.rate||.06)*Number(special.status?.turns||3)*1.6;
+    if(type==='atk_down')return 1+(1-Number(special.status?.multiplier||.78))*1.8;
+    return Number(special.power||1);
+  }
+  function skillTurnsRequired(member){
+    const rarity=clamp(Number(member?.rarity||1),1,6),strength=skillStrength(member),rarityTurns=2+Math.floor((rarity-1)/2),powerTurns=strength>=1.45?2:strength>=1.2?1:0;
+    return clamp(rarityTurns+powerTurns,2,7);
+  }
+  function skillIsReady(member){return (skillCharge[member.id]||0)>=skillTurnsRequired(member)}
   let currentBattleCopy=null;
 
   let audioCtx=null, master=null, musicGain=null, sfxGain=null, musicTimer=null, musicStep=0;
@@ -213,6 +226,8 @@
     return t(isDesktop()?'battle.instructionDesktop':'battle.instructionTouch');
   }
   function localizedAttribute(value){const id={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'}[value];return id?t('battle.attributeName.'+id):value}
+  const attributeUiId={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'};
+  function attributeIcon(value,extra=''){const id=attributeUiId[value]||'wind',label=localizedAttribute(value);return `<span class="attrIcon attrIcon-${id} ${extra}" role="img" aria-label="${label}" title="${label}"></span>`}
   function localizedDataName(entry){return entry?.nameKey?t(entry.nameKey):entry?.name||''}
   function localizedDataDescription(entry){return entry?.descriptionKey?t(entry.descriptionKey):entry?.description||''}
   function displayedEnemyName(enemy){return enemy?.nameKey?t(enemy.nameKey):globalThis.SHUTMikadoPresentation?.matches(enemy)?t('mikado.name'):enemy.name}
@@ -868,14 +883,14 @@
     if(!boss){ box.classList.remove('show'); return; }
     box.classList.add('show');
     $('bossName').textContent=`BOSS ${boss.name}`;
-    $('bossAttr').textContent=t('battle.attribute',{attribute:localizedAttribute(boss.attr)});
-    $('bossAttr').style.color=attrColor[boss.attr];
+    $('bossAttr').innerHTML=attributeIcon(boss.attr);
+    $('bossAttr').style.color='';
     const hpPct=Math.max(0,boss.hp/boss.maxHp*100);
     const prevPct=Math.max(hpPct, Math.max(0,(boss.prevHp ?? boss.hp)/boss.maxHp*100));
     $('bossHpLag').style.width=`${prevPct}%`;
     $('bossHpFill').style.width=`${prevPct}%`;
     $('bossHpFill').style.setProperty('--hp-color',hpBarGradient(boss.attr));$('bossHpFill').style.background=hpBarGradient(boss.attr);
-    $('bossHpText').textContent=`${Math.max(0,Math.ceil(boss.hp))} / ${boss.maxHp}  (${Math.round(hpPct)}%)`;
+    $('bossHpText').textContent=`HP ${Math.max(0,Math.ceil(boss.hp))} / ${boss.maxHp}  (${Math.round(hpPct)}%)`;
     requestAnimationFrame(()=>{
       $('bossHpFill').style.width=`${hpPct}%`;
       setTimeout(()=>{ $('bossHpLag').style.width=`${hpPct}%`; },170);
@@ -906,18 +921,14 @@
       card.innerHTML=`
         <div class="enemySpriteWrap">${popupHTML}<canvas width="${canvasW}" height="${canvasH}" data-id="${e.id}"></canvas></div>
         <div class="eName">${e.boss?'BOSS ':''}${displayedEnemyName(e)}</div>
-        <div class="eMeta">${t('battle.enemyMeta',{attribute:localizedAttribute(e.attr),attack:e.atk})}${e.poison?` · ${t('battle.poison')}`:''}${e.attackDown?` · ${t('battle.atkDown')}`:''}</div>
-        <div class="attr" style="color:${attrColor[e.attr]}">${e.attr}</div>
+        <div class="eMeta">ATK ${e.atk}${e.poison?` · ${t('battle.poison')}`:''}${e.attackDown?` · ${t('battle.atkDown')}`:''}</div>
+        <div class="attr">${attributeIcon(e.attr)}</div>
         <div class="turnBadge ${ready?'ready':''}">${t(ready?'battle.enemyReady':'battle.enemyTurns')} <b>${ready?'!':e.turnsLeft}</b></div>
         ${e.boss?'':`<div class="ehp eBar"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div><div class="ehpText" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><span>HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}</span></div>`}`;
       card.onclick=(ev)=>{
         ev.stopPropagation();
         if(phase==='defense'){executeDefense();return;}
-        if(!e.dead && phase==='attack'){
-          targetId=e.id;
-          renderEnemies();
-          executeAttack(e.id);
-        }
+        if(!e.dead&&phase==='attack')executeAttack();
       };
       area.appendChild(card);
       drawEnemy(card.querySelector('canvas'),e,animFrame);
@@ -945,12 +956,12 @@
   function startStoryStage(stageId){
     discoveredThisStage=[];
     if(S.party.length!==3){localeToast('battle.partyRequired');return;}syncPartyHp(true);
-    activeGate=null;activeStageId=stageId;activeStageData=stageById[stageId];encounterMax=activeStageData.encounters.count;S.stage=masterStages.findIndex(x=>x.stage_id===stageId)+1;setDeviceClosed(false);show('battleScreen');encounter=1;carrySlots=3;S.hp=playerMaxHp();pendingItem=null;skillCharge=Object.fromEntries(S.party.map(id=>[id,0]));stageStats={perfect:0,guard:0,turn:0};startEncounter();
+    activeGate=null;activeStageId=stageId;activeStageData=stageById[stageId];encounterMax=activeStageData.encounters.count;S.stage=masterStages.findIndex(x=>x.stage_id===stageId)+1;setDeviceClosed(false);show('battleScreen');encounter=1;carrySlots=3;S.hp=playerMaxHp();pendingItem=null;skillCharge=Object.fromEntries(S.party.map(id=>[id,0]));rewardGold=0;rewardGoldCredited=0;rewardDrops=[];rewardEntries=[];rewardMonsterExp=0;rewardMonsterExpCredited=0;rewardExpChanges=[];battleInputLocked=false;stageStats={perfect:0,guard:0,turn:0};startEncounter();
   }
   function startEncounter(){
     clearTimeout(toast._timer);$('uiToast').classList.remove('show');$('combatFeedback').classList.remove('show');document.querySelectorAll('.monsterDrop,.monsterAttackSpark').forEach(node=>node.remove());
     defenseToken++;attackReadyToken++;encounterSettled=false;patternBeat=null;defenseQueue=[];
-    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter);targetId=enemies[0].id;rewardGold=0;rewardDrops=[];rewardEntries=[];rewardMonsterExp=0;rewardExpChanges=[];opened=true;phase='attackReady';setMusicMode(activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');updateBattleHeader();updateBossBar();renderEnemies();
+    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter);targetId=enemies[0].id;if(activeGate){rewardGold=0;rewardGoldCredited=0;rewardDrops=[];rewardEntries=[];rewardMonsterExp=0;rewardMonsterExpCredited=0;rewardExpChanges=[];}opened=true;phase='attackReady';setMusicMode(activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');updateBattleHeader();updateBossBar();renderEnemies();
     $('closedMenu').classList.remove('show');$('rewardOverlay').classList.remove('show');
     enemies.forEach(e=>{if(e.masterId)S.codex.enemies[e.masterId]=true});evaluateQuests();setBattleCopy(enemies.some(e=>e.boss)?'battle.bossBattle':'battle.encounter','battle.encounterHint',()=>({instruction:attackInstruction()}));
     $('app').style.setProperty('--world','url("'+new URL(MASTER_DATA.presentation.backgrounds[activeStageData.world_id],location.href).href+'")');
@@ -963,29 +974,29 @@
     if(!$('battleScreen').classList.contains('show')||['idle','test','gameover','reward'].includes(phase))return;
     if(!living().length){finishEncounter();return}
     if(narrative.active)return;
-    const token=++attackReadyToken;phase='attackReady';updateBattleAction();opened=true;$('timingBox').classList.remove('show');
+    const token=++attackReadyToken;phase='attackReady';battleInputLocked=false;updateBattleAction();opened=true;$('timingBox').classList.remove('show');
     setBattleCopy('battle.ready','battle.readyHint');
     setTimeout(()=>{if(token!==attackReadyToken||phase!=='attackReady')return;setBattleCopy('battle.go','battle.startTimingHint');sfx('cue');
       setTimeout(()=>{if(token!==attackReadyToken||phase!=='attackReady')return;phase='attackArmed';updateBattleAction();$('timingBox').classList.add('show');$('cursor').style.left='0%';setBattleCopy('battle.attack','battle.startTimingHint');
         const hitWidth=Number(CFG.hit_attack_width),perfWidth=Number(CFG.perfect_attack_width);
-        $('hitZone').style.left=`${50-hitWidth*50}%`;$('hitZone').style.width=`${hitWidth*100}%`;$('perfectZone').style.left=`${50-perfWidth*50}%`;$('perfectZone').style.width=`${perfWidth*100}%`;
+        $('hitZone').style.left=`${50-hitWidth*50}%`;$('hitZone').style.width=`${hitWidth*100}%`;$('perfectZone').style.left=`${50-perfWidth*50}%`;$('perfectZone').style.width=`${perfWidth*100}%`;startTimingBar();
       },240);
     },Number(CFG.attack_ready_seconds)*1000);
   }
 
   function startTimingBar(){
     if(phase!=='attackArmed')return;phase='attack';attackStart=performance.now();attackDuration=rnd(1120,1420);cancelAnimationFrame(meterRAF);updateBattleAction();setBattleCopy('battle.attack',isDesktop()?'battle.attackHintDesktop':'battle.attackHintTouch');
-    function frame(now){if(phase!=='attack')return;const p=Math.min(1,(now-attackStart)/attackDuration);$('cursor').style.left=`${p*100}%`;if(p<1)meterRAF=requestAnimationFrame(frame);else{phase='transition';$('timingBox').classList.remove('show');feedback(t('battle.miss'),'miss');setBattleCopy('battle.miss','battle.missTurn');chargeSkills('MISS');setTimeout(endPlayerTurn,330)}}
+    function frame(now){if(phase!=='attack')return;const p=Math.min(1,(now-attackStart)/attackDuration);$('cursor').style.left=`${p*100}%`;if(p<1)meterRAF=requestAnimationFrame(frame);else{battleInputLocked=true;phase='transition';$('timingBox').classList.remove('show');feedback(t('battle.miss'),'miss');setBattleCopy('battle.miss','battle.missTurn');chargeSkills();setTimeout(endPlayerTurn,330)}}
     meterRAF=requestAnimationFrame(frame);
   }
 
-  function chargeSkills(timing,excluded=new Set()){for(const m of partyMembers().filter(x=>x.hp>0&&!excluded.has(x.id)))skillCharge[m.id]=Math.min(SKILL_MAX,(skillCharge[m.id]||0)+SKILL_GAIN[timing]);drawPartyHud()}
+  function chargeSkills(excluded=new Set()){for(const m of partyMembers().filter(x=>x.hp>0&&!excluded.has(x.id)))skillCharge[m.id]=Math.min(skillTurnsRequired(m),(skillCharge[m.id]||0)+1);drawPartyHud()}
 
   function executeAttack(){
-    if(phase!=='attack')return;const p=clamp((performance.now()-attackStart)/attackDuration,0,1),hitW=Number(CFG.hit_attack_width),perfectW=Number(CFG.perfect_attack_width);const timing=Math.abs(p-.5)<=perfectW/2?'PERFECT':Math.abs(p-.5)<=hitW/2?'HIT':'MISS';
-    $('timingBox').classList.remove('show');cancelAnimationFrame(meterRAF);phase='transition';updateBattleAction();const ultimateActors=new Set(partyMembers().filter(m=>m.hp>0&&(skillCharge[m.id]||0)>=SKILL_MAX).map(m=>m.id));const plan=Monsters.planAttack(partyMembers(),living(),timing,MASTER_DATA,{attackCount:stageStats.turn+1,perfectGuard:!!S.perfectGuardBoost});S.perfectGuardBoost=false;
-    for(const hit of plan)if(ultimateActors.has(hit.actorId)&&hit.damage>0){const actor=partyMembers().find(m=>m.id===hit.actorId),special=Monsters.specialPlan(actor,partyMembers(),enemies.find(e=>e.id===hit.targetId));hit.ultimate=true;hit.special=special;hit.support=special.type==='heal'||special.type==='regen';if(hit.support)hit.damage=0;else hit.damage=Math.max(1,Math.round(hit.damage*(special.damageMultiplier||ULTIMATE_MULTIPLIER)));skillCharge[hit.actorId]=0}
-    chargeSkills(timing,ultimateActors);
+    if(phase!=='attack'||battleInputLocked)return;battleInputLocked=true;const p=clamp((performance.now()-attackStart)/attackDuration,0,1),hitW=Number(CFG.hit_attack_width),perfectW=Number(CFG.perfect_attack_width);const timing=Math.abs(p-.5)<=perfectW/2?'PERFECT':Math.abs(p-.5)<=hitW/2?'HIT':'MISS';
+    $('timingBox').classList.remove('show');cancelAnimationFrame(meterRAF);phase='transition';updateBattleAction();const skillActors=new Set(partyMembers().filter(m=>m.hp>0&&skillIsReady(m)).map(m=>m.id));const plan=Monsters.planAttack(partyMembers(),living(),timing,MASTER_DATA,{attackCount:stageStats.turn+1,perfectGuard:!!S.perfectGuardBoost});S.perfectGuardBoost=false;
+    for(const hit of plan)if(skillActors.has(hit.actorId)&&hit.damage>0){const actor=partyMembers().find(m=>m.id===hit.actorId),special=Monsters.specialPlan(actor,partyMembers(),enemies.find(e=>e.id===hit.targetId));hit.ultimate=true;hit.special=special;hit.support=special.type==='heal'||special.type==='regen';if(hit.support)hit.damage=0;else hit.damage=Math.max(1,Math.round(hit.damage*(special.damageMultiplier||ULTIMATE_MULTIPLIER)));skillCharge[hit.actorId]=0}
+    chargeSkills(skillActors);
     if(timing==='PERFECT'){stageStats.perfect++;bumpQuest('perfect_attack_count',1);}const timingKey={PERFECT:'battle.perfect',HIT:'battle.hit',MISS:'battle.miss'}[timing];feedback(t(timingKey),timing==='PERFECT'?'perfect':timing==='HIT'?'hit':'miss');setBattleCopy(timingKey,timing==='MISS'?'battle.nextMoment':'battle.coordinatedAttack');sfx(timing==='MISS'?'hit':'slash');
     const totals={};for(const [i,hit]of plan.entries()){const e=enemies.find(e=>e.id===hit.targetId);if(hit.ultimate&&hit.support){showUltimateMotion(hit,i);applySpecialEffect(hit,null);continue;}if(hit.damage>0){damageMonsterTarget(e,hit);showMonsterAttack(hit,i);if(hit.ultimate){showUltimateMotion(hit,i);applySpecialEffect(hit,e);}totals[e.id]=(totals[e.id]||0)+hit.damage;}}
     for(const [id,total]of Object.entries(totals)){const e=enemies.find(e=>e.id===id);if(e.popup)e.popup.text='−'+total;}
@@ -1039,7 +1050,7 @@
   function startDefenseBeat(){
     if(!patternBeat)return;const {enemy:e,action,index}=patternBeat;
     if(e.dead){patternBeat=null;nextEnemyAttack();return;}
-    phase='defense';opened=true;setDeviceClosed(false);defenseEnemyId=e.id;const token=++defenseToken;
+    phase='defense';battleInputLocked=false;opened=true;setDeviceClosed(false);defenseEnemyId=e.id;const token=++defenseToken;
     const windup=action.beats[index];defenseImpact=performance.now()+windup;
     $('dangerRing').style.setProperty('--ring-duration',Math.min(920,windup)+'ms');
     const actionName=action.nameKey?t(action.nameKey):action.name,actionHint=action.hintKey?t(action.hintKey):action.hint;
@@ -1051,11 +1062,11 @@
     setTimeout(()=>{if(token!==defenseToken)return;$('closeNow').classList.add('show');sfx('cue')},windup-80);
     setTimeout(()=>{if(token===defenseToken&&phase==='defense')resolveDefense(Number(CFG.bad_guard_ms)+10,false)},windup+Number(CFG.bad_guard_ms)+1);
   }
-  function executeDefense(){if(phase==='defense')resolveDefense(performance.now()-defenseImpact,!openOnlyMode());}
+  function executeDefense(){if(phase==='defense'&&!battleInputLocked)resolveDefense(performance.now()-defenseImpact,true);}
   function resolveDefense(delta,playerClosed=true){
-    const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;phase='defenseResolved';defenseToken++;opened=!playerClosed;if(playerClosed){setDeviceClosed(true);sfx('door');}e.turnsLeft=e.attackEvery;resetDanger();
+    if(battleInputLocked)return;battleInputLocked=true;const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;phase='defenseResolved';defenseToken++;opened=!playerClosed;if(playerClosed){setDeviceClosed(true);sfx('door');}e.turnsLeft=e.attackEvery;resetDanger();
     const rate=Combat.guardRate(delta,CFG),perfect=Math.abs(delta)<=Number(CFG.perfect_guard_ms),a=patternBeat?.action,factor=a?a.factors[patternBeat.index]*a.damage:1,alive=partyMembers().filter(m=>m.hp>0),target=alive[(stageStats.guardHits||0)%alive.length],dmg=Combat.guardDamage(e.atk,factor,rate,e.attackDown?.multiplier||1);stageStats.guardHits=(stageStats.guardHits||0)+1;
-    if(target){const owned=S.monsters.find(m=>m.id===target.id);owned.hp=Math.max(0,target.hp-dmg);skillCharge[target.id]=Math.min(SKILL_MAX,(skillCharge[target.id]||0)+Number(SKILL_GAIN.damaged||8));if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':rate<=.3?'battle.goodGuard':rate<1?'battle.guard':'battle.miss';if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}
+    if(target){const owned=S.monsters.find(m=>m.id===target.id);owned.hp=Math.max(0,target.hp-dmg);if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':rate<=.3?'battle.goodGuard':rate<1?'battle.guard':'battle.miss';if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}
     SHUTDevice.guard(labelKey,dmg);feedback(t(labelKey),perfect?'guard':'hit');setBattleCopy(labelKey,'battle.damage',{name:target?.name||'',damage:dmg});updateBattleHeader();renderEnemies();if(S.hp<=0){setTimeout(gameOver,250);return;}
     const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}if(playerClosed)setTimeout(()=>openClosedMenu(more?'combo':'defenseContinue'),200);else setTimeout(()=>{if(more)startDefenseBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);
   }
@@ -1069,6 +1080,7 @@
   }
   function openClosedMenu(reason){
     closedReason=reason;
+    battleInputLocked=true;
     phase='closed';
     opened=false;
     pendingItem=null;
@@ -1122,19 +1134,23 @@
     document.querySelectorAll('[data-hatch]').forEach(node=>{const def=Monsters.definition(node.dataset.hatch,MASTER_DATA),sprite=MASTER_DATA.sprites[def.sprite],canvas=node.querySelector('canvas');SHUTArt.image(sprite.source,img=>SHUTArt.drawCell(canvas,img,{...sprite,cell:sprite.states.idle?.[0]??sprite.cell},.08))});
     setTimeout(()=>{$('rewardNext').disabled=false;if(eggs.length)sfx('gacha')},eggs.length?1900:850);
   }
+  function mergeRewardExpChanges(changes){
+    for(const change of changes){const prior=rewardExpChanges.find(x=>x.id===change.id);if(!prior){rewardExpChanges.push({...change});continue;}prior.amount+=change.amount;prior.afterLevel=change.afterLevel;prior.afterXp=change.afterXp;prior.next=change.next;prior.levelUp=prior.levelUp||change.levelUp;}
+  }
+  function creditStoryEncounterRewards(){
+    const pendingGold=Math.max(0,rewardGold-rewardGoldCredited);if(pendingGold){addWallet('gold',pendingGold,'story battle reward');rewardGoldCredited=rewardGold;}
+    const pendingExp=Math.max(0,rewardMonsterExp-rewardMonsterExpCredited);if(pendingExp){const expResult=Monsters.grantBattleExp(S,[...S.party],pendingExp,MASTER_DATA);S=expResult.state;rewardMonsterExpCredited=rewardMonsterExp;mergeRewardExpChanges(expResult.changes);}
+  }
   function finishEncounter(){
-    if(encounterSettled)return;encounterSettled=true;attackReadyToken++;defenseToken++;stageStats.clear=true;
-    const expResult=Monsters.grantBattleExp(S,[...S.party],rewardMonsterExp,MASTER_DATA);S=expResult.state;rewardExpChanges=expResult.changes;
-    if(activeGate){finishExpeditionBattle();return;}
-    healParty(MASTER_DATA.balance.storyRestRate);
-    phase='reward';resetDanger();$('timingBox').classList.remove('show');addWallet('gold',rewardGold,'story battle reward');saveGame();setMusicMode('victory');sfx('win');updateHome();updateBattleHeader();$('bossHpBox').classList.remove('show');
-    if(encounter===encounterMax){
-      const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}
-      const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=Math.min(masterStages.length,idx+1);grantStageRewards(activeStageData.repeat_rewards);processStageUnlocks(activeStageId);unlockJourneyGates();settleMissions();rollSpecialGate();refreshShopStock();
-      if(activeStageData.stage_type==='boss'){const wid=activeStageData.world_id;S.questProgress[`chapter_clear:${wid}`]=1;}
-      evaluateQuests();saveGame();const extra=(first?`<p class="resultNote">${t('battle.firstClearReward')}</p>`:'')+(discoveredThisStage.length?`<div class="gateDiscovery"><span class="eyebrow">${t('battle.newPath')}</span><h3>${t('battle.unknownGate')}</h3><p>${discoveredThisStage.map(k=>MASTER_DATA.expeditions[k].name).join(' / ')}</p><span class="small">${t('battle.challengeFromGate')}</span></div>`:'')+`<p class="small">${t('battle.restoredHp',{percent:Math.round(MASTER_DATA.balance.storyRestRate*100)})}</p>`;renderRewardPresentation(t('battle.stageClear'),`${activeStageData.stage_id} ${localizedDataName(activeStageData)}`,t('battle.returnBase'),extra);
-    }else{renderRewardPresentation(t('battle.battleClear'),t('battle.rewardObtained'),t('battle.nextBattle'),`<p class="small">${t('battle.restoredHp',{percent:Math.round(MASTER_DATA.balance.storyRestRate*100)})}</p>`)}
-    updateHome();
+    if(encounterSettled)return;encounterSettled=true;attackReadyToken++;defenseToken++;battleInputLocked=true;stageStats.clear=true;
+    if(activeGate){const expResult=Monsters.grantBattleExp(S,[...S.party],rewardMonsterExp,MASTER_DATA);S=expResult.state;rewardExpChanges=expResult.changes;finishExpeditionBattle();return;}
+    creditStoryEncounterRewards();healParty(MASTER_DATA.balance.storyRestRate);resetDanger();$('timingBox').classList.remove('show');$('bossHpBox').classList.remove('show');saveGame();updateBattleHeader();
+    if(encounter<encounterMax){phase='transition';const timing='after_battle'+encounter;playEvents(activeStageId,timing,()=>{encounter++;startEncounter()});return;}
+    phase='reward';setMusicMode('victory');sfx('win');updateHome();
+    const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}
+    const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=Math.min(masterStages.length,idx+1);grantStageRewards(activeStageData.repeat_rewards);processStageUnlocks(activeStageId);unlockJourneyGates();settleMissions();rollSpecialGate();refreshShopStock();
+    if(activeStageData.stage_type==='boss'){const wid=activeStageData.world_id;S.questProgress[`chapter_clear:${wid}`]=1;}
+    evaluateQuests();saveGame();const extra=(first?`<p class="resultNote">${t('battle.firstClearReward')}</p>`:'')+(discoveredThisStage.length?`<div class="gateDiscovery"><span class="eyebrow">${t('battle.newPath')}</span><h3>${t('battle.unknownGate')}</h3><p>${discoveredThisStage.map(k=>MASTER_DATA.expeditions[k].name).join(' / ')}</p><span class="small">${t('battle.challengeFromGate')}</span></div>`:'')+`<p class="small">${t('battle.restoredHp',{percent:Math.round(MASTER_DATA.balance.storyRestRate*100)})}</p>`;renderRewardPresentation(t('battle.stageClear'),`${activeStageData.stage_id} ${localizedDataName(activeStageData)}`,t('battle.returnBase'),extra);updateHome();
   }
   function gameOver(){
     $('closedMenu').classList.remove('show');
@@ -1221,7 +1237,7 @@
       if(phase==='attackArmed')startTimingBar();
       else if(phase==='attack')executeAttack(targetId);
       else if(phase==='defense')executeDefense();
-      else if(phase==='closed'&&e.code!=='Space')openFromClosed();
+      else if(phase==='closed')openFromClosed();
     }else if($('homeScreen').classList.contains('show')){
       enterCloseMenu();
     }else if($('closeMenuScreen').classList.contains('show')){
@@ -1235,11 +1251,9 @@
     if(e.target.closest('.startCard')) startGameFlow(false);
   });
   $('battleScreen').addEventListener('pointerdown',e=>{
-    if(e.target.closest('button')||e.target.closest('.enemyCard'))return;
-    if(phase==='attackArmed')startTimingBar();
-    else if(phase==='attack')executeAttack(targetId);
-    else if(phase==='defense')executeDefense();
-    else if(phase==='closed')openFromClosed();
+    if(e.target.closest('#retreatBtn,.utility,[data-system-control]'))return;
+    if(phase==='attack'){e.preventDefault();executeAttack();}
+    else if(phase==='defense'){e.preventDefault();executeDefense();}
   });
 
   let stageStats={perfect:0,guard:0,turn:0},patternBeat=null,encounterSettled=false,gateFinished=false;
@@ -1328,7 +1342,7 @@
   function monsterIcon(canvas,instance){const s=Monsters.stats(instance,MASTER_DATA),p=MASTER_DATA.sprites[s.sprite];if(!p)return;const motion=allyFrames[instance.id],now=performance.now(),state=instance.hp===0?'death':motion&&now<motion.until?motion.state:'idle',idleFrames=p.states.idle||[p.cell],attackFrames=p.states.attack||idleFrames,ultimateFrames=[idleFrames.at(-1),...attackFrames,attackFrames.at(-1)],frames=state==='ultimate'?ultimateFrames:p.states[state]||idleFrames,elapsed=state==='idle'?now:now-(motion?.start||0),step=state==='idle'?Math.max(320,p.frameMs||0):state==='ultimate'?105:150,frame=frames[state==='idle'?Math.floor(elapsed/step)%frames.length:Math.min(frames.length-1,Math.max(0,Math.floor(elapsed/step)))];canvas.dataset.animationState=state;canvas.dataset.frame=frame;canvas.dataset.assetStatus=p.status;SHUTArt.image(p.source,img=>SHUTArt.drawCell(canvas,img,{...p,cell:frame},.08));}
 
   function drawPartyHud(){
-    const el=$('battlePartner');el.className='monsterPartyHud';el.innerHTML=partyMembers().map(m=>{const charge=skillCharge[m.id]||0,motion=allyFrames[m.id],active=motion&&performance.now()<motion.until,owned=S.monsters.find(x=>x.id===m.id);return `<div class="monsterHud ${m.hp<=0?'fainted':''} ${active&&motion.state==='attack'?'attacking':''} ${active&&motion.state==='ultimate'?'ultimate':''} ${charge>=SKILL_MAX?'skillReady':''}" data-ally="${m.id}"><canvas width="64" height="64"></canvas><div><b>${m.name}</b><span>${localizedAttribute(m.attr)} Lv.${m.level}${m.status?' ↓'+m.status.name:''}${owned?.regen?' · '+t('battle.regen'):''}</span><div class="allyHp"><i style="width:${m.hp/m.maxHp*100}%;background:${attrColor[m.attr]}"></i></div><small>${m.hp}/${m.maxHp}</small><div class="skillGauge" aria-label="${t('battle.skillGauge',{value:charge})}"><i style="width:${charge}%"></i><em>${charge>=SKILL_MAX?t('battle.skillReady'):'SP '+charge+'%'}</em></div></div></div>`}).join('');el.querySelectorAll('[data-ally]').forEach(n=>monsterIcon(n.querySelector('canvas'),S.monsters.find(m=>m.id===n.dataset.ally)));
+    const el=$('battlePartner');el.className='monsterPartyHud';el.innerHTML=partyMembers().map(m=>{const charge=skillCharge[m.id]||0,required=skillTurnsRequired(m),pct=Math.min(100,charge/required*100),ready=charge>=required,motion=allyFrames[m.id],active=motion&&performance.now()<motion.until,owned=S.monsters.find(x=>x.id===m.id);return `<div class="monsterHud ${m.hp<=0?'fainted':''} ${active&&motion.state==='attack'?'attacking':''} ${active&&motion.state==='ultimate'?'ultimate':''} ${ready?'skillReady':''}" data-ally="${m.id}"><canvas width="64" height="64"></canvas><div class="allyHudBody"><div class="allyHudTop"><b>${m.name}</b><span class="allyMeta">${attributeIcon(m.attr)} Lv.${m.level}${m.status?' ↓'+m.status.name:''}${owned?.regen?' · '+t('battle.regen'):''}</span><small>HP ${m.hp}/${m.maxHp}</small></div><div class="allyHp"><i style="width:${m.hp/m.maxHp*100}%;background:${attrColor[m.attr]}"></i></div><div class="skillGauge" aria-label="${t('battle.skillGauge',{value:charge+' / '+required})}"><i style="width:${pct}%"></i><em>${ready?t('battle.skillReady'):'SKILL '+charge+'/'+required}</em></div></div></div>`}).join('');el.querySelectorAll('[data-ally]').forEach(n=>monsterIcon(n.querySelector('canvas'),S.monsters.find(m=>m.id===n.dataset.ally)));
   }
 
   function drawMonsterRoster(){document.querySelectorAll('[data-monster]').forEach(cv=>{const m=S.monsters.find(m=>m.id===cv.dataset.monster);if(m)monsterIcon(cv,m);});}
@@ -1367,7 +1381,7 @@
   }
 
   function showUltimateMotion(hit,index){
-    const actor=partyMembers().find(m=>m.id===hit.actorId);if(!actor)return;const node=document.createElement('div');node.className='ultimateMotion attr-'+({'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'}[actor.attr]||'wind');node.style.setProperty('--delay',index*60+'ms');node.innerHTML=`<div class="ultimateSeal"><i></i><i></i><i></i></div><strong>${t('battle.ultimate')}</strong><span>${actor.skill?.name||actor.name}</span>`;$('battleScreen').append(node);sfx('cue');setTimeout(()=>node.remove(),1050);
+    const actor=partyMembers().find(m=>m.id===hit.actorId);if(!actor)return;const node=document.createElement('div');node.className='ultimateMotion attr-'+({'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'}[actor.attr]||'wind');node.style.setProperty('--delay',index*60+'ms');node.innerHTML=`<div class="ultimateSeal"><i></i><i></i><i></i></div><strong>${t('battle.ultimate')}</strong><span>${actor.special?.name||actor.name}</span>`;$('battleScreen').append(node);sfx('cue');setTimeout(()=>node.remove(),1050);
   }
 
   function applySpecialEffect(hit,enemy){

@@ -1064,13 +1064,13 @@
     setTimeout(()=>{if(token!==defenseToken)return;$('closeNow').classList.add('show');sfx('cue')},windup-80);
     setTimeout(()=>{if(token===defenseToken&&phase==='defense')resolveDefense(Number(CFG.bad_guard_ms)+10,false)},windup+Number(CFG.bad_guard_ms)+1);
   }
-  function executeDefense(){if(phase==='defense'&&!battleInputLocked)resolveDefense(performance.now()-defenseImpact,true);}
+  function executeDefense(){if(phase==='defense'&&!battleInputLocked)resolveDefense(performance.now()-defenseImpact,!openOnlyMode());}
   function resolveDefense(delta,playerClosed=true){
     if(battleInputLocked)return;battleInputLocked=true;const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;phase='defenseResolved';defenseToken++;opened=!playerClosed;if(playerClosed){setDeviceClosed(true);sfx('door');}e.turnsLeft=e.attackEvery;resetDanger();
     const rate=Combat.guardRate(delta,CFG),perfect=Math.abs(delta)<=Number(CFG.perfect_guard_ms),a=patternBeat?.action,factor=a?a.factors[patternBeat.index]*a.damage:1,alive=partyMembers().filter(m=>m.hp>0),target=alive[(stageStats.guardHits||0)%alive.length],dmg=Combat.guardDamage(e.atk,factor,rate,e.attackDown?.multiplier||1);stageStats.guardHits=(stageStats.guardHits||0)+1;
     if(target){const owned=S.monsters.find(m=>m.id===target.id);owned.hp=Math.max(0,target.hp-dmg);if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':rate<=.3?'battle.goodGuard':rate<1?'battle.guard':'battle.miss';if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}
     SHUTDevice.guard(labelKey,dmg);feedback(t(labelKey),perfect?'guard':'hit');setBattleCopy(labelKey,'battle.damage',{name:target?.name||'',damage:dmg});updateBattleHeader();renderEnemies();if(S.hp<=0){setTimeout(gameOver,250);return;}
-    const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}if(playerClosed)setTimeout(()=>openClosedMenu(more?'combo':'defenseContinue'),200);else setTimeout(()=>{if(more)startDefenseBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);
+    const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}if(playerClosed)setTimeout(()=>openClosedMenu(more?'combo':'defenseContinue'),200);else if(openOnlyMode())setTimeout(()=>openRecoveryMenu(more?'combo':'defenseContinue'),200);else setTimeout(()=>{if(more)startDefenseBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);
   }
 
   function resetDanger(){
@@ -1087,22 +1087,45 @@
     opened=false;
     pendingItem=null;
     defenseToken++; // invalidate any stale defense timers
+    document.querySelector('.outer-display')?.append($('closedMenu'));
+    $('closedMenu').classList.remove('openRecovery');
     setDeviceClosed(true);
     resetDanger();
     updateItemMenu();
     $('closedMenu').classList.add('show');
     sfx('door');
   }
+  function openRecoveryMenu(reason){
+    closedReason=reason;
+    battleInputLocked=true;
+    phase='closed';
+    opened=true;
+    pendingItem=null;
+    defenseToken++;
+    setDeviceClosed(false);
+    resetDanger();
+    $('battleScreen').append($('closedMenu'));
+    $('closedMenu').classList.add('openRecovery');
+    updateItemMenu();
+    $('closedMenu').classList.add('show');
+  }
 
   function updateItemMenu(){
     $('cntHeal').textContent=`×${S.items.heal}`;$('cntHigh').textContent=`×${S.items.high}`;$('cntElixir').textContent=`×${S.items.elixir}`;
     document.querySelectorAll('.itemBtn').forEach(b=>{const k=b.dataset.item;b.disabled=S.items[k]<=0||carrySlots<=0;b.classList.toggle('selected',pendingItem===k)});
-    const itemName=key=>t({heal:'battle.heal',high:'battle.highHeal',elixir:'battle.elixir'}[key]);
-    $('selectedItemText').textContent=pendingItem?t('battle.selectedItem',{item:itemName(pendingItem)}):t('battle.noItemSelected',{slots:carrySlots});
+    const itemName=key=>t({heal:'battle.heal',high:'battle.highHeal',elixir:'battle.elixir'}[key]),openRecovery=$('closedMenu').classList.contains('openRecovery'),card=$('closedMenu').querySelector('.closedCard'),smalls=card?.querySelectorAll('.small')||[];
+    if(card?.querySelector('h2'))card.querySelector('h2').textContent=t(openRecovery?'battle.recoveryTitle':'battle.closedTitle');
+    if(smalls[0])smalls[0].textContent=t(openRecovery?'battle.recoveryDescription':'battle.closedDescription');
+    if(smalls[smalls.length-1])smalls[smalls.length-1].textContent=t(openRecovery?'battle.recoveryHint':'battle.openHint');
+    $('unfoldBattle').textContent=t(openRecovery?'battle.continueNext':'battle.openNext');
+    $('selectedItemText').textContent=pendingItem?t(openRecovery?'battle.selectedItemOpen':'battle.selectedItem',{item:itemName(pendingItem)}):t('battle.noItemSelected',{slots:carrySlots});
   }
   async function openFromClosed(){
     if(phase!=='closed'||SHUTDevice.busy)return;
-    opened=true;phase='transition';$('closedMenu').classList.remove('show');sfx('door');await setDeviceClosed(false);
+    const openRecovery=$('closedMenu').classList.contains('openRecovery');
+    opened=true;phase='transition';$('closedMenu').classList.remove('show');
+    if(openRecovery){$('closedMenu').classList.remove('openRecovery');document.querySelector('.outer-display')?.append($('closedMenu'));sfx('confirm');}
+    else{sfx('door');await setDeviceClosed(false);}
     if(pendingItem){
       const it=itemDefs[pendingItem],itemName=t({heal:'battle.heal',high:'battle.highHeal',elixir:'battle.elixir'}[pendingItem]);S.items[pendingItem]--;carrySlots--;if(S.run)S.run.slots=carrySlots;healParty(it.heal);setBattleCopy('battle.itemUsed','battle.hpRecovered',{item:itemName,percent:Math.round(it.heal*100)});pendingItem=null;updateBattleHeader();
     }

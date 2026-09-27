@@ -377,3 +377,7 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
  #selectedItemText{font-size:7px!important}
  .iconUtility{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;font-size:14px!important}
 }
+
+
+/* Phase label ownership: once timing begins, only the transient timingPhase label may say ATTACK/GUARD. */
+#app[data-phase="attackArmed"] #battleMessage,#app[data-phase="attack"] #battleMessage,#app[data-phase="attackArmed"] #battleSub,#app[data-phase="attack"] #battleSub,#app[data-phase="defense"] #battleMessage,#app[data-phase="defense"] #battleSub{display:none!important}

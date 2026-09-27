@@ -618,7 +618,6 @@
   }
 
   // ---------- ENEMY GENERATION ----------
-  function stageMult(){return Combat.context(activeStageData||currentStoryStage()||masterStages[0],S.rank,MASTER_DATA).hpScale}
   function makeEnemy(def,isBoss=false){
     const stage=activeStageData||currentStoryStage()||masterStages[0];
     const override=stage.encounters.bossOverrides?.[def.masterId];
@@ -906,7 +905,7 @@
 
   // ---------- REWARDS ----------
   function grantEnemyRewards(e){
-    const chapter=MASTER_DATA.chapterProgression?.find(x=>x.chapter===Number(activeStageData?.chapter))||{goldMultiplier:1},g=Math.round(e.gold*stageMult()*Number(chapter.goldMultiplier||1));rewardGold+=g;rewardMonsterExp+=Monsters.battleExp(e,activeStageData,MASTER_DATA);addRankXp(Math.round(e.rankXp*(1+(Number(activeStageData?.difficulty||1)-1)*.08)));if(e.boss){const def=enemyById[e.masterId];if(def?.category==='midboss')bumpQuest('midboss_kill_count',1);else bumpQuest('boss_kill_count',1);}
+    const chapter=MASTER_DATA.chapterProgression?.find(x=>x.chapter===Number(activeStageData?.chapter))||{goldMultiplier:1},g=Math.round(e.gold*Number(chapter.goldMultiplier||1));rewardGold+=g;rewardMonsterExp+=Monsters.battleExp(e,activeStageData,MASTER_DATA);addRankXp(Math.round(e.rankXp*(1+(Number(activeStageData?.difficulty||1)-1)*.08)));if(e.boss){const def=enemyById[e.masterId];if(def?.category==='midboss')bumpQuest('midboss_kill_count',1);else bumpQuest('boss_kill_count',1);}
     // item drops
     let r=Math.random(),drop=null;for(const entry of MASTER_DATA.monsterRules.itemDrops){r-=entry.chance;if(r<0){drop=entry.key;break;}}
     if(drop && S.items[drop]<itemDefs[drop].max){S.items[drop]++;rewardDrops.push(itemDefs[drop].name);rewardEntries.push({kind:'item',label:itemDefs[drop].name})}

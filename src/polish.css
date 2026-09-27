@@ -96,3 +96,37 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
 .enemyCard:not(.bossCard) .ehp{margin-top:4px!important;clear:both}
 .enemyCard:not(.bossCard) .ehpText{margin-top:4px!important;clear:both}
 @media(max-width:600px){.enemyCard:not(.bossCard) .turnBadge{margin:2px auto 3px!important}.enemyCard:not(.bossCard) .ehp{margin-top:2px!important}.enemyCard:not(.bossCard) .ehpText{margin-top:2px!important}}
+
+
+/* Battle scene v4: left party stack, SKILL turns, attribute icons, safe combat zones. */
+.attrIcon{display:inline-block;width:14px;height:14px;flex:0 0 14px;vertical-align:-2px;background:currentColor;border:1px solid #ffffff55;box-sizing:border-box}
+.attrIcon-fire{color:#f06a5e;clip-path:polygon(50% 0,82% 30%,72% 58%,92% 100%,8% 100%,28% 58%,18% 30%)}
+.attrIcon-water{color:#5eb5e8;border-radius:70% 35% 70% 35%;transform:rotate(-45deg)}
+.attrIcon-thunder{color:#c19ae9;clip-path:polygon(58% 0,18% 56%,46% 56%,34% 100%,84% 39%,56% 39%)}
+.attrIcon-earth{color:#d2a451;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.attrIcon-wind{color:#68c88e;border-radius:50%;clip-path:polygon(0 24%,72% 24%,72% 0,100% 36%,72% 72%,72% 48%,0 48%)}
+#bossAttr{display:inline-flex;align-items:center}.enemyCard .attr{display:grid;place-items:center;min-width:24px;min-height:24px}
+#battleHeader{align-items:flex-start!important}
+#playerBox{width:340px;max-width:40%;box-sizing:border-box}
+#battlePartner.monsterPartyHud{position:static!important;inset:auto!important;display:grid!important;grid-template-columns:1fr!important;gap:4px!important;width:100%!important;margin:8px 0 6px!important;padding:0!important;background:transparent!important;pointer-events:none}
+#battlePartner .monsterHud{display:flex!important;width:100%!important;max-width:none!important;height:44px!important;box-sizing:border-box;padding:3px 5px!important;gap:6px!important;align-items:center}
+#battlePartner .monsterHud canvas{width:36px!important;height:36px!important;flex:0 0 36px}
+.allyHudBody{min-width:0;flex:1}.allyHudTop{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:5px;line-height:1.05}
+.allyHudTop b{font-size:10px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.allyHudTop .allyMeta{display:inline-flex;align-items:center;gap:3px;font-size:8px!important;white-space:nowrap}.allyHudTop small{font-size:8px!important;white-space:nowrap}
+#battlePartner .allyHp{height:4px;margin:2px 0!important}#battlePartner .skillGauge{height:8px;margin-top:1px!important}#battlePartner .skillGauge>em{font-size:6px;line-height:8px}
+#enemyArea{bottom:max(250px,var(--battle-controls-safe-bottom,250px))!important}
+#timingBox{z-index:31}#battleControls{z-index:30}
+@media(max-width:600px){
+ #battleHeader{inset:5px!important;display:flex!important;align-items:flex-start!important;gap:4px!important}
+ #playerBox{width:58%!important;max-width:58%!important;padding:4px!important}#stageBox{width:40%!important;box-sizing:border-box;padding:4px!important}
+ #playerBox>.barline{display:none!important}
+ #battlePartner.monsterPartyHud{gap:2px!important;margin:3px 0 0!important}
+ #battlePartner .monsterHud{height:24px!important;padding:1px 3px!important;gap:3px!important}#battlePartner .monsterHud canvas{display:none!important}
+ .allyHudTop{grid-template-columns:minmax(0,1fr) auto auto;gap:2px}.allyHudTop b{font-size:7px!important}.allyHudTop .allyMeta,.allyHudTop small{font-size:6px!important}.allyHudTop .attrIcon{width:9px;height:9px;flex-basis:9px}
+ #battlePartner .allyHp{height:2px;margin:1px 0!important}#battlePartner .skillGauge{height:5px!important;margin:0!important}#battlePartner .skillGauge>em{font-size:5px;line-height:5px}
+ #bossHpBox{top:88px!important}
+ #battleScreen #enemyArea,#app[data-phase="attack"] #battleScreen #enemyArea,#app[data-phase="attackArmed"] #battleScreen #enemyArea{top:94px!important;bottom:max(176px,var(--battle-controls-safe-bottom,176px))!important}
+ #battleScreen:has(#bossHpBox.show) #enemyArea{top:126px!important}
+ .enemySpriteWrap{height:56px!important}.enemyCard canvas{width:56px!important;height:56px!important}.bossCard .enemySpriteWrap{height:76px!important}.bossCard canvas{width:76px!important;height:76px!important}
+ .attrIcon{width:10px;height:10px;flex-basis:10px}
+}

@@ -238,7 +238,11 @@
     $('battleSub').textContent=t(currentBattleCopy.subKey,values);
   }
   function setBattleCopy(messageKey,subKey,values={}){currentBattleCopy={messageKey,subKey,values};refreshBattleCopy()}
-  function setDeviceClosed(isClosed,options){return SHUTDevice.setClosed(isClosed,options);}
+  function setDeviceClosed(isClosed,options){
+    const battleVisible=$('battleScreen')?.classList.contains('show');
+    if(isClosed&&battleVisible&&S.settings?.openOnly)return SHUTDevice.setClosed(false,{...(options||{}),skipSnapshot:true});
+    return SHUTDevice.setClosed(isClosed,options);
+  }
   function openOnlyMode(){return !!S.settings?.openOnly}
 
   // ---------- AUDIO ----------
@@ -1066,11 +1070,11 @@
   }
   function executeDefense(){if(phase==='defense'&&!battleInputLocked)resolveDefense(performance.now()-defenseImpact,!openOnlyMode());}
   function resolveDefense(delta,playerClosed=true){
-    if(battleInputLocked)return;battleInputLocked=true;const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;phase='defenseResolved';defenseToken++;opened=!playerClosed;if(playerClosed){setDeviceClosed(true);sfx('door');}e.turnsLeft=e.attackEvery;resetDanger();
+    if(battleInputLocked)return;battleInputLocked=true;const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;const shouldPhysicallyClose=!!playerClosed&&!openOnlyMode();phase='defenseResolved';defenseToken++;opened=!shouldPhysicallyClose;if(shouldPhysicallyClose){setDeviceClosed(true);sfx('door');}else setDeviceClosed(false,{skipSnapshot:true});e.turnsLeft=e.attackEvery;resetDanger();
     const rate=Combat.guardRate(delta,CFG),perfect=Math.abs(delta)<=Number(CFG.perfect_guard_ms),a=patternBeat?.action,factor=a?a.factors[patternBeat.index]*a.damage:1,alive=partyMembers().filter(m=>m.hp>0),target=alive[(stageStats.guardHits||0)%alive.length],dmg=Combat.guardDamage(e.atk,factor,rate,e.attackDown?.multiplier||1);stageStats.guardHits=(stageStats.guardHits||0)+1;
     if(target){const owned=S.monsters.find(m=>m.id===target.id);owned.hp=Math.max(0,target.hp-dmg);if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':rate<=.3?'battle.goodGuard':rate<1?'battle.guard':'battle.miss';if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}
     SHUTDevice.guard(labelKey,dmg);feedback(t(labelKey),perfect?'guard':'hit');setBattleCopy(labelKey,'battle.damage',{name:target?.name||'',damage:dmg});updateBattleHeader();renderEnemies();if(S.hp<=0){setTimeout(gameOver,250);return;}
-    const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}if(playerClosed)setTimeout(()=>openClosedMenu(more?'combo':'defenseContinue'),200);else if(openOnlyMode())setTimeout(()=>openRecoveryMenu(more?'combo':'defenseContinue'),200);else setTimeout(()=>{if(more)startDefenseBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);
+    const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}if(shouldPhysicallyClose)setTimeout(()=>openClosedMenu(more?'combo':'defenseContinue'),200);else if(openOnlyMode())setTimeout(()=>openRecoveryMenu(more?'combo':'defenseContinue'),200);else setTimeout(()=>{if(more)startDefenseBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);
   }
 
   function resetDanger(){
@@ -1081,6 +1085,7 @@
     document.querySelectorAll('.enemyCard').forEach(x=>x.classList.remove('attacking'));
   }
   function openClosedMenu(reason){
+    if(openOnlyMode()){openRecoveryMenu(reason);return;}
     closedReason=reason;
     battleInputLocked=true;
     phase='closed';
@@ -1363,7 +1368,7 @@
     openModal(t('settings.title'),`<div class="settingsSection"><b>${t('settings.language')}</b><div class="settingsChoices">${languageButtons}</div></div><div class="settingsSection"><b>${t('settings.playStyle')}</b><p class="small">${t('settings.playStyleHelp')}</p><div class="settingsChoices"><button id="duoMode" class="btn ${!openOnlyMode()?'gold':''}" aria-pressed="${!openOnlyMode()}">${t('settings.duoMode')}</button><button id="openOnlyMode" class="btn ${openOnlyMode()?'gold':''}" aria-pressed="${openOnlyMode()}">${t('settings.openOnly')}</button></div></div><div class="settingsSection"><b>${t('settings.audio')}</b>${rows.map(([key,label,defaultValue])=>`<label class="audioSlider">${t(label)}<input type="range" min="0" max="100" value="${Math.round((S.settings[key]??defaultValue)*100)}" data-volume="${key}"><output>${Math.round((S.settings[key]??defaultValue)*100)}</output></label>`).join('')}<button id="muteSound" class="btn">${t(S.settings.sound?'settings.mute':'settings.unmute')}</button></div><div class="settingsActions"><button id="confirmSettings" class="btn gold">${t('common.confirm')}</button><button id="cancelSettings" class="btn secondary">${t('common.cancel')}</button></div>`);
     document.querySelectorAll('[data-language]').forEach(button=>button.onclick=()=>{I18n.setLanguage(button.dataset.language);updateLocalizedUi();renderSettings()});
     document.querySelectorAll('[data-volume]').forEach(input=>input.oninput=()=>{S.settings[input.dataset.volume]=Number(input.value)/100;input.nextElementSibling.textContent=input.value;applyAudioSettings();saveGame()});
-    $('duoMode').onclick=()=>{S.settings.openOnly=false;saveGame();renderSettings()};$('openOnlyMode').onclick=()=>{S.settings.openOnly=true;saveGame();renderSettings()};
+    $('duoMode').onclick=()=>{S.settings.openOnly=false;saveGame();renderSettings()};$('openOnlyMode').onclick=()=>{S.settings.openOnly=true;setDeviceClosed(false,{skipSnapshot:true});saveGame();renderSettings()};
     $('muteSound').onclick=()=>{S.settings.sound=!S.settings.sound;applyAudioSettings();saveGame();renderSettings()};
     $('confirmSettings').onclick=()=>{settingsOriginalLanguage=null;$('modal').classList.remove('show')};
     $('cancelSettings').onclick=()=>{if(settingsOriginalLanguage)I18n.setLanguage(settingsOriginalLanguage);settingsOriginalLanguage=null;updateLocalizedUi();$('modal').classList.remove('show')};

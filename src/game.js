@@ -79,7 +79,31 @@
     if(!S.inventory.some(w=>w.id===S.equipped))S.equipped=S.inventory[0]?.id||null;
     if(!S.shopStock) refreshShopStock();
   }
-  function saveGame(){if(!S.tutorialDone)return false;assertWallet(S,'save');return SHUTSave.write(S);}
+  let saveRetryTimer=null,saveRetryPending=false;
+  function retryPendingSave(){
+    if(!saveRetryPending||!S.tutorialDone)return false;
+    try{
+      assertWallet(S,'save retry');
+      const ok=SHUTSave.write(S);
+      if(ok){saveRetryPending=false;if(saveRetryTimer){clearTimeout(saveRetryTimer);saveRetryTimer=null}}
+      return ok;
+    }catch{return false}
+  }
+  function scheduleSaveRetry(){
+    saveRetryPending=true;
+    if(saveRetryTimer)return;
+    saveRetryTimer=setTimeout(()=>{saveRetryTimer=null;retryPendingSave()},1200);
+  }
+  function saveGame(){
+    if(!S.tutorialDone)return false;
+    assertWallet(S,'save');
+    const ok=SHUTSave.write(S);
+    if(ok){saveRetryPending=false;if(saveRetryTimer){clearTimeout(saveRetryTimer);saveRetryTimer=null}return true}
+    scheduleSaveRetry();return false;
+  }
+  addEventListener('pageshow',()=>retryPendingSave());
+  addEventListener('pagehide',()=>retryPendingSave());
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)retryPendingSave()});
   function commitStateTransaction(label,mutate){
     const before=structuredClone(S);
     try{

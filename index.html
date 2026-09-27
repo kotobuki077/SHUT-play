@@ -6,7 +6,7 @@
 <title>SHUT — The Gatebound Journey</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="src/game.css?v=20260926-ios-gacha-final"><link rel="stylesheet" href="src/device.css?v=20260927-stable-timing-layout"><link rel="stylesheet" href="src/experience.css">
-<link rel="stylesheet" href="src/monsters.css"><link rel="stylesheet" href="src/mikado.css"><link rel="stylesheet" href="src/title.css"><link rel="stylesheet" href="src/polish.css?v=20260928-battle-semantics-v9"><link rel="stylesheet" href="src/management.css"></head>
+<link rel="stylesheet" href="src/monsters.css"><link rel="stylesheet" href="src/mikado.css"><link rel="stylesheet" href="src/title.css"><link rel="stylesheet" href="src/polish.css?v=20260928-battle-canonical"><link rel="stylesheet" href="src/management.css"></head>
 <body>
 <div id="app" class="closedDevice">
   <div id="screenCurtain" aria-hidden="true"></div>
@@ -156,9 +156,8 @@
   <section id="battleScreen" class="screen">
     <div id="battleHeader">
       <div id="playerBox" class="glass">
-        <div class="rankHudRow"><span id="battleRank">RANK 1</span><span id="battleWeapon" hidden></span></div>
+        <div class="rankHudRow"><span id="battleRank">RANK 1</span></div>
         <div id="battlePartner"></div>
-        <div class="legacyPlayerHp" aria-hidden="true"><div id="playerHpFill"></div><span id="playerHpText">100/100</span></div>
       </div>
       <div id="stageBox" class="glass">
         <div style="font-weight:950" id="battleStage">Stage 1</div>
@@ -166,15 +165,8 @@
         <div class="small" id="battleCarry">ITEM SLOT 3/3</div>
       </div>
     </div>
-    <div id="encounterTrack"></div>
 
-    <div id="bossHpBox" class="glass">
-      <div id="bossHpHead"><span id="bossName">BOSS</span><span id="bossAttr" class="attr"></span></div>
-      <div class="ehp bossBar"><div id="bossHpLag"></div><div id="bossHpFill"></div></div>
-      <div id="bossHpText">0 / 0</div>
-    </div>
-
-    <canvas id="playerSprite" width="128" height="128" data-i18n-aria-label="battle.playerAria"></canvas><div id="enemyArea"></div>
+    <div id="enemyArea"></div>
     <div id="attackFxLayer"></div>
     <div id="bossIntro"><div id="bossIntroName">BOSS</div><div id="bossIntroSub">WARNING</div></div>
     <div id="mikadoEncounter" aria-hidden="true">
@@ -188,27 +180,21 @@
       <div id="timingTrack"><div id="hitZone"></div><div id="perfectZone"></div><div id="cursor"></div></div>
       <div id="timingJudges"><span>GOOD</span><b>PERFECT</b><span>GOOD</span></div>
       <div id="timingTapHint"><span aria-hidden="true">☝</span><em data-i18n="battle.tapAnywhere"></em></div>
-      <div id="timingLabel" data-i18n="battle.timingGuide"></div>
     </div>
 
-    <div id="guardTargetRing"><span data-i18n="battle.closeHere"></span></div><div id="dangerRing"></div><div id="closeNow" data-i18n="battle.closeNow"></div>
     <div id="battleMessage"></div><div id="battleSub" data-i18n="battle.readyIdle"></div>
     <div id="combatFeedback" aria-live="polite"></div>
-    <button id="battleAction" class="btn primary"></button><button id="retreatBtn" class="utility iconUtility" data-system-control data-i18n-aria-label="battle.retreat">↩</button>
-    <div id="guardTimeline"><div id="guardProgress"></div><span data-i18n="battle.closeTimeline"></span></div>
+    <button id="retreatBtn" class="utility iconUtility" data-system-control data-i18n-aria-label="battle.retreat">↩</button>
 
-    <div id="closedMenu">
-      <div class="closedCard glass">
-        <h2 data-i18n="battle.closedTitle"></h2>
-        <div class="small" data-i18n="battle.closedDescription"></div>
+    <div id="recoveryTray" aria-hidden="true">
+      <div class="recoveryCard glass">
         <div class="itemButtons">
           <button class="itemBtn" data-item="heal"><span data-i18n="battle.heal"></span><br><span id="cntHeal">×0</span></button>
           <button class="itemBtn" data-item="high"><span data-i18n="battle.highHeal"></span><br><span id="cntHigh">×0</span></button>
           <button class="itemBtn" data-item="elixir"><span data-i18n="battle.elixir"></span><br><span id="cntElixir">×0</span></button>
         </div>
         <div id="selectedItemText"></div>
-        <button id="unfoldBattle" class="btn primary" data-i18n="battle.openNext"></button>
-        <div style="margin-top:13px" class="small" data-i18n="battle.openHint"></div>
+        <button id="continueBattle" class="btn primary" data-i18n="battle.continueNext"></button>
       </div>
     </div>
 
@@ -247,7 +233,7 @@
   </div>
 </div>
 
-<script async src="vendor/tone-15.1.22.js"></script><script src="locales/ja.js"></script><script src="locales/en.js"></script><script src="src/i18n.js"></script><script src="src/master-data.js"></script><script src="src/monsters.js"></script><script src="src/combat.js"></script><script src="src/systems.js"></script><script src="src/narrative.js"></script><script src="src/device.js?v=20260928-open-only-raceproof"></script><script src="src/save.js?v=20260927-save-migration-resilience"></script><script src="src/art.js"></script><script src="src/mikado.js"></script><script>SHUTArt.ready.then(()=>{const s=document.createElement("script");s.src="src/game.js?v=20260928-battle-semantics-v9";document.body.append(s)})</script>
+<script async src="vendor/tone-15.1.22.js"></script><script src="locales/ja.js"></script><script src="locales/en.js"></script><script src="src/i18n.js"></script><script src="src/master-data.js"></script><script src="src/monsters.js"></script><script src="src/combat.js"></script><script src="src/systems.js"></script><script src="src/narrative.js"></script><script src="src/device.js?v=20260928-battle-canonical"></script><script src="src/save.js?v=20260927-save-migration-resilience"></script><script src="src/art.js"></script><script src="src/mikado.js"></script><script>SHUTArt.ready.then(()=>{const s=document.createElement("script");s.src="src/game.js?v=20260928-battle-canonical";document.body.append(s)})</script>
 </body>
 </html>
 

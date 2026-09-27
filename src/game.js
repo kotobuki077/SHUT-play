@@ -239,8 +239,8 @@
   }
   function setBattleCopy(messageKey,subKey,values={}){currentBattleCopy={messageKey,subKey,values};refreshBattleCopy()}
   function setDeviceClosed(isClosed,options){
-    const battleVisible=$('battleScreen')?.classList.contains('show');
-    if(isClosed&&battleVisible&&S.settings?.openOnly)return SHUTDevice.setClosed(false,{...(options||{}),skipSnapshot:true});
+    const battleActive=$('app')?.dataset.screen==='battleScreen'||['attackReady','attackArmed','attack','transition','defense','defenseResolved','closed'].includes(phase);
+    if(isClosed&&battleActive&&S.settings?.openOnly)return SHUTDevice.setClosed(false,{...(options||{}),skipSnapshot:true,instant:true});
     return SHUTDevice.setClosed(isClosed,options);
   }
   function openOnlyMode(){return !!S.settings?.openOnly}
@@ -1107,10 +1107,11 @@
     opened=true;
     pendingItem=null;
     defenseToken++;
-    setDeviceClosed(false);
     resetDanger();
     $('battleScreen').append($('closedMenu'));
     $('closedMenu').classList.add('openRecovery');
+    SHUTDevice.setClosed(false,{skipSnapshot:true,instant:true});
+    $('app').dataset.screen='battleScreen';
     updateItemMenu();
     $('closedMenu').classList.add('show');
   }
@@ -1368,7 +1369,7 @@
     openModal(t('settings.title'),`<div class="settingsSection"><b>${t('settings.language')}</b><div class="settingsChoices">${languageButtons}</div></div><div class="settingsSection"><b>${t('settings.playStyle')}</b><p class="small">${t('settings.playStyleHelp')}</p><div class="settingsChoices"><button id="duoMode" class="btn ${!openOnlyMode()?'gold':''}" aria-pressed="${!openOnlyMode()}">${t('settings.duoMode')}</button><button id="openOnlyMode" class="btn ${openOnlyMode()?'gold':''}" aria-pressed="${openOnlyMode()}">${t('settings.openOnly')}</button></div></div><div class="settingsSection"><b>${t('settings.audio')}</b>${rows.map(([key,label,defaultValue])=>`<label class="audioSlider">${t(label)}<input type="range" min="0" max="100" value="${Math.round((S.settings[key]??defaultValue)*100)}" data-volume="${key}"><output>${Math.round((S.settings[key]??defaultValue)*100)}</output></label>`).join('')}<button id="muteSound" class="btn">${t(S.settings.sound?'settings.mute':'settings.unmute')}</button></div><div class="settingsActions"><button id="confirmSettings" class="btn gold">${t('common.confirm')}</button><button id="cancelSettings" class="btn secondary">${t('common.cancel')}</button></div>`);
     document.querySelectorAll('[data-language]').forEach(button=>button.onclick=()=>{I18n.setLanguage(button.dataset.language);updateLocalizedUi();renderSettings()});
     document.querySelectorAll('[data-volume]').forEach(input=>input.oninput=()=>{S.settings[input.dataset.volume]=Number(input.value)/100;input.nextElementSibling.textContent=input.value;applyAudioSettings();saveGame()});
-    $('duoMode').onclick=()=>{S.settings.openOnly=false;saveGame();renderSettings()};$('openOnlyMode').onclick=()=>{S.settings.openOnly=true;setDeviceClosed(false,{skipSnapshot:true});saveGame();renderSettings()};
+    $('duoMode').onclick=()=>{S.settings.openOnly=false;saveGame();renderSettings()};$('openOnlyMode').onclick=()=>{S.settings.openOnly=true;SHUTDevice.setClosed(false,{skipSnapshot:true,instant:true});$('app').dataset.screen=$('battleScreen').classList.contains('show')?'battleScreen':$('app').dataset.screen;saveGame();updateBattleAction();renderSettings()};
     $('muteSound').onclick=()=>{S.settings.sound=!S.settings.sound;applyAudioSettings();saveGame();renderSettings()};
     $('confirmSettings').onclick=()=>{settingsOriginalLanguage=null;$('modal').classList.remove('show')};
     $('cancelSettings').onclick=()=>{if(settingsOriginalLanguage)I18n.setLanguage(settingsOriginalLanguage);settingsOriginalLanguage=null;updateLocalizedUi();$('modal').classList.remove('show')};

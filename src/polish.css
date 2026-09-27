@@ -130,3 +130,10 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
  .enemySpriteWrap{height:56px!important}.enemyCard canvas{width:56px!important;height:56px!important}.bossCard .enemySpriteWrap{height:76px!important}.bossCard canvas{width:76px!important;height:76px!important}
  .attrIcon{width:10px;height:10px;flex-basis:10px}
 }
+
+
+/* Open-only recovery: stay open; show item phase over the live battle screen. */
+#battleScreen>#closedMenu.openRecovery{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#061d2be8;z-index:45;padding:16px;box-sizing:border-box}
+#battleScreen>#closedMenu.openRecovery.show{display:flex}
+#battleScreen>#closedMenu.openRecovery .closedCard{width:min(520px,92%);max-width:520px;margin:0;padding:24px;background:#173b3f;box-shadow:0 18px 45px #00171dcc}
+@media(max-width:600px){#battleScreen>#closedMenu.openRecovery{padding:6px}#battleScreen>#closedMenu.openRecovery .closedCard{width:96%;padding:12px 8px}.openRecovery .itemButtons{margin:10px 0}.openRecovery .itemBtn{min-height:42px}}

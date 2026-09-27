@@ -83,3 +83,9 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
     bottom:190px!important;
   }
 }
+
+
+/* Enemy HP invariant: each enemy owns one clipped, centered HP readout; adjacent cards never overlap. */
+.enemyCard .ehpText{display:block;width:100%;max-width:100%;box-sizing:border-box;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:clip;font-variant-numeric:tabular-nums;line-height:1.2;padding-inline:2px}
+.enemyCard .ehpText>span{display:block;width:100%;overflow:hidden;text-overflow:clip}
+@media(max-width:600px){.enemyCard .ehpText{font-size:8px!important;letter-spacing:-.02em;padding-inline:0}}

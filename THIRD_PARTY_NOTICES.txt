@@ -1,0 +1,16 @@
+# Third-Party Notices
+
+## Tone.js 15.1.22
+
+- Project: Tone.js
+- Source: https://github.com/Tonejs/Tone.js
+- Package version: 15.1.22
+- License: MIT
+- Copyright: Yotam Mann and Tone.js contributors
+- Bundled runtime: `dist/vendor/tone-15.1.22.js`
+- Bundled license: `dist/vendor/TONE-LICENSE.md`
+- SHA-256 (runtime): `e290952fa43d9a7a780182a83c6fccf44d79cb7ae2cba102ef1f2b9d98124e22`
+- SHA-256 (license): `391ed5af60b7b5d1f74b31040c5fa645e6e238f3d9b4c971941a262a675bbdcd`
+- Use in SHUT: optional high-quality procedural BGM synthesis/effects engine. If Tone.js cannot initialize, SHUT automatically uses its existing native Web Audio fallback.
+
+The vendored files are generated from the version-pinned npm package `tone@15.1.22`.

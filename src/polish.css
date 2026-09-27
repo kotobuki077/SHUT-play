@@ -63,3 +63,23 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
 #battleScreen #enemyArea{bottom:var(--battle-controls-safe-bottom,235px)!important}
 @media(max-width:600px){#battleScreen #enemyArea{bottom:var(--battle-controls-safe-bottom,168px)!important}}
 
+
+
+/* Battle layout invariant: enemy sprites never overlap the timing/control rail. */
+#battleScreen #enemyArea{
+  bottom:250px!important;
+}
+#battleControls{
+  z-index:30;
+}
+#timingBox{
+  z-index:31;
+}
+@media(max-width:600px){
+  #battleScreen #enemyArea,
+  #app[data-phase="attackArmed"] #battleScreen #enemyArea,
+  #app[data-phase="attack"] #battleScreen #enemyArea,
+  #battleScreen:has(#bossHpBox.show) #enemyArea{
+    bottom:190px!important;
+  }
+}

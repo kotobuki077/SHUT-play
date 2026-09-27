@@ -1068,7 +1068,7 @@
     if(encounterSettled)return;encounterSettled=true;attackReadyToken++;defenseToken++;battleInputLocked=true;stageStats.clear=true;
     if(activeGate){creditGateEncounterRewards();finishExpeditionBattle();return;}
     creditStoryEncounterRewards();healParty(MASTER_DATA.balance.storyRestRate);resetBattleTimingUi();$('timingBox').classList.remove('show');saveGame();updateBattleHeader();
-    if(encounter<encounterMax){phase='transition';const timing='after_battle'+encounter;playEvents(activeStageId,timing,()=>{encounter++;startEncounter()});return;}
+    if(encounter<encounterMax){setBattlePhase('transition',true);const timing='after_battle'+encounter;playEvents(activeStageId,timing,()=>{encounter++;startEncounter()});return;}
     setBattlePhase('reward',true);setMusicMode('victory');sfx('win');updateHome();
     const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}
     const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=Math.min(masterStages.length,idx+1);grantStageRewards(activeStageData.repeat_rewards);processStageUnlocks(activeStageId);unlockJourneyGates();settleMissions();rollSpecialGate();refreshShopStock();
@@ -1080,7 +1080,7 @@
     attackReadyToken++;defenseToken++;patternBeat=null;
     if(activeGate){S.run=null;saveGame();}
     if(activeStageData&&activeStageData.stage_type==='forced_loss'){
-      phase='reward';resetBattleTimingUi();const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=idx+1;processStageUnlocks(activeStageId);evaluateQuests();saveGame();openModal('STORY CONTINUES',`<div style="text-align:center"><h3>届かなかった一撃</h3><p class="storySummary">攻撃は届かなかった。しかし物語はここで終わらない。</p><p class="small">ミナがあなたの手を握った。もう一度、歩き出そう。</p><button id="forcedContinue" class="btn gold">ホームへ</button></div>`);setTimeout(()=>{$('forcedContinue').onclick=()=>{$('modal').classList.remove('show');S.hp=S.maxHp;saveGame();playEvents(activeStageId,'battle_turn3',enterOpenMenu)}},0);return;
+      setBattlePhase('reward',true);resetBattleTimingUi();const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=idx+1;processStageUnlocks(activeStageId);evaluateQuests();saveGame();openModal('STORY CONTINUES',`<div style="text-align:center"><h3>届かなかった一撃</h3><p class="storySummary">攻撃は届かなかった。しかし物語はここで終わらない。</p><p class="small">ミナがあなたの手を握った。もう一度、歩き出そう。</p><button id="forcedContinue" class="btn gold">ホームへ</button></div>`);setTimeout(()=>{$('forcedContinue').onclick=()=>{$('modal').classList.remove('show');S.hp=S.maxHp;saveGame();playEvents(activeStageId,'battle_turn3',enterOpenMenu)}},0);return;
     }
     setBattlePhase('gameover',true);resetBattleTimingUi();saveGame();openModal(t('battle.defeat'),`<div style="text-align:center"><h3>${activeStageData?activeStageData.stage_id:'Stage'} / Battle ${encounter}</h3><p class="small">${t('battle.rewardsKept')}</p><button id="returnHome" class="btn">${t('battle.returnHome')}</button></div>`);setTimeout(()=>{$('returnHome').onclick=()=>{$('modal').classList.remove('show');S.hp=S.maxHp;saveGame();enterOpenMenu()}},0)
   }
@@ -1225,7 +1225,7 @@
     if(activeGate==='ENDLESS'){S.records.endless=Math.max(S.records.endless,encounter);const bonus=Number(cfg.reward.gold||0);if(bonus){addWallet('gold',bonus,'endless reward');rewardGold+=bonus;rewardGoldCredited=rewardGold;}}
     if(gateFinished){
       appendGateClearRewards(cfg);bumpQuest('gate_clear:'+activeGate,1);if(activeGate==='BOSSRUSH'){bumpQuest('boss_rush_clear',1);bumpQuest('boss_rematch_win',1);}
-      phase='reward';setMusicMode('victory');sfx('win');const finishedGate=activeGate;S.run=null;saveGame();updateBattleHeader();renderRewardPresentation(t('battle.gateClear'),cfg.name,t('battle.returnBase'),`<p class="resultNote">${t('battle.expeditionReward')}</p>`);activeGate=finishedGate;return;
+      setBattlePhase('reward',true);setMusicMode('victory');sfx('win');const finishedGate=activeGate;S.run=null;saveGame();updateBattleHeader();renderRewardPresentation(t('battle.gateClear'),cfg.name,t('battle.returnBase'),`<p class="resultNote">${t('battle.expeditionReward')}</p>`);activeGate=finishedGate;return;
     }
     if(S.run){S.run.floor=encounter+1;persistGateSummary();saveGame();}
     encounter++;setTimeout(startEncounter,420);
@@ -1242,7 +1242,7 @@
   $('foldHome').onclick=enterCloseMenu;
   $('unfoldHome').onclick=enterOpenMenu;
   $('nextJourney').onclick=()=>{if(S.run)runGateExpedition(S.run.kind,true);else if(currentStoryStage())showStoryEventAndStart(currentStoryStage().stage_id);else renderGates()};
-  $('retreatBtn').onclick=()=>{if(!confirm(t('battle.retreatConfirm')))return;attackReadyToken++;defenseToken++;phase='idle';encounterSettled=true;patternBeat=null;S.run=null;activeGate=null;saveGame();$('rewardOverlay').classList.remove('show');$('recoveryTray').classList.remove('show');enterOpenMenu()};
+  $('retreatBtn').onclick=()=>{if(!confirm(t('battle.retreatConfirm')))return;attackReadyToken++;defenseToken++;setBattlePhase('idle',true);encounterSettled=true;patternBeat=null;S.run=null;activeGate=null;saveGame();$('rewardOverlay').classList.remove('show');$('recoveryTray').classList.remove('show');enterOpenMenu()};
   function applyAudioSettings(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;if(master)master.gain.value=S.settings.sound?value('masterVolume',.56):0;if(musicGain)musicGain.gain.value=value('bgmVolume',.24);if(sfxGain)sfxGain.gain.value=value('seVolume',.5);applyAssetMusicVolume();applyToneMusicVolume();}
   let settingsOriginalLanguage=null;
   function updateLocalizedUi(){

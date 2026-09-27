@@ -909,7 +909,7 @@
         <div class="eMeta">${t('battle.enemyMeta',{attribute:localizedAttribute(e.attr),attack:e.atk})}${e.poison?` · ${t('battle.poison')}`:''}${e.attackDown?` · ${t('battle.atkDown')}`:''}</div>
         <div class="attr" style="color:${attrColor[e.attr]}">${e.attr}</div>
         <div class="turnBadge ${ready?'ready':''}">${t(ready?'battle.enemyReady':'battle.enemyTurns')} <b>${ready?'!':e.turnsLeft}</b></div>
-        ${e.boss?'':`<div class="ehp eBar"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div><div class="ehpText"><span>HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}</span><span class="hpPct">${Math.round(hpRatio*100)}%</span></div>`}`;
+        ${e.boss?'':`<div class="ehp eBar"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div><div class="ehpText" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><span>${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}</span></div>`}`;
       card.onclick=(ev)=>{
         ev.stopPropagation();
         if(phase==='defense'){executeDefense();return;}
@@ -984,10 +984,10 @@
   function executeAttack(){
     if(phase!=='attack')return;const p=clamp((performance.now()-attackStart)/attackDuration,0,1),hitW=Number(CFG.hit_attack_width),perfectW=Number(CFG.perfect_attack_width);const timing=Math.abs(p-.5)<=perfectW/2?'PERFECT':Math.abs(p-.5)<=hitW/2?'HIT':'MISS';
     $('timingBox').classList.remove('show');cancelAnimationFrame(meterRAF);phase='transition';updateBattleAction();const ultimateActors=new Set(partyMembers().filter(m=>m.hp>0&&(skillCharge[m.id]||0)>=SKILL_MAX).map(m=>m.id));const plan=Monsters.planAttack(partyMembers(),living(),timing,MASTER_DATA,{attackCount:stageStats.turn+1,perfectGuard:!!S.perfectGuardBoost});S.perfectGuardBoost=false;
-    for(const hit of plan)if(ultimateActors.has(hit.actorId)&&hit.damage>0){const actor=partyMembers().find(m=>m.id===hit.actorId),special=Monsters.specialPlan(actor,partyMembers(),enemies.find(e=>e.id===hit.targetId));hit.damage=Math.max(1,Math.round(hit.damage*(special.damageMultiplier||ULTIMATE_MULTIPLIER)));hit.ultimate=true;hit.special=special;skillCharge[hit.actorId]=0}
+    for(const hit of plan)if(ultimateActors.has(hit.actorId)&&hit.damage>0){const actor=partyMembers().find(m=>m.id===hit.actorId),special=Monsters.specialPlan(actor,partyMembers(),enemies.find(e=>e.id===hit.targetId));hit.ultimate=true;hit.special=special;hit.support=special.type==='heal'||special.type==='regen';if(hit.support)hit.damage=0;else hit.damage=Math.max(1,Math.round(hit.damage*(special.damageMultiplier||ULTIMATE_MULTIPLIER)));skillCharge[hit.actorId]=0}
     chargeSkills(timing,ultimateActors);
     if(timing==='PERFECT'){stageStats.perfect++;bumpQuest('perfect_attack_count',1);}const timingKey={PERFECT:'battle.perfect',HIT:'battle.hit',MISS:'battle.miss'}[timing];feedback(t(timingKey),timing==='PERFECT'?'perfect':timing==='HIT'?'hit':'miss');setBattleCopy(timingKey,timing==='MISS'?'battle.nextMoment':'battle.coordinatedAttack');sfx(timing==='MISS'?'hit':'slash');
-    const totals={};for(const [i,hit]of plan.entries()){const e=enemies.find(e=>e.id===hit.targetId);if(hit.damage>0){damageMonsterTarget(e,hit);showMonsterAttack(hit,i);if(hit.ultimate){showUltimateMotion(hit,i);applySpecialEffect(hit,e);}totals[e.id]=(totals[e.id]||0)+hit.damage;}}
+    const totals={};for(const [i,hit]of plan.entries()){const e=enemies.find(e=>e.id===hit.targetId);if(hit.ultimate&&hit.support){showUltimateMotion(hit,i);applySpecialEffect(hit,null);continue;}if(hit.damage>0){damageMonsterTarget(e,hit);showMonsterAttack(hit,i);if(hit.ultimate){showUltimateMotion(hit,i);applySpecialEffect(hit,e);}totals[e.id]=(totals[e.id]||0)+hit.damage;}}
     for(const [id,total]of Object.entries(totals)){const e=enemies.find(e=>e.id===id);if(e.popup)e.popup.text='−'+total;}
     renderEnemies();if(!living().length)setTimeout(finishEncounter,700);else setTimeout(endPlayerTurn,350);
   }

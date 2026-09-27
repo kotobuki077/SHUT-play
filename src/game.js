@@ -1234,8 +1234,7 @@
     if(!(e.code==='Space'||e.code==='Enter'||e.code==='NumpadEnter'))return; e.preventDefault();
     if($('startScreen').classList.contains('show')){ startGameFlow(false); }
     else if($('battleScreen').classList.contains('show')){
-      if(phase==='attackArmed')startTimingBar();
-      else if(phase==='attack')executeAttack(targetId);
+      if(phase==='attack')executeAttack();
       else if(phase==='defense')executeDefense();
       else if(phase==='closed')openFromClosed();
     }else if($('homeScreen').classList.contains('show')){
@@ -1285,11 +1284,11 @@
   function updateBattleAction(){
     $('app').dataset.phase=phase;
     $('app').classList.toggle('open-only',openOnlyMode());
-    const b=$('battleAction');if(!b)return;const labels={attack:'battle.actionStop',attackArmed:'battle.actionStart',attackReady:'battle.actionReady',defense:openOnlyMode()?'battle.actionGuardButton':'battle.actionDefense',closed:'battle.actionClosed',transition:'battle.actionTransition',dialogue:'battle.actionDialogue',reward:'battle.actionReward'};b.textContent=t(labels[phase]||'battle.actionDefault');b.disabled=!['attackArmed','attack','defense','closed'].includes(phase)||narrative?.active;
+    const b=$('battleAction');if(!b)return;const labels={attack:'battle.actionStop',attackArmed:'battle.actionReady',attackReady:'battle.actionReady',defense:openOnlyMode()?'battle.actionGuardButton':'battle.actionDefense',closed:'battle.actionClosed',transition:'battle.actionTransition',dialogue:'battle.actionDialogue',reward:'battle.actionReward'};b.textContent=t(labels[phase]||'battle.actionDefault');b.disabled=!['attack','defense','closed'].includes(phase)||narrative?.active;
     drawPartyHud();
     $('encounterTrack').innerHTML=Array.from({length:Math.min(encounterMax,10)},(_,i)=>'<i class="'+(i<encounter?'done':'')+'"></i>').join('');
   }
-  $('battleAction').onclick=()=>{if(phase==='attackArmed')startTimingBar();else if(phase==='attack')executeAttack();else if(phase==='defense')executeDefense();else if(phase==='closed')openFromClosed()};
+  $('battleAction').onclick=()=>{if(phase==='attack')executeAttack();else if(phase==='defense')executeDefense();else if(phase==='closed')openFromClosed()};
   $('unfoldBattle').onclick=openFromClosed;$('foldHome').onclick=enterCloseMenu;$('unfoldHome').onclick=enterOpenMenu;
   $('nextJourney').onclick=()=>{if(S.run)runGateExpedition(S.run.kind,true);else if(currentStoryStage())showStoryEventAndStart(currentStoryStage().stage_id);else renderGates()};
   $('retreatBtn').onclick=()=>{if(!confirm(t('battle.retreatConfirm')))return;attackReadyToken++;defenseToken++;phase='idle';encounterSettled=true;patternBeat=null;S.run=null;activeGate=null;saveGame();$('rewardOverlay').classList.remove('show');$('closedMenu').classList.remove('show');enterOpenMenu()};

@@ -45,8 +45,8 @@ globalThis.SHUT_LOCALES.ja={
   battle:{
     timingGuide:'緑でHIT、黄色でPERFECT',closeHere:'ここで閉じる',closeNow:'CLOSE!',readyIdle:'攻撃準備',retreat:'帰還',closeTimeline:'閉じる',playerAria:'主人公',
     instructionDesktop:'入力でバーを開始し、もう一度入力して止める',instructionTouch:'ボタンでバーを開始し、もう一度押して止める',
-    encounter:'ENCOUNTER',bossBattle:'BOSS BATTLE',encounterHint:'{instruction} / 戦闘中のCLOSEは防御です',ready:'READY?',readyHint:'構えが整うまで待ってください',go:'GO!',attack:'ATTACK',startTimingHint:'入力するとタイミングバーが動き始めます',
-    attackHintDesktop:'クリックまたはSpaceで止める / PERFECTは極小ゾーン',attackHintTouch:'ボタンで止める / PERFECTは極小ゾーン',
+    encounter:'ENCOUNTER',bossBattle:'BOSS BATTLE',encounterHint:'{instruction} / 戦闘中のCLOSEは防御です',ready:'READY?',readyHint:'構えが整うまで待ってください',go:'GO!',attack:'ATTACK',startTimingHint:'タイミングでタップ',
+    attackHintDesktop:'画面のどこでもクリックして止める',attackHintTouch:'画面のどこでもタップして止める',timingTap:'タイミングでタップ',tapAnywhere:'画面のどこでもタップして止める',
     miss:'MISS',hit:'HIT',perfect:'PERFECT',missTurn:'ターンを消費しました',coordinatedAttack:'3体の息を合わせた攻撃',nextMoment:'次の一瞬へ。',
     enemyWait:'ENEMY WAIT',enemyWaitTurns:'最短あと{turns}ターンで敵が攻撃',feintWait:'FEINT · 待て',perfectGuard:'PERFECT GUARD',goodGuard:'GOOD GUARD',guard:'GUARD',
     damage:'{name} · {damage} DAMAGE',guardBrand:'SHUT / GUARD',damageOnly:'{damage} DAMAGE',
@@ -57,7 +57,7 @@ globalThis.SHUT_LOCALES.ja={
     victory:'VICTORY',stageClear:'STAGE CLEAR',battleClear:'BATTLE CLEAR',rewardObtained:'獲得報酬',firstClearReward:'初回報酬 → PRESENT BOX',noItemDrop:'アイテムドロップなし',newMonster:'NEW MONSTER',monsterJoined:'仲間に加わった',returnBase:'旅の拠点へ',nextBattle:'次の戦闘',restoredHp:'門の加護でHP {percent}%回復',newPath:'A NEW PATH AWAKENS',unknownGate:'未知の門が、応えた。',challengeFromGate:'旅の拠点の「未知の門」から挑戦できます。',
     gateClear:'GATE CLEAR',floorClear:'FLOOR {floor} CLEAR',gateFloorClear:'GATE {floor} CLEAR',earnedGold:'獲得 {gold} G',expeditionReward:'遠征報酬を受け取りました',extract:'報酬を持って帰還',deeper:'さらに奥へ →',
     defeat:'DEFEAT',rewardsKept:'獲得済みGold・経験値は保持されます。',returnHome:'ホームへ',retreatConfirm:'この戦闘から帰還しますか？ 特殊ゲートの挑戦回数は戻りません。',
-    monstersCount:'MONSTERS × {count}',battleCount:'Battle {current} / {total}{boss}',endlessGate:'第 {floor} 門',itemSlots:'ITEM SLOT {slots}/3',eggDrop:'{name}の卵',keysDrop:'Keys ×{amount}',attribute:'{attribute}属性',enemyMeta:'{attribute} / ATK {attack}',enemyReady:'攻撃準備',enemyTurns:'攻撃まで',partyRequired:'3体を編成してください',gateFound:'新しい門を発見 · {name}',attributeName:{fire:'火',water:'水',thunder:'雷',earth:'地',wind:'風'}
+    monstersCount:'MONSTERS × {count}',battleCount:'BATTLE {current} / {total}{boss}',endlessGate:'第 {floor} 門',itemSlots:'ITEM {slots} / 3',eggDrop:'{name}の卵',keysDrop:'Keys ×{amount}',attribute:'{attribute}属性',enemyMeta:'{attribute} / ATK {attack}',enemyReady:'攻撃準備',enemyTurns:'行動まで',partyRequired:'3体を編成してください',gateFound:'新しい門を発見 · {name}',attributeName:{fire:'火',water:'水',thunder:'雷',earth:'地',wind:'風'}
   },
   monsters:{
     title:'MONSTERS · {count}',all:'すべて解除',sort:'並び順',directionAsc:'昇順',directionDesc:'降順',sortLevel:'レベル',sortRarity:'レア度',sortAttribute:'属性',sortAcquired:'入手順',sortName:'名前',rarityFilter:'レア度',allRarities:'全レア度',favoriteOnly:'お気に入り',lockedOnly:'保護中',empty:'条件に合うモンスターはいません。',party:'編成中',favorite:'お気に入り',notFavorite:'お気に入りにする',locked:'保護中',unlocked:'保護する',details:'詳細',back:'一覧へ戻る',level:'Lv.{level}',exp:'EXP {current} / {next}',expMax:'EXP MAX',hp:'HP',atk:'ATK',skill:'パッシブ',special:'SKILL',specialGauge:'SKILLゲージ',specialGaugeInfo:'SKILLはターン経過で蓄積します。強いSKILLほど発動までに必要なターン数が長くなります。',evolution:'進化',evolvesAt:'Lv.{level}で {name} へ進化',noEvolution:'これ以上進化しません。',teamIn:'編成中',teamAdd:'編成する',chooseReplacement:'交代するモンスターを選ぶ',acquiredOrder:'入手 #{order}'

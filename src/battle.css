@@ -621,3 +621,31 @@
   #enemyArea.bossOnly .enemyCard .ehpText{font-size:9px!important}
 }
 
+/* v21 — initial two-enemy encounters are centered; initial three remain fixed */
+#enemyArea.enemyGrid2{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,260px))!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  justify-content:center!important;
+  justify-items:center!important;
+  align-items:center!important;
+  column-gap:clamp(24px,5vw,84px)!important;
+}
+#enemyArea.enemyGrid2>.enemyCard,
+#enemyArea.enemyGrid2>.enemySlotDrop{
+  align-self:center!important;
+  justify-self:center!important;
+}
+@media(max-width:1100px){
+  #enemyArea.enemyGrid2{
+    grid-template-columns:repeat(2,minmax(0,210px))!important;
+    column-gap:clamp(18px,4vw,58px)!important;
+  }
+}
+@media(max-height:600px) and (pointer:coarse){
+  #enemyArea.enemyGrid2{
+    grid-template-columns:repeat(2,minmax(0,148px))!important;
+    column-gap:clamp(12px,4vw,34px)!important;
+  }
+}
+

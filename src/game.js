@@ -28,6 +28,42 @@
   const enemyById=Object.fromEntries(allEnemyDefs.map(x=>[x.masterId,x]));
 
   const SAVE_KEY=SHUTSave.key;
+  const AUDIO_PREF_KEY=SAVE_KEY+':audio';
+  const AUDIO_DEFAULTS={sound:true,masterVolume:.42,bgmVolume:.30,seVolume:.42};
+  function readAudioPrefs(){
+    try{
+      const raw=localStorage.getItem(AUDIO_PREF_KEY);if(!raw)return null;
+      const parsed=JSON.parse(raw);if(!parsed||typeof parsed!=='object')return null;
+      return {
+        sound:parsed.sound!==false,
+        masterVolume:Number.isFinite(Number(parsed.masterVolume))?clamp(Number(parsed.masterVolume),0,1):undefined,
+        bgmVolume:Number.isFinite(Number(parsed.bgmVolume))?clamp(Number(parsed.bgmVolume),0,1):undefined,
+        seVolume:Number.isFinite(Number(parsed.seVolume))?clamp(Number(parsed.seVolume),0,1):undefined
+      };
+    }catch{return null}
+  }
+  function persistAudioPrefs(){
+    try{
+      const prefs={
+        sound:S.settings?.sound!==false,
+        masterVolume:clamp(Number(S.settings?.masterVolume??AUDIO_DEFAULTS.masterVolume),0,1),
+        bgmVolume:clamp(Number(S.settings?.bgmVolume??AUDIO_DEFAULTS.bgmVolume),0,1),
+        seVolume:clamp(Number(S.settings?.seVolume??AUDIO_DEFAULTS.seVolume),0,1)
+      };
+      localStorage.setItem(AUDIO_PREF_KEY,JSON.stringify(prefs));return true;
+    }catch{return false}
+  }
+  function restoreAudioPrefs(){
+    S.settings=S.settings||{};
+    const saved=readAudioPrefs();
+    const source=saved||S.settings;
+    S.settings.sound=source.sound!==false;
+    for(const key of ['masterVolume','bgmVolume','seVolume']){
+      const fallback=AUDIO_DEFAULTS[key],value=Number(source[key]);
+      S.settings[key]=Number.isFinite(value)?clamp(value,0,1):fallback;
+    }
+    if(!saved)persistAudioPrefs();
+  }
   let S = {
     rank:1, rankXp:0, rankNeed:100, gold:0, gateKeys:0, stage:1,
     hp:100, maxHp:100,
@@ -65,7 +101,7 @@
   }
   function normalizeState(){
     S=Monsters.migrate(S,MASTER_DATA);S.schemaVersion=6;S.inventory=[];S.equipped=null;S.partners={};S.equippedPartner=null;S.normalTickets=0;S.captureUnlocked=false;S.freeDone=true;syncPartyHp();
-    S.eventFlags=S.eventFlags||{};S.stageMissions=S.stageMissions||{};S.records=Object.assign({tower:0,endless:0},S.records);S.settings=Object.assign({sound:true,openOnly:false},S.settings);
+    S.eventFlags=S.eventFlags||{};S.stageMissions=S.stageMissions||{};S.records=Object.assign({tower:0,endless:0},S.records);S.settings=Object.assign({sound:true,openOnly:false,masterVolume:AUDIO_DEFAULTS.masterVolume,bgmVolume:AUDIO_DEFAULTS.bgmVolume,seVolume:AUDIO_DEFAULTS.seVolume},S.settings);
     S.items=Object.assign({heal:1,high:0,elixir:0,expSmall:0,expMedium:0,expLarge:0,retry:0,chip:0,bossFrag:0},S.items||{});
     if(!S.eventFlags.retiredItemsRefunded){for(const [id,key]of [['ITM008','retry'],['ITM009','chip'],['ITM011','bossFrag']]){const price=Number(MASTER_DATA.migrations.retiredItemRefunds[key]||0);addWallet('gold',Math.max(0,Math.floor(Number(S.items[key]||0)))*price,'retired item refund');S.items[key]=0;}S.eventFlags.retiredItemsRefunded=true;}
     S.inventory=Array.isArray(S.inventory)?S.inventory:[];
@@ -1318,7 +1354,7 @@
   $('unfoldHome').onclick=enterOpenMenu;
   $('nextJourney').onclick=()=>{if(S.run)runGateExpedition(S.run.kind,true);else if(currentStoryStage())showStoryEventAndStart(currentStoryStage().stage_id);else renderGates()};
   $('retreatBtn').onclick=()=>{if(!confirm(t('battle.retreatConfirm')))return;attackReadyToken++;defenseToken++;setBattlePhase('idle',true);encounterSettled=true;patternBeat=null;S.run=null;activeGate=null;saveGame();$('rewardOverlay').classList.remove('show');$('recoveryTray').classList.remove('show');enterOpenMenu()};
-  function applyAudioSettings(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;if(master)master.gain.value=S.settings.sound?value('masterVolume',.78):0;if(musicGain)musicGain.gain.value=value('bgmVolume',.72);if(sfxGain)sfxGain.gain.value=value('seVolume',.6);applyAssetMusicVolume();if(!FORCE_NATIVE_BGM)applyToneMusicVolume();}
+  function applyAudioSettings(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;if(master)master.gain.value=S.settings.sound?value('masterVolume',AUDIO_DEFAULTS.masterVolume):0;if(musicGain)musicGain.gain.value=value('bgmVolume',AUDIO_DEFAULTS.bgmVolume);if(sfxGain)sfxGain.gain.value=value('seVolume',AUDIO_DEFAULTS.seVolume);applyAssetMusicVolume();if(!FORCE_NATIVE_BGM)applyToneMusicVolume();}
   let settingsOriginalLanguage=null;
   function updateLocalizedUi(){
     I18n.apply(document);
@@ -1339,13 +1375,13 @@
     SHUTDevice.refreshLocale?.();
   }
   function renderSettings(){
-    const rows=[['masterVolume','settings.master',.78],['bgmVolume','settings.bgm',.72],['seVolume','settings.se',.6]];
+    const rows=[['masterVolume','settings.master',AUDIO_DEFAULTS.masterVolume],['bgmVolume','settings.bgm',AUDIO_DEFAULTS.bgmVolume],['seVolume','settings.se',AUDIO_DEFAULTS.seVolume]];
     const languageButtons=I18n.supported.map(language=>`<button class="btn ${I18n.language===language?'gold':''}" data-language="${language}" aria-pressed="${I18n.language===language}">${t(language==='ja'?'settings.japanese':'settings.english')}</button>`).join('');
     openModal(t('settings.title'),`<div class="settingsSection"><b>${t('settings.language')}</b><div class="settingsChoices">${languageButtons}</div></div><div class="settingsSection"><b>${t('settings.playStyle')}</b><p class="small">${t('settings.playStyleHelp')}</p><div class="settingsChoices"><button id="duoMode" class="btn ${!openOnlyMode()?'gold':''}" aria-pressed="${!openOnlyMode()}">${t('settings.duoMode')}</button><button id="openOnlyMode" class="btn ${openOnlyMode()?'gold':''}" aria-pressed="${openOnlyMode()}">${t('settings.openOnly')}</button></div></div><div class="settingsSection"><b>${t('settings.audio')}</b>${rows.map(([key,label,defaultValue])=>`<label class="audioSlider">${t(label)}<input type="range" min="0" max="100" value="${Math.round((S.settings[key]??defaultValue)*100)}" data-volume="${key}"><output>${Math.round((S.settings[key]??defaultValue)*100)}</output></label>`).join('')}<button id="muteSound" class="btn">${t(S.settings.sound?'settings.mute':'settings.unmute')}</button></div><div class="settingsActions"><button id="confirmSettings" class="btn gold">${t('common.confirm')}</button><button id="cancelSettings" class="btn secondary">${t('common.cancel')}</button></div>`);
     document.querySelectorAll('[data-language]').forEach(button=>button.onclick=()=>{I18n.setLanguage(button.dataset.language);updateLocalizedUi();renderSettings()});
-    document.querySelectorAll('[data-volume]').forEach(input=>input.oninput=()=>{S.settings[input.dataset.volume]=Number(input.value)/100;input.nextElementSibling.textContent=input.value;applyAudioSettings();saveGame()});
+    document.querySelectorAll('[data-volume]').forEach(input=>input.oninput=()=>{S.settings[input.dataset.volume]=Number(input.value)/100;input.nextElementSibling.textContent=input.value;applyAudioSettings();persistAudioPrefs();saveGame()});
     $('duoMode').onclick=()=>{S.settings.openOnly=false;$('app').dataset.openOnly='0';saveGame();renderSettings()};$('openOnlyMode').onclick=()=>{S.settings.openOnly=true;$('app').dataset.openOnly='1';SHUTDevice.setClosed(false,{skipSnapshot:true,instant:true});$('app').dataset.screen=$('battleScreen').classList.contains('show')?'battleScreen':$('app').dataset.screen;saveGame();syncBattleStateUi();renderSettings()};
-    $('muteSound').onclick=()=>{S.settings.sound=!S.settings.sound;applyAudioSettings();saveGame();renderSettings()};
+    $('muteSound').onclick=()=>{S.settings.sound=!S.settings.sound;applyAudioSettings();persistAudioPrefs();saveGame();renderSettings()};
     $('confirmSettings').onclick=()=>{settingsOriginalLanguage=null;$('modal').classList.remove('show')};
     $('cancelSettings').onclick=()=>{if(settingsOriginalLanguage)I18n.setLanguage(settingsOriginalLanguage);settingsOriginalLanguage=null;updateLocalizedUi();$('modal').classList.remove('show')};
   }
@@ -1425,15 +1461,8 @@
 
   document.addEventListener('click',event=>{const b=event.target.closest('button');if(!b||b.disabled||!audioCtx||['startBtn','newGameBtn','continueBattle','foldHome','unfoldHome','singlePullBtn','tenPullBtn','confirmSynthesis'].includes(b.id))return;sfx(['modalClose','cancelSynthesis','dialogueSkip'].includes(b.id)?'cancel':['storyDeploy','claimAllGift','previewSynthesis'].includes(b.id)||b.hasAttribute('data-buy')?'confirm':'ui');});
   bindAudioResumeEvents();
-  hadSave=loadGame();normalizeState();
-  if(!S.settings.audioRepairV14){
-    S.settings.sound=true;
-    S.settings.masterVolume=Math.max(.78,Number(S.settings.masterVolume)||0);
-    S.settings.bgmVolume=Math.max(.72,Number(S.settings.bgmVolume)||0);
-    S.settings.seVolume=Math.max(.6,Number(S.settings.seVolume)||0);
-    S.settings.audioRepairV14=true;
-    if(hadSave)saveGame();
-  }if(hadSave){$('startBtn').textContent=t('title.continue');$('newGameBtn').style.display='inline-block';$('continueUnavailable').style.display='none'}else{$('startBtn').textContent=t('title.newGame');$('continueUnavailable').style.display='block';if(SHUTSave.recovered)toast(t('save.recovery'),9000)}
+  hadSave=loadGame();normalizeState();restoreAudioPrefs();
+  if(hadSave){$('startBtn').textContent=t('title.continue');$('newGameBtn').style.display='inline-block';$('continueUnavailable').style.display='none'}else{$('startBtn').textContent=t('title.newGame');$('continueUnavailable').style.display='block';if(SHUTSave.recovered)toast(t('save.recovery'),9000)}
   window.addEventListener('beforeunload',saveGame);
   spriteLoop();
   updateHome();

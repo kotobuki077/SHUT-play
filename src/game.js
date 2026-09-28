@@ -211,7 +211,7 @@
   function show(id){
     screens.forEach(s => $(s).classList.toggle('show',s===id));
     $('app').dataset.screen=id;SHUTDevice.route(id);
-    if(id==='battleScreen'){ setMusicMode('battle'); setStateBadge('BATTLE'); }
+    if(id==='battleScreen'){ setMusicMode('battle'); resumeAudioPlayback(); setStateBadge('BATTLE'); }
     else if(id==='gachaScreen'){ setMusicMode('gacha'); setStateBadge('GACHA GATE'); }
     else if(id==='closeMenuScreen'){ setMusicMode('close'); setStateBadge('CLOSE MENU'); }
     else if(id==='homeScreen'){ setMusicMode('open'); setStateBadge('OPEN MENU'); }
@@ -372,10 +372,29 @@
       return false;
     }
   }
-  function resumeAudioPlayback(){
-    try{if(audioCtx?.state==='suspended')audioCtx.resume().catch(()=>{})}catch{}
-    try{globalThis.Tone?.start?.().then(()=>initToneMusic()).catch(()=>{})}catch{}
-    if(musicAssetUsing&&musicAssetActive?.paused)musicAssetActive.play().catch(()=>{musicAssetUsing=false;musicAssetMode=null;});
+  async function ensureAudioReady(){
+    try{
+      if(!audioCtx)initAudio();
+      const jobs=[];
+      if(audioCtx&&audioCtx.state!=='running')jobs.push(audioCtx.resume());
+      if(globalThis.Tone?.start)jobs.push(globalThis.Tone.start().then(()=>initToneMusic()));
+      if(jobs.length)await Promise.allSettled(jobs);
+      if(productionMusicConfig(musicMode)&&(!musicAssetUsing||musicAssetMode!==musicMode||musicAssetActive?.paused))void playMusicAsset(musicMode);
+      document.documentElement.dataset.audioState=audioCtx?.state||'unavailable';
+      return audioCtx?.state==='running';
+    }catch(error){
+      document.documentElement.dataset.audioState='error';
+      return false;
+    }
+  }
+  function resumeAudioPlayback(){void ensureAudioReady();}
+  function bindAudioResumeEvents(){
+    if(audioResumeBound)return;
+    audioResumeBound=true;
+    window.addEventListener('pointerdown',resumeAudioPlayback,{capture:true,passive:true});
+    window.addEventListener('keydown',resumeAudioPlayback,{capture:true});
+    window.addEventListener('pageshow',resumeAudioPlayback);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAudioPlayback()});
   }
   function setMusicMode(mode){const changed=musicMode!==mode;if(changed){musicStep=0;releaseToneMusic();}musicMode=mode;if(!['victory','equip','shop','synthesis','story'].includes(mode))lastBaseMusicMode=mode;if(audioCtx&&changed)void playMusicAsset(mode)}
 
@@ -386,7 +405,7 @@
     master=audioCtx.createGain();master.connect(audioCtx.destination);
     musicGain=audioCtx.createGain();musicGain.connect(master);
     sfxGain=audioCtx.createGain();sfxGain.connect(master);applyAudioSettings();
-    initMusicAssets();initToneMusic();try{globalThis.Tone?.start?.().then(()=>initToneMusic()).catch(()=>{})}catch{}void playMusicAsset(musicMode);if(!audioResumeBound){audioResumeBound=true;window.addEventListener('pointerdown',resumeAudioPlayback,{passive:true});window.addEventListener('pageshow',resumeAudioPlayback);document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAudioPlayback()});}
+    initMusicAssets();initToneMusic();void playMusicAsset(musicMode);document.documentElement.dataset.audioState=audioCtx.state;
 
     // Small echo bus for a more produced chiptune sound.
     musicDelay=audioCtx.createDelay(.6); musicDelay.delayTime.value=.19;
@@ -484,7 +503,9 @@
   function hat(vol=.012){noiseHit(.035,vol,3600)}
 
   function sfx(k){
-    if(!audioCtx) return;
+    if(!audioCtx){try{initAudio()}catch{}}
+    if(!audioCtx)return;
+    if(audioCtx.state!=='running'){audioCtx.resume().then(()=>{if(audioCtx?.state==='running')sfx(k)}).catch(()=>{});return;}
     try{
       const motifs={egg:[523,659,784],rare:[659,988,1318,1568],gold:[1109,1397],key:[740,1110,1480],item:[587,784],synthesis:[262,330,392,523],evolution:[392,523,659,784,1046],level:[523,659,1046],ui:[440],confirm:[660,880],cancel:[392,294]};
       if(motifs[k]){motifs[k].forEach((freq,i)=>tone(freq,k==='evolution'?.35:k==='ui'?.045:.13,'triangle',k==='ui'?.018:.035,sfxGain,i*.055));return;}
@@ -1026,7 +1047,7 @@
   function nextEnemyAttack(){if(!defenseQueue.length){beginAttack();return;}const e=defenseQueue.shift();if(e.dead){nextEnemyAttack();return;}const def=MASTER_DATA.enemies.find(x=>x.enemy_id===e.masterId),action=Systems.action(e,def,MASTER_DATA);if(action.heal&&(e.healCount||0)<2){e.hp=Math.min(e.maxHp,e.hp+Math.round(e.maxHp*action.heal));e.healCount=(e.healCount||0)+1;}if(action.barrier)e.barrier=action.barrier;if(action.shift)e.attr=attributes[(attributes.indexOf(e.attr)+1)%attributes.length];patternBeat={enemy:e,action,index:0};const start=()=>startGuardBeat();if(e.pendingPhaseEvent&&!activeGate){const timing=e.pendingPhaseEvent;e.pendingPhaseEvent=null;playEvents(activeStageId,timing,start)}else start();}
   function startGuardBeat(){if(!patternBeat)return;const {enemy:e,action,index}=patternBeat;if(e.dead){patternBeat=null;nextEnemyAttack();return;}opened=true;setDeviceClosed(false);defenseEnemyId=e.id;const guardAlive=partyMembers().filter(m=>m.hp>0);defenseTargetId=guardAlive.length?guardAlive[(stageStats.guardHits||0)%guardAlive.length].id:null;setBattlePhase('guard',false);const token=++defenseToken,windup=action.beats[index],guardBad=Math.max(1,Number(CFG.bad_guard_ms)),guardPerfect=Math.max(1,Number(CFG.perfect_guard_ms));defenseImpact=performance.now()+windup;currentBattleCopy=null;$('battleMessage').textContent='';$('battleSub').textContent='';renderEnemies();playEnemyAttackMotion(e);$('timingBox').classList.add('show');prepareTimingUi('guard');const guardGoodWidth=.42,guardPerfectWidth=Math.max(.05,guardGoodWidth*Math.min(.45,guardPerfect/guardBad));$('hitZone').style.left=`${50-guardGoodWidth*50}%`;$('hitZone').style.width=`${guardGoodWidth*100}%`;$('perfectZone').style.left=`${50-guardPerfectWidth*50}%`;$('perfectZone').style.width=`${guardPerfectWidth*100}%`;const guardStart=performance.now();cancelAnimationFrame(meterRAF);const drawGuard=now=>{if(token!==defenseToken||phase!=='guard')return;const p=now<=defenseImpact?.5*clamp((now-guardStart)/Math.max(1,defenseImpact-guardStart),0,1):.5+.5*clamp((now-defenseImpact)/guardBad,0,1);$('cursor').style.left=`${p*100}%`;meterRAF=requestAnimationFrame(drawGuard)};meterRAF=requestAnimationFrame(drawGuard);setTimeout(()=>{if(token===defenseToken&&phase==='guard')resolveDefense(Number(CFG.bad_guard_ms)+10,false)},windup+Number(CFG.bad_guard_ms)+1);}
   function executeDefense(){if(phase==='guard'&&!battleInputLocked)resolveDefense(performance.now()-defenseImpact,!openOnlyMode());}
-  function resolveDefense(delta,playerClosed=true){if(battleInputLocked)return;setBattlePhase('transition',true);cancelAnimationFrame(meterRAF);const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;const shouldPhysicallyClose=!!playerClosed&&!openOnlyMode();defenseToken++;opened=!shouldPhysicallyClose;if(!shouldPhysicallyClose)setDeviceClosed(false,{skipSnapshot:true});e.turnsLeft=e.attackEvery;resetBattleTimingUi();const rate=Combat.guardRate(delta,CFG),perfect=Math.abs(delta)<=Number(CFG.perfect_guard_ms),a=patternBeat?.action,factor=a?a.factors[patternBeat.index]*a.damage:1,alive=partyMembers().filter(m=>m.hp>0),target=alive.find(m=>m.id===defenseTargetId)||alive[(stageStats.guardHits||0)%Math.max(1,alive.length)],dmg=Combat.guardDamage(e.atk,factor,rate,e.attackDown?.multiplier||1);stageStats.guardHits=(stageStats.guardHits||0)+1;if(target){const owned=S.monsters.find(m=>m.id===target.id);owned.hp=Math.max(0,target.hp-dmg);if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':rate<=.3?'battle.goodGuard':rate<1?'battle.guard':'battle.miss';if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}SHUTDevice.guard(labelKey,dmg);feedback(t(labelKey),perfect?'guard':'hit');setBattleCopy(labelKey,'battle.damage',{name:target?.name||'',damage:dmg});defenseTargetId=null;drawPartyHud();updateBattleHeader();renderEnemies();if(S.hp<=0){setTimeout(gameOver,250);return;}const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}const reason=more?'combo':'defenseContinue';if(shouldPhysicallyClose)setTimeout(()=>enterRecoveryPhase(reason,true),200);else if(openOnlyMode())setTimeout(()=>playOpenOnlyGuardDoorMotion(()=>enterRecoveryPhase(reason,false)),120);else setTimeout(()=>{if(more)startGuardBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);}
+  function resolveDefense(delta,playerClosed=true){if(battleInputLocked)return;setBattlePhase('transition',true);cancelAnimationFrame(meterRAF);const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;const shouldPhysicallyClose=!!playerClosed&&!openOnlyMode();defenseToken++;opened=!shouldPhysicallyClose;if(!shouldPhysicallyClose)setDeviceClosed(false,{skipSnapshot:true});e.turnsLeft=e.attackEvery;resetBattleTimingUi();const rate=Combat.guardRate(delta,CFG),perfect=Math.abs(delta)<=Number(CFG.perfect_guard_ms),a=patternBeat?.action,factor=a?a.factors[patternBeat.index]*a.damage:1,alive=partyMembers().filter(m=>m.hp>0),target=alive.find(m=>m.id===defenseTargetId)||alive[(stageStats.guardHits||0)%Math.max(1,alive.length)],dmg=Combat.guardDamage(e.atk,factor,rate,e.attackDown?.multiplier||1);stageStats.guardHits=(stageStats.guardHits||0)+1;if(target){const owned=S.monsters.find(m=>m.id===target.id);owned.hp=Math.max(0,target.hp-dmg);if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':rate<=.3?'battle.goodGuard':rate<1?'battle.guard':'battle.miss';if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}else sfx(dmg>0?'hit':'guard');SHUTDevice.guard(labelKey,dmg);feedback(t(labelKey),perfect?'guard':'hit');setBattleCopy(labelKey,'battle.damage',{name:target?.name||'',damage:dmg});defenseTargetId=null;drawPartyHud();updateBattleHeader();renderEnemies();if(S.hp<=0){setTimeout(gameOver,250);return;}const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}const reason=more?'combo':'defenseContinue';if(shouldPhysicallyClose)setTimeout(()=>enterRecoveryPhase(reason,true),200);else if(openOnlyMode())setTimeout(()=>playOpenOnlyGuardDoorMotion(()=>enterRecoveryPhase(reason,false)),120);else setTimeout(()=>{if(more)startGuardBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);}
   function resetBattleTimingUi(){$('timingBox').classList.remove('show','guardMode');$('timingPhase')?.classList.remove('phaseFlash');document.querySelectorAll('.enemyCard').forEach(x=>x.classList.remove('attacking'));}
   function playOpenOnlyGuardDoorMotion(done){let layer=$('openOnlyGuardDoor');if(!layer){layer=document.createElement('div');layer.id='openOnlyGuardDoor';layer.setAttribute('aria-hidden','true');layer.innerHTML='<i></i><i></i>';$('battleScreen').append(layer);}layer.classList.remove('play');void layer.offsetWidth;layer.classList.add('play');sfx('door');setTimeout(()=>{layer.classList.remove('play');done?.();},430);}
   function enterRecoveryPhase(reason,physicalClose=false){recoveryReason=reason;pendingItem=null;defenseToken++;resetBattleTimingUi();setBattlePhase('recovery',true);const tray=$('recoveryTray');tray.dataset.presentation=physicalClose?'closed':'open';tray.setAttribute('aria-hidden','false');if(physicalClose){opened=false;sfx('door');document.querySelector('.outer-display')?.append(tray);setDeviceClosed(true);}else{opened=true;$('battleScreen').append(tray);SHUTDevice.setClosed(false,{skipSnapshot:true,instant:true});$('app').dataset.screen='battleScreen';}updateItemMenu();updateBattleHeader();tray.classList.add('show');}
@@ -1100,7 +1121,7 @@
  if(!S.tutorialDone&&!practiceDone){practiceDone=true;$('tutorialTitle').textContent=t('tutorial.practiceTitle');$('tutorialBody').innerHTML='<span id="practiceCopy">'+t('tutorial.practiceBody')+'</span><div id="practiceLight" style="height:12px;background:#ead391;width:0;transition:width 1.1s linear;margin:20px 0"></div>';$('tutorialSkip').hidden=true;$('tutorialNext').textContent=t('tutorial.practiceAction');setTimeout(()=>$('practiceLight').style.width='100%',100);const practiceImpact=performance.now()+1200;let practiced=false;const hit=()=>{if(practiced)return;practiced=true;removeEventListener('keydown',key);$('tutorialOverlay').classList.remove('show');const delta=performance.now()-practiceImpact,practiceRate=Combat.guardRate(delta,CFG),guardKey=Math.abs(delta)<=Number(CFG.perfect_guard_ms)?'tutorial.perfectGuard':practiceRate<1?'tutorial.guard':'tutorial.tryAgain';SHUTDevice.guard(guardKey,Combat.guardDamage(10,1,practiceRate));show('battleScreen');if(openOnlyMode())playOpenOnlyGuardDoorMotion(()=>enterRecoveryPhase('tutorial',false));else enterRecoveryPhase('tutorial',true);};const key=e=>{if(e.code==='Space'&&!e.repeat){e.preventDefault();hit()}};addEventListener('keydown',key);$('tutorialNext').onclick=hit;return;}
  S.tutorialDone=true;S.questProgress.tutorial_complete=1;S.questProgress.account_first_start=1;addPartner('P028','story');evaluateQuests();saveGame();$('tutorialOverlay').classList.remove('show');enterOpenMenu();}
   function startGameFlow(forceNew=false){
-    try{initAudio();if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume()}catch(err){}
+    try{resumeAudioPlayback()}catch(err){}
     const has=!!localStorage.getItem(SAVE_KEY);
     if(forceNew){clearSave();S={rank:1,rankXp:0,rankNeed:100,gold:0,gateKeys:0,stage:1,hp:100,maxHp:100,items:{heal:1,high:0,elixir:0,expSmall:0,expMedium:0,expLarge:0,retry:0,chip:0,bossFrag:0},inventory:[],equipped:null,materials:{bossCore:0},codex:{enemies:{},weapons:{},partners:{}},partners:{},equippedPartner:null,captureUnlocked:false,storyIndex:0,stageClears:{},readEvents:{},normalTickets:0,gifts:[],questProgress:{},questDelivered:{},gateUnlocked:{EXP:false,GOLD:false,HIDDEN:false,BOSSRUSH:false,TOWER:false,ENDLESS:false},gateAttempts:{EXP:0,GOLD:0,HIDDEN:0},shopStock:null,shopCycle:0,tutorialDone:false,freeDone:false};normalizeState();showTutorial();return;}
     if(has){loadGame();updateHome();if(!S.tutorialDone){showTutorial();return;}enterOpenMenu();return;}
@@ -1349,6 +1370,7 @@
   }
 
   document.addEventListener('click',event=>{const b=event.target.closest('button');if(!b||b.disabled||!audioCtx||['startBtn','newGameBtn','continueBattle','foldHome','unfoldHome','singlePullBtn','tenPullBtn','confirmSynthesis'].includes(b.id))return;sfx(['modalClose','cancelSynthesis','dialogueSkip'].includes(b.id)?'cancel':['storyDeploy','claimAllGift','previewSynthesis'].includes(b.id)||b.hasAttribute('data-buy')?'confirm':'ui');});
+  bindAudioResumeEvents();
   hadSave=loadGame();normalizeState();if(hadSave){$('startBtn').textContent=t('title.continue');$('newGameBtn').style.display='inline-block';$('continueUnavailable').style.display='none'}else{$('startBtn').textContent=t('title.newGame');$('continueUnavailable').style.display='block';if(SHUTSave.recovered)toast(t('save.recovery'),9000)}
   window.addEventListener('beforeunload',saveGame);
   spriteLoop();

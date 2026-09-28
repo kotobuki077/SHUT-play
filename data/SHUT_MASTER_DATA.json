@@ -3252,9 +3252,9 @@
     "eliteCycles": 6,
     "midbossCycles": 8,
     "bossCycles": 14.5,
-    "normalDamageShare": 0.2,
-    "eliteDamageShare": 0.25,
-    "bossDamageShare": 0.34,
+    "normalDamageShare": 0.22,
+    "eliteDamageShare": 0.28,
+    "bossDamageShare": 0.38,
     "baseStatVariance": 0.18
   },
   "sprites": {
@@ -6854,7 +6854,7 @@
       "rarityScalePerStar": 0.03
     },
     "balance": {
-      "defenseCoefficient": 0.35,
+      "defenseCoefficient": 0.25,
       "xpRateByRarity": {
         "1": 0.88,
         "2": 0.94,

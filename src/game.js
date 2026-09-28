@@ -994,20 +994,31 @@
     $('battleCarry').hidden=phase!=='recovery';
   }
   function hpBarGradient(attr){return attrColor[attr]||attrColor['風'];}
+  function enemyFormationSlot(index,count){
+    const total=Math.max(1,Math.min(9,Number(count)||1));
+    const rows=Math.ceil(total/3),firstCount=total-(rows-1)*3,startRow=4-rows;
+    if(index<firstCount){
+      const cols=firstCount===1?[2]:firstCount===2?[1,3]:[1,2,3];
+      return {row:startRow,col:cols[index]};
+    }
+    const rest=index-firstCount;
+    return {row:startRow+1+Math.floor(rest/3),col:rest%3+1};
+  }
   function renderEnemies(){
     const area=$('enemyArea');area.innerHTML='';
     const alive=living(),slotCount=enemies.length;
     area.className='';
     area.id='enemyArea';
     area.dataset.enemyCount=String(slotCount);
+    area.dataset.enemyGrid=slotCount>1?'1':'0';
     if(slotCount===1 && enemies[0]?.boss) area.classList.add('bossOnly');
     else if(slotCount===1) area.classList.add('single');
-    else area.classList.add('multi');
+    else area.classList.add('multi','enemyGrid9');
     
     enemies.forEach((e,slot)=>{
-      const ready=!e.dead&&e.turnsLeft<=0,settledDead=e.dead&&performance.now()>=(e.defeatUntil||0);
+      const ready=!e.dead&&e.turnsLeft<=0,settledDead=e.dead&&performance.now()>=(e.defeatUntil||0),formation=enemyFormationSlot(slot,slotCount);
       if(settledDead&&e.battleEggDrop){
-        const drop=document.createElement('div');drop.className='enemySlotDrop egg';drop.dataset.slot=String(slot);drop.style.gridColumn=String(slot+1);drop.setAttribute('aria-label',e.battleEggDrop.label||'EGG');drop.innerHTML=`<div class="enemySlotEgg">${rewardIcon('egg',e.battleEggDrop.rarity||1,'slotEggIcon')}</div>`;area.appendChild(drop);
+        const drop=document.createElement('div');drop.className='enemySlotDrop egg';drop.dataset.slot=String(slot);drop.style.gridColumn=String(formation.col);drop.style.gridRow=String(formation.row);drop.setAttribute('aria-label',e.battleEggDrop.label||'EGG');drop.innerHTML=`<div class="enemySlotEgg">${rewardIcon('egg',e.battleEggDrop.rarity||1,'slotEggIcon')}</div>`;area.appendChild(drop);
       }
       const card=document.createElement('div');
       const hpRatio=Math.max(0,e.hp/e.maxHp);
@@ -1015,7 +1026,7 @@
       const flashing=performance.now() < (e.flashUntil||0);
       const compact=enemies.length>=3 && !e.boss;
       card.className='enemyCard kind-'+e.kind+(compact?' compact':'')+(e.boss?' bossCard':'')+(e.dead?(performance.now()<(e.defeatUntil||0)?' defeated':' dead'):'')+(hpRatio<.35?' lowhp':'')+(flashing?' hitFlash':'')+(e.id===defenseEnemyId&&phase==='guard'?' attacking':'');
-      card.dataset.id=e.id;card.dataset.masterId=e.masterId||'';card.dataset.slot=String(slot);if(slotCount>1)card.style.gridColumn=String(slot+1);
+      card.dataset.id=e.id;card.dataset.masterId=e.masterId||'';card.dataset.slot=String(slot);if(slotCount>1){card.style.gridColumn=String(formation.col);card.style.gridRow=String(formation.row);}
       const popupHTML = e.popup ? `<div class="damagePop ${e.popup.cls||''}">${e.popup.text}${e.popup.tag?`<span class="tag">${e.popup.tag}</span>`:''}</div>` : '';
       const barNow=hpBarGradient(e.attr);
       const canvasW=MASTER_DATA.sprites[e.kind].canvasSize||64, canvasH=canvasW;

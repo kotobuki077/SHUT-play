@@ -649,7 +649,7 @@
   }
 }
 
-/* v22 — unified ATTACK/GUARD timing: same size/speed, seven stop zones */
+/* v23 — unified ATTACK/GUARD timing: same size/speed, nine tighter stop zones */
 #timingBox{
   --timing-track:#26090f;
   --timing-edge:#c94756;
@@ -674,13 +674,15 @@
 }
 #hitZone{
   background:linear-gradient(90deg,
-    var(--timing-bad) 0 16.6667%,
-    var(--timing-good) 16.6667% 30.5556%,
-    var(--timing-great) 30.5556% 41.6667%,
-    var(--timing-perfect) 41.6667% 58.3333%,
-    var(--timing-great) 58.3333% 69.4444%,
-    var(--timing-good) 69.4444% 83.3333%,
-    var(--timing-bad) 83.3333% 100%)!important;
+    var(--timing-bad) 0 12.857%,
+    var(--timing-good) 12.857% 25%,
+    var(--timing-great) 25% 35.714%,
+    color-mix(in srgb,var(--timing-great) 72%,var(--timing-perfect)) 35.714% 43.571%,
+    var(--timing-perfect) 43.571% 56.429%,
+    color-mix(in srgb,var(--timing-great) 72%,var(--timing-perfect)) 56.429% 64.286%,
+    var(--timing-great) 64.286% 75%,
+    var(--timing-good) 75% 87.143%,
+    var(--timing-bad) 87.143% 100%)!important;
 }
 #perfectZone{
   background:var(--timing-perfect)!important;
@@ -688,7 +690,7 @@
 }
 #cursor{background:#fff!important;box-shadow:0 0 10px #fff!important}
 #timingJudges{
-  grid-template-columns:repeat(7,minmax(0,1fr))!important;
+  grid-template-columns:repeat(9,minmax(0,1fr))!important;
   width:min(94%,680px)!important;
   margin:5px auto 0!important;
   gap:2px!important;
@@ -700,9 +702,10 @@
   text-align:center;
   font-weight:700;
 }
-#timingJudges span:nth-child(1),#timingJudges span:nth-child(7){color:var(--timing-bad)!important}
-#timingJudges span:nth-child(2),#timingJudges span:nth-child(6){color:var(--timing-good)!important}
-#timingJudges span:nth-child(3),#timingJudges span:nth-child(5){color:var(--timing-great)!important}
+#timingJudges span:nth-child(1),#timingJudges span:nth-child(9){color:var(--timing-bad)!important}
+#timingJudges span:nth-child(2),#timingJudges span:nth-child(8){color:var(--timing-good)!important}
+#timingJudges span:nth-child(3),#timingJudges span:nth-child(7){color:var(--timing-great)!important}
+#timingJudges span:nth-child(4),#timingJudges span:nth-child(6){color:color-mix(in srgb,var(--timing-great) 72%,var(--timing-perfect))!important}
 #timingJudges b{color:var(--timing-perfect)!important}
 @media(max-height:600px) and (pointer:coarse){
   #timingTrack{height:18px!important}

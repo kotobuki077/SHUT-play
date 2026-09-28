@@ -2,8 +2,8 @@
   "meta": {
     "title": "SHUT Monster Master Data",
     "generated_at": "2026-09-19T12:24:55",
-    "note": "データファースト設計。HTML/JS側はこのマスターデータを読み込む前提。",
-    "version": "5.0.0-monster-dev"
+    "note": "データファースト設計。HTML/JS側はこのマスターデータを読み込む前提。 / monster balance v1: role DEF, per-species growth/EXP/synthesis pacing",
+    "version": "5.1.0-balance-v1"
   },
   "worlds": [
     {
@@ -5142,8 +5142,17 @@
         "power": 1.05,
         "status": {
           "turns": 3,
-          "multiplier": 0.78
+          "multiplier": 0.84
         }
+      },
+      "balance": {
+        "role": "control",
+        "def": 13,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.034,
+        "defGrowth": 0.038,
+        "xpRate": 0.88,
+        "synthesisYield": 1
       }
     },
     {
@@ -5152,8 +5161,8 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 1,
-      "hp": 83,
-      "atk": 14,
+      "hp": 80,
+      "atk": 15,
       "sprite": "E002",
       "materialExp": 40,
       "skill": {
@@ -5178,7 +5187,16 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.5
+        "power": 1.35
+      },
+      "balance": {
+        "role": "striker",
+        "def": 11,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 0.92,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -5187,7 +5205,7 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 1,
-      "hp": 87,
+      "hp": 89,
       "atk": 15,
       "sprite": "E003",
       "materialExp": 40,
@@ -5214,7 +5232,16 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.3
+        "healRate": 0.26
+      },
+      "balance": {
+        "role": "support",
+        "def": 13,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 0.86,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -5223,8 +5250,8 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 2,
-      "hp": 100,
-      "atk": 15,
+      "hp": 96,
+      "atk": 16,
       "sprite": "E004",
       "materialExp": 55,
       "skill": {
@@ -5246,7 +5273,16 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.5
+        "power": 1.35
+      },
+      "balance": {
+        "role": "striker",
+        "def": 13,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 0.98,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -5255,8 +5291,8 @@
       "attribute": "地",
       "family": "creature",
       "rarity": 2,
-      "hp": 88,
-      "atk": 16,
+      "hp": 92,
+      "atk": 15,
       "sprite": "E005",
       "materialExp": 55,
       "skill": {
@@ -5281,8 +5317,17 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.08
+          "rate": 0.06
         }
+      },
+      "balance": {
+        "role": "guardian",
+        "def": 16,
+        "hpGrowth": 0.042,
+        "atkGrowth": 0.029,
+        "defGrowth": 0.044,
+        "xpRate": 0.96,
+        "synthesisYield": 0.98
       }
     },
     {
@@ -5291,8 +5336,8 @@
       "attribute": "雷",
       "family": "machine",
       "rarity": 2,
-      "hp": 92,
-      "atk": 17,
+      "hp": 88,
+      "atk": 18,
       "sprite": "E006",
       "materialExp": 55,
       "skill": {
@@ -5314,7 +5359,16 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.5
+        "power": 1.35
+      },
+      "balance": {
+        "role": "striker",
+        "def": 12,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 0.98,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -5323,7 +5377,7 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 2,
-      "hp": 96,
+      "hp": 98,
       "atk": 15,
       "sprite": "E007",
       "materialExp": 55,
@@ -5347,7 +5401,16 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.3
+        "healRate": 0.26
+      },
+      "balance": {
+        "role": "support",
+        "def": 15,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 0.92,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -5382,8 +5445,17 @@
         "power": 1.05,
         "status": {
           "turns": 3,
-          "multiplier": 0.78
+          "multiplier": 0.84
         }
+      },
+      "balance": {
+        "role": "control",
+        "def": 18,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.034,
+        "defGrowth": 0.038,
+        "xpRate": 1,
+        "synthesisYield": 1
       }
     },
     {
@@ -5418,8 +5490,17 @@
         "power": 1.05,
         "status": {
           "turns": 3,
-          "multiplier": 0.78
+          "multiplier": 0.84
         }
+      },
+      "balance": {
+        "role": "control",
+        "def": 15,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.034,
+        "defGrowth": 0.038,
+        "xpRate": 0.94,
+        "synthesisYield": 1
       }
     },
     {
@@ -5428,8 +5509,8 @@
       "attribute": "地",
       "family": "creature",
       "rarity": 3,
-      "hp": 83,
-      "atk": 13,
+      "hp": 87,
+      "atk": 12,
       "sprite": "E010",
       "materialExp": 40,
       "skill": {
@@ -5454,8 +5535,17 @@
         "power": 1.05,
         "status": {
           "turns": 3,
-          "multiplier": 0.78
+          "multiplier": 0.84
         }
+      },
+      "balance": {
+        "role": "guardian",
+        "def": 18,
+        "hpGrowth": 0.042,
+        "atkGrowth": 0.029,
+        "defGrowth": 0.044,
+        "xpRate": 1.02,
+        "synthesisYield": 0.98
       }
     },
     {
@@ -5464,7 +5554,7 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 2,
-      "hp": 96,
+      "hp": 98,
       "atk": 16,
       "sprite": "E011",
       "materialExp": 55,
@@ -5488,7 +5578,16 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.3
+        "healRate": 0.26
+      },
+      "balance": {
+        "role": "support",
+        "def": 15,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 0.92,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -5523,8 +5622,17 @@
         "power": 1.05,
         "status": {
           "turns": 3,
-          "multiplier": 0.78
+          "multiplier": 0.84
         }
+      },
+      "balance": {
+        "role": "control",
+        "def": 20,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.034,
+        "defGrowth": 0.038,
+        "xpRate": 1.08,
+        "synthesisYield": 1
       }
     },
     {
@@ -5533,7 +5641,7 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 5,
-      "hp": 115,
+      "hp": 117,
       "atk": 21,
       "sprite": "E013",
       "materialExp": 100,
@@ -5557,7 +5665,16 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.3
+        "healRate": 0.26
+      },
+      "balance": {
+        "role": "support",
+        "def": 21,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 1.14,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -5566,7 +5683,7 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 1,
-      "hp": 83,
+      "hp": 85,
       "atk": 14,
       "sprite": "E014",
       "materialExp": 40,
@@ -5592,8 +5709,17 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.08
+          "rate": 0.06
         }
+      },
+      "balance": {
+        "role": "support",
+        "def": 13,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 0.86,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -5602,8 +5728,8 @@
       "attribute": "雷",
       "family": "machine",
       "rarity": 2,
-      "hp": 96,
-      "atk": 17,
+      "hp": 101,
+      "atk": 16,
       "sprite": "E015",
       "materialExp": 55,
       "skill": {
@@ -5628,8 +5754,17 @@
         "power": 1.05,
         "status": {
           "turns": 3,
-          "multiplier": 0.78
+          "multiplier": 0.84
         }
+      },
+      "balance": {
+        "role": "guardian",
+        "def": 17,
+        "hpGrowth": 0.042,
+        "atkGrowth": 0.029,
+        "defGrowth": 0.044,
+        "xpRate": 0.96,
+        "synthesisYield": 0.98
       }
     },
     {
@@ -5638,7 +5773,7 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 2,
-      "hp": 100,
+      "hp": 102,
       "atk": 15,
       "sprite": "E016",
       "materialExp": 55,
@@ -5664,8 +5799,17 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.08
+          "rate": 0.06
         }
+      },
+      "balance": {
+        "role": "support",
+        "def": 15,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 0.92,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -5674,7 +5818,7 @@
       "attribute": "地",
       "family": "creature",
       "rarity": 3,
-      "hp": 97,
+      "hp": 99,
       "atk": 18,
       "sprite": "E017",
       "materialExp": 70,
@@ -5700,8 +5844,17 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.08
+          "rate": 0.06
         }
+      },
+      "balance": {
+        "role": "support",
+        "def": 17,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 0.98,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -5710,7 +5863,7 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 4,
-      "hp": 110,
+      "hp": 112,
       "atk": 21,
       "sprite": "E018",
       "materialExp": 85,
@@ -5736,8 +5889,17 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.08
+          "rate": 0.06
         }
+      },
+      "balance": {
+        "role": "support",
+        "def": 19,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 1.06,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -5746,7 +5908,7 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 5,
-      "hp": 123,
+      "hp": 125,
       "atk": 21,
       "sprite": "E019",
       "materialExp": 100,
@@ -5770,7 +5932,16 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.3
+        "healRate": 0.26
+      },
+      "balance": {
+        "role": "support",
+        "def": 21,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 1.14,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -5779,8 +5950,8 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 2,
-      "hp": 100,
-      "atk": 16,
+      "hp": 105,
+      "atk": 15,
       "sprite": "E020",
       "materialExp": 55,
       "skill": {
@@ -5802,7 +5973,16 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.5
+        "power": 1.35
+      },
+      "balance": {
+        "role": "guardian",
+        "def": 17,
+        "hpGrowth": 0.042,
+        "atkGrowth": 0.029,
+        "defGrowth": 0.044,
+        "xpRate": 0.96,
+        "synthesisYield": 0.98
       }
     },
     {
@@ -5811,8 +5991,8 @@
       "attribute": "火",
       "family": "machine",
       "rarity": 3,
-      "hp": 97,
-      "atk": 19,
+      "hp": 93,
+      "atk": 20,
       "sprite": "E021",
       "materialExp": 70,
       "skill": {
@@ -5837,8 +6017,17 @@
         "power": 1.1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.045
         }
+      },
+      "balance": {
+        "role": "striker",
+        "def": 14,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 1.04,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -5847,8 +6036,8 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 3,
-      "hp": 101,
-      "atk": 17,
+      "hp": 97,
+      "atk": 18,
       "sprite": "E022",
       "materialExp": 70,
       "skill": {
@@ -5870,7 +6059,16 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.5
+        "power": 1.35
+      },
+      "balance": {
+        "role": "striker",
+        "def": 14,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 1.04,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -5879,8 +6077,8 @@
       "attribute": "火",
       "family": "creature",
       "rarity": 2,
-      "hp": 96,
-      "atk": 16,
+      "hp": 92,
+      "atk": 17,
       "sprite": "E023",
       "materialExp": 55,
       "skill": {
@@ -5905,8 +6103,17 @@
         "power": 1.1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.045
         }
+      },
+      "balance": {
+        "role": "striker",
+        "def": 12,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 0.98,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -5915,8 +6122,8 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 4,
-      "hp": 118,
-      "atk": 21,
+      "hp": 113,
+      "atk": 22,
       "sprite": "E024",
       "materialExp": 85,
       "skill": {
@@ -5938,7 +6145,16 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.5
+        "power": 1.35
+      },
+      "balance": {
+        "role": "striker",
+        "def": 16,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 1.12,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -5947,8 +6163,8 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 4,
-      "hp": 106,
-      "atk": 19,
+      "hp": 111,
+      "atk": 18,
       "sprite": "E025",
       "materialExp": 85,
       "skill": {
@@ -5973,8 +6189,17 @@
         "power": 1.05,
         "status": {
           "turns": 3,
-          "multiplier": 0.78
+          "multiplier": 0.84
         }
+      },
+      "balance": {
+        "role": "guardian",
+        "def": 21,
+        "hpGrowth": 0.042,
+        "atkGrowth": 0.029,
+        "defGrowth": 0.044,
+        "xpRate": 1.1,
+        "synthesisYield": 0.98
       }
     },
     {
@@ -5983,8 +6208,8 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 5,
-      "hp": 119,
-      "atk": 22,
+      "hp": 114,
+      "atk": 23,
       "sprite": "E026",
       "materialExp": 100,
       "skill": {
@@ -6006,7 +6231,16 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.5
+        "power": 1.35
+      },
+      "balance": {
+        "role": "striker",
+        "def": 17,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 1.2,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -6015,8 +6249,8 @@
       "attribute": "火",
       "family": "humanoid",
       "rarity": 5,
-      "hp": 123,
-      "atk": 23,
+      "hp": 118,
+      "atk": 24,
       "sprite": "E028",
       "materialExp": 100,
       "skill": {
@@ -6041,8 +6275,17 @@
         "power": 1.1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.045
         }
+      },
+      "balance": {
+        "role": "striker",
+        "def": 17,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 1.2,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -6052,8 +6295,8 @@
       "attribute": "風",
       "family": "humanoid",
       "rarity": 6,
-      "hp": 142,
-      "atk": 28,
+      "hp": 136,
+      "atk": 29,
       "sprite": "E029",
       "materialExp": 150,
       "skill": {
@@ -6080,6 +6323,15 @@
         "nameKey": "skills.noneButShot.name",
         "descriptionKey": "skills.noneButShot.description",
         "power": 1
+      },
+      "balance": {
+        "role": "striker",
+        "def": 20,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 1.28,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -6088,7 +6340,7 @@
       "attribute": "風",
       "family": "humanoid",
       "rarity": 4,
-      "hp": 100,
+      "hp": 102,
       "atk": 19,
       "sprite": "M101",
       "materialExp": 85,
@@ -6112,7 +6364,16 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.3
+        "healRate": 0.26
+      },
+      "balance": {
+        "role": "support",
+        "def": 18,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 1.06,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -6121,7 +6382,7 @@
       "attribute": "水",
       "family": "humanoid",
       "rarity": 4,
-      "hp": 100,
+      "hp": 102,
       "atk": 19,
       "sprite": "M102",
       "materialExp": 85,
@@ -6147,8 +6408,17 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.08
+          "rate": 0.06
         }
+      },
+      "balance": {
+        "role": "support",
+        "def": 18,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 1.06,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -6183,8 +6453,17 @@
         "power": 1.05,
         "status": {
           "turns": 3,
-          "multiplier": 0.78
+          "multiplier": 0.84
         }
+      },
+      "balance": {
+        "role": "control",
+        "def": 19,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.034,
+        "defGrowth": 0.038,
+        "xpRate": 1.08,
+        "synthesisYield": 1
       }
     },
     {
@@ -6193,8 +6472,8 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 1,
-      "hp": 95,
-      "atk": 15,
+      "hp": 91,
+      "atk": 16,
       "sprite": "EV0A",
       "materialExp": 40,
       "skill": {
@@ -6218,7 +6497,16 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.5
+        "power": 1.35
+      },
+      "balance": {
+        "role": "striker",
+        "def": 13,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 0.92,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -6252,8 +6540,17 @@
         "power": 1.05,
         "status": {
           "turns": 3,
-          "multiplier": 0.78
+          "multiplier": 0.84
         }
+      },
+      "balance": {
+        "role": "control",
+        "def": 19,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.034,
+        "defGrowth": 0.038,
+        "xpRate": 0.88,
+        "synthesisYield": 1
       }
     },
     {
@@ -6262,8 +6559,8 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 1,
-      "hp": 100,
-      "atk": 16,
+      "hp": 96,
+      "atk": 17,
       "sprite": "EV1A",
       "materialExp": 40,
       "skill": {
@@ -6287,7 +6584,16 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.5
+        "power": 1.35
+      },
+      "balance": {
+        "role": "striker",
+        "def": 13,
+        "hpGrowth": 0.029,
+        "atkGrowth": 0.043,
+        "defGrowth": 0.027,
+        "xpRate": 0.92,
+        "synthesisYield": 1.04
       }
     },
     {
@@ -6296,7 +6602,7 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 1,
-      "hp": 125,
+      "hp": 128,
       "atk": 20,
       "sprite": "EV1B",
       "materialExp": 40,
@@ -6319,7 +6625,16 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.3
+        "healRate": 0.26
+      },
+      "balance": {
+        "role": "support",
+        "def": 19,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 0.86,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -6328,7 +6643,7 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 1,
-      "hp": 104,
+      "hp": 106,
       "atk": 17,
       "sprite": "EV2A",
       "materialExp": 40,
@@ -6356,8 +6671,17 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.08
+          "rate": 0.06
         }
+      },
+      "balance": {
+        "role": "support",
+        "def": 16,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 0.86,
+        "synthesisYield": 1.02
       }
     },
     {
@@ -6366,7 +6690,7 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 1,
-      "hp": 131,
+      "hp": 134,
       "atk": 21,
       "sprite": "EV2B",
       "materialExp": 40,
@@ -6389,7 +6713,16 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.3
+        "healRate": 0.26
+      },
+      "balance": {
+        "role": "support",
+        "def": 19,
+        "hpGrowth": 0.036,
+        "atkGrowth": 0.031,
+        "defGrowth": 0.036,
+        "xpRate": 0.86,
+        "synthesisYield": 1.02
       }
     }
   ],
@@ -6426,31 +6759,31 @@
         "6": 60
       },
       "materialLevelGrowth": 0,
-      "expRecovery": 0,
+      "expRecovery": 0.18,
       "goldBase": 12,
       "goldPerRarity": 8,
       "goldPerLevel": 2,
       "warningRarity": 4,
       "warningLevel": 10,
       "nextLevelRatioByRarity": {
-        "1": 0.22,
-        "2": 0.3,
-        "3": 0.42,
-        "4": 0.58,
-        "5": 0.78,
-        "6": 1
+        "1": 0.18,
+        "2": 0.24,
+        "3": 0.32,
+        "4": 0.42,
+        "5": 0.55,
+        "6": 0.72
       },
       "expStones": {
         "expSmall": {
-          "ratio": 0.35,
+          "ratio": 0.3,
           "gold": 10
         },
         "expMedium": {
-          "ratio": 1.1,
+          "ratio": 0.9,
           "gold": 25
         },
         "expLarge": {
-          "ratio": 3.5,
+          "ratio": 2.6,
           "gold": 60
         }
       }
@@ -6503,10 +6836,10 @@
       }
     ],
     "battleExp": {
-      "normalShare": 0.1,
-      "eliteShare": 0.18,
-      "midbossShare": 0.42,
-      "bossShare": 0.75,
+      "normalShare": 0.12,
+      "eliteShare": 0.2,
+      "midbossShare": 0.38,
+      "bossShare": 0.62,
       "tierBonus": 0.04
     },
     "special": {
@@ -6517,7 +6850,46 @@
         "PERFECT": 42,
         "damaged": 8
       },
-      "defaultDamageMultiplier": 1.25
+      "defaultDamageMultiplier": 1.25,
+      "rarityScalePerStar": 0.03
+    },
+    "balance": {
+      "defenseCoefficient": 0.35,
+      "xpRateByRarity": {
+        "1": 0.88,
+        "2": 0.94,
+        "3": 1,
+        "4": 1.08,
+        "5": 1.16,
+        "6": 1.24
+      },
+      "roles": {
+        "striker": {
+          "hpGrowth": 0.029,
+          "atkGrowth": 0.043,
+          "defGrowth": 0.027
+        },
+        "guardian": {
+          "hpGrowth": 0.042,
+          "atkGrowth": 0.029,
+          "defGrowth": 0.044
+        },
+        "support": {
+          "hpGrowth": 0.036,
+          "atkGrowth": 0.031,
+          "defGrowth": 0.036
+        },
+        "control": {
+          "hpGrowth": 0.034,
+          "atkGrowth": 0.034,
+          "defGrowth": 0.038
+        },
+        "balanced": {
+          "hpGrowth": 0.035,
+          "atkGrowth": 0.035,
+          "defGrowth": 0.035
+        }
+      }
     }
   },
   "monsterGacha": {

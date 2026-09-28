@@ -245,7 +245,7 @@
   function openOnlyMode(){return !!S.settings?.openOnly}
 
   // ---------- AUDIO ----------
-  let noiseBuffer=null, musicMode='title', musicDelay=null, musicDelayGain=null, lastBaseMusicMode='title';
+  let noiseBuffer=null, musicMode='title', musicDelay=null, musicDelayGain=null, lastBaseMusicMode='title',nativeBgmSource=null,nativeBgmMode=null;
   let toneMusicReady=false,toneMusicInitPromise=null,toneBus=null,toneChorus=null,toneReverb=null,toneWidener=null,toneCompressor=null,toneLimiter=null,toneArp=null,toneBass=null,toneLead=null,tonePad=null,toneKick=null,toneSnare=null,toneHat=null,toneSnareFilter=null,toneHatFilter=null;
   let musicAssetTracks=[],musicAssetActive=null,musicAssetMode=null,musicAssetUsing=false,musicAssetToken=0,audioResumeBound=false;
   const FORCE_SYNTH_BGM=true,FORCE_NATIVE_BGM=true;
@@ -373,9 +373,54 @@
       return false;
     }
   }
+  function stopNativeBgmTrack(){
+    if(nativeBgmSource){try{nativeBgmSource.stop()}catch{}try{nativeBgmSource.disconnect()}catch{}}
+    nativeBgmSource=null;nativeBgmMode=null;
+  }
+  function nativeWave(type,phase){
+    const p=phase-Math.floor(phase);
+    if(type==='square')return p<.5?1:-1;
+    if(type==='sawtooth')return p*2-1;
+    if(type==='triangle')return 1-4*Math.abs(p-.5);
+    return Math.sin(p*Math.PI*2);
+  }
+  function buildNativeBgmBuffer(mode){
+    if(!audioCtx)return null;
+    const cfg=MASTER_DATA.audio.themes[mode]||MASTER_DATA.audio.themes.open,tick=Math.max(.09,Number(MASTER_DATA.audio.tickMs||150)/1000),steps=64,duration=tick*steps,sr=audioCtx.sampleRate,length=Math.max(1,Math.floor(duration*sr)),buffer=audioCtx.createBuffer(2,length,sr),left=buffer.getChannelData(0),right=buffer.getChannelData(1),chord=cfg.chord||[0,3,7,10],arpPattern=cfg.arpPattern||[0,1,2,3],prog=cfg.prog||[0,5,7,3];
+    let seed=2166136261>>>0;
+    const add=(start,dur,freq,amp,wave='triangle',pan=0)=>{
+      const a=Math.max(0,Math.floor(start*sr)),b=Math.min(length,Math.floor((start+dur)*sr));
+      for(let i=a;i<b;i++){
+        const t=(i-a)/sr,env=Math.min(1,t/.012)*Math.max(0,Math.min(1,(dur-t)/.06)),v=nativeWave(wave,t*freq)*amp*env,l=v*(1-Math.max(0,pan)),r=v*(1+Math.min(0,pan));left[i]+=l;right[i]+=r;
+      }
+    };
+    const noise=(start,dur,amp)=>{
+      const a=Math.max(0,Math.floor(start*sr)),b=Math.min(length,Math.floor((start+dur)*sr));
+      for(let i=a;i<b;i++){seed=(seed*1664525+1013904223)>>>0;const n=(seed/4294967295)*2-1,t=(i-a)/sr,env=Math.max(0,1-t/dur),v=n*amp*env;left[i]+=v;right[i]+=v;}
+    };
+    for(let step=0;step<steps;step++){
+      const bar=Math.floor(step/16)%4,local=step%16,start=step*tick,root=cfg.root*Math.pow(2,Number(prog[bar%prog.length]||0)/12),arp=chord[arpPattern[local%4]%chord.length]+(local>=8?12:0);
+      if(local%2===0)add(start,tick*.82,root*Math.pow(2,arp/12),.050,cfg.arpWave||'square',-.16);
+      if(local%4===0){add(start,tick*2.8,root/2,.075,'triangle',0);add(start,tick*2.5,root*Math.pow(2,7/12),.020,'sine',.18);}
+      if(local%2===0){const n=cfg.lead[local%cfg.lead.length];add(start,tick*1.2,cfg.root*Math.pow(2,n/12),.055,cfg.leadWave||'triangle',.16);}
+      if(local===0||local===8){add(start,.14,72,.14,'sine',0);add(start,.10,110,.06,'triangle',0);}
+      if(local===4||local===12)noise(start,.11,.050);
+      if(local%2===1)noise(start,.035,.018);
+    }
+    let peak=.001;for(let i=0;i<length;i++)peak=Math.max(peak,Math.abs(left[i]),Math.abs(right[i]));const gain=Math.min(1,.72/peak);for(let i=0;i<length;i++){left[i]*=gain;right[i]*=gain;}
+    return buffer;
+  }
+  function startNativeBgmTrack(mode=musicMode){
+    if(!FORCE_NATIVE_BGM||!audioCtx||!musicGain)return false;
+    if(nativeBgmSource&&nativeBgmMode===mode)return true;
+    stopNativeBgmTrack();
+    const buffer=buildNativeBgmBuffer(mode);if(!buffer)return false;
+    try{const source=audioCtx.createBufferSource();source.buffer=buffer;source.loop=true;source.connect(musicGain);source.start(0);nativeBgmSource=source;nativeBgmMode=mode;document.documentElement.dataset.bgmEngine='native-buffer';return true}catch{return false}
+  }
   async function ensureAudioReady(){
     try{
       if(!audioCtx)initAudio();
+      startNativeBgmTrack(musicMode);
       const wasRunning=audioCtx?.state==='running';
       const jobs=[];
       if(audioCtx&&audioCtx.state!=='running')jobs.push(audioCtx.resume());
@@ -383,13 +428,7 @@
       if(jobs.length)await Promise.allSettled(jobs);
       if(FORCE_SYNTH_BGM&&musicAssetUsing)stopAssetMusic();
       applyAudioSettings();
-      if(!wasRunning&&audioCtx?.state==='running'){
-        musicStep=0;
-        const cfg=MASTER_DATA.audio.themes[musicMode]||MASTER_DATA.audio.themes.open,root=cfg.root;
-        musicNote('pad',root,.28,'triangle',.055);
-        musicNote('arp',root*Math.pow(2,7/12),.22,'triangle',.045,.035);
-        musicKick(.06);
-      }
+      if(!wasRunning&&audioCtx?.state==='running'){musicStep=0;startNativeBgmTrack(musicMode);}
       document.documentElement.dataset.audioState=audioCtx?.state||'unavailable';
       document.documentElement.dataset.bgmMode=FORCE_NATIVE_BGM?'native-web-audio':(FORCE_SYNTH_BGM?'synth':(musicAssetUsing?'asset':'synth'));
       return audioCtx?.state==='running';
@@ -407,7 +446,7 @@
     window.addEventListener('pageshow',resumeAudioPlayback);
     document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAudioPlayback()});
   }
-  function setMusicMode(mode){const changed=musicMode!==mode;if(changed){musicStep=0;releaseToneMusic();}musicMode=mode;if(!['victory','equip','shop','synthesis','story'].includes(mode))lastBaseMusicMode=mode;if(audioCtx&&changed)void playMusicAsset(mode)}
+  function setMusicMode(mode){const changed=musicMode!==mode;if(changed){musicStep=0;releaseToneMusic();stopNativeBgmTrack();}musicMode=mode;if(!['victory','equip','shop','synthesis','story'].includes(mode))lastBaseMusicMode=mode;if(audioCtx&&changed){if(FORCE_NATIVE_BGM)startNativeBgmTrack(mode);else void playMusicAsset(mode)}}
 
   function initAudio(){
     if(audioCtx) return;
@@ -430,6 +469,7 @@
     const tick=MASTER_DATA.audio.tickMs; // 100 BPM, 16th note
     musicTimer=setInterval(()=>{
       if(!audioCtx || audioCtx.state!=='running' || document.hidden) return;
+      if(FORCE_NATIVE_BGM&&nativeBgmSource)return;
       if(musicAssetUsing&&musicAssetMode===musicMode)return;
       const step=musicStep%16;
       const form=MASTER_DATA.audio.form,measure=Math.floor(musicStep/16)%Object.values(form).reduce((n,v)=>n+v,0),bar=measure%4;
@@ -919,23 +959,26 @@
   function hpBarGradient(attr){return attrColor[attr]||attrColor['風'];}
   function renderEnemies(){
     const area=$('enemyArea');area.innerHTML='';
-    const alive=living();
+    const alive=living(),slotCount=enemies.length;
     area.className='';
     area.id='enemyArea';
-    area.dataset.enemyCount=String(alive.length);
-    if(alive.length===1 && alive[0].boss) area.classList.add('bossOnly');
-    else if(alive.length===1) area.classList.add('single');
+    area.dataset.enemyCount=String(slotCount);
+    if(slotCount===1 && enemies[0]?.boss) area.classList.add('bossOnly');
+    else if(slotCount===1) area.classList.add('single');
     else area.classList.add('multi');
     
-    enemies.forEach(e=>{
-      const ready=!e.dead&&e.turnsLeft<=0;
+    enemies.forEach((e,slot)=>{
+      const ready=!e.dead&&e.turnsLeft<=0,settledDead=e.dead&&performance.now()>=(e.defeatUntil||0);
+      if(settledDead&&e.battleEggDrop){
+        const drop=document.createElement('div');drop.className='enemySlotDrop egg';drop.dataset.slot=String(slot);drop.style.gridColumn=String(slot+1);drop.setAttribute('aria-label',e.battleEggDrop.label||'EGG');drop.innerHTML=`<div class="enemySlotEgg">${rewardIcon('egg',e.battleEggDrop.rarity||1,'slotEggIcon')}</div>`;area.appendChild(drop);
+      }
       const card=document.createElement('div');
       const hpRatio=Math.max(0,e.hp/e.maxHp);
       const prevRatio=Math.max(hpRatio,Math.max(0,(e.prevHp ?? e.hp)/e.maxHp));
       const flashing=performance.now() < (e.flashUntil||0);
       const compact=enemies.length>=3 && !e.boss;
       card.className='enemyCard kind-'+e.kind+(compact?' compact':'')+(e.boss?' bossCard':'')+(e.dead?(performance.now()<(e.defeatUntil||0)?' defeated':' dead'):'')+(hpRatio<.35?' lowhp':'')+(flashing?' hitFlash':'')+(e.id===defenseEnemyId&&phase==='guard'?' attacking':'');
-      card.dataset.id=e.id;card.dataset.masterId=e.masterId||'';
+      card.dataset.id=e.id;card.dataset.masterId=e.masterId||'';card.dataset.slot=String(slot);if(slotCount>1)card.style.gridColumn=String(slot+1);
       const popupHTML = e.popup ? `<div class="damagePop ${e.popup.cls||''}">${e.popup.text}${e.popup.tag?`<span class="tag">${e.popup.tag}</span>`:''}</div>` : '';
       const barNow=hpBarGradient(e.attr);
       const canvasW=MASTER_DATA.sprites[e.kind].canvasSize||64, canvasH=canvasW;
@@ -1072,7 +1115,7 @@
     if(drop && S.items[drop]<itemDefs[drop].max){S.items[drop]++;rewardDrops.push(itemDefs[drop].name);rewardEntries.push({kind:'item',label:itemDefs[drop].name})}
     const monster=MASTER_DATA.monsters.find(m=>m.acquisition.enemyId===e.masterId);
     const egg=monster&&(monster.acquisition.guaranteedEgg===true||Math.random()<monster.acquisition.eggRate),monsterName=monster?localizedDataName(monster):'';
-    if(egg){const wasOwned=S.monsters.some(x=>x.monsterId===monster.monster_id),instance=Monsters.create(monster.monster_id,crypto.randomUUID(),MASTER_DATA);S.monsters.push(instance);S.codex.monsters=S.codex.monsters||{};S.codex.monsters[monster.monster_id]=true;const label=t('battle.eggDrop',{name:monsterName});rewardDrops.push(label);rewardEntries.push({kind:'egg',label,rarity:monster.rarity,monsterId:monster.monster_id,isNew:!wasOwned});saveGame();}
+    if(egg){const wasOwned=S.monsters.some(x=>x.monsterId===monster.monster_id),instance=Monsters.create(monster.monster_id,crypto.randomUUID(),MASTER_DATA);S.monsters.push(instance);S.codex.monsters=S.codex.monsters||{};S.codex.monsters[monster.monster_id]=true;const label=t('battle.eggDrop',{name:monsterName});e.battleEggDrop={label,rarity:monster.rarity,monsterId:monster.monster_id};rewardDrops.push(label);rewardEntries.push({kind:'egg',label,rarity:monster.rarity,monsterId:monster.monster_id,isNew:!wasOwned});saveGame();}
     const keyRule=MASTER_DATA.monsterRules.keyDrop,keyFound=keyRule.gates.includes(activeGate)&&Math.random()<keyRule.chance;if(keyFound){addWallet('gateKeys',keyRule.amount,'battle key drop');const label=t('battle.keysDrop',{amount:keyRule.amount});rewardDrops.push(label);rewardEntries.push({kind:'key',label});}
     showMonsterDrop(e,[{label:g+' G',kind:'gold'},...(drop?[{label:itemDefs[drop].name,kind:'item'}]:[]),...(egg?[{label:t('battle.eggDrop',{name:monsterName}),kind:monster.rarity>=4?'rare':'egg'}]:[]),...(keyFound?[{label:t('battle.keysDrop',{amount:keyRule.amount}),kind:'key'}]:[])]);
   }

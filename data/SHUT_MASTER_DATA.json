@@ -5113,16 +5113,16 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 1,
-      "hp": 79,
-      "atk": 13,
+      "hp": 84,
+      "atk": 14,
       "sprite": "E001",
       "materialExp": 40,
       "skill": {
         "name": "照準のひらめき",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.15,
-        "description": "PERFECT時、攻撃力1.15倍。"
+        "multiplier": 1.18,
+        "description": "PERFECT時、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5139,18 +5139,18 @@
         "type": "atk_down",
         "nameKey": "skills.atk_down.name",
         "descriptionKey": "skills.atk_down.description",
-        "power": 1.05,
+        "power": 1.03,
         "status": {
-          "turns": 3,
-          "multiplier": 0.84
+          "turns": 2,
+          "multiplier": 0.88
         }
       },
       "balance": {
         "role": "control",
         "def": 13,
-        "hpGrowth": 0.034,
-        "atkGrowth": 0.034,
-        "defGrowth": 0.038,
+        "hpGrowth": 0.032,
+        "atkGrowth": 0.032,
+        "defGrowth": 0.036,
         "xpRate": 0.88,
         "synthesisYield": 1
       }
@@ -5161,16 +5161,16 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 1,
-      "hp": 80,
-      "atk": 15,
+      "hp": 78,
+      "atk": 16,
       "sprite": "E002",
       "materialExp": 40,
       "skill": {
         "name": "追い風",
         "trigger": "weakness",
         "effect": "attack",
-        "multiplier": 1.12,
-        "description": "属性有利の相手に、攻撃力1.12倍。"
+        "multiplier": 1.14,
+        "description": "属性有利の相手に、攻撃力1.14倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5187,15 +5187,15 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.35
+        "power": 1.32
       },
       "balance": {
         "role": "striker",
         "def": 11,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 0.92,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 0.91,
         "synthesisYield": 1.04
       }
     },
@@ -5206,7 +5206,7 @@
       "family": "creature",
       "rarity": 1,
       "hp": 89,
-      "atk": 15,
+      "atk": 13,
       "sprite": "E003",
       "materialExp": 40,
       "skill": {
@@ -5232,14 +5232,14 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.26
+        "healRate": 0.24
       },
       "balance": {
         "role": "support",
         "def": 13,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 0.86,
         "synthesisYield": 1.02
       }
@@ -5250,16 +5250,16 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 2,
-      "hp": 96,
-      "atk": 16,
+      "hp": 87,
+      "atk": 18,
       "sprite": "E004",
       "materialExp": 55,
       "skill": {
         "name": "三拍子",
         "trigger": "third",
         "effect": "attack",
-        "multiplier": 1.18,
-        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+        "multiplier": 1.15,
+        "description": "3回目の攻撃ごとに、攻撃力1.15倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5273,15 +5273,15 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.35
+        "power": 1.32
       },
       "balance": {
         "role": "striker",
-        "def": 13,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 0.98,
+        "def": 12,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 0.97,
         "synthesisYield": 1.04
       }
     },
@@ -5291,16 +5291,16 @@
       "attribute": "地",
       "family": "creature",
       "rarity": 2,
-      "hp": 92,
-      "atk": 15,
+      "hp": 105,
+      "atk": 14,
       "sprite": "E005",
       "materialExp": 55,
       "skill": {
         "name": "反響",
         "trigger": "guard",
         "effect": "attack",
-        "multiplier": 1.2,
-        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+        "multiplier": 1.16,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.16倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5317,16 +5317,16 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.05
         }
       },
       "balance": {
         "role": "guardian",
-        "def": 16,
-        "hpGrowth": 0.042,
-        "atkGrowth": 0.029,
-        "defGrowth": 0.044,
-        "xpRate": 0.96,
+        "def": 17,
+        "hpGrowth": 0.038,
+        "atkGrowth": 0.028,
+        "defGrowth": 0.041,
+        "xpRate": 0.95,
         "synthesisYield": 0.98
       }
     },
@@ -5336,7 +5336,7 @@
       "attribute": "雷",
       "family": "machine",
       "rarity": 2,
-      "hp": 88,
+      "hp": 87,
       "atk": 18,
       "sprite": "E006",
       "materialExp": 55,
@@ -5344,8 +5344,8 @@
         "name": "照準のひらめき",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.15,
-        "description": "PERFECT時、攻撃力1.15倍。"
+        "multiplier": 1.18,
+        "description": "PERFECT時、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5359,15 +5359,15 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.35
+        "power": 1.32
       },
       "balance": {
         "role": "striker",
         "def": 12,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 0.98,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 0.97,
         "synthesisYield": 1.04
       }
     },
@@ -5377,7 +5377,7 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 2,
-      "hp": 98,
+      "hp": 100,
       "atk": 15,
       "sprite": "E007",
       "materialExp": 55,
@@ -5385,8 +5385,8 @@
         "name": "追い風",
         "trigger": "weakness",
         "effect": "attack",
-        "multiplier": 1.12,
-        "description": "属性有利の相手に、攻撃力1.12倍。"
+        "multiplier": 1.14,
+        "description": "属性有利の相手に、攻撃力1.14倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5401,14 +5401,14 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.26
+        "healRate": 0.24
       },
       "balance": {
         "role": "support",
         "def": 15,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 0.92,
         "synthesisYield": 1.02
       }
@@ -5419,7 +5419,7 @@
       "attribute": "地",
       "family": "creature",
       "rarity": 3,
-      "hp": 109,
+      "hp": 104,
       "atk": 18,
       "sprite": "E008",
       "materialExp": 70,
@@ -5442,18 +5442,18 @@
         "type": "atk_down",
         "nameKey": "skills.atk_down.name",
         "descriptionKey": "skills.atk_down.description",
-        "power": 1.05,
+        "power": 1.03,
         "status": {
-          "turns": 3,
-          "multiplier": 0.84
+          "turns": 2,
+          "multiplier": 0.88
         }
       },
       "balance": {
         "role": "control",
-        "def": 18,
-        "hpGrowth": 0.034,
-        "atkGrowth": 0.034,
-        "defGrowth": 0.038,
+        "def": 17,
+        "hpGrowth": 0.032,
+        "atkGrowth": 0.032,
+        "defGrowth": 0.036,
         "xpRate": 1,
         "synthesisYield": 1
       }
@@ -5464,16 +5464,16 @@
       "attribute": "雷",
       "family": "machine",
       "rarity": 2,
-      "hp": 88,
-      "atk": 17,
+      "hp": 94,
+      "atk": 16,
       "sprite": "E009",
       "materialExp": 55,
       "skill": {
         "name": "三拍子",
         "trigger": "third",
         "effect": "attack",
-        "multiplier": 1.18,
-        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+        "multiplier": 1.15,
+        "description": "3回目の攻撃ごとに、攻撃力1.15倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5487,18 +5487,18 @@
         "type": "atk_down",
         "nameKey": "skills.atk_down.name",
         "descriptionKey": "skills.atk_down.description",
-        "power": 1.05,
+        "power": 1.03,
         "status": {
-          "turns": 3,
-          "multiplier": 0.84
+          "turns": 2,
+          "multiplier": 0.88
         }
       },
       "balance": {
         "role": "control",
         "def": 15,
-        "hpGrowth": 0.034,
-        "atkGrowth": 0.034,
-        "defGrowth": 0.038,
+        "hpGrowth": 0.032,
+        "atkGrowth": 0.032,
+        "defGrowth": 0.036,
         "xpRate": 0.94,
         "synthesisYield": 1
       }
@@ -5509,16 +5509,16 @@
       "attribute": "地",
       "family": "creature",
       "rarity": 3,
-      "hp": 87,
-      "atk": 12,
+      "hp": 116,
+      "atk": 16,
       "sprite": "E010",
       "materialExp": 40,
       "skill": {
         "name": "反響",
         "trigger": "guard",
         "effect": "attack",
-        "multiplier": 1.2,
-        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+        "multiplier": 1.16,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.16倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5532,19 +5532,19 @@
         "type": "atk_down",
         "nameKey": "skills.atk_down.name",
         "descriptionKey": "skills.atk_down.description",
-        "power": 1.05,
+        "power": 1.03,
         "status": {
-          "turns": 3,
-          "multiplier": 0.84
+          "turns": 2,
+          "multiplier": 0.88
         }
       },
       "balance": {
         "role": "guardian",
-        "def": 18,
-        "hpGrowth": 0.042,
-        "atkGrowth": 0.029,
-        "defGrowth": 0.044,
-        "xpRate": 1.02,
+        "def": 19,
+        "hpGrowth": 0.038,
+        "atkGrowth": 0.028,
+        "defGrowth": 0.041,
+        "xpRate": 1.01,
         "synthesisYield": 0.98
       }
     },
@@ -5554,16 +5554,16 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 2,
-      "hp": 98,
-      "atk": 16,
+      "hp": 100,
+      "atk": 15,
       "sprite": "E011",
       "materialExp": 55,
       "skill": {
         "name": "照準のひらめき",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.15,
-        "description": "PERFECT時、攻撃力1.15倍。"
+        "multiplier": 1.18,
+        "description": "PERFECT時、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5578,14 +5578,14 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.26
+        "healRate": 0.24
       },
       "balance": {
         "role": "support",
         "def": 15,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 0.92,
         "synthesisYield": 1.02
       }
@@ -5596,16 +5596,16 @@
       "attribute": "地",
       "family": "creature",
       "rarity": 4,
-      "hp": 118,
-      "atk": 21,
+      "hp": 114,
+      "atk": 20,
       "sprite": "E012",
       "materialExp": 85,
       "skill": {
         "name": "追い風",
         "trigger": "weakness",
         "effect": "attack",
-        "multiplier": 1.12,
-        "description": "属性有利の相手に、攻撃力1.12倍。"
+        "multiplier": 1.14,
+        "description": "属性有利の相手に、攻撃力1.14倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5619,18 +5619,18 @@
         "type": "atk_down",
         "nameKey": "skills.atk_down.name",
         "descriptionKey": "skills.atk_down.description",
-        "power": 1.05,
+        "power": 1.03,
         "status": {
-          "turns": 3,
-          "multiplier": 0.84
+          "turns": 2,
+          "multiplier": 0.88
         }
       },
       "balance": {
         "role": "control",
-        "def": 20,
-        "hpGrowth": 0.034,
-        "atkGrowth": 0.034,
-        "defGrowth": 0.038,
+        "def": 19,
+        "hpGrowth": 0.032,
+        "atkGrowth": 0.032,
+        "defGrowth": 0.036,
         "xpRate": 1.08,
         "synthesisYield": 1
       }
@@ -5641,7 +5641,7 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 5,
-      "hp": 117,
+      "hp": 134,
       "atk": 21,
       "sprite": "E013",
       "materialExp": 100,
@@ -5665,15 +5665,15 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.26
+        "healRate": 0.24
       },
       "balance": {
         "role": "support",
         "def": 21,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
-        "xpRate": 1.14,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
+        "xpRate": 1.16,
         "synthesisYield": 1.02
       }
     },
@@ -5683,16 +5683,16 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 1,
-      "hp": 85,
-      "atk": 14,
+      "hp": 89,
+      "atk": 13,
       "sprite": "E014",
       "materialExp": 40,
       "skill": {
         "name": "三拍子",
         "trigger": "third",
         "effect": "attack",
-        "multiplier": 1.18,
-        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+        "multiplier": 1.15,
+        "description": "3回目の攻撃ごとに、攻撃力1.15倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5709,15 +5709,15 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.05
         }
       },
       "balance": {
         "role": "support",
         "def": 13,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 0.86,
         "synthesisYield": 1.02
       }
@@ -5728,16 +5728,16 @@
       "attribute": "雷",
       "family": "machine",
       "rarity": 2,
-      "hp": 101,
-      "atk": 16,
+      "hp": 105,
+      "atk": 14,
       "sprite": "E015",
       "materialExp": 55,
       "skill": {
         "name": "反響",
         "trigger": "guard",
         "effect": "attack",
-        "multiplier": 1.2,
-        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+        "multiplier": 1.16,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.16倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5751,19 +5751,19 @@
         "type": "atk_down",
         "nameKey": "skills.atk_down.name",
         "descriptionKey": "skills.atk_down.description",
-        "power": 1.05,
+        "power": 1.03,
         "status": {
-          "turns": 3,
-          "multiplier": 0.84
+          "turns": 2,
+          "multiplier": 0.88
         }
       },
       "balance": {
         "role": "guardian",
         "def": 17,
-        "hpGrowth": 0.042,
-        "atkGrowth": 0.029,
-        "defGrowth": 0.044,
-        "xpRate": 0.96,
+        "hpGrowth": 0.038,
+        "atkGrowth": 0.028,
+        "defGrowth": 0.041,
+        "xpRate": 0.95,
         "synthesisYield": 0.98
       }
     },
@@ -5773,7 +5773,7 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 2,
-      "hp": 102,
+      "hp": 100,
       "atk": 15,
       "sprite": "E016",
       "materialExp": 55,
@@ -5781,8 +5781,8 @@
         "name": "照準のひらめき",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.15,
-        "description": "PERFECT時、攻撃力1.15倍。"
+        "multiplier": 1.18,
+        "description": "PERFECT時、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5799,15 +5799,15 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.05
         }
       },
       "balance": {
         "role": "support",
         "def": 15,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 0.92,
         "synthesisYield": 1.02
       }
@@ -5818,16 +5818,16 @@
       "attribute": "地",
       "family": "creature",
       "rarity": 3,
-      "hp": 99,
-      "atk": 18,
+      "hp": 110,
+      "atk": 17,
       "sprite": "E017",
       "materialExp": 70,
       "skill": {
         "name": "追い風",
         "trigger": "weakness",
         "effect": "attack",
-        "multiplier": 1.12,
-        "description": "属性有利の相手に、攻撃力1.12倍。"
+        "multiplier": 1.14,
+        "description": "属性有利の相手に、攻撃力1.14倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5844,15 +5844,15 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.05
         }
       },
       "balance": {
         "role": "support",
         "def": 17,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 0.98,
         "synthesisYield": 1.02
       }
@@ -5863,8 +5863,8 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 4,
-      "hp": 112,
-      "atk": 21,
+      "hp": 121,
+      "atk": 19,
       "sprite": "E018",
       "materialExp": 85,
       "skill": {
@@ -5889,15 +5889,15 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.05
         }
       },
       "balance": {
         "role": "support",
         "def": 19,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 1.06,
         "synthesisYield": 1.02
       }
@@ -5908,7 +5908,7 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 5,
-      "hp": 125,
+      "hp": 134,
       "atk": 21,
       "sprite": "E019",
       "materialExp": 100,
@@ -5916,8 +5916,8 @@
         "name": "三拍子",
         "trigger": "third",
         "effect": "attack",
-        "multiplier": 1.18,
-        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+        "multiplier": 1.15,
+        "description": "3回目の攻撃ごとに、攻撃力1.15倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5932,15 +5932,15 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.26
+        "healRate": 0.24
       },
       "balance": {
         "role": "support",
         "def": 21,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
-        "xpRate": 1.14,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
+        "xpRate": 1.16,
         "synthesisYield": 1.02
       }
     },
@@ -5951,15 +5951,15 @@
       "family": "creature",
       "rarity": 2,
       "hp": 105,
-      "atk": 15,
+      "atk": 14,
       "sprite": "E020",
       "materialExp": 55,
       "skill": {
         "name": "反響",
         "trigger": "guard",
         "effect": "attack",
-        "multiplier": 1.2,
-        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+        "multiplier": 1.16,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.16倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -5973,15 +5973,15 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.35
+        "power": 1.32
       },
       "balance": {
         "role": "guardian",
         "def": 17,
-        "hpGrowth": 0.042,
-        "atkGrowth": 0.029,
-        "defGrowth": 0.044,
-        "xpRate": 0.96,
+        "hpGrowth": 0.038,
+        "atkGrowth": 0.028,
+        "defGrowth": 0.041,
+        "xpRate": 0.95,
         "synthesisYield": 0.98
       }
     },
@@ -5991,16 +5991,16 @@
       "attribute": "火",
       "family": "machine",
       "rarity": 3,
-      "hp": 93,
-      "atk": 20,
+      "hp": 97,
+      "atk": 21,
       "sprite": "E021",
       "materialExp": 70,
       "skill": {
         "name": "照準のひらめき",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.15,
-        "description": "PERFECT時、攻撃力1.15倍。"
+        "multiplier": 1.18,
+        "description": "PERFECT時、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -6014,19 +6014,19 @@
         "type": "poison",
         "nameKey": "skills.poison.name",
         "descriptionKey": "skills.poison.description",
-        "power": 1.1,
+        "power": 1.05,
         "status": {
           "turns": 3,
-          "rate": 0.045
+          "rate": 0.035
         }
       },
       "balance": {
         "role": "striker",
         "def": 14,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 1.04,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 1.03,
         "synthesisYield": 1.04
       }
     },
@@ -6037,15 +6037,15 @@
       "family": "creature",
       "rarity": 3,
       "hp": 97,
-      "atk": 18,
+      "atk": 21,
       "sprite": "E022",
       "materialExp": 70,
       "skill": {
         "name": "追い風",
         "trigger": "weakness",
         "effect": "attack",
-        "multiplier": 1.12,
-        "description": "属性有利の相手に、攻撃力1.12倍。"
+        "multiplier": 1.14,
+        "description": "属性有利の相手に、攻撃力1.14倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -6059,15 +6059,15 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.35
+        "power": 1.32
       },
       "balance": {
         "role": "striker",
         "def": 14,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 1.04,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 1.03,
         "synthesisYield": 1.04
       }
     },
@@ -6077,8 +6077,8 @@
       "attribute": "火",
       "family": "creature",
       "rarity": 2,
-      "hp": 92,
-      "atk": 17,
+      "hp": 87,
+      "atk": 18,
       "sprite": "E023",
       "materialExp": 55,
       "skill": {
@@ -6100,19 +6100,19 @@
         "type": "poison",
         "nameKey": "skills.poison.name",
         "descriptionKey": "skills.poison.description",
-        "power": 1.1,
+        "power": 1.05,
         "status": {
           "turns": 3,
-          "rate": 0.045
+          "rate": 0.035
         }
       },
       "balance": {
         "role": "striker",
         "def": 12,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 0.98,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 0.97,
         "synthesisYield": 1.04
       }
     },
@@ -6122,16 +6122,16 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 4,
-      "hp": 113,
-      "atk": 22,
+      "hp": 106,
+      "atk": 23,
       "sprite": "E024",
       "materialExp": 85,
       "skill": {
         "name": "三拍子",
         "trigger": "third",
         "effect": "attack",
-        "multiplier": 1.18,
-        "description": "3回目の攻撃ごとに、攻撃力1.18倍。"
+        "multiplier": 1.15,
+        "description": "3回目の攻撃ごとに、攻撃力1.15倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -6145,15 +6145,15 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.35
+        "power": 1.32
       },
       "balance": {
         "role": "striker",
         "def": 16,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 1.12,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 1.11,
         "synthesisYield": 1.04
       }
     },
@@ -6163,7 +6163,7 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 4,
-      "hp": 111,
+      "hp": 128,
       "atk": 18,
       "sprite": "E025",
       "materialExp": 85,
@@ -6171,8 +6171,8 @@
         "name": "反響",
         "trigger": "guard",
         "effect": "attack",
-        "multiplier": 1.2,
-        "description": "PERFECT GUARDの次の攻撃、攻撃力1.2倍。"
+        "multiplier": 1.16,
+        "description": "PERFECT GUARDの次の攻撃、攻撃力1.16倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -6186,19 +6186,19 @@
         "type": "atk_down",
         "nameKey": "skills.atk_down.name",
         "descriptionKey": "skills.atk_down.description",
-        "power": 1.05,
+        "power": 1.03,
         "status": {
-          "turns": 3,
-          "multiplier": 0.84
+          "turns": 2,
+          "multiplier": 0.88
         }
       },
       "balance": {
         "role": "guardian",
         "def": 21,
-        "hpGrowth": 0.042,
-        "atkGrowth": 0.029,
-        "defGrowth": 0.044,
-        "xpRate": 1.1,
+        "hpGrowth": 0.038,
+        "atkGrowth": 0.028,
+        "defGrowth": 0.041,
+        "xpRate": 1.09,
         "synthesisYield": 0.98
       }
     },
@@ -6208,16 +6208,16 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 5,
-      "hp": 114,
-      "atk": 23,
+      "hp": 117,
+      "atk": 25,
       "sprite": "E026",
       "materialExp": 100,
       "skill": {
         "name": "照準のひらめき",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.15,
-        "description": "PERFECT時、攻撃力1.15倍。"
+        "multiplier": 1.18,
+        "description": "PERFECT時、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -6231,15 +6231,15 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.35
+        "power": 1.32
       },
       "balance": {
         "role": "striker",
-        "def": 17,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 1.2,
+        "def": 18,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 1.21,
         "synthesisYield": 1.04
       }
     },
@@ -6249,16 +6249,16 @@
       "attribute": "火",
       "family": "humanoid",
       "rarity": 5,
-      "hp": 118,
-      "atk": 24,
+      "hp": 117,
+      "atk": 25,
       "sprite": "E028",
       "materialExp": 100,
       "skill": {
         "name": "追い風",
         "trigger": "weakness",
         "effect": "attack",
-        "multiplier": 1.12,
-        "description": "属性有利の相手に、攻撃力1.12倍。"
+        "multiplier": 1.14,
+        "description": "属性有利の相手に、攻撃力1.14倍。"
       },
       "acquisition": {
         "gacha": true,
@@ -6272,19 +6272,19 @@
         "type": "poison",
         "nameKey": "skills.poison.name",
         "descriptionKey": "skills.poison.description",
-        "power": 1.1,
+        "power": 1.05,
         "status": {
           "turns": 3,
-          "rate": 0.045
+          "rate": 0.035
         }
       },
       "balance": {
         "role": "striker",
-        "def": 17,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 1.2,
+        "def": 18,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 1.21,
         "synthesisYield": 1.04
       }
     },
@@ -6295,7 +6295,7 @@
       "attribute": "風",
       "family": "humanoid",
       "rarity": 6,
-      "hp": 136,
+      "hp": 130,
       "atk": 29,
       "sprite": "E029",
       "materialExp": 150,
@@ -6304,7 +6304,7 @@
         "nameKey": "mikado.skill",
         "trigger": "always",
         "effect": "attack",
-        "multiplier": 1,
+        "multiplier": 1.05,
         "description": "刀を大型バズーカへ変形させて攻撃する。",
         "descriptionKey": "mikado.skillDescription"
       },
@@ -6322,15 +6322,15 @@
         "type": "damage",
         "nameKey": "skills.noneButShot.name",
         "descriptionKey": "skills.noneButShot.description",
-        "power": 1
+        "power": 1.45
       },
       "balance": {
         "role": "striker",
         "def": 20,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 1.28,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 1.33,
         "synthesisYield": 1.04
       }
     },
@@ -6340,7 +6340,7 @@
       "attribute": "風",
       "family": "humanoid",
       "rarity": 4,
-      "hp": 102,
+      "hp": 121,
       "atk": 19,
       "sprite": "M101",
       "materialExp": 85,
@@ -6348,8 +6348,8 @@
         "name": "門の共鳴",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.15,
-        "description": "PERFECT時、攻撃力1.15倍。"
+        "multiplier": 1.18,
+        "description": "PERFECT時、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": false,
@@ -6364,14 +6364,14 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.26
+        "healRate": 0.24
       },
       "balance": {
         "role": "support",
-        "def": 18,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "def": 19,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 1.06,
         "synthesisYield": 1.02
       }
@@ -6382,7 +6382,7 @@
       "attribute": "水",
       "family": "humanoid",
       "rarity": 4,
-      "hp": 102,
+      "hp": 121,
       "atk": 19,
       "sprite": "M102",
       "materialExp": 85,
@@ -6390,8 +6390,8 @@
         "name": "門の共鳴",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.15,
-        "description": "PERFECT時、攻撃力1.15倍。"
+        "multiplier": 1.18,
+        "description": "PERFECT時、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": false,
@@ -6408,15 +6408,15 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.05
         }
       },
       "balance": {
         "role": "support",
-        "def": 18,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "def": 19,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 1.06,
         "synthesisYield": 1.02
       }
@@ -6427,16 +6427,16 @@
       "attribute": "雷",
       "family": "humanoid",
       "rarity": 4,
-      "hp": 100,
-      "atk": 19,
+      "hp": 114,
+      "atk": 20,
       "sprite": "M103",
       "materialExp": 85,
       "skill": {
         "name": "門の共鳴",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.15,
-        "description": "PERFECT時、攻撃力1.15倍。"
+        "multiplier": 1.18,
+        "description": "PERFECT時、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": false,
@@ -6450,18 +6450,18 @@
         "type": "atk_down",
         "nameKey": "skills.atk_down.name",
         "descriptionKey": "skills.atk_down.description",
-        "power": 1.05,
+        "power": 1.03,
         "status": {
-          "turns": 3,
-          "multiplier": 0.84
+          "turns": 2,
+          "multiplier": 0.88
         }
       },
       "balance": {
         "role": "control",
         "def": 19,
-        "hpGrowth": 0.034,
-        "atkGrowth": 0.034,
-        "defGrowth": 0.038,
+        "hpGrowth": 0.032,
+        "atkGrowth": 0.032,
+        "defGrowth": 0.036,
         "xpRate": 1.08,
         "synthesisYield": 1
       }
@@ -6472,16 +6472,16 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 1,
-      "hp": 91,
-      "atk": 16,
+      "hp": 86,
+      "atk": 18,
       "sprite": "EV0A",
       "materialExp": 40,
       "skill": {
         "name": "照準のひらめき＋",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.23,
-        "description": "PERFECT時、攻撃力1.23倍。"
+        "multiplier": 1.22,
+        "description": "PERFECT時、攻撃力1.22倍。"
       },
       "acquisition": {
         "gacha": false,
@@ -6497,15 +6497,15 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.35
+        "power": 1.32
       },
       "balance": {
         "role": "striker",
-        "def": 13,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 0.92,
+        "def": 12,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 0.91,
         "synthesisYield": 1.04
       }
     },
@@ -6515,16 +6515,16 @@
       "attribute": "雷",
       "family": "creature",
       "rarity": 1,
-      "hp": 119,
-      "atk": 18,
+      "hp": 102,
+      "atk": 17,
       "sprite": "EV0B",
       "materialExp": 40,
       "skill": {
         "name": "星門の共鳴",
         "trigger": "perfect",
         "effect": "attack",
-        "multiplier": 1.3299999999999998,
-        "description": "PERFECT時、攻撃力1.33倍。"
+        "multiplier": 1.26,
+        "description": "PERFECT時、攻撃力1.26倍。"
       },
       "acquisition": {
         "gacha": false,
@@ -6537,18 +6537,18 @@
         "type": "atk_down",
         "nameKey": "skills.atk_down.name",
         "descriptionKey": "skills.atk_down.description",
-        "power": 1.05,
+        "power": 1.03,
         "status": {
-          "turns": 3,
-          "multiplier": 0.84
+          "turns": 2,
+          "multiplier": 0.88
         }
       },
       "balance": {
         "role": "control",
-        "def": 19,
-        "hpGrowth": 0.034,
-        "atkGrowth": 0.034,
-        "defGrowth": 0.038,
+        "def": 16,
+        "hpGrowth": 0.032,
+        "atkGrowth": 0.032,
+        "defGrowth": 0.036,
         "xpRate": 0.88,
         "synthesisYield": 1
       }
@@ -6559,16 +6559,16 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 1,
-      "hp": 96,
-      "atk": 17,
+      "hp": 86,
+      "atk": 18,
       "sprite": "EV1A",
       "materialExp": 40,
       "skill": {
         "name": "追い風＋",
         "trigger": "weakness",
         "effect": "attack",
-        "multiplier": 1.2000000000000002,
-        "description": "属性有利の相手に、攻撃力1.2倍。"
+        "multiplier": 1.18,
+        "description": "属性有利の相手に、攻撃力1.18倍。"
       },
       "acquisition": {
         "gacha": false,
@@ -6584,15 +6584,15 @@
         "type": "damage",
         "nameKey": "skills.damage.name",
         "descriptionKey": "skills.damage.description",
-        "power": 1.35
+        "power": 1.32
       },
       "balance": {
         "role": "striker",
-        "def": 13,
-        "hpGrowth": 0.029,
-        "atkGrowth": 0.043,
-        "defGrowth": 0.027,
-        "xpRate": 0.92,
+        "def": 12,
+        "hpGrowth": 0.028,
+        "atkGrowth": 0.04,
+        "defGrowth": 0.026,
+        "xpRate": 0.91,
         "synthesisYield": 1.04
       }
     },
@@ -6602,16 +6602,16 @@
       "attribute": "風",
       "family": "creature",
       "rarity": 1,
-      "hp": 128,
-      "atk": 20,
+      "hp": 109,
+      "atk": 16,
       "sprite": "EV1B",
       "materialExp": 40,
       "skill": {
         "name": "星門の共鳴",
         "trigger": "weakness",
         "effect": "attack",
-        "multiplier": 1.3,
-        "description": "属性有利の相手に、攻撃力1.3倍。"
+        "multiplier": 1.22,
+        "description": "属性有利の相手に、攻撃力1.22倍。"
       },
       "acquisition": {
         "gacha": false,
@@ -6625,14 +6625,14 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.26
+        "healRate": 0.24
       },
       "balance": {
         "role": "support",
-        "def": 19,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "def": 15,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 0.86,
         "synthesisYield": 1.02
       }
@@ -6643,16 +6643,16 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 1,
-      "hp": 106,
-      "atk": 17,
+      "hp": 98,
+      "atk": 14,
       "sprite": "EV2A",
       "materialExp": 40,
       "skill": {
         "name": "最後の波＋",
         "trigger": "low_hp",
         "effect": "attack",
-        "multiplier": 1.28,
-        "description": "自分のHPが半分以下の時、攻撃力1.28倍。"
+        "multiplier": 1.24,
+        "description": "自分のHPが半分以下の時、攻撃力1.24倍。"
       },
       "acquisition": {
         "gacha": false,
@@ -6671,15 +6671,15 @@
         "power": 1,
         "status": {
           "turns": 3,
-          "rate": 0.06
+          "rate": 0.05
         }
       },
       "balance": {
         "role": "support",
-        "def": 16,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "def": 14,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 0.86,
         "synthesisYield": 1.02
       }
@@ -6690,16 +6690,16 @@
       "attribute": "水",
       "family": "creature",
       "rarity": 1,
-      "hp": 134,
-      "atk": 21,
+      "hp": 109,
+      "atk": 16,
       "sprite": "EV2B",
       "materialExp": 40,
       "skill": {
         "name": "星門の共鳴",
         "trigger": "low_hp",
         "effect": "attack",
-        "multiplier": 1.38,
-        "description": "自分のHPが半分以下の時、攻撃力1.38倍。"
+        "multiplier": 1.28,
+        "description": "自分のHPが半分以下の時、攻撃力1.28倍。"
       },
       "acquisition": {
         "gacha": false,
@@ -6713,14 +6713,14 @@
         "nameKey": "skills.heal.name",
         "descriptionKey": "skills.heal.description",
         "power": 1,
-        "healRate": 0.26
+        "healRate": 0.24
       },
       "balance": {
         "role": "support",
-        "def": 19,
-        "hpGrowth": 0.036,
-        "atkGrowth": 0.031,
-        "defGrowth": 0.036,
+        "def": 15,
+        "hpGrowth": 0.034,
+        "atkGrowth": 0.03,
+        "defGrowth": 0.034,
         "xpRate": 0.86,
         "synthesisYield": 1.02
       }
@@ -6728,8 +6728,8 @@
   ],
   "monsterRules": {
     "maxLevel": 80,
-    "hpGrowth": 0.035,
-    "atkGrowth": 0.035,
+    "hpGrowth": 0.033,
+    "atkGrowth": 0.033,
     "beats": {
       "火": "風",
       "風": "地",
@@ -6759,31 +6759,31 @@
         "6": 60
       },
       "materialLevelGrowth": 0,
-      "expRecovery": 0.18,
+      "expRecovery": 0.08,
       "goldBase": 12,
       "goldPerRarity": 8,
       "goldPerLevel": 2,
       "warningRarity": 4,
       "warningLevel": 10,
       "nextLevelRatioByRarity": {
-        "1": 0.22,
-        "2": 0.28,
-        "3": 0.36,
-        "4": 0.46,
-        "5": 0.58,
-        "6": 0.74
+        "1": 0.12,
+        "2": 0.18,
+        "3": 0.25,
+        "4": 0.34,
+        "5": 0.45,
+        "6": 0.58
       },
       "expStones": {
         "expSmall": {
-          "ratio": 0.4,
+          "ratio": 0.2,
           "gold": 10
         },
         "expMedium": {
-          "ratio": 1.1,
+          "ratio": 0.65,
           "gold": 25
         },
         "expLarge": {
-          "ratio": 3,
+          "ratio": 1.8,
           "gold": 60
         }
       }
@@ -6813,34 +6813,34 @@
       {
         "from": 1,
         "to": 19,
-        "base": 36,
-        "step": 4
+        "base": 40,
+        "step": 6
       },
       {
         "from": 20,
         "to": 39,
-        "base": 132,
+        "base": 160,
         "step": 12
       },
       {
         "from": 40,
         "to": 59,
-        "base": 396,
-        "step": 25
+        "base": 420,
+        "step": 24
       },
       {
         "from": 60,
         "to": 79,
-        "base": 930,
-        "step": 55
+        "base": 920,
+        "step": 48
       }
     ],
     "battleExp": {
-      "normalShare": 0.12,
-      "eliteShare": 0.2,
-      "midbossShare": 0.38,
-      "bossShare": 0.62,
-      "tierBonus": 0.04
+      "normalShare": 0.075,
+      "eliteShare": 0.13,
+      "midbossShare": 0.24,
+      "bossShare": 0.42,
+      "tierBonus": 0.025
     },
     "special": {
       "maxSp": 100,
@@ -6851,43 +6851,43 @@
         "damaged": 8
       },
       "defaultDamageMultiplier": 1.25,
-      "rarityScalePerStar": 0.03
+      "rarityScalePerStar": 0.02
     },
     "balance": {
-      "defenseCoefficient": 0.25,
+      "defenseCoefficient": 0.4,
       "xpRateByRarity": {
         "1": 0.88,
         "2": 0.94,
         "3": 1,
         "4": 1.08,
-        "5": 1.16,
-        "6": 1.24
+        "5": 1.18,
+        "6": 1.3
       },
       "roles": {
         "striker": {
-          "hpGrowth": 0.029,
-          "atkGrowth": 0.043,
-          "defGrowth": 0.027
+          "hpGrowth": 0.028,
+          "atkGrowth": 0.04,
+          "defGrowth": 0.026
         },
         "guardian": {
-          "hpGrowth": 0.042,
-          "atkGrowth": 0.029,
-          "defGrowth": 0.044
+          "hpGrowth": 0.038,
+          "atkGrowth": 0.028,
+          "defGrowth": 0.041
         },
         "support": {
-          "hpGrowth": 0.036,
-          "atkGrowth": 0.031,
-          "defGrowth": 0.036
+          "hpGrowth": 0.034,
+          "atkGrowth": 0.03,
+          "defGrowth": 0.034
         },
         "control": {
-          "hpGrowth": 0.034,
-          "atkGrowth": 0.034,
-          "defGrowth": 0.038
+          "hpGrowth": 0.032,
+          "atkGrowth": 0.032,
+          "defGrowth": 0.036
         },
         "balanced": {
-          "hpGrowth": 0.035,
-          "atkGrowth": 0.035,
-          "defGrowth": 0.035
+          "hpGrowth": 0.033,
+          "atkGrowth": 0.033,
+          "defGrowth": 0.033
         }
       }
     }

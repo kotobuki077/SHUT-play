@@ -996,7 +996,7 @@
   function hpBarGradient(attr){return attrColor[attr]||attrColor['風'];}
   function enemyFormationSlot(index,count){
     const total=Math.max(1,Math.min(3,Number(count)||1));
-    const cols=total===1?[2]:total===2?[1,3]:[1,2,3];
+    const cols=total===1?[1]:total===2?[1,2]:[1,2,3];
     return {row:1,col:cols[Math.min(index,total-1)]};
   }
   function renderEnemies(){
@@ -1008,6 +1008,7 @@
     area.dataset.enemyGrid=slotCount>1?'1':'0';
     if(slotCount===1 && enemies[0]?.boss) area.classList.add('bossOnly');
     else if(slotCount===1) area.classList.add('single');
+    else if(slotCount===2) area.classList.add('multi','enemyGrid2');
     else area.classList.add('multi','enemyGrid3');
     
     enemies.forEach((e,slot)=>{
@@ -1220,8 +1221,8 @@
   function startGameFlow(forceNew=false){
     try{resumeAudioPlayback()}catch(err){}
     const has=!!localStorage.getItem(SAVE_KEY);
-    if(forceNew){clearSave();S={rank:1,rankXp:0,rankNeed:100,gold:0,gateKeys:0,stage:1,hp:100,maxHp:100,items:{heal:1,high:0,elixir:0,expSmall:0,expMedium:0,expLarge:0,retry:0,chip:0,bossFrag:0},inventory:[],equipped:null,materials:{bossCore:0},codex:{enemies:{},weapons:{},partners:{}},partners:{},equippedPartner:null,captureUnlocked:false,storyIndex:0,stageClears:{},readEvents:{},normalTickets:0,gifts:[],questProgress:{},questDelivered:{},gateUnlocked:{EXP:false,GOLD:false,HIDDEN:false,BOSSRUSH:false,TOWER:false,ENDLESS:false},gateAttempts:{EXP:0,GOLD:0,HIDDEN:0},shopStock:null,shopCycle:0,tutorialDone:false,freeDone:false};normalizeState();showTutorial();return;}
-    if(has){loadGame();updateHome();if(!S.tutorialDone){showTutorial();return;}enterOpenMenu();return;}
+    if(forceNew){clearSave();S={rank:1,rankXp:0,rankNeed:100,gold:0,gateKeys:0,stage:1,hp:100,maxHp:100,items:{heal:1,high:0,elixir:0,expSmall:0,expMedium:0,expLarge:0,retry:0,chip:0,bossFrag:0},inventory:[],equipped:null,materials:{bossCore:0},codex:{enemies:{},weapons:{},partners:{}},partners:{},equippedPartner:null,captureUnlocked:false,storyIndex:0,stageClears:{},readEvents:{},normalTickets:0,gifts:[],questProgress:{},questDelivered:{},gateUnlocked:{EXP:false,GOLD:false,HIDDEN:false,BOSSRUSH:false,TOWER:false,ENDLESS:false},gateAttempts:{EXP:0,GOLD:0,HIDDEN:0},shopStock:null,shopCycle:0,tutorialDone:false,freeDone:false};normalizeState();restoreAudioPrefs();applyAudioSettings();showTutorial();return;}
+    if(has){loadGame();restoreAudioPrefs();applyAudioSettings();updateHome();if(!S.tutorialDone){showTutorial();return;}enterOpenMenu();return;}
     showTutorial();
   }
   $('startBtn').onclick=(e)=>{e.stopPropagation();startGameFlow(false)};

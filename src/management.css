@@ -23,3 +23,25 @@
   .detailStats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .synthesisPreview{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* balance-v33 material EXP visibility */
+.materialExpTag{
+  position:absolute;
+  left:4px;
+  right:4px;
+  bottom:4px;
+  z-index:3;
+  padding:2px 4px;
+  background:#071a20e8;
+  border-top:1px solid #456861;
+  color:#e8d18a;
+  text-align:center;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.02em;
+  pointer-events:none;
+}
+.materialChoice .monsterTile{padding-bottom:20px}
+@media(max-width:600px){
+  .materialExpTag{left:2px;right:2px;bottom:2px;padding:1px 2px;font-size:5px}
+  .materialChoice .monsterTile{padding-bottom:14px}
+}

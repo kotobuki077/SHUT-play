@@ -39,7 +39,8 @@
 #battleEncounter.battleProgressDots i.current{background:var(--battle-perfect);box-shadow:0 0 8px #f0d46f88}
 
 /* Enemy field */
-#enemyArea{grid-area:field;position:relative!important;inset:auto!important;align-self:stretch;justify-self:stretch;display:flex;justify-content:center;align-items:flex-end;min-width:0;min-height:0;width:100%!important;gap:clamp(10px,2vw,30px);padding:0 0 12px;box-sizing:border-box}
+#enemyArea{grid-area:unset;position:absolute!important;left:calc(var(--battle-side) + 34px)!important;right:calc(var(--battle-side) + 34px)!important;top:10px!important;bottom:128px!important;display:flex;justify-content:center;align-items:flex-end;min-width:0;min-height:0;width:auto!important;gap:clamp(10px,2vw,30px);padding:0 0 12px;box-sizing:border-box}
+#enemyArea{transition:none!important;transform:none!important}
 #enemyArea[data-enemy-count="2"],#enemyArea[data-enemy-count="3"]{display:grid!important;grid-template-columns:repeat(var(--enemy-slots,3),minmax(0,1fr));column-gap:clamp(8px,1.6vw,24px);align-items:end!important}
 #enemyArea[data-enemy-count="2"]{--enemy-slots:2}
 #enemyArea[data-enemy-count="3"]{--enemy-slots:3}
@@ -130,7 +131,7 @@
 @media(max-width:960px){
  #battleScreen.show{grid-template-columns:minmax(0,58%) minmax(0,42%);grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"party stage" "field field" "timing timing";gap:7px 8px;padding:8px 10px 10px}
  #playerBox{width:min(300px,100%)!important;max-width:300px!important}#stageBox{width:min(270px,100%)!important;max-width:270px!important}
- #enemyArea{width:100%!important;padding:0 0 12px;align-items:flex-end}
+ #enemyArea{left:10px!important;right:10px!important;top:188px!important;bottom:96px!important;width:auto!important;padding:0 0 12px;align-items:flex-end}
  #battleMessage{bottom:66px}
  #battleSub{bottom:45px}
 }
@@ -149,7 +150,7 @@
  #battlePartner .allyHp{height:4px!important;margin:2px 0!important}
  #battlePartner .skillGauge.skillSegments{height:9px!important;padding:1px 2px!important}
  #battlePartner .skillSegmentTrack{height:5px;gap:1px}#battlePartner .skillGauge.skillSegments>em{font-size:7px!important}
- #enemyArea{gap:3px!important;padding:0 0 8px!important;align-items:flex-end}#enemyArea[data-enemy-count="2"],#enemyArea[data-enemy-count="3"]{column-gap:3px!important}
+ #enemyArea{left:5px!important;right:5px!important;top:182px!important;bottom:78px!important;width:auto!important;gap:3px!important;padding:0 0 8px!important;align-items:flex-end}#enemyArea[data-enemy-count="2"],#enemyArea[data-enemy-count="3"]{column-gap:3px!important}
  .enemySlotDrop{width:112px;min-height:108px;padding-bottom:31px}.enemySlotEgg{width:54px;height:54px}.enemySlotEgg .slotEggIcon{width:50px;height:50px}
  .enemyCard,.enemyCard.compact{width:112px!important;max-width:112px!important;flex-basis:112px!important}.enemyCard.bossCard{max-width:196px!important;flex-basis:196px!important}
  .enemySpriteWrap{height:108px!important}.enemyCard canvas{width:104px!important;height:104px!important;max-width:104px!important;max-height:104px!important}.bossCard .enemySpriteWrap{height:154px!important}.bossCard canvas{width:148px!important;height:148px!important}
@@ -170,7 +171,7 @@
  #battlePartner .allyFaceCanvas{width:38px!important;height:38px!important;flex-basis:38px!important}#battlePartner .allyHudTop b{font-size:10px!important}#battlePartner .allyHudTop .allyMeta,#battlePartner .allyHudTop small{font-size:8px!important}#battlePartner .allyStatus{display:none!important}
  #battlePartner .allyHp{height:4px!important;margin:2px 0!important}#battlePartner .skillGauge.skillSegments{height:9px!important}#battlePartner .skillGauge.skillSegments>em{font-size:7px!important}
  #stageBox{width:min(210px,100%)!important;max-width:210px!important;padding:6px 8px!important}#battleStage{font-size:11px!important}#battleEncounter,#battleCarry{font-size:9px!important;margin-top:4px}
- .enemyCard,.enemyCard.compact{width:112px!important;max-width:112px!important;flex-basis:112px!important}.enemySpriteWrap{height:110px!important}.enemyCard canvas{width:102px!important;height:102px!important;max-width:102px!important;max-height:102px!important}#enemyArea{align-items:flex-end!important;padding-bottom:6px!important}
+ .enemyCard,.enemyCard.compact{width:112px!important;max-width:112px!important;flex-basis:112px!important}.enemySpriteWrap{height:110px!important}.enemyCard canvas{width:102px!important;height:102px!important;max-width:102px!important;max-height:102px!important}#enemyArea{left:calc(var(--battle-land-side) + 16px)!important;right:calc(var(--battle-land-side) + 16px)!important;top:5px!important;bottom:73px!important;width:auto!important;align-items:flex-end!important;padding-bottom:6px!important}
  .enemyCard .eName{font-size:10px!important}.enemyCard .ehpText{font-size:9px!important}.enemyCard .eMeta{font-size:8px!important}
  .enemySlotDrop{width:112px;min-height:110px;padding-bottom:31px}.enemySlotEgg{width:56px;height:56px}.enemySlotEgg .slotEggIcon{width:52px;height:52px}
  #timingBox{padding-inline:8px!important}#timingPhase{min-height:18px;margin-bottom:2px}#timingPhase strong{font-size:14px}#timingPhase small,#timingTapHint,#timingTapHint[hidden]{display:none!important}#timingTrack{height:18px!important}#timingJudges{margin-top:3px;font-size:8px}

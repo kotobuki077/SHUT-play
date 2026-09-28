@@ -6759,7 +6759,7 @@
         "6": 60
       },
       "materialLevelGrowth": 0,
-      "expRecovery": 0.08,
+      "expRecovery": 0.04,
       "goldBase": 12,
       "goldPerRarity": 8,
       "goldPerLevel": 2,

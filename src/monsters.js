@@ -4,17 +4,33 @@
   const copy=x=>JSON.parse(JSON.stringify(x));
   const natural=(n,min=0)=>Number.isSafeInteger(n)&&n>=min;
   function definition(id,data){const d=data.monsters.find(m=>m.monster_id===id);if(!d)throw Error('Unknown monster: '+id);return d;}
-  function xpForLevel(level,data){
+  function subjectDefinition(subject,data){
+    if(!subject)return null;
+    if(typeof subject==='string')return definition(subject,data);
+    if(subject.monster_id)return subject;
+    if(subject.monsterId)return definition(subject.monsterId,data);
+    return null;
+  }
+  function xpRate(subject,data){
+    const d=subjectDefinition(subject,data);if(!d)return 1;
+    const rate=Number(d.balance?.xpRate??data.monsterRules.balance?.xpRateByRarity?.[d.rarity]??1);
+    return Number.isFinite(rate)&&rate>0?rate:1;
+  }
+  function xpForLevel(level,data,subject=null){
     if(!natural(level,1)||level>=data.monsterRules.maxLevel)return null;
     const curve=data.monsterRules.levelCurve;
-    if(Array.isArray(curve)){const segment=curve.find(x=>level>=x.from&&level<=x.to)||curve.at(-1);return Math.max(1,Math.round(segment.base+(level-segment.from)*segment.step));}
-    return data.monsterRules.levelBase+level*data.monsterRules.levelStep;
+    const base=Array.isArray(curve)?(()=>{const segment=curve.find(x=>level>=x.from&&level<=x.to)||curve.at(-1);return segment.base+(level-segment.from)*segment.step;})():data.monsterRules.levelBase+level*data.monsterRules.levelStep;
+    return Math.max(1,Math.round(base*xpRate(subject,data)));
   }
-  function totalXpForLevel(level,data){let total=0;for(let current=1;current<Math.min(level,data.monsterRules.maxLevel);current++)total+=xpForLevel(current,data);return total;}
-  function levelAt(xp,data){let level=1,left=Math.max(0,Math.floor(Number(xp)||0));while(level<data.monsterRules.maxLevel){const need=xpForLevel(level,data);if(left<need)break;left-=need;level++;}return {level,xpIntoLevel:left,next:xpForLevel(level,data),total:Math.max(0,Math.floor(Number(xp)||0))};}
+  function totalXpForLevel(level,data,subject=null){let total=0;for(let current=1;current<Math.min(level,data.monsterRules.maxLevel);current++)total+=xpForLevel(current,data,subject);return total;}
+  function levelAt(xp,data,subject=null){let level=1,left=Math.max(0,Math.floor(Number(xp)||0));while(level<data.monsterRules.maxLevel){const need=xpForLevel(level,data,subject);if(left<need)break;left-=need;level++;}return {level,xpIntoLevel:left,next:xpForLevel(level,data,subject),total:Math.max(0,Math.floor(Number(xp)||0)),rate:xpRate(subject,data)};}
   function create(monsterId,id,data){definition(monsterId,data);if(typeof id!=='string'||!id)throw Error('Instance ID required');return {id,monsterId,xp:0,locked:false,favorite:false};}
-  function form(instance,data){let d=definition(instance.monsterId,data),level=levelAt(instance.xp,data).level;const visited=new Set();while(d.evolution&&level>=d.evolution.level){if(visited.has(d.monster_id))throw Error('Evolution cycle');visited.add(d.monster_id);d=definition(d.evolution.to,data);}return d;}
-  function stats(instance,data){const d=form(instance,data),l=levelAt(instance.xp,data).level,tr=(key,fallback)=>key&&root.SHUTI18n?.t?root.SHUTI18n.t(key):fallback,skill={...d.skill,name:tr(d.skill?.nameKey,d.skill?.name),description:tr(d.skill?.descriptionKey,d.skill?.description)},special={...d.special,name:tr(d.special?.nameKey,d.special?.name||d.special?.type),description:tr(d.special?.descriptionKey,d.special?.description||'')};return {name:tr(d.nameKey,d.name),nameKey:d.nameKey,level:l,attr:d.attribute,rarity:d.rarity,skill,special,maxHp:Math.round(d.hp*(1+(l-1)*data.monsterRules.hpGrowth)),atk:Math.round(d.atk*(1+(l-1)*data.monsterRules.atkGrowth)),sprite:d.sprite,formId:d.monster_id};}
+  function form(instance,data){let d=definition(instance.monsterId,data),level=levelAt(instance.xp,data,instance).level;const visited=new Set();while(d.evolution&&level>=d.evolution.level){if(visited.has(d.monster_id))throw Error('Evolution cycle');visited.add(d.monster_id);d=definition(d.evolution.to,data);}return d;}
+  function stats(instance,data){
+    const d=form(instance,data),l=levelAt(instance.xp,data,instance).level,b=d.balance||{},tr=(key,fallback)=>key&&root.SHUTI18n?.t?root.SHUTI18n.t(key):fallback,skill={...d.skill,name:tr(d.skill?.nameKey,d.skill?.name),description:tr(d.skill?.descriptionKey,d.skill?.description)},special={...d.special,name:tr(d.special?.nameKey,d.special?.name||d.special?.type),description:tr(d.special?.descriptionKey,d.special?.description||'')};
+    const hg=Number(b.hpGrowth??data.monsterRules.hpGrowth),ag=Number(b.atkGrowth??data.monsterRules.atkGrowth),dg=Number(b.defGrowth??data.monsterRules.balance?.roles?.balanced?.defGrowth??.035),baseDef=Number(b.def??Math.max(1,Math.round(Number(d.hp||1)*.12)));
+    return {name:tr(d.nameKey,d.name),nameKey:d.nameKey,level:l,attr:d.attribute,rarity:d.rarity,skill,special,maxHp:Math.round(d.hp*(1+(l-1)*hg)),atk:Math.round(d.atk*(1+(l-1)*ag)),def:Math.round(baseDef*(1+(l-1)*dg)),role:b.role||'balanced',xpRate:xpRate(instance,data),sprite:d.sprite,formId:d.monster_id};
+  }
   function attribute(a,b,data){return data.monsterRules.beats[a]===b?data.monsterRules.advantage:data.monsterRules.beats[b]===a?data.monsterRules.disadvantage:1;}
   function damage(actor,enemy,timing,data,context={}){
     const mult=data.monsterRules.timing[timing];if(!Number.isFinite(mult))throw Error('Unknown timing');if(mult===0)return 0;
@@ -46,10 +62,10 @@
   function recordDiscoveries(state,data){
     state.codex=state.codex&&typeof state.codex==='object'?state.codex:{};
     state.codex.monsters=state.codex.monsters&&typeof state.codex.monsters==='object'&&!Array.isArray(state.codex.monsters)?state.codex.monsters:{};
-    for(const m of state.monsters){let d=definition(m.monsterId,data);const level=levelAt(m.xp,data).level,seen=new Set();while(d&&!seen.has(d.monster_id)){seen.add(d.monster_id);state.codex.monsters[d.monster_id]=true;if(!d.evolution||level<d.evolution.level)break;d=definition(d.evolution.to,data);}}
+    for(const m of state.monsters){let d=definition(m.monsterId,data);const level=levelAt(m.xp,data,m).level,seen=new Set();while(d&&!seen.has(d.monster_id)){seen.add(d.monster_id);state.codex.monsters[d.monster_id]=true;if(!d.evolution||level<d.evolution.level)break;d=definition(d.evolution.to,data);}}
     return state;
   }
-  function synthesisMaterialExp(instance,data){const s=stats(instance,data),rules=data.monsterRules.synthesis,ratio=Number(rules.nextLevelRatioByRarity?.[s.rarity]);if(Number.isFinite(ratio))return Math.max(1,Math.round((xpForLevel(Math.min(s.level,data.monsterRules.maxLevel-1),data)||1)*ratio));const base=Number(rules.materialBaseByRarity?.[s.rarity]??form(instance,data).materialExp);return Math.max(1,Math.round(base*(1+(s.level-1)*Number(rules.materialLevelGrowth||0))+instance.xp*Number(rules.expRecovery||0)));}
+  function synthesisMaterialExp(instance,data){const s=stats(instance,data),rules=data.monsterRules.synthesis,ratio=Number(rules.nextLevelRatioByRarity?.[s.rarity]),yieldRate=Number(form(instance,data).balance?.synthesisYield||1),recovery=Math.max(0,Number(rules.expRecovery||0));if(Number.isFinite(ratio))return Math.max(1,Math.round((xpForLevel(Math.min(s.level,data.monsterRules.maxLevel-1),data,instance)||1)*ratio*yieldRate+instance.xp*recovery));const base=Number(rules.materialBaseByRarity?.[s.rarity]??form(instance,data).materialExp);return Math.max(1,Math.round(base*yieldRate*(1+(s.level-1)*Number(rules.materialLevelGrowth||0))+instance.xp*recovery));}
   function synthesisPreview(state,baseId,materialIds,data,stoneInput={}){
     validateRoster(state,data);if(!natural(state.gold))throw Error('Invalid Gold');
     if(!Array.isArray(materialIds)||new Set(materialIds).size!==materialIds.length||materialIds.includes(baseId))throw Error('Invalid materials');
@@ -57,13 +73,14 @@
     const materials=materialIds.map(id=>{const m=state.monsters.find(x=>x.id===id);if(!m)throw Error('Material missing');if(m.locked)throw Error('Locked material');if(state.party.includes(id))throw Error('Party material');return m;});
     const rules=data.monsterRules.synthesis;
     const stones=Object.fromEntries(Object.entries(rules.expStones||{}).map(([key])=>{const count=Number(stoneInput?.[key]||0);if(!natural(count)||count>Number(state.items?.[key]||0))throw Error('Invalid EXP Stone');return [key,count]})),stoneCount=Object.values(stones).reduce((n,x)=>n+x,0);if(!materials.length&&!stoneCount)throw Error('Invalid materials');
-    const baseLevel=stats(base,data).level,levelNeed=xpForLevel(Math.min(baseLevel,data.monsterRules.maxLevel-1),data)||1,stoneExp=Object.entries(stones).reduce((sum,[key,count])=>sum+Math.round(levelNeed*Number(rules.expStones[key].ratio))*count,0);
+    const baseLevel=stats(base,data).level,levelNeed=xpForLevel(Math.min(baseLevel,data.monsterRules.maxLevel-1),data,base)||1,stoneExp=Object.entries(stones).reduce((sum,[key,count])=>sum+Math.round(levelNeed*Number(rules.expStones[key].ratio))*count,0);
     const exp=materials.reduce((sum,m)=>sum+synthesisMaterialExp(m,data),0)+stoneExp;
     const cost=materials.reduce((sum,m)=>sum+rules.goldBase+stats(m,data).rarity*rules.goldPerRarity+stats(m,data).level*rules.goldPerLevel,0)+Object.entries(stones).reduce((sum,[key,count])=>sum+Number(rules.expStones[key].gold||0)*count,0);
     const result={...base,xp:base.xp+exp},before=stats(base,data),after=stats(result,data);
     if(!Number.isSafeInteger(result.xp)||!natural(cost,1))throw Error('Overflow');
     const warnings=materials.flatMap(m=>{const s=stats(m,data),r=[];if(s.rarity>=rules.warningRarity)r.push('高レア');if(s.level>=rules.warningLevel)r.push('高レベル');if(s.formId!==m.monsterId)r.push('進化済み');if(m.favorite)r.push('お気に入り');if(definition(m.monsterId,data).important)r.push('重要');return r.length?[{id:m.id,name:s.name,reasons:r}]:[];});
-    return {baseId,materialIds:[...materialIds],stones,goldBefore:state.gold,cost,goldAfter:state.gold-cost,affordable:state.gold>=cost,exp,before,after,evolves:before.formId!==after.formId,warnings,result};
+    const afterProgress=levelAt(result.xp,data,result),levelGain=Math.max(0,after.level-before.level),nextLevelRemaining=afterProgress.next?Math.max(0,afterProgress.next-afterProgress.xpIntoLevel):0;
+    return {baseId,materialIds:[...materialIds],stones,goldBefore:state.gold,cost,goldAfter:state.gold-cost,affordable:state.gold>=cost,exp,before,after,evolves:before.formId!==after.formId,warnings,result,levelGain,nextLevelRemaining,afterProgress};
   }
   function synthesize(state,preview,data){
     const current=synthesisPreview(state,preview.baseId,preview.materialIds,data,preview.stones);
@@ -83,10 +100,10 @@
     next[currency]-=cost;return {state:next,pulls,cost,mode,currency};
   }
   function battleExp(enemy,stage,data){const rules=data.monsterRules.battleExp,level=Math.max(1,Number(stage.recommended_monster_level||stage.recommended_rank||1)),need=xpForLevel(Math.min(level,data.monsterRules.maxLevel-1),data)||1,category=enemy.category||'',share=enemy.boss||['boss','humanoid_boss'].includes(category)?rules.bossShare:category==='midboss'?rules.midbossShare:Number(enemy.tier)>=3?rules.eliteShare:rules.normalShare,chapter=data.chapterProgression?.find(x=>x.chapter===Number(stage.chapter))||{expMultiplier:1};return Math.max(1,Math.round(need*share*(1+(Math.max(1,Number(enemy.tier||1))-1)*rules.tierBonus)*chapter.expMultiplier));}
-  function grantBattleExp(state,partyIds,amount,data){if(!natural(amount)||!Array.isArray(partyIds))throw Error('Invalid battle EXP');const next=copy(state),changes=[];for(const id of partyIds){const m=next.monsters.find(x=>x.id===id);if(!m)continue;const before=levelAt(m.xp,data);m.xp+=amount;const after=levelAt(m.xp,data);changes.push({id,amount,beforeLevel:before.level,afterLevel:after.level,beforeXp:before.xpIntoLevel,afterXp:after.xpIntoLevel,next:after.next,levelUp:after.level>before.level});}return {state:recordDiscoveries(next,data),changes};}
+  function grantBattleExp(state,partyIds,amount,data){if(!natural(amount)||!Array.isArray(partyIds))throw Error('Invalid battle EXP');const next=copy(state),changes=[];for(const id of partyIds){const m=next.monsters.find(x=>x.id===id);if(!m)continue;const before=levelAt(m.xp,data,m);m.xp+=amount;const after=levelAt(m.xp,data,m);changes.push({id,amount,beforeLevel:before.level,afterLevel:after.level,beforeXp:before.xpIntoLevel,afterXp:after.xpIntoLevel,next:after.next,levelUp:after.level>before.level});}return {state:recordDiscoveries(next,data),changes};}
   function specialPlan(actor,allies,enemy){
     const special=actor?.special||{type:'damage',power:1},alive=(allies||[]).filter(x=>x&&x.hp>0),lowest=alive.sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
-    const rarity=Math.max(1,Math.min(6,Number(actor?.rarity||1))),rarityScale=1+(rarity-1)*.05,basePower=Number(special.power||1);
+    const rarity=Math.max(1,Math.min(6,Number(actor?.rarity||1))),rarityScale=1+(rarity-1)*Number(data.monsterRules.special?.rarityScalePerStar??.03),basePower=Number(special.power||1);
     const result={type:special.type||'damage',damageMultiplier:1+(basePower-1)*rarityScale,allyId:null,heal:0,status:null};
     if(result.type==='heal'&&lowest){result.allyId=lowest.id;result.heal=Math.max(1,Math.round(lowest.maxHp*Number(special.healRate||.3)*rarityScale));}
     if(result.type==='regen'&&lowest){result.allyId=lowest.id;result.status={kind:'regen',turns:Number(special.status?.turns||3),rate:Number(special.status?.rate||.08)*rarityScale};}
@@ -111,6 +128,6 @@
     if(retired.length||invalid.length){next.legacyArchive=next.legacyArchive||{};for(const [key,list]of [['retiredGifts',retired],['invalidGifts',invalid]])if(list.length)next.legacyArchive[key]=[...(Array.isArray(next.legacyArchive[key])?next.legacyArchive[key]:[]),...list];}
     validateRoster(next,data);next.schemaVersion=6;return recordDiscoveries(next,data);
   }
-  root.SHUTMonsters={definition,xpForLevel,totalXpForLevel,levelAt,create,form,stats,attribute,damage,planAttack,validateRoster,synthesisMaterialExp,synthesisPreview,synthesize,gacha,battleExp,grantBattleExp,specialPlan,migrate};
+  root.SHUTMonsters={definition,xpRate,xpForLevel,totalXpForLevel,levelAt,create,form,stats,attribute,damage,planAttack,validateRoster,synthesisMaterialExp,synthesisPreview,synthesize,gacha,battleExp,grantBattleExp,specialPlan,migrate};
   if(typeof module!=='undefined')module.exports=root.SHUTMonsters;
 })(globalThis);

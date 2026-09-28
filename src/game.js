@@ -211,15 +211,14 @@
   const TIMING_SWEEP_MS=850,TIMING_HIT_WIDTH=.18,TIMING_PERFECT_WIDTH=.018;
   function timingGradeFromProgress(progress){
     const value=Number(progress);if(!Number.isFinite(value)||value<0||value>1)return 'MISS';const d=Math.abs(clamp(value,0,1)-.5);
-    return d<=.009?'PERFECT':d<=.02?'EXCELLENT':d<=.035?'GREAT':d<=.09?'GOOD':'BAD';
+    return d<=.009?'PERFECT':d<=.02?'EXCELLENT':d<=.035?'GREAT':d<=.09?'GOOD':'MISS';
   }
-  function timingAttackScale(grade){return grade==='EXCELLENT'?.97:grade==='GREAT'?.91:grade==='GOOD'?.82:grade==='BAD'?.68:1}
+  function timingAttackScale(grade){return grade==='EXCELLENT'?.97:grade==='GREAT'?.91:grade==='GOOD'?.82:1}
   function timingGuardRate(grade){
     return grade==='PERFECT'?Number(CFG.perfect_guard_rate):
       grade==='EXCELLENT'?Math.min(.2,Number(CFG.good_guard_rate)):
       grade==='GREAT'?Number(CFG.good_guard_rate):
       grade==='GOOD'?Number(CFG.normal_guard_rate):
-      grade==='BAD'?Number(CFG.bad_guard_rate):
       Number(CFG.miss_guard_rate);
   }
   function guardSweepDuration(enemy){

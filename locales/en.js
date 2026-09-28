@@ -46,7 +46,7 @@ globalThis.SHUT_LOCALES.en={
     timingGuide:'Green: HIT · Gold: PERFECT',closeHere:'CLOSE HERE',closeNow:'CLOSE!',readyIdle:'Prepare to attack',retreat:'RETREAT',closeTimeline:'CLOSE',playerAria:'Player',
     instructionDesktop:'Press once to start the bar, then again to stop it',instructionTouch:'Tap once to start the bar, then again to stop it',
     encounter:'ENCOUNTER',bossBattle:'BOSS BATTLE',encounterHint:'{instruction} / CLOSE guards during battle',ready:'READY?',readyHint:'Wait until your team is ready',go:'GO!',attack:'ATTACK',startTimingHint:'Press to start the timing bar',
-    attackHintDesktop:'Click or press Space to stop · PERFECT is the tiny zone',attackHintTouch:'Tap the button to stop · PERFECT is the tiny zone',
+    attackHintDesktop:'Click or press Space to stop · PERFECT is the tiny zone',attackHintTouch:'Tap the button to stop · PERFECT is the tiny zone',tapToStart:'Tap once to start',
     miss:'MISS',hit:'HIT',perfect:'PERFECT',missTurn:'Turn spent',coordinatedAttack:'All three attack together',nextMoment:'On to the next moment.',
     enemyWait:'ENEMY WAIT',enemyWaitTurns:'Enemy attack in as few as {turns} turns',feintWait:'FEINT · WAIT',perfectGuard:'PERFECT GUARD',goodGuard:'GOOD GUARD',guard:'GUARD',
     damage:'{name} · {damage} DAMAGE',guardBrand:'SHUT / GUARD',damageOnly:'{damage} DAMAGE',

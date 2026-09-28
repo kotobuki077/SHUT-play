@@ -669,20 +669,18 @@
 #timingTrack{
   height:24px!important;
   border-color:var(--timing-edge)!important;
-  background:var(--timing-track)!important;
+  background:#050505!important;
   box-shadow:0 0 0 4px color-mix(in srgb,var(--timing-track) 72%,transparent),0 5px 16px #03151d66!important;
 }
 #hitZone{
   background:linear-gradient(90deg,
-    var(--timing-bad) 0 21.111%,
-    var(--timing-good) 21.111% 30.556%,
+    var(--timing-good) 0 30.556%,
     var(--timing-great) 30.556% 38.889%,
     color-mix(in srgb,var(--timing-great) 72%,var(--timing-perfect)) 38.889% 45%,
     var(--timing-perfect) 45% 55%,
     color-mix(in srgb,var(--timing-great) 72%,var(--timing-perfect)) 55% 61.111%,
     var(--timing-great) 61.111% 69.444%,
-    var(--timing-good) 69.444% 78.889%,
-    var(--timing-bad) 78.889% 100%)!important;
+    var(--timing-good) 69.444% 100%)!important;
 }
 #perfectZone{
   background:var(--timing-perfect)!important;
@@ -772,3 +770,6 @@
 @media(max-height:600px) and (pointer:coarse){
   #attackStartBtn{width:96px;min-height:26px;padding:4px 8px;font-size:10px}
 }
+
+/* v26 — BAD uses the black outer track; GOOD and above are colored */
+#timingJudges span:nth-child(1),#timingJudges span:nth-child(9){color:#aeb7ba!important}

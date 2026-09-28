@@ -45,7 +45,7 @@
     const ad=Math.abs(delta);
     return ad<=config.perfect_guard_ms?finite(config.perfect_guard_rate,.1):ad<=config.good_guard_ms?finite(config.good_guard_rate,.3):ad<=config.normal_guard_ms?finite(config.normal_guard_rate,.55):ad<=config.bad_guard_ms?finite(config.bad_guard_rate,.8):finite(config.miss_guard_rate,1);
   }
-  function guardDamage(atk,movePower,rate,attackMultiplier=1,defense=0){const raw=Math.max(1,finite(atk,1))*Math.max(0,finite(movePower,1))*Math.max(.1,finite(attackMultiplier,1)),coef=.35,mitigated=Math.max(1,raw-Math.max(0,finite(defense,0))*coef);return Math.max(1,Math.round(mitigated*clamp(finite(rate,1),0,1)));}
+  function guardDamage(atk,movePower,rate,attackMultiplier=1,defense=0,defenseCoefficient=.25){const raw=Math.max(1,finite(atk,1))*Math.max(0,finite(movePower,1))*Math.max(.1,finite(attackMultiplier,1)),coef=clamp(finite(defenseCoefficient,.25),0,.75),mitigated=Math.max(1,raw-Math.max(0,finite(defense,0))*coef);return Math.max(1,Math.round(mitigated*clamp(finite(rate,1),0,1)));}
   function spriteRect(iw,ih,cw,ch,meta) {
     if(meta.pixelPerfect){
       const raw=Math.min(cw/iw,ch/ih),scale=raw>=1?Math.max(1,Math.floor(raw)):raw>=.5?.5:.25;

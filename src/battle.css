@@ -14,7 +14,7 @@
 #battlePartner .monsterHud{display:flex!important;align-items:center;width:100%!important;height:64px!important;min-width:0;gap:8px!important;padding:5px 7px!important;box-sizing:border-box;overflow:hidden;border:1px solid #d0bb7399!important;background:linear-gradient(90deg,#0d3036f5,#0a2931e8)!important;box-shadow:inset 3px 0 0 #ffffff0c}
 #battlePartner .allyFaceCanvas{width:46px!important;height:46px!important;flex:0 0 46px!important;border:1px solid #d9bd6c!important;background:#102f36;image-rendering:pixelated}
 #battlePartner .allyHudBody{min-width:0;flex:1}
-#battlePartner .allyHudTop{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name hp" "meta meta";align-items:center;gap:2px 6px;min-width:0}
+#battlePartner .allyHudTop{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name name" "meta hp";align-items:center;gap:2px 6px;min-width:0}
 #battlePartner .allyHudTop b{grid-area:name;min-width:0;overflow:visible;text-overflow:clip;white-space:nowrap;font-size:12px!important;line-height:1.1;color:var(--battle-text)}
 #battlePartner .allyHudTop .allyMeta{grid-area:meta;display:flex;align-items:center;gap:5px;font-size:9px!important;white-space:nowrap;color:#d7e8e4}#battlePartner .allyHudTop small{grid-area:hp;font-size:9px!important;white-space:nowrap;color:#d7e8e4}
 #battlePartner .allyStatus{max-width:100%;overflow:visible;text-overflow:clip;white-space:nowrap}

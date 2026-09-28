@@ -40,8 +40,10 @@
 
 /* Enemy field */
 #enemyArea{grid-area:field;position:relative!important;inset:auto!important;align-self:stretch;justify-self:stretch;display:flex;justify-content:center;align-items:flex-end;min-width:0;min-height:0;width:100%!important;gap:clamp(10px,2vw,30px);padding:0 0 12px;box-sizing:border-box}
-#enemyArea[data-enemy-count="3"]{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(8px,1.6vw,24px);align-items:end!important}
-#enemyArea[data-enemy-count="3"]>.enemyCard{justify-self:center}
+#enemyArea[data-enemy-count="2"],#enemyArea[data-enemy-count="3"]{display:grid!important;grid-template-columns:repeat(var(--enemy-slots,3),minmax(0,1fr));column-gap:clamp(8px,1.6vw,24px);align-items:end!important}
+#enemyArea[data-enemy-count="2"]{--enemy-slots:2}
+#enemyArea[data-enemy-count="3"]{--enemy-slots:3}
+#enemyArea[data-enemy-count="2"]>.enemyCard,#enemyArea[data-enemy-count="3"]>.enemyCard,#enemyArea>.enemySlotDrop{justify-self:center}
 #enemyArea.single>.enemyCard,#enemyArea.bossOnly>.enemyCard{margin-inline:auto}
 .enemyCard,.enemyCard.compact{position:relative!important;width:min(100%,190px)!important;max-width:190px!important;min-width:0!important;flex:0 1 190px!important;text-align:center;cursor:default!important}
 .enemyCard.bossCard{width:min(100%,290px)!important;max-width:290px!important;flex-basis:290px!important}
@@ -61,6 +63,10 @@
 .enemyCard.target .eName{border-top-color:#ffe7a0!important;color:#ffe9ac!important}
 .enemyCard.attacking canvas{filter:brightness(1.28) drop-shadow(0 0 14px #f5d978cc)!important}
 .enemyCard.assignmentTarget .enemySpriteWrap{filter:brightness(1.16) drop-shadow(0 0 10px #fff0a888)}
+.enemySlotDrop{align-self:end;display:flex;align-items:flex-end;justify-content:center;width:190px;max-width:100%;min-height:206px;padding-bottom:47px;box-sizing:border-box;pointer-events:none}
+.enemySlotEgg{display:grid;place-items:center;width:82px;height:82px;filter:drop-shadow(0 8px 5px #031a1f88);animation:slotEggSettle .34s ease-out both}
+.enemySlotEgg .slotEggIcon{width:76px;height:76px;object-fit:contain;image-rendering:pixelated}
+@keyframes slotEggSettle{from{opacity:0;transform:translateY(-18px) scale(.86)}to{opacity:1;transform:translateY(0) scale(1)}}
 #battlePartner .monsterHud.assignmentSource{border-color:#fff4bd!important}
 .attackAssignmentLine{position:absolute;z-index:42;height:2px;transform-origin:0 50%;background:var(--assign);pointer-events:none;animation:assignmentLine .34s ease-out forwards}
 @keyframes assignmentLine{0%{opacity:0;scale:.25 1}30%{opacity:1;scale:1 1}100%{opacity:0}}
@@ -143,7 +149,8 @@
  #battlePartner .allyHp{height:4px!important;margin:2px 0!important}
  #battlePartner .skillGauge.skillSegments{height:9px!important;padding:1px 2px!important}
  #battlePartner .skillSegmentTrack{height:5px;gap:1px}#battlePartner .skillGauge.skillSegments>em{font-size:7px!important}
- #enemyArea{gap:3px!important;padding:0 0 8px!important;align-items:flex-end}#enemyArea[data-enemy-count="3"]{column-gap:3px!important}
+ #enemyArea{gap:3px!important;padding:0 0 8px!important;align-items:flex-end}#enemyArea[data-enemy-count="2"],#enemyArea[data-enemy-count="3"]{column-gap:3px!important}
+ .enemySlotDrop{width:112px;min-height:108px;padding-bottom:31px}.enemySlotEgg{width:54px;height:54px}.enemySlotEgg .slotEggIcon{width:50px;height:50px}
  .enemyCard,.enemyCard.compact{width:112px!important;max-width:112px!important;flex-basis:112px!important}.enemyCard.bossCard{max-width:196px!important;flex-basis:196px!important}
  .enemySpriteWrap{height:108px!important}.enemyCard canvas{width:104px!important;height:104px!important;max-width:104px!important;max-height:104px!important}.bossCard .enemySpriteWrap{height:154px!important}.bossCard canvas{width:148px!important;height:148px!important}
  .enemyAttrBadge{width:20px;height:20px}.enemyTurnBadge{top:19px;right:0;width:21px;height:21px;font-size:8px}
@@ -165,6 +172,7 @@
  #stageBox{width:min(210px,100%)!important;max-width:210px!important;padding:6px 8px!important}#battleStage{font-size:11px!important}#battleEncounter,#battleCarry{font-size:9px!important;margin-top:4px}
  .enemyCard,.enemyCard.compact{width:112px!important;max-width:112px!important;flex-basis:112px!important}.enemySpriteWrap{height:110px!important}.enemyCard canvas{width:102px!important;height:102px!important;max-width:102px!important;max-height:102px!important}#enemyArea{align-items:flex-end!important;padding-bottom:6px!important}
  .enemyCard .eName{font-size:10px!important}.enemyCard .ehpText{font-size:9px!important}.enemyCard .eMeta{font-size:8px!important}
+ .enemySlotDrop{width:112px;min-height:110px;padding-bottom:31px}.enemySlotEgg{width:56px;height:56px}.enemySlotEgg .slotEggIcon{width:52px;height:52px}
  #timingBox{padding-inline:8px!important}#timingPhase{min-height:18px;margin-bottom:2px}#timingPhase strong{font-size:14px}#timingPhase small,#timingTapHint{display:none!important}#timingTrack{height:18px!important}#timingJudges{margin-top:3px;font-size:8px}
  #battleMessage,#battleSub{display:none!important}
 }

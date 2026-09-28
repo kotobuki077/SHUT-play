@@ -210,8 +210,8 @@
   let attackStart=0, attackDuration=1000, meterRAF=null, defenseImpact=0, defenseEnemyId=null, defenseTargetId=null, attackReadyToken=0, guardSweepStart=0, guardSweepDurationMs=1000;
   const TIMING_SWEEP_MS=850,TIMING_HIT_WIDTH=.18,TIMING_PERFECT_WIDTH=.018;
   function timingGradeFromProgress(progress){
-    const d=Math.abs(clamp(Number(progress)||0,0,1)-.5);
-    return d<=.009?'PERFECT':d<=.02?'EXCELLENT':d<=.035?'GREAT':d<=.052?'GOOD':d<=.09?'BAD':'MISS';
+    const value=Number(progress);if(!Number.isFinite(value)||value<0||value>1)return 'MISS';const d=Math.abs(clamp(value,0,1)-.5);
+    return d<=.009?'PERFECT':d<=.02?'EXCELLENT':d<=.035?'GREAT':d<=.09?'GOOD':'BAD';
   }
   function timingAttackScale(grade){return grade==='EXCELLENT'?.97:grade==='GREAT'?.91:grade==='GOOD'?.82:grade==='BAD'?.68:1}
   function timingGuardRate(grade){
@@ -1181,7 +1181,7 @@
     setTimeout(()=>{
       if(token!==defenseToken||phase!=='guardArmed')return;
       setBattlePhase('guard',false);$('timingBox').classList.add('show');prepareTimingUi('guard');$('cursor').style.left='0%';guardSweepStart=performance.now();defenseImpact=guardSweepStart+guardSweepDurationMs/2;cancelAnimationFrame(meterRAF);
-      const drawGuard=now=>{if(token!==defenseToken||phase!=='guard')return;const p=clamp((now-guardSweepStart)/guardSweepDurationMs,0,1);$('cursor').style.left=`${p*100}%`;if(p<1)meterRAF=requestAnimationFrame(drawGuard);else resolveDefense(1,false)};
+      const drawGuard=now=>{if(token!==defenseToken||phase!=='guard')return;const p=clamp((now-guardSweepStart)/guardSweepDurationMs,0,1);$('cursor').style.left=`${p*100}%`;if(p<1)meterRAF=requestAnimationFrame(drawGuard);else resolveDefense(1.1,false)};
       meterRAF=requestAnimationFrame(drawGuard);
     },preDelay);
   }

@@ -39,7 +39,7 @@
 #battleEncounter.battleProgressDots i.current{background:var(--battle-perfect);box-shadow:0 0 8px #f0d46f88}
 
 /* Enemy field */
-#enemyArea{grid-area:field;position:relative!important;inset:auto!important;align-self:stretch;justify-self:stretch;display:flex;justify-content:center;align-items:flex-end;min-width:0;min-height:0;width:100%!important;gap:clamp(10px,2vw,30px);padding:0 0 2px;box-sizing:border-box}
+#enemyArea{grid-area:field;position:relative!important;inset:auto!important;align-self:stretch;justify-self:stretch;display:flex;justify-content:center;align-items:flex-end;min-width:0;min-height:0;width:100%!important;gap:clamp(10px,2vw,30px);padding:0 0 12px;box-sizing:border-box}
 #enemyArea[data-enemy-count="3"]{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(8px,1.6vw,24px);align-items:end!important}
 #enemyArea[data-enemy-count="3"]>.enemyCard{justify-self:center}
 #enemyArea.single>.enemyCard,#enemyArea.bossOnly>.enemyCard{margin-inline:auto}
@@ -128,14 +128,11 @@
 @keyframes guardDoorLeft{from{translate:-102% 0}to{translate:0 0}}
 @keyframes guardDoorRight{from{translate:102% 0}to{translate:0 0}}
 
-/* When the timing lane is hidden, reserve only the small message strip. */
-#app:not([data-phase="attackArmed"]):not([data-phase="attack"]):not([data-phase="guard"]) #enemyArea{padding-bottom:74px}
-
 /* Tablet */
 @media(max-width:960px){
  #battleScreen.show{grid-template-columns:minmax(0,58%) minmax(0,42%);grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"party stage" "field field" "timing timing";gap:7px 8px;padding:8px 10px 10px}
  #stageBox{max-width:none!important}
- #enemyArea{width:100%!important;padding:0 0 2px;align-items:flex-end}
+ #enemyArea{width:100%!important;padding:0 0 12px;align-items:flex-end}
  #battleMessage{bottom:66px}
  #battleSub{bottom:45px}
 }
@@ -154,7 +151,7 @@
  #battlePartner .allyHp{height:3px!important;margin:2px 0!important}
  #battlePartner .skillGauge.skillSegments{height:8px!important;padding:1px 2px!important}
  #battlePartner .skillSegmentTrack{height:4px;gap:1px}#battlePartner .skillGauge.skillSegments>em{font-size:5px!important}
- #enemyArea{gap:3px!important;padding:0 0 1px!important;align-items:flex-end}#enemyArea[data-enemy-count="3"]{column-gap:3px!important}
+ #enemyArea{gap:3px!important;padding:0 0 8px!important;align-items:flex-end}#enemyArea[data-enemy-count="3"]{column-gap:3px!important}
  .enemyCard,.enemyCard.compact{max-width:118px!important;flex-basis:118px!important}.enemyCard.bossCard{max-width:196px!important;flex-basis:196px!important}
  #enemyArea[data-enemy-count="1"]:not(.bossOnly)>.enemyCard{width:132px!important;max-width:132px!important;flex-basis:132px!important}
  #enemyArea[data-enemy-count="2"]>.enemyCard{width:112px!important;max-width:112px!important;flex-basis:112px!important}
@@ -172,7 +169,6 @@
  #battleMessage{bottom:55px;width:78%;font-size:17px}#battleSub{bottom:36px;width:82%;font-size:9px}
  #recoveryTray{padding:0 5px 7px}#recoveryTray .recoveryCard{width:99%;padding:7px;gap:4px 6px}#recoveryTray .itemButtons{gap:4px}#recoveryTray .itemBtn{min-height:42px;padding:5px 4px!important;font-size:9px}
  #continueBattle{min-width:58px;min-height:42px;padding:5px!important;font-size:8px}#retreatBtn{right:5px!important;bottom:5px!important}#combatFeedback{top:42%;font-size:30px}
- #app:not([data-phase="attackArmed"]):not([data-phase="attack"]):not([data-phase="guard"]) #enemyArea{padding-bottom:54px!important}
 }
 
 /* Phone landscape */
@@ -181,7 +177,7 @@
  .rankHudRow{height:17px;padding-bottom:2px}#battlePartner.monsterPartyHud{gap:2px!important;margin-top:3px!important}#battlePartner .monsterHud{height:36px!important;padding:2px 4px!important}
  #battlePartner .allyFaceCanvas{width:30px!important;height:30px!important;flex-basis:30px!important}#battlePartner .allyLevel,#battlePartner .allyStatus{display:none!important}
  #stageBox{padding:5px 7px!important}#battleStage{font-size:9px!important}#battleEncounter,#battleCarry{font-size:7px!important;margin-top:3px}
- .enemySpriteWrap{height:116px!important}.enemyCard canvas{width:108px!important;height:108px!important}#enemyArea{align-items:flex-end!important;padding-bottom:1px!important}
+ .enemySpriteWrap{height:116px!important}.enemyCard canvas{width:108px!important;height:108px!important}#enemyArea{align-items:flex-end!important;padding-bottom:6px!important}
  #enemyArea[data-enemy-count="1"]:not(.bossOnly) .enemySpriteWrap{height:154px!important}
  #enemyArea[data-enemy-count="2"] .enemySpriteWrap{height:132px!important}
  #enemyArea[data-enemy-count="3"] .enemySpriteWrap{height:110px!important}

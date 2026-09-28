@@ -56,7 +56,8 @@
   function restoreAudioPrefs(){
     S.settings=S.settings||{};
     const saved=readAudioPrefs();
-    const source=saved||S.settings;
+    const legacyForced=!saved&&S.settings.audioRepairV14===true&&Number(S.settings.masterVolume)>=.78&&Number(S.settings.bgmVolume)>=.72&&Number(S.settings.seVolume)>=.6;
+    const source=legacyForced?AUDIO_DEFAULTS:(saved||S.settings);
     S.settings.sound=source.sound!==false;
     for(const key of ['masterVolume','bgmVolume','seVolume']){
       const fallback=AUDIO_DEFAULTS[key],value=Number(source[key]);

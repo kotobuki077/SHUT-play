@@ -6766,24 +6766,24 @@
       "warningRarity": 4,
       "warningLevel": 10,
       "nextLevelRatioByRarity": {
-        "1": 0.18,
-        "2": 0.24,
-        "3": 0.32,
-        "4": 0.42,
-        "5": 0.55,
-        "6": 0.72
+        "1": 0.22,
+        "2": 0.28,
+        "3": 0.36,
+        "4": 0.46,
+        "5": 0.58,
+        "6": 0.74
       },
       "expStones": {
         "expSmall": {
-          "ratio": 0.3,
+          "ratio": 0.4,
           "gold": 10
         },
         "expMedium": {
-          "ratio": 0.9,
+          "ratio": 1.1,
           "gold": 25
         },
         "expLarge": {
-          "ratio": 2.6,
+          "ratio": 3,
           "gold": 60
         }
       }

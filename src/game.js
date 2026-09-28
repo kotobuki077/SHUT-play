@@ -1117,9 +1117,13 @@
     else setTimeout(arm,90);
   }
 
+  function attackRouletteProgress(now=performance.now()){
+    if(!attackStart||!attackDuration)return 0;
+    return ((Math.max(0,now-attackStart)%attackDuration)/attackDuration);
+  }
   function startTimingBar(){
     if(phase!=='attackArmed')return;setBattlePhase('attack',false);$('timingBox').classList.remove('awaitStart');const hintCopy=$('timingTapHint')?.querySelector('em');if(hintCopy)hintCopy.textContent=t('battle.tapAnywhere');attackStart=performance.now();attackDuration=TIMING_SWEEP_MS;cancelAnimationFrame(meterRAF);setBattleCopy('battle.attack',isDesktop()?'battle.attackHintDesktop':'battle.attackHintTouch');
-    function frame(now){if(phase!=='attack')return;const p=Math.min(1,(now-attackStart)/attackDuration);$('cursor').style.left=`${p*100}%`;if(p<1)meterRAF=requestAnimationFrame(frame);else{setBattlePhase('transition',true);$('timingBox').classList.remove('show');feedback(t('battle.miss'),'miss');setBattleCopy('battle.miss','battle.missTurn');chargeSkills();setTimeout(endPlayerTurn,330)}}
+    function frame(now){if(phase!=='attack')return;const p=attackRouletteProgress(now);$('cursor').style.left=`${p*100}%`;meterRAF=requestAnimationFrame(frame);}
     meterRAF=requestAnimationFrame(frame);
   }
 
@@ -1132,7 +1136,7 @@
     setTimeout(()=>{document.querySelectorAll('.attackAssignmentLine').forEach(n=>n.remove());document.querySelectorAll('.assignmentSource,.assignmentTarget').forEach(n=>n.classList.remove('assignmentSource','assignmentTarget'));},360);
   }
   function executeAttack(){
-    if(phase!=='attack'||battleInputLocked)return;battleInputLocked=true;const p=clamp((performance.now()-attackStart)/attackDuration,0,1),grade=timingGradeFromProgress(p),timing=grade==='PERFECT'?'PERFECT':grade==='MISS'?'MISS':'HIT';
+    if(phase!=='attack'||battleInputLocked)return;battleInputLocked=true;const p=attackRouletteProgress(),grade=timingGradeFromProgress(p),timing=grade==='PERFECT'?'PERFECT':grade==='MISS'?'MISS':'HIT';
     $('timingBox').classList.remove('show');cancelAnimationFrame(meterRAF);setBattlePhase('transition',true);const skillActors=new Set(partyMembers().filter(m=>m.hp>0&&skillIsReady(m)).map(m=>m.id));const plan=Monsters.planAttack(partyMembers(),living(),timing,MASTER_DATA,{attackCount:stageStats.turn+1,perfectGuard:!!S.perfectGuardBoost});S.perfectGuardBoost=false;
     if(timing==='HIT'){const scale=timingAttackScale(grade);for(const hit of plan)if(hit.damage>0)hit.damage=Math.max(1,Math.round(hit.damage*scale));}
     for(const hit of plan)if(skillActors.has(hit.actorId)&&hit.damage>0){const actor=partyMembers().find(m=>m.id===hit.actorId),special=Monsters.specialPlan(actor,partyMembers(),enemies.find(e=>e.id===hit.targetId));hit.ultimate=true;hit.special=special;hit.support=special.type==='heal'||special.type==='regen';if(hit.support)hit.damage=0;else hit.damage=Math.max(1,Math.round(hit.damage*(special.damageMultiplier||ULTIMATE_MULTIPLIER)));skillCharge[hit.actorId]=0}

@@ -208,10 +208,10 @@
   let gachaMode='key', gachaStep=0, pendingPulls=[], gachaSelectedCount=null, gachaBusy=false;
   let encounter=1, enemies=[], phase='idle', opened=true;
   let attackStart=0, attackDuration=1000, meterRAF=null, defenseImpact=0, defenseEnemyId=null, defenseTargetId=null, attackReadyToken=0, guardSweepStart=0, guardSweepDurationMs=1000;
-  const TIMING_SWEEP_MS=850,TIMING_HIT_WIDTH=.14,TIMING_PERFECT_WIDTH=.018;
+  const TIMING_SWEEP_MS=850,TIMING_HIT_WIDTH=.18,TIMING_PERFECT_WIDTH=.018;
   function timingGradeFromProgress(progress){
     const d=Math.abs(clamp(Number(progress)||0,0,1)-.5);
-    return d<=.009?'PERFECT':d<=.02?'EXCELLENT':d<=.035?'GREAT':d<=.052?'GOOD':d<=.07?'BAD':'MISS';
+    return d<=.009?'PERFECT':d<=.02?'EXCELLENT':d<=.035?'GREAT':d<=.052?'GOOD':d<=.09?'BAD':'MISS';
   }
   function timingAttackScale(grade){return grade==='EXCELLENT'?.97:grade==='GREAT'?.91:grade==='GOOD'?.82:grade==='BAD'?.68:1}
   function timingGuardRate(grade){
@@ -1343,10 +1343,10 @@
     const screen=$('battleScreen'),r=screen.getBoundingClientRect(),dot=document.createElement('span');
     dot.className='battleTapRipple';dot.style.left=(clientX-r.left)+'px';dot.style.top=(clientY-r.top)+'px';screen.append(dot);setTimeout(()=>dot.remove(),420);
   }
+  $('attackStartBtn').onclick=e=>{e.stopPropagation();if(phase!=='attackArmed'||battleInputLocked)return;startTimingBar();};
   $('battleScreen').addEventListener('pointerdown',e=>{
     if(e.target.closest('#retreatBtn,.utility,[data-system-control]'))return;
-    if(phase==='attackArmed'&&!battleInputLocked){e.preventDefault();showBattleTapFeedback(e.clientX,e.clientY);startTimingBar();}
-    else if(phase==='attack'&&!battleInputLocked){e.preventDefault();showBattleTapFeedback(e.clientX,e.clientY);executeAttack();}
+    if(phase==='attack'&&!battleInputLocked){e.preventDefault();showBattleTapFeedback(e.clientX,e.clientY);executeAttack();}
     else if(phase==='guard'&&!battleInputLocked){e.preventDefault();showBattleTapFeedback(e.clientX,e.clientY);executeDefense();}
   });
 

@@ -46,7 +46,7 @@ globalThis.SHUT_LOCALES.ja={
     timingGuide:'緑でHIT、黄色でPERFECT',closeHere:'ここで閉じる',closeNow:'CLOSE!',readyIdle:'攻撃準備',retreat:'帰還',closeTimeline:'閉じる',playerAria:'主人公',
     instructionDesktop:'入力でバーを開始し、もう一度入力して止める',instructionTouch:'ボタンでバーを開始し、もう一度押して止める',
     encounter:'ENCOUNTER',bossBattle:'BOSS BATTLE',encounterHint:'{instruction} / 戦闘中のCLOSEは防御です',ready:'READY?',readyHint:'構えが整うまで待ってください',go:'GO!',attack:'ATTACK',startTimingHint:'タイミングでタップ',
-    attackHintDesktop:'画面のどこでもクリックして止める',attackHintTouch:'画面のどこでもタップして止める',timingTap:'タイミングでタップ',tapToStart:'1回タップしてスタート',tapAnywhere:'画面のどこでもタップして止める',
+    attackHintDesktop:'画面のどこでもクリックして止める',attackHintTouch:'画面のどこでもタップして止める',timingTap:'タイミングでタップ',tapToStart:'「攻撃する」を押してスタート',attackStart:'攻撃する',tapAnywhere:'画面のどこでもタップして止める',
     miss:'MISS',hit:'HIT',perfect:'PERFECT',missTurn:'ターンを消費しました',coordinatedAttack:'3体の息を合わせた攻撃',nextMoment:'次の一瞬へ。',
     enemyWait:'ENEMY WAIT',enemyWaitTurns:'最短あと{turns}ターンで敵が攻撃',feintWait:'FEINT · 待て',perfectGuard:'PERFECT GUARD',goodGuard:'GOOD GUARD',guard:'GUARD',
     damage:'{name} · {damage} DAMAGE',guardBrand:'SHUT / GUARD',damageOnly:'{damage} DAMAGE',

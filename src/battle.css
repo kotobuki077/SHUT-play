@@ -712,3 +712,45 @@
   #timingJudges{width:98%!important;font-size:7px!important;gap:1px!important}
 }
 
+/* v24 — tap-to-start ATTACK, variable GUARD speed, illustrated recovery items */
+#timingBox.awaitStart #cursor{
+  left:0%!important;
+  animation:timingAwaitStartPulse .72s ease-in-out infinite alternate;
+}
+@keyframes timingAwaitStartPulse{
+  from{opacity:.58;box-shadow:0 0 5px #fff}
+  to{opacity:1;box-shadow:0 0 16px #fff}
+}
+#timingBox.awaitStart #timingTrack{
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--timing-track) 72%,transparent),0 0 18px color-mix(in srgb,var(--timing-edge) 45%,transparent)!important;
+}
+.recoveryCard .itemBtn{
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:7px!important;
+  text-align:left!important;
+}
+.recoveryItemIcon{
+  width:38px!important;
+  height:38px!important;
+  object-fit:contain!important;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 3px 2px #02141b88);
+}
+.recoveryCard .itemBtn>span:first-of-type{
+  min-width:0;
+  font-weight:800;
+}
+.recoveryCard .itemBtn>span:last-child{
+  font-variant-numeric:tabular-nums;
+  font-weight:700;
+}
+@media(max-height:600px) and (pointer:coarse){
+  #timingTapHint{display:flex!important;flex-direction:row!important;gap:5px!important;justify-content:center!important;align-items:center!important;margin-top:2px!important;font-size:8px!important}
+  #timingTapHint[hidden]{display:flex!important;visibility:hidden!important}
+  #timingTapHint span{font-size:10px!important}
+  .recoveryCard .itemBtn{grid-template-columns:32px minmax(0,1fr) auto!important;gap:4px!important}
+  .recoveryItemIcon{width:29px!important;height:29px!important}
+}
+

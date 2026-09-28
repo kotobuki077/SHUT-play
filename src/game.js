@@ -995,14 +995,9 @@
   }
   function hpBarGradient(attr){return attrColor[attr]||attrColor['風'];}
   function enemyFormationSlot(index,count){
-    const total=Math.max(1,Math.min(9,Number(count)||1));
-    const rows=Math.ceil(total/3),firstCount=total-(rows-1)*3,startRow=4-rows;
-    if(index<firstCount){
-      const cols=firstCount===1?[2]:firstCount===2?[1,3]:[1,2,3];
-      return {row:startRow,col:cols[index]};
-    }
-    const rest=index-firstCount;
-    return {row:startRow+1+Math.floor(rest/3),col:rest%3+1};
+    const total=Math.max(1,Math.min(3,Number(count)||1));
+    const cols=total===1?[2]:total===2?[1,3]:[1,2,3];
+    return {row:1,col:cols[Math.min(index,total-1)]};
   }
   function renderEnemies(){
     const area=$('enemyArea');area.innerHTML='';
@@ -1013,7 +1008,7 @@
     area.dataset.enemyGrid=slotCount>1?'1':'0';
     if(slotCount===1 && enemies[0]?.boss) area.classList.add('bossOnly');
     else if(slotCount===1) area.classList.add('single');
-    else area.classList.add('multi','enemyGrid9');
+    else area.classList.add('multi','enemyGrid3');
     
     enemies.forEach((e,slot)=>{
       const ready=!e.dead&&e.turnsLeft<=0,settledDead=e.dead&&performance.now()>=(e.defeatUntil||0),formation=enemyFormationSlot(slot,slotCount);
@@ -1070,7 +1065,7 @@
   function startEncounter(){
     clearTimeout(toast._timer);$('uiToast').classList.remove('show');$('combatFeedback').classList.remove('show');document.querySelectorAll('.monsterDrop,.monsterAttackSpark').forEach(node=>node.remove());
     defenseToken++;attackReadyToken++;encounterSettled=false;patternBeat=null;defenseQueue=[];
-    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter);defenseTargetId=null;rewardDrops=[];opened=true;setBattlePhase('attackReady',false);setMusicMode(activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');resumeAudioPlayback();updateBattleHeader();renderEnemies();
+    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter).slice(0,3);defenseTargetId=null;rewardDrops=[];opened=true;setBattlePhase('attackReady',false);setMusicMode(activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');resumeAudioPlayback();updateBattleHeader();renderEnemies();
     $('recoveryTray').classList.remove('show');$('rewardOverlay').classList.remove('show');
     enemies.forEach(e=>{if(e.masterId)S.codex.enemies[e.masterId]=true});evaluateQuests();setBattleCopy(enemies.some(e=>e.boss)?'battle.bossBattle':'battle.encounter','battle.encounterHint',()=>({instruction:attackInstruction()}));
     $('app').style.setProperty('--world','url("'+new URL(MASTER_DATA.presentation.backgrounds[activeStageData.world_id],location.href).href+'")');

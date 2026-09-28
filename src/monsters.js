@@ -101,7 +101,8 @@
   }
   function battleExp(enemy,stage,data){const rules=data.monsterRules.battleExp,level=Math.max(1,Number(stage.recommended_monster_level||stage.recommended_rank||1)),need=xpForLevel(Math.min(level,data.monsterRules.maxLevel-1),data)||1,category=enemy.category||'',share=enemy.boss||['boss','humanoid_boss'].includes(category)?rules.bossShare:category==='midboss'?rules.midbossShare:Number(enemy.tier)>=3?rules.eliteShare:rules.normalShare,chapter=data.chapterProgression?.find(x=>x.chapter===Number(stage.chapter))||{expMultiplier:1};return Math.max(1,Math.round(need*share*(1+(Math.max(1,Number(enemy.tier||1))-1)*rules.tierBonus)*chapter.expMultiplier));}
   function grantBattleExp(state,partyIds,amount,data){if(!natural(amount)||!Array.isArray(partyIds))throw Error('Invalid battle EXP');const next=copy(state),changes=[];for(const id of partyIds){const m=next.monsters.find(x=>x.id===id);if(!m)continue;const before=levelAt(m.xp,data,m);m.xp+=amount;const after=levelAt(m.xp,data,m);changes.push({id,amount,beforeLevel:before.level,afterLevel:after.level,beforeXp:before.xpIntoLevel,afterXp:after.xpIntoLevel,next:after.next,levelUp:after.level>before.level});}return {state:recordDiscoveries(next,data),changes};}
-  function specialPlan(actor,allies,enemy){
+  function specialPlan(actor,allies,enemy,data){
+    if(!data?.monsterRules?.special)throw Error('Monster master data required');
     const special=actor?.special||{type:'damage',power:1},alive=(allies||[]).filter(x=>x&&x.hp>0),lowest=alive.sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
     const rarity=Math.max(1,Math.min(6,Number(actor?.rarity||1))),rarityScale=1+(rarity-1)*Number(data.monsterRules.special?.rarityScalePerStar??.03),basePower=Number(special.power||1);
     const result={type:special.type||'damage',damageMultiplier:1+(basePower-1)*rarityScale,allyId:null,heal:0,status:null};

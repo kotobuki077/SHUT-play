@@ -248,8 +248,9 @@
   let noiseBuffer=null, musicMode='title', musicDelay=null, musicDelayGain=null, lastBaseMusicMode='title';
   let toneMusicReady=false,toneMusicInitPromise=null,toneBus=null,toneChorus=null,toneReverb=null,toneWidener=null,toneCompressor=null,toneLimiter=null,toneArp=null,toneBass=null,toneLead=null,tonePad=null,toneKick=null,toneSnare=null,toneHat=null,toneSnareFilter=null,toneHatFilter=null;
   let musicAssetTracks=[],musicAssetActive=null,musicAssetMode=null,musicAssetUsing=false,musicAssetToken=0,audioResumeBound=false;
-  function productionMusicConfig(mode){const cfg=MASTER_DATA.audio?.assets?.[mode];return cfg&&typeof cfg.src==='string'&&cfg.src?cfg:null}
-  function assetMusicVolume(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;return S.settings.sound?value('masterVolume',.56)*value('bgmVolume',.24):0}
+  const FORCE_SYNTH_BGM=true;
+  function productionMusicConfig(mode){if(FORCE_SYNTH_BGM)return null;const cfg=MASTER_DATA.audio?.assets?.[mode];return cfg&&typeof cfg.src==='string'&&cfg.src?cfg:null}
+  function assetMusicVolume(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;return S.settings.sound?value('masterVolume',.64)*value('bgmVolume',.42):0}
   function applyAssetMusicVolume(){const base=assetMusicVolume();for(const track of musicAssetTracks)track.volume=clamp(base*Number(track._fade??0),0,1)}
   function toneMusicVolume(){return assetMusicVolume()}
   function applyToneMusicVolume(){
@@ -375,12 +376,16 @@
   async function ensureAudioReady(){
     try{
       if(!audioCtx)initAudio();
+      const wasRunning=audioCtx?.state==='running';
       const jobs=[];
       if(audioCtx&&audioCtx.state!=='running')jobs.push(audioCtx.resume());
       if(globalThis.Tone?.start)jobs.push(globalThis.Tone.start().then(()=>initToneMusic()));
       if(jobs.length)await Promise.allSettled(jobs);
-      if(productionMusicConfig(musicMode)&&(!musicAssetUsing||musicAssetMode!==musicMode||musicAssetActive?.paused))void playMusicAsset(musicMode);
+      if(FORCE_SYNTH_BGM&&musicAssetUsing)stopAssetMusic();
+      applyAudioSettings();
+      if(!wasRunning&&audioCtx?.state==='running')musicStep=0;
       document.documentElement.dataset.audioState=audioCtx?.state||'unavailable';
+      document.documentElement.dataset.bgmMode=FORCE_SYNTH_BGM?'synth':(musicAssetUsing?'asset':'synth');
       return audioCtx?.state==='running';
     }catch(error){
       document.documentElement.dataset.audioState='error';
@@ -418,7 +423,7 @@
 
     const tick=MASTER_DATA.audio.tickMs; // 100 BPM, 16th note
     musicTimer=setInterval(()=>{
-      if(!audioCtx || document.hidden) return;
+      if(!audioCtx || audioCtx.state!=='running' || document.hidden) return;
       if(musicAssetUsing&&musicAssetMode===musicMode)return;
       const step=musicStep%16;
       const form=MASTER_DATA.audio.form,measure=Math.floor(musicStep/16)%Object.values(form).reduce((n,v)=>n+v,0),bar=measure%4;
@@ -968,7 +973,7 @@
   function startEncounter(){
     clearTimeout(toast._timer);$('uiToast').classList.remove('show');$('combatFeedback').classList.remove('show');document.querySelectorAll('.monsterDrop,.monsterAttackSpark').forEach(node=>node.remove());
     defenseToken++;attackReadyToken++;encounterSettled=false;patternBeat=null;defenseQueue=[];
-    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter);defenseTargetId=null;rewardDrops=[];opened=true;setBattlePhase('attackReady',false);setMusicMode(activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');updateBattleHeader();renderEnemies();
+    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter);defenseTargetId=null;rewardDrops=[];opened=true;setBattlePhase('attackReady',false);setMusicMode(activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');resumeAudioPlayback();updateBattleHeader();renderEnemies();
     $('recoveryTray').classList.remove('show');$('rewardOverlay').classList.remove('show');
     enemies.forEach(e=>{if(e.masterId)S.codex.enemies[e.masterId]=true});evaluateQuests();setBattleCopy(enemies.some(e=>e.boss)?'battle.bossBattle':'battle.encounter','battle.encounterHint',()=>({instruction:attackInstruction()}));
     $('app').style.setProperty('--world','url("'+new URL(MASTER_DATA.presentation.backgrounds[activeStageData.world_id],location.href).href+'")');
@@ -1264,7 +1269,7 @@
   $('unfoldHome').onclick=enterOpenMenu;
   $('nextJourney').onclick=()=>{if(S.run)runGateExpedition(S.run.kind,true);else if(currentStoryStage())showStoryEventAndStart(currentStoryStage().stage_id);else renderGates()};
   $('retreatBtn').onclick=()=>{if(!confirm(t('battle.retreatConfirm')))return;attackReadyToken++;defenseToken++;setBattlePhase('idle',true);encounterSettled=true;patternBeat=null;S.run=null;activeGate=null;saveGame();$('rewardOverlay').classList.remove('show');$('recoveryTray').classList.remove('show');enterOpenMenu()};
-  function applyAudioSettings(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;if(master)master.gain.value=S.settings.sound?value('masterVolume',.56):0;if(musicGain)musicGain.gain.value=value('bgmVolume',.24);if(sfxGain)sfxGain.gain.value=value('seVolume',.5);applyAssetMusicVolume();applyToneMusicVolume();}
+  function applyAudioSettings(){const value=(key,fallback)=>Number.isFinite(S.settings[key])?clamp(S.settings[key],0,1):fallback;if(master)master.gain.value=S.settings.sound?value('masterVolume',.64):0;if(musicGain)musicGain.gain.value=value('bgmVolume',.42);if(sfxGain)sfxGain.gain.value=value('seVolume',.5);applyAssetMusicVolume();applyToneMusicVolume();}
   let settingsOriginalLanguage=null;
   function updateLocalizedUi(){
     I18n.apply(document);
@@ -1285,7 +1290,7 @@
     SHUTDevice.refreshLocale?.();
   }
   function renderSettings(){
-    const rows=[['masterVolume','settings.master',.56],['bgmVolume','settings.bgm',.24],['seVolume','settings.se',.5]];
+    const rows=[['masterVolume','settings.master',.64],['bgmVolume','settings.bgm',.42],['seVolume','settings.se',.5]];
     const languageButtons=I18n.supported.map(language=>`<button class="btn ${I18n.language===language?'gold':''}" data-language="${language}" aria-pressed="${I18n.language===language}">${t(language==='ja'?'settings.japanese':'settings.english')}</button>`).join('');
     openModal(t('settings.title'),`<div class="settingsSection"><b>${t('settings.language')}</b><div class="settingsChoices">${languageButtons}</div></div><div class="settingsSection"><b>${t('settings.playStyle')}</b><p class="small">${t('settings.playStyleHelp')}</p><div class="settingsChoices"><button id="duoMode" class="btn ${!openOnlyMode()?'gold':''}" aria-pressed="${!openOnlyMode()}">${t('settings.duoMode')}</button><button id="openOnlyMode" class="btn ${openOnlyMode()?'gold':''}" aria-pressed="${openOnlyMode()}">${t('settings.openOnly')}</button></div></div><div class="settingsSection"><b>${t('settings.audio')}</b>${rows.map(([key,label,defaultValue])=>`<label class="audioSlider">${t(label)}<input type="range" min="0" max="100" value="${Math.round((S.settings[key]??defaultValue)*100)}" data-volume="${key}"><output>${Math.round((S.settings[key]??defaultValue)*100)}</output></label>`).join('')}<button id="muteSound" class="btn">${t(S.settings.sound?'settings.mute':'settings.unmute')}</button></div><div class="settingsActions"><button id="confirmSettings" class="btn gold">${t('common.confirm')}</button><button id="cancelSettings" class="btn secondary">${t('common.cancel')}</button></div>`);
     document.querySelectorAll('[data-language]').forEach(button=>button.onclick=()=>{I18n.setLanguage(button.dataset.language);updateLocalizedUi();renderSettings()});
@@ -1371,7 +1376,15 @@
 
   document.addEventListener('click',event=>{const b=event.target.closest('button');if(!b||b.disabled||!audioCtx||['startBtn','newGameBtn','continueBattle','foldHome','unfoldHome','singlePullBtn','tenPullBtn','confirmSynthesis'].includes(b.id))return;sfx(['modalClose','cancelSynthesis','dialogueSkip'].includes(b.id)?'cancel':['storyDeploy','claimAllGift','previewSynthesis'].includes(b.id)||b.hasAttribute('data-buy')?'confirm':'ui');});
   bindAudioResumeEvents();
-  hadSave=loadGame();normalizeState();if(hadSave){$('startBtn').textContent=t('title.continue');$('newGameBtn').style.display='inline-block';$('continueUnavailable').style.display='none'}else{$('startBtn').textContent=t('title.newGame');$('continueUnavailable').style.display='block';if(SHUTSave.recovered)toast(t('save.recovery'),9000)}
+  hadSave=loadGame();normalizeState();
+  if(!S.settings.audioRepairV13){
+    S.settings.sound=true;
+    S.settings.masterVolume=Math.max(.64,Number(S.settings.masterVolume)||0);
+    S.settings.bgmVolume=Math.max(.42,Number(S.settings.bgmVolume)||0);
+    S.settings.seVolume=Math.max(.5,Number(S.settings.seVolume)||0);
+    S.settings.audioRepairV13=true;
+    if(hadSave)saveGame();
+  }if(hadSave){$('startBtn').textContent=t('title.continue');$('newGameBtn').style.display='inline-block';$('continueUnavailable').style.display='none'}else{$('startBtn').textContent=t('title.newGame');$('continueUnavailable').style.display='block';if(SHUTSave.recovered)toast(t('save.recovery'),9000)}
   window.addEventListener('beforeunload',saveGame);
   spriteLoop();
   updateHome();

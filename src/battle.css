@@ -649,3 +649,63 @@
   }
 }
 
+/* v22 — unified ATTACK/GUARD timing: same size/speed, seven stop zones */
+#timingBox{
+  --timing-track:#26090f;
+  --timing-edge:#c94756;
+  --timing-bad:#7b202c;
+  --timing-good:#b83240;
+  --timing-great:#ef4a5a;
+  --timing-perfect:#ffd56f;
+}
+#timingBox.guardMode{
+  --timing-track:#071d34;
+  --timing-edge:#3d8fc8;
+  --timing-bad:#17476d;
+  --timing-good:#2176ad;
+  --timing-great:#35b9e7;
+  --timing-perfect:#d3f7ff;
+}
+#timingTrack{
+  height:24px!important;
+  border-color:var(--timing-edge)!important;
+  background:var(--timing-track)!important;
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--timing-track) 72%,transparent),0 5px 16px #03151d66!important;
+}
+#hitZone{
+  background:linear-gradient(90deg,
+    var(--timing-bad) 0 16.6667%,
+    var(--timing-good) 16.6667% 30.5556%,
+    var(--timing-great) 30.5556% 41.6667%,
+    var(--timing-perfect) 41.6667% 58.3333%,
+    var(--timing-great) 58.3333% 69.4444%,
+    var(--timing-good) 69.4444% 83.3333%,
+    var(--timing-bad) 83.3333% 100%)!important;
+}
+#perfectZone{
+  background:var(--timing-perfect)!important;
+  box-shadow:0 0 8px color-mix(in srgb,var(--timing-perfect) 70%,transparent)!important;
+}
+#cursor{background:#fff!important;box-shadow:0 0 10px #fff!important}
+#timingJudges{
+  grid-template-columns:repeat(7,minmax(0,1fr))!important;
+  width:min(94%,680px)!important;
+  margin:5px auto 0!important;
+  gap:2px!important;
+  font-size:8px!important;
+}
+#timingJudges span,#timingJudges b{
+  overflow:hidden;
+  white-space:nowrap;
+  text-align:center;
+  font-weight:700;
+}
+#timingJudges span:nth-child(1),#timingJudges span:nth-child(7){color:var(--timing-bad)!important}
+#timingJudges span:nth-child(2),#timingJudges span:nth-child(6){color:var(--timing-good)!important}
+#timingJudges span:nth-child(3),#timingJudges span:nth-child(5){color:var(--timing-great)!important}
+#timingJudges b{color:var(--timing-perfect)!important}
+@media(max-height:600px) and (pointer:coarse){
+  #timingTrack{height:18px!important}
+  #timingJudges{width:98%!important;font-size:7px!important;gap:1px!important}
+}
+

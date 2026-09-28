@@ -178,3 +178,237 @@
  #battleMessage,#battleSub{display:none!important}
 }
 @media(prefers-reduced-motion:reduce){#timingPhase.phaseFlash,.battleTapRipple,.attackAssignmentLine,#combatFeedback.show{animation-duration:.01ms!important}}
+
+/* v19 — compact top ally HUD + boss-safe 3x3 enemy battlefield */
+#battleScreen.show{
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr) 82px!important;
+  grid-template-areas:"field" "timing"!important;
+  gap:0!important;
+  padding:0!important;
+}
+
+/* HUD is a shallow top strip so boss art can never sit behind it. */
+#playerBox{
+  position:absolute!important;
+  left:14px!important;
+  top:8px!important;
+  width:calc(100% - 330px)!important;
+  max-width:none!important;
+  height:94px!important;
+  padding:6px 8px!important;
+  display:grid!important;
+  grid-template-columns:78px minmax(0,1fr)!important;
+  align-items:stretch!important;
+  z-index:34!important;
+}
+.rankHudRow{
+  height:auto!important;
+  padding:0 8px 0 2px!important;
+  border-bottom:0!important;
+  border-right:1px solid var(--battle-edge-soft)!important;
+  justify-content:center!important;
+}
+#battleRank{font-size:13px!important}
+#battlePartner.monsterPartyHud{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+  width:100%!important;
+  margin:0 0 0 7px!important;
+  min-width:0!important;
+}
+#battlePartner .monsterHud{
+  height:80px!important;
+  min-width:0!important;
+  gap:6px!important;
+  padding:5px 6px!important;
+}
+#battlePartner .allyFaceCanvas{
+  width:44px!important;
+  height:44px!important;
+  flex-basis:44px!important;
+}
+#battlePartner .allyHudTop b{
+  font-size:11px!important;
+  line-height:1.1!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+}
+#battlePartner .allyHudTop .allyMeta,#battlePartner .allyHudTop small{font-size:8px!important}
+#battlePartner .allyHp{height:5px!important;margin:3px 0 2px!important}
+#battlePartner .skillGauge.skillSegments{height:10px!important}
+#battlePartner .skillGauge.skillSegments>em{font-size:7px!important}
+
+#stageBox{
+  position:absolute!important;
+  right:14px!important;
+  top:8px!important;
+  width:292px!important;
+  max-width:292px!important;
+  min-height:88px!important;
+  padding:9px 11px!important;
+  z-index:34!important;
+}
+#battleStage{font-size:14px!important}
+#battleEncounter,#battleCarry{font-size:9px!important;margin-top:6px!important}
+
+/* The battlefield begins below the HUD, so large bosses remain fully visible. */
+#enemyArea{
+  left:14px!important;
+  right:14px!important;
+  top:108px!important;
+  bottom:90px!important;
+  width:auto!important;
+  padding:0!important;
+}
+#enemyArea.bossOnly{
+  top:104px!important;
+  bottom:84px!important;
+  align-items:center!important;
+}
+#enemyArea.bossOnly>.bossCard{
+  width:250px!important;
+  max-width:250px!important;
+  flex-basis:250px!important;
+}
+#enemyArea.bossOnly .bossCard .enemySpriteWrap{height:240px!important}
+#enemyArea.bossOnly .bossCard canvas{
+  width:224px!important;
+  height:224px!important;
+  max-width:224px!important;
+  max-height:224px!important;
+}
+
+/* Up to nine regular enemies: fixed three-column / three-row slots. */
+#enemyArea.enemyGrid9{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  column-gap:clamp(5px,1vw,14px)!important;
+  row-gap:2px!important;
+  align-items:end!important;
+  justify-items:center!important;
+}
+#enemyArea.enemyGrid9>.enemyCard,
+#enemyArea.enemyGrid9>.enemySlotDrop{
+  align-self:end!important;
+  justify-self:center!important;
+}
+.enemyCard,.enemyCard.compact{
+  width:116px!important;
+  max-width:116px!important;
+  flex-basis:116px!important;
+}
+.enemySpriteWrap{height:84px!important}
+.enemyCard canvas{
+  width:78px!important;
+  height:78px!important;
+  max-width:78px!important;
+  max-height:78px!important;
+}
+.enemyAttrBadge{width:20px!important;height:20px!important}
+.enemyTurnBadge{
+  top:18px!important;
+  right:1px!important;
+  width:21px!important;
+  height:21px!important;
+  font-size:8px!important;
+}
+.enemyCard .eName{font-size:9px!important;padding:2px 4px!important}
+.enemyCard .ehp{height:5px!important;margin:2px 4px 0!important}
+.enemyCard .ehpText{font-size:8px!important;margin:1px 0!important}
+.enemyCard .eMeta{font-size:7px!important;padding:1px 2px!important}
+.enemySlotDrop{
+  width:116px!important;
+  min-height:84px!important;
+  padding-bottom:26px!important;
+}
+.enemySlotEgg{width:48px!important;height:48px!important}
+.enemySlotEgg .slotEggIcon{width:44px!important;height:44px!important}
+
+/* Duo-width layout: keep the strip thin and preserve boss clearance. */
+@media(max-width:960px){
+  #playerBox{
+    left:8px!important;
+    top:6px!important;
+    width:calc(100% - 292px)!important;
+    height:90px!important;
+    grid-template-columns:66px minmax(0,1fr)!important;
+    padding:5px 6px!important;
+  }
+  #stageBox{
+    right:8px!important;
+    top:6px!important;
+    width:270px!important;
+    max-width:270px!important;
+    min-height:84px!important;
+  }
+  #battlePartner .monsterHud{height:76px!important;padding:4px!important}
+  #battlePartner .allyFaceCanvas{width:40px!important;height:40px!important;flex-basis:40px!important}
+  #enemyArea{left:8px!important;right:8px!important;top:102px!important;bottom:86px!important}
+  #enemyArea.bossOnly{top:98px!important;bottom:80px!important}
+}
+
+/* Very short Duo landscape: prioritize battlefield and readable text. */
+@media(max-height:600px) and (pointer:coarse){
+  #battleScreen.show{
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:minmax(0,1fr) 64px!important;
+    grid-template-areas:"field" "timing"!important;
+    padding:0!important;
+  }
+  #playerBox{
+    left:5px!important;
+    top:4px!important;
+    width:calc(100% - 220px)!important;
+    height:78px!important;
+    grid-template-columns:58px minmax(0,1fr)!important;
+    padding:4px 5px!important;
+  }
+  .rankHudRow{padding-right:5px!important}
+  #battleRank{font-size:10px!important}
+  #battlePartner.monsterPartyHud{gap:3px!important;margin-left:4px!important}
+  #battlePartner .monsterHud{height:66px!important;gap:4px!important;padding:3px!important}
+  #battlePartner .allyFaceCanvas{width:32px!important;height:32px!important;flex-basis:32px!important}
+  #battlePartner .allyHudTop b{font-size:9px!important}
+  #battlePartner .allyHudTop .allyMeta,#battlePartner .allyHudTop small{font-size:7px!important}
+  #battlePartner .allyLevel,#battlePartner .allyStatus{display:none!important}
+  #battlePartner .allyHp{height:4px!important;margin:2px 0!important}
+  #battlePartner .skillGauge.skillSegments{height:8px!important}
+  #battlePartner .skillGauge.skillSegments>em{font-size:6px!important}
+  #stageBox{
+    right:5px!important;
+    top:4px!important;
+    width:206px!important;
+    max-width:206px!important;
+    min-height:72px!important;
+    padding:5px 7px!important;
+  }
+  #battleStage{font-size:10px!important}
+  #battleEncounter,#battleCarry{font-size:8px!important;margin-top:3px!important}
+  #enemyArea{
+    left:5px!important;
+    right:5px!important;
+    top:86px!important;
+    bottom:67px!important;
+  }
+  #enemyArea.bossOnly{top:82px!important;bottom:66px!important}
+  #enemyArea.bossOnly>.bossCard{width:190px!important;max-width:190px!important;flex-basis:190px!important}
+  #enemyArea.bossOnly .bossCard .enemySpriteWrap{height:176px!important}
+  #enemyArea.bossOnly .bossCard canvas{width:164px!important;height:164px!important;max-width:164px!important;max-height:164px!important}
+  #enemyArea.enemyGrid9{column-gap:2px!important;row-gap:0!important}
+  .enemyCard,.enemyCard.compact{width:88px!important;max-width:88px!important;flex-basis:88px!important}
+  .enemySpriteWrap{height:54px!important}
+  .enemyCard canvas{width:50px!important;height:50px!important;max-width:50px!important;max-height:50px!important}
+  .enemyCard .eName{font-size:8px!important}
+  .enemyCard .ehpText{font-size:7px!important}
+  .enemyCard .eMeta{display:none!important}
+  .enemyAttrBadge{width:16px!important;height:16px!important}
+  .enemyTurnBadge{top:14px!important;width:17px!important;height:17px!important;font-size:7px!important}
+  .enemySlotDrop{width:88px!important;min-height:54px!important;padding-bottom:18px!important}
+  .enemySlotEgg{width:36px!important;height:36px!important}
+  .enemySlotEgg .slotEggIcon{width:33px!important;height:33px!important}
+}
+

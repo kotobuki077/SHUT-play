@@ -91,7 +91,7 @@
 #timingTapHint{display:flex;flex-direction:column;align-items:center;margin-top:4px;font-size:9px;color:#e5eee7;opacity:.82}
 #timingTapHint span{font-size:15px;line-height:1}
 #timingTapHint em{margin-top:2px;font-style:normal}
-#timingTapHint[hidden]{display:none!important}
+#timingTapHint[hidden]{display:flex!important;visibility:hidden!important}
 
 /* Transitional copy */
 #battleMessage,#battleSub{position:absolute;left:50%;translate:-50% 0;width:min(620px,64%);text-align:center;pointer-events:none;z-index:32}
@@ -173,7 +173,7 @@
  .enemyCard,.enemyCard.compact{width:112px!important;max-width:112px!important;flex-basis:112px!important}.enemySpriteWrap{height:110px!important}.enemyCard canvas{width:102px!important;height:102px!important;max-width:102px!important;max-height:102px!important}#enemyArea{align-items:flex-end!important;padding-bottom:6px!important}
  .enemyCard .eName{font-size:10px!important}.enemyCard .ehpText{font-size:9px!important}.enemyCard .eMeta{font-size:8px!important}
  .enemySlotDrop{width:112px;min-height:110px;padding-bottom:31px}.enemySlotEgg{width:56px;height:56px}.enemySlotEgg .slotEggIcon{width:52px;height:52px}
- #timingBox{padding-inline:8px!important}#timingPhase{min-height:18px;margin-bottom:2px}#timingPhase strong{font-size:14px}#timingPhase small,#timingTapHint{display:none!important}#timingTrack{height:18px!important}#timingJudges{margin-top:3px;font-size:8px}
+ #timingBox{padding-inline:8px!important}#timingPhase{min-height:18px;margin-bottom:2px}#timingPhase strong{font-size:14px}#timingPhase small,#timingTapHint,#timingTapHint[hidden]{display:none!important}#timingTrack{height:18px!important}#timingJudges{margin-top:3px;font-size:8px}
  #battleMessage,#battleSub{display:none!important}
 }
 @media(prefers-reduced-motion:reduce){#timingPhase.phaseFlash,.battleTapRipple,.attackAssignmentLine,#combatFeedback.show{animation-duration:.01ms!important}}

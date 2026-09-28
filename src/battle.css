@@ -771,5 +771,11 @@
   #attackStartBtn{width:96px;min-height:26px;padding:4px 8px;font-size:10px}
 }
 
-/* v26 — BAD uses the black outer track; GOOD and above are colored */
+/* v27 — MISS uses the black outer track; GOOD and above are colored */
 #timingJudges span:nth-child(1),#timingJudges span:nth-child(9){color:#aeb7ba!important}
+
+/* v27 — outer black timing zones are MISS, not BAD */
+#timingJudges span:nth-child(1),#timingJudges span:nth-child(9){
+  color:#d7dde0!important;
+  font-weight:900!important;
+}

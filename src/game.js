@@ -1343,10 +1343,20 @@
     dot.className='battleTapRipple';dot.style.left=(clientX-r.left)+'px';dot.style.top=(clientY-r.top)+'px';screen.append(dot);setTimeout(()=>dot.remove(),420);
   }
   $('attackStartBtn').onclick=e=>{e.stopPropagation();if(phase!=='attackArmed'||battleInputLocked)return;startTimingBar();};
-  $('battleScreen').addEventListener('pointerdown',e=>{
+  let suppressBattleClickUntil=0;
+  function handleBattlePointerAction(e){
     if(e.target.closest('#retreatBtn,.utility,[data-system-control]'))return;
     if(phase==='attack'&&!battleInputLocked){e.preventDefault();showBattleTapFeedback(e.clientX,e.clientY);executeAttack();}
     else if(phase==='guard'&&!battleInputLocked){e.preventDefault();showBattleTapFeedback(e.clientX,e.clientY);executeDefense();}
+  }
+  $('battleScreen').addEventListener('pointerdown',e=>{
+    if(e.pointerType==='mouse')return;
+    suppressBattleClickUntil=performance.now()+500;
+    handleBattlePointerAction(e);
+  });
+  $('battleScreen').addEventListener('click',e=>{
+    if(performance.now()<suppressBattleClickUntil)return;
+    handleBattlePointerAction(e);
   });
 
   let stageStats={perfect:0,guard:0,turn:0,guardHits:0,attackIntroShown:false},patternBeat=null,encounterSettled=false,gateFinished=false;

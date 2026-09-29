@@ -209,8 +209,9 @@
   let gachaMode='key', gachaStep=0, pendingPulls=[], gachaSelectedCount=null, gachaBusy=false;
   let encounter=1, enemies=[], phase='idle', opened=true;
   let attackStart=0, attackDuration=1000, meterRAF=null, defenseImpact=0, defenseEnemyId=null, defenseTargetId=null, attackReadyToken=0, guardSweepStart=0, guardSweepDurationMs=1000;
-  let attackRouletteValues=[],attackRouletteIndex=0,attackRouletteStepMs=95,attackStopRequested=false,attackStopStart=0,attackStopDuration=0,attackStopFrom=0;
-  const ATTACK_ROULETTE_BASE=[0,.8,1,1.2,1.5,1.2,1,.8,0],ATTACK_ROLE_SPEED={striker:.82,control:.92,balanced:1,support:1.08,guardian:1.18};
+  let attackRouletteValues=[],attackRouletteIndex=0,attackRouletteStepMs=54,attackStopRequested=false,attackStopStart=0,attackStopDuration=0,attackStopFrom=0;
+  const ATTACK_ROULETTE_BASE=[0,.8,1,1.2,1.5,1.2,1,.8,0],ATTACK_ROLE_SPEED={striker:.82,control:.90,balanced:1,support:1.08,guardian:1.16};
+  const ATTACK_STEP_MIN_MS=44,ATTACK_STEP_MAX_MS=62,ATTACK_STOP_MIN_MS=650,ATTACK_STOP_MAX_MS=850;
   const TIMING_HIT_WIDTH=.18,TIMING_PERFECT_WIDTH=.018;
   function timingGradeFromProgress(progress){
     const value=Number(progress);if(!Number.isFinite(value)||value<0||value>1)return 'MISS';const d=Math.abs(clamp(value,0,1)-.5);
@@ -631,6 +632,8 @@
       if(k==='hit'){tone(170,.16,'sawtooth',.05);tone(92,.22,'triangle',.035,sfxGain,.02)}
       if(k==='guard'){tone(520,.09,'triangle',.05);tone(820,.15,'sine',.04,sfxGain,.03)}
       if(k==='cue'){tone(980,.075,'sine',.04);tone(1320,.09,'sine',.035,sfxGain,.045)}
+      if(k==='rouletteTick'){tone(1040,.026,'square',.018,sfxGain);tone(1560,.018,'square',.008,sfxGain,.004)}
+      if(k==='rouletteStop'){tone(740,.055,'square',.04,sfxGain);tone(1110,.08,'triangle',.045,sfxGain,.025);tone(1480,.10,'sine',.03,sfxGain,.055)}
       if(k==='win'){[0,4,7,12,16].forEach((n,i)=>tone(294*Math.pow(2,n/12),.34,'triangle',.04,sfxGain,i*.07))}
       if(k==='gacha'){[0,7,12,16,19].forEach((n,i)=>tone(330*Math.pow(2,n/12),.46,'triangle',.045,sfxGain,i*.065))}
     }catch{}
@@ -1111,9 +1114,9 @@
   }
   function attackRouletteSpeedMs(){
     const alive=partyMembers().filter(m=>m.hp>0);
-    if(!alive.length)return 95;
+    if(!alive.length)return 54;
     const factor=alive.reduce((sum,m)=>sum+Number(ATTACK_ROLE_SPEED[m.role]??ATTACK_ROLE_SPEED.balanced),0)/alive.length;
-    return Math.round(clamp(95*factor,78,122));
+    return Math.round(clamp(54*factor,ATTACK_STEP_MIN_MS,ATTACK_STEP_MAX_MS));
   }
   function renderAttackRoulette(){
     const el=$('attackRoulette');if(!el)return;
@@ -1122,9 +1125,11 @@
       return `<span class="attackRouletteCell" data-miss="${miss?1:0}" data-high="${high?1:0}">${label}</span>`;
     }).join('');
   }
-  function setAttackRouletteFrame(index){
-    const count=Math.max(1,attackRouletteValues.length),safe=((Math.floor(index)%count)+count)%count,frame=$('attackRouletteFrame');
+  function setAttackRouletteFrame(index,playTick=true){
+    const count=Math.max(1,attackRouletteValues.length),safe=((Math.floor(index)%count)+count)%count,frame=$('attackRouletteFrame'),changed=safe!==attackRouletteIndex;
     attackRouletteIndex=safe;if(frame)frame.style.left=`${safe*100/count}%`;
+    document.querySelectorAll('.attackRouletteCell').forEach((cell,i)=>cell.classList.toggle('rouletteActive',i===safe));
+    if(changed&&playTick&&phase==='attack')sfx('rouletteTick');
   }
   function currentAttackRouletteIndex(now=performance.now()){
     const count=Math.max(1,attackRouletteValues.length);
@@ -1137,8 +1142,9 @@
     const hintCopy=hint?.querySelector('em');if(hint){hint.hidden=mode==='guard'?!!S.tutorialDone:false;}
     const strong=phaseEl?.querySelector('strong'),small=phaseEl?.querySelector('small');
     if(strong)strong.textContent=mode==='guard'?'◆ GUARD':'⚔ ATTACK';
-    if(small)small.textContent=mode==='attack'?t('battle.timingTap'):t('battle.timingTap');
-    if(hintCopy)hintCopy.textContent=t('battle.tapAnywhere');
+    if(small)small.textContent=mode==='attack'?'':t('battle.timingTap');
+    if(hint){hint.hidden=mode==='attack'||!!S.tutorialDone;}
+    if(hintCopy&&mode==='guard')hintCopy.textContent=t('battle.tapAnywhere');
     phaseEl?.classList.remove('phaseFlash');if(phaseEl){void phaseEl.offsetWidth;phaseEl.classList.add('phaseFlash');}
   }
   function beginAttack(){
@@ -1153,14 +1159,14 @@
   function startTimingBar(){
     if(phase!=='attackArmed')return;
     setBattlePhase('attack',false);attackRouletteValues=shuffledAttackRoulette();attackRouletteStepMs=attackRouletteSpeedMs();attackStopRequested=false;attackStopStart=0;attackStopDuration=0;attackStopFrom=0;
-    $('timingBox').dataset.stopping='0';renderAttackRoulette();setAttackRouletteFrame(0);const hintCopy=$('timingTapHint')?.querySelector('em');if(hintCopy)hintCopy.textContent=t('battle.tapAnywhere');
+    $('timingBox').dataset.stopping='0';renderAttackRoulette();attackRouletteIndex=-1;setAttackRouletteFrame(0,false);
     attackStart=performance.now();attackDuration=attackRouletteStepMs*attackRouletteValues.length;cancelAnimationFrame(meterRAF);setBattleCopy('battle.attack',isDesktop()?'battle.attackHintDesktop':'battle.attackHintTouch');
     function frame(now){
       if(phase!=='attack')return;
       if(attackStopRequested){
         const t=clamp((now-attackStopStart)/Math.max(1,attackStopDuration),0,1),eased=1-(1-t)*(1-t),travel=attackRouletteValues.length*eased;
         setAttackRouletteFrame(attackStopFrom+Math.floor(travel+1e-7));
-        if(t>=1){setAttackRouletteFrame(attackStopFrom);executeAttack(attackRouletteValues[attackStopFrom]);return;}
+        if(t>=1){setAttackRouletteFrame(attackStopFrom,false);sfx('rouletteStop');executeAttack(attackRouletteValues[attackStopFrom]);return;}
       }else setAttackRouletteFrame(currentAttackRouletteIndex(now));
       meterRAF=requestAnimationFrame(frame);
     }
@@ -1169,8 +1175,8 @@
   function requestAttackStop(){
     if(phase!=='attack'||battleInputLocked||attackStopRequested)return;
     attackStopRequested=true;battleInputLocked=true;attackStopFrom=attackRouletteIndex;attackStopStart=performance.now();
-    attackStopDuration=Math.max(900,attackRouletteStepMs*attackRouletteValues.length*2);
-    $('timingBox').dataset.stopping='1';sfx('cue');
+    attackStopDuration=Math.round(clamp(attackRouletteStepMs*attackRouletteValues.length*1.55,ATTACK_STOP_MIN_MS,ATTACK_STOP_MAX_MS));
+    $('timingBox').dataset.stopping='1';
   }
 
   function chargeSkills(excluded=new Set()){for(const m of partyMembers().filter(x=>x.hp>0&&!excluded.has(x.id)))skillCharge[m.id]=Math.min(skillTurnsRequired(m),(skillCharge[m.id]||0)+1);drawPartyHud()}

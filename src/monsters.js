@@ -26,10 +26,19 @@
   function levelAt(xp,data,subject=null){let level=1,left=Math.max(0,Math.floor(Number(xp)||0));while(level<data.monsterRules.maxLevel){const need=xpForLevel(level,data,subject);if(left<need)break;left-=need;level++;}return {level,xpIntoLevel:left,next:xpForLevel(level,data,subject),total:Math.max(0,Math.floor(Number(xp)||0)),rate:xpRate(subject,data)};}
   function create(monsterId,id,data){definition(monsterId,data);if(typeof id!=='string'||!id)throw Error('Instance ID required');return {id,monsterId,xp:0,locked:false,favorite:false};}
   function form(instance,data){let d=definition(instance.monsterId,data),level=levelAt(instance.xp,data,instance).level;const visited=new Set();while(d.evolution&&level>=d.evolution.level){if(visited.has(d.monster_id))throw Error('Evolution cycle');visited.add(d.monster_id);d=definition(d.evolution.to,data);}return d;}
+  const passiveNameKeys={'照準のひらめき':'passives.names.aimInsight','追い風':'passives.names.tailwind','最後の波':'passives.names.lastWave','三拍子':'passives.names.tripleBeat','反響':'passives.names.echo','門の共鳴':'passives.names.gateResonance','照準のひらめき＋':'passives.names.aimInsightPlus','星門の共鳴':'passives.names.starGateResonance','追い風＋':'passives.names.tailwindPlus','最後の波＋':'passives.names.lastWavePlus','None but shot':'skills.noneButShot.name'};
+  const passiveDescriptionKeys={perfect:'passives.descriptions.perfect',weakness:'passives.descriptions.weakness',low_hp:'passives.descriptions.lowHp',third:'passives.descriptions.third',guard:'passives.descriptions.guard',always:'skills.noneButShot.description'};
   function stats(instance,data){
-    const d=form(instance,data),l=levelAt(instance.xp,data,instance).level,b=d.balance||{},tr=(key,fallback)=>key&&root.SHUTI18n?.t?root.SHUTI18n.t(key):fallback,skill={...d.skill,name:tr(d.skill?.nameKey,d.skill?.name),description:tr(d.skill?.descriptionKey,d.skill?.description)},special={...d.special,name:tr(d.special?.nameKey,d.special?.name||d.special?.type),description:tr(d.special?.descriptionKey,d.special?.description||'')};
+    const d=form(instance,data),l=levelAt(instance.xp,data,instance).level,b=d.balance||{};
+    const tr=(key,fallback,values={})=>{if(!key||!root.SHUTI18n?.t)return fallback;const value=root.SHUTI18n.t(key,values);return value===key?fallback:value};
+    const multiplier=Number.isFinite(Number(d.skill?.multiplier))?String(Number(Number(d.skill.multiplier).toFixed(2))):'';
+    const skillNameKey=d.skill?.nameKey||passiveNameKeys[d.skill?.name];
+    const skillDescriptionKey=d.skill?.descriptionKey||passiveDescriptionKeys[d.skill?.trigger];
+    const skill={...d.skill,name:tr(skillNameKey,d.skill?.name),description:tr(skillDescriptionKey,d.skill?.description,{multiplier})};
+    const special={...d.special,name:tr(d.special?.nameKey,d.special?.name||d.special?.type),description:tr(d.special?.descriptionKey,d.special?.description||'')};
     const hg=Number(b.hpGrowth??data.monsterRules.hpGrowth),ag=Number(b.atkGrowth??data.monsterRules.atkGrowth),dg=Number(b.defGrowth??data.monsterRules.balance?.roles?.balanced?.defGrowth??.035),baseDef=Number(b.def??Math.max(1,Math.round(Number(d.hp||1)*.12)));
-    return {name:tr(d.nameKey,d.name),nameKey:d.nameKey,level:l,attr:d.attribute,rarity:d.rarity,skill,special,maxHp:Math.round(d.hp*(1+(l-1)*hg)),atk:Math.round(d.atk*(1+(l-1)*ag)),def:Math.round(baseDef*(1+(l-1)*dg)),role:b.role||'balanced',xpRate:xpRate(instance,data),sprite:d.sprite,formId:d.monster_id};
+    const monsterNameKey=d.nameKey||`monsterData.${d.monster_id}.name`;
+    return {name:tr(monsterNameKey,d.name),nameKey:monsterNameKey,level:l,attr:d.attribute,rarity:d.rarity,skill,special,maxHp:Math.round(d.hp*(1+(l-1)*hg)),atk:Math.round(d.atk*(1+(l-1)*ag)),def:Math.round(baseDef*(1+(l-1)*dg)),role:b.role||'balanced',xpRate:xpRate(instance,data),sprite:d.sprite,formId:d.monster_id};
   }
   function attribute(a,b,data){return data.monsterRules.beats[a]===b?data.monsterRules.advantage:data.monsterRules.beats[b]===a?data.monsterRules.disadvantage:1;}
   function damage(actor,enemy,timing,data,context={}){

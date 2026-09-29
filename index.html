@@ -183,8 +183,7 @@
 
     <div id="timingBox">
       <div id="timingPhase"><strong>⚔ ATTACK</strong><small data-i18n="battle.timingTap"></small></div>
-      <div id="timingTrack"><div id="hitZone"></div><div id="perfectZone"></div><div id="cursor"></div></div>
-      <button id="attackStartBtn" type="button" data-system-control data-i18n="battle.attackStart">攻撃する</button>
+      <div id="timingTrack"><div id="attackRoulette" aria-hidden="true"></div><div id="attackRouletteFrame" aria-hidden="true"></div><div id="hitZone"></div><div id="perfectZone"></div><div id="cursor"></div></div>
       <div id="timingJudges"><span>MISS</span><span>GOOD</span><span>GREAT</span><span>EX</span><b>PERFECT</b><span>EX</span><span>GREAT</span><span>GOOD</span><span>MISS</span></div>
       <div id="timingTapHint"><span aria-hidden="true">☝</span><em data-i18n="battle.tapAnywhere"></em></div>
     </div>
@@ -240,7 +239,7 @@
   </div>
 </div>
 
-<script src="vendor/tone-15.1.22.js"></script><script src="locales/ja.js?v=20260929-loc-content-02"></script><script src="locales/en.js?v=20260929-loc-content-02"></script><script src="src/i18n.js"></script><script src="src/master-data.js?v=20260928-balance-v35"></script><script src="src/monsters.js?v=20260929-loc-content-01"></script><script src="src/combat.js?v=20260928-balance-v35"></script><script src="src/systems.js"></script><script src="src/narrative.js?v=20260929-loc-content-02"></script><script src="src/device.js?v=20260929-mobile-open-landscape"></script><script src="src/save.js?v=20260927-save-migration-resilience"></script><script src="src/art.js"></script><script src="src/mikado.js"></script><script>SHUTArt.ready.then(()=>{const s=document.createElement("script");s.src="src/game.js?v=20260929-loc-content-02";document.body.append(s)})</script>
+<script src="vendor/tone-15.1.22.js"></script><script src="locales/ja.js?v=20260929-loc-content-02"></script><script src="locales/en.js?v=20260929-loc-content-02"></script><script src="src/i18n.js"></script><script src="src/master-data.js?v=20260928-balance-v35"></script><script src="src/monsters.js?v=20260929-loc-content-01"></script><script src="src/combat.js?v=20260928-balance-v35"></script><script src="src/systems.js"></script><script src="src/narrative.js?v=20260929-loc-content-02"></script><script src="src/device.js?v=20260929-mobile-open-landscape"></script><script src="src/save.js?v=20260927-save-migration-resilience"></script><script src="src/art.js"></script><script src="src/mikado.js"></script><script>SHUTArt.ready.then(()=>{const s=document.createElement("script");s.src="src/game.js?v=20260929-attack-roulette-v1";document.body.append(s)})</script>
 </body>
 </html>
 

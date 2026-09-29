@@ -824,3 +824,28 @@
     font-size:12px!important;
   }
 }
+
+
+/* UX-BATTLE-FLOW — enemy-origin physical egg drop */
+.monsterDrop.physicalEggDrop{
+  z-index:44;
+  transform-origin:50% 100%;
+  animation:physicalEggDrop 1.52s cubic-bezier(.22,.72,.22,1) both;
+}
+.monsterDrop.physicalEggDrop .dropIcon{
+  animation:physicalEggGlow 1.52s ease-out both;
+}
+@keyframes physicalEggDrop{
+  0%{opacity:0;translate:0 -4px;scale:.34}
+  12%{opacity:1;translate:0 -30px;scale:1.12}
+  52%{translate:0 46px;scale:1}
+  66%{translate:0 28px;scale:1.05}
+  78%{translate:0 46px;scale:.98}
+  88%{translate:0 39px;scale:1.02}
+  100%{opacity:1;translate:0 46px;scale:1}
+}
+@keyframes physicalEggGlow{
+  0%,72%{filter:none}
+  84%{filter:brightness(1.65) drop-shadow(0 0 8px #ffe8a5)}
+  100%{filter:brightness(1.12) drop-shadow(0 0 4px #ffe8a566)}
+}

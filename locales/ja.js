@@ -68,6 +68,14 @@ globalThis.SHUT_LOCALES.ja={
   shop:{
     title:'旅商人',intro:'旅に必要な回復道具を購入できます。',owned:'所持 {count}',unitPrice:'単価 {price} G',stock:'在庫 {count}',effect:'効果',inventoryCap:'所持上限 {cap}',quantity:'購入数',afterOwned:'購入後 {count}',total:'合計 {total} G',currentGold:'現在 {gold} G',afterGold:'購入後 {gold} G',buy:'購入する',soldOut:'購入できません',selectItem:'商品を選んでください。',assetPlaceholder:'仮アイコン',items:{ITM001:{name:'リペアミスト',effect:'味方全体のHPを30%回復'},ITM002:{name:'ハイリペア',effect:'味方全体のHPを60%回復'},ITM003:{name:'フルコア',effect:'味方全体のHPを100%回復'}}
   },
+  monsterData:{
+    M001:{name:'フローティアイ'},M002:{name:'ミントビー'},M003:{name:'バブルス'},M004:{name:'ゆらりん'},M005:{name:'ガードッグ'},M006:{name:'スクエア'},M007:{name:'フラワット'},M008:{name:'ストーンロン'},M009:{name:'ラビット'},M010:{name:'キノポン'},M011:{name:'リーファン'},M012:{name:'門番獣グラドッグ'},M013:{name:'樹門王ヴェルデロン'},M014:{name:'アクアミム'},M015:{name:'コイルフィン'},M016:{name:'クラゲット'},M017:{name:'シェルン'},M018:{name:'潮刃ネレイス'},M019:{name:'海門機アクエリア'},M020:{name:'スパークモス'},M021:{name:'フレアギア'},M022:{name:'ボルトホーン'},M023:{name:'アッシュウィスプ'},M024:{name:'双雷機ライラ'},M025:{name:'双雷機レム'},M026:{name:'天鍵機ゼノゲート'},M028:{name:'封鎖執行官ノクティア・決着'},M029:{name:'みかど'},M101:{name:'ミナ'},M102:{name:'セラ'},M103:{name:'カナデ'},EV0A:{name:'オービットアイ'},EV0B:{name:'アストラアイ'},EV1A:{name:'ミントガーディアン'},EV1B:{name:'翡翠の蜂王'},EV2A:{name:'バブルホッパー'},EV2B:{name:'真珠の水竜'}
+  },
+  passives:{
+    names:{aimInsight:'照準のひらめき',tailwind:'追い風',lastWave:'最後の波',tripleBeat:'三拍子',echo:'反響',gateResonance:'門の共鳴',aimInsightPlus:'照準のひらめき＋',starGateResonance:'星門の共鳴',tailwindPlus:'追い風＋',lastWavePlus:'最後の波＋'},
+    descriptions:{perfect:'PERFECT時、攻撃力{multiplier}倍。',weakness:'属性有利の相手に、攻撃力{multiplier}倍。',lowHp:'自分のHPが半分以下の時、攻撃力{multiplier}倍。',third:'3回目の攻撃ごとに、攻撃力{multiplier}倍。',guard:'PERFECT GUARDの次の攻撃、攻撃力{multiplier}倍。'}
+  },
+  items:{ITM001:{name:'リペアミスト',effect:'HP30%回復'},ITM002:{name:'ハイリペア',effect:'HP60%回復'},ITM003:{name:'フルコア',effect:'HP100%回復'},ITM010:{name:'鍵',effect:'5個で1回 / 45個で10連'}},
   skills:{damage:{name:'ブレイクアーツ',description:'高威力の一撃。'},heal:{name:'レスキューヒール',description:'残HP割合が最も低い味方を24%回復。'},poison:{name:'ヴェノムストライク',description:'攻撃し、3ターン毒を与える。'},regen:{name:'リジェネレート',description:'残HP割合が最も低い味方を3ターン継続回復。'},atk_down:{name:'ブレイクシール',description:'攻撃し、敵ATKを2ターン低下。'},noneButShot:{name:'None but shot',description:'刀を大型バズーカへ変形させて攻撃する。'}},
   mikado:{name:'みかど',titleAria:'タイトル画面のみかど',classification:'幻 · ★★★★★★',title:'園芸師',area:'エデン · 幻との遭遇',arrival:'みかど が あらわれた！',skill:'None but shot',skillDescription:'刀を大型バズーカへ変形させて攻撃する。',attackHint:'砲口が光る瞬間に閉じる',world:'エデン',worldDescription:'空に残された庭園。静かな風の中で、幻の気配が揺れる。',stage:'エデンの庭',stageDescription:'空に残された庭園を進む。静かな風の向こうに、幻の気配がある。'},
   common:{confirm:'確認',cancel:'キャンセル',close:'閉じる'},

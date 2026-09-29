@@ -115,6 +115,7 @@
     S.shopCycle=S.shopCycle||0;S.shopStock=S.shopStock||null;
     if(!S.inventory.some(w=>w.id===S.equipped))S.equipped=S.inventory[0]?.id||null;
     if(!S.shopStock) refreshShopStock();
+    syncOpenOnlyPresentation();
   }
   let saveRetryTimer=null,saveRetryPending=false;
   function retryPendingSave(){
@@ -302,6 +303,7 @@
     return SHUTDevice.setClosed(isClosed,options);
   }
   function openOnlyMode(){return !!S.settings?.openOnly}
+  function syncOpenOnlyPresentation(){const enabled=openOnlyMode();const app=$('app');app.dataset.openOnly=enabled?'1':'0';app.classList.toggle('open-only',enabled);document.body.classList.toggle('open-only-mode',enabled);const gate=$('openOnlyOrientationGate');if(gate)gate.setAttribute('aria-hidden',String(!enabled));SHUTDevice.refreshGeometry?.();}
 
   // ---------- AUDIO ----------
   let noiseBuffer=null, musicMode='title', musicDelay=null, musicDelayGain=null, lastBaseMusicMode='title',nativeBgmSource=null,nativeBgmMode=null;
@@ -1411,8 +1413,7 @@
   }
   function syncBattleStateUi(){
     $('app').dataset.phase=phase;
-    $('app').dataset.openOnly=openOnlyMode()?'1':'0';
-    $('app').classList.toggle('open-only',openOnlyMode());
+    syncOpenOnlyPresentation();
     drawPartyHud();
     updateBattleHeader();
   }
@@ -1448,7 +1449,7 @@
     openModal(t('settings.title'),`<div class="settingsSection"><b>${t('settings.language')}</b><div class="settingsChoices">${languageButtons}</div></div><div class="settingsSection"><b>${t('settings.playStyle')}</b><p class="small">${t('settings.playStyleHelp')}</p><div class="settingsChoices"><button id="duoMode" class="btn ${!openOnlyMode()?'gold':''}" aria-pressed="${!openOnlyMode()}">${t('settings.duoMode')}</button><button id="openOnlyMode" class="btn ${openOnlyMode()?'gold':''}" aria-pressed="${openOnlyMode()}">${t('settings.openOnly')}</button></div></div><div class="settingsSection"><b>${t('settings.audio')}</b>${rows.map(([key,label,defaultValue])=>`<label class="audioSlider">${t(label)}<input type="range" min="0" max="100" value="${Math.round((S.settings[key]??defaultValue)*100)}" data-volume="${key}"><output>${Math.round((S.settings[key]??defaultValue)*100)}</output></label>`).join('')}<button id="muteSound" class="btn">${t(S.settings.sound?'settings.mute':'settings.unmute')}</button></div><div class="settingsActions"><button id="confirmSettings" class="btn gold">${t('common.confirm')}</button><button id="cancelSettings" class="btn secondary">${t('common.cancel')}</button></div>`);
     document.querySelectorAll('[data-language]').forEach(button=>button.onclick=()=>{I18n.setLanguage(button.dataset.language);updateLocalizedUi();renderSettings()});
     document.querySelectorAll('[data-volume]').forEach(input=>input.oninput=()=>{S.settings[input.dataset.volume]=Number(input.value)/100;input.nextElementSibling.textContent=input.value;applyAudioSettings();persistAudioPrefs();saveGame()});
-    $('duoMode').onclick=()=>{S.settings.openOnly=false;$('app').dataset.openOnly='0';saveGame();renderSettings()};$('openOnlyMode').onclick=()=>{S.settings.openOnly=true;$('app').dataset.openOnly='1';SHUTDevice.setClosed(false,{skipSnapshot:true,instant:true});$('app').dataset.screen=$('battleScreen').classList.contains('show')?'battleScreen':$('app').dataset.screen;saveGame();syncBattleStateUi();renderSettings()};
+    $('duoMode').onclick=()=>{S.settings.openOnly=false;syncOpenOnlyPresentation();saveGame();renderSettings()};$('openOnlyMode').onclick=()=>{S.settings.openOnly=true;syncOpenOnlyPresentation();SHUTDevice.setClosed(false,{skipSnapshot:true,instant:true});$('app').dataset.screen=$('battleScreen').classList.contains('show')?'battleScreen':$('app').dataset.screen;saveGame();syncBattleStateUi();renderSettings()};
     $('muteSound').onclick=()=>{S.settings.sound=!S.settings.sound;applyAudioSettings();persistAudioPrefs();saveGame();renderSettings()};
     $('confirmSettings').onclick=()=>{settingsOriginalLanguage=null;$('modal').classList.remove('show')};
     $('cancelSettings').onclick=()=>{if(settingsOriginalLanguage)I18n.setLanguage(settingsOriginalLanguage);settingsOriginalLanguage=null;updateLocalizedUi();$('modal').classList.remove('show')};

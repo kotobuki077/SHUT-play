@@ -209,12 +209,13 @@
   let gachaMode='key', gachaStep=0, pendingPulls=[], gachaSelectedCount=null, gachaBusy=false;
   let encounter=1, enemies=[], phase='idle', opened=true;
   let attackStart=0, attackDuration=1000, meterRAF=null, defenseImpact=0, defenseEnemyId=null, defenseTargetId=null, attackReadyToken=0, guardSweepStart=0, guardSweepDurationMs=1000;
-  const TIMING_SWEEP_MS=850,TIMING_HIT_WIDTH=.18,TIMING_PERFECT_WIDTH=.018;
+  let attackRouletteValues=[],attackRouletteIndex=0,attackRouletteStepMs=95,attackStopRequested=false,attackStopStart=0,attackStopDuration=0,attackStopFrom=0;
+  const ATTACK_ROULETTE_BASE=[0,.8,1,1.2,1.5,1.2,1,.8,0],ATTACK_ROLE_SPEED={striker:.82,control:.92,balanced:1,support:1.08,guardian:1.18};
+  const TIMING_HIT_WIDTH=.18,TIMING_PERFECT_WIDTH=.018;
   function timingGradeFromProgress(progress){
     const value=Number(progress);if(!Number.isFinite(value)||value<0||value>1)return 'MISS';const d=Math.abs(clamp(value,0,1)-.5);
     return d<=.009?'PERFECT':d<=.02?'EXCELLENT':d<=.035?'GREAT':d<=.09?'GOOD':'MISS';
   }
-  function timingAttackScale(grade){return grade==='EXCELLENT'?.97:grade==='GREAT'?.91:grade==='GOOD'?.82:1}
   function timingGuardRate(grade){
     return grade==='PERFECT'?Number(CFG.perfect_guard_rate):
       grade==='EXCELLENT'?Math.min(.2,Number(CFG.good_guard_rate)):
@@ -1103,14 +1104,41 @@
   }
 
   // ---------- ATTACK ----------
+  function shuffledAttackRoulette(){
+    const values=[...ATTACK_ROULETTE_BASE];
+    for(let i=values.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[values[i],values[j]]=[values[j],values[i]];}
+    return values;
+  }
+  function attackRouletteSpeedMs(){
+    const alive=partyMembers().filter(m=>m.hp>0);
+    if(!alive.length)return 95;
+    const factor=alive.reduce((sum,m)=>sum+Number(ATTACK_ROLE_SPEED[m.role]??ATTACK_ROLE_SPEED.balanced),0)/alive.length;
+    return Math.round(clamp(95*factor,78,122));
+  }
+  function renderAttackRoulette(){
+    const el=$('attackRoulette');if(!el)return;
+    el.innerHTML=attackRouletteValues.map(value=>{
+      const miss=value===0,high=value>=1.5,label=miss?'MISS':`×${Number(value).toFixed(1)}`;
+      return `<span class="attackRouletteCell" data-miss="${miss?1:0}" data-high="${high?1:0}">${label}</span>`;
+    }).join('');
+  }
+  function setAttackRouletteFrame(index){
+    const count=Math.max(1,attackRouletteValues.length),safe=((Math.floor(index)%count)+count)%count,frame=$('attackRouletteFrame');
+    attackRouletteIndex=safe;if(frame)frame.style.left=`${safe*100/count}%`;
+  }
+  function currentAttackRouletteIndex(now=performance.now()){
+    const count=Math.max(1,attackRouletteValues.length);
+    if(!attackStart||!attackRouletteStepMs)return 0;
+    return Math.floor(Math.max(0,now-attackStart)/attackRouletteStepMs)%count;
+  }
   function prepareTimingUi(mode){
     const box=$('timingBox'),phaseEl=$('timingPhase'),hint=$('timingTapHint');
-    box.dataset.mode=mode;box.classList.toggle('guardMode',mode==='guard');configureTimingZones();
+    box.dataset.mode=mode;box.dataset.stopping='0';box.classList.toggle('guardMode',mode==='guard');configureTimingZones();
     const hintCopy=hint?.querySelector('em');if(hint){hint.hidden=mode==='guard'?!!S.tutorialDone:false;}
     const strong=phaseEl?.querySelector('strong'),small=phaseEl?.querySelector('small');
     if(strong)strong.textContent=mode==='guard'?'◆ GUARD':'⚔ ATTACK';
-    if(small)small.textContent=mode==='attack'?t('battle.tapToStart'):t('battle.timingTap');
-    if(hintCopy)hintCopy.textContent=mode==='attack'?t('battle.tapToStart'):t('battle.tapAnywhere');
+    if(small)small.textContent=mode==='attack'?t('battle.timingTap'):t('battle.timingTap');
+    if(hintCopy)hintCopy.textContent=t('battle.tapAnywhere');
     phaseEl?.classList.remove('phaseFlash');if(phaseEl){void phaseEl.offsetWidth;phaseEl.classList.add('phaseFlash');}
   }
   function beginAttack(){
@@ -1118,19 +1146,31 @@
     if(!living().length){finishEncounter();return}
     if(narrative.active)return;
     const token=++attackReadyToken;setBattlePhase('attackReady',false);opened=true;$('timingBox').classList.remove('show');
-    const arm=()=>{if(token!==attackReadyToken||phase!=='attackReady')return;setBattlePhase('attackArmed',false);$('timingBox').classList.add('show','awaitStart');prepareTimingUi('attack');$('cursor').style.left='0%';currentBattleCopy=null;$('battleMessage').textContent='';$('battleSub').textContent='';};
+    const arm=()=>{if(token!==attackReadyToken||phase!=='attackReady')return;setBattlePhase('attackArmed',false);$('timingBox').classList.add('show');prepareTimingUi('attack');currentBattleCopy=null;$('battleMessage').textContent='';$('battleSub').textContent='';startTimingBar();};
     if(!stageStats.attackIntroShown){stageStats.attackIntroShown=true;setBattleCopy('battle.ready','battle.readyHint');setTimeout(()=>{if(token!==attackReadyToken||phase!=='attackReady')return;setBattleCopy('battle.go','battle.startTimingHint');sfx('cue');setTimeout(arm,240);},Number(CFG.attack_ready_seconds)*1000);}
     else setTimeout(arm,90);
   }
-
-  function attackRouletteProgress(now=performance.now()){
-    if(!attackStart||!attackDuration)return 0;
-    return ((Math.max(0,now-attackStart)%attackDuration)/attackDuration);
-  }
   function startTimingBar(){
-    if(phase!=='attackArmed')return;setBattlePhase('attack',false);$('timingBox').classList.remove('awaitStart');const hintCopy=$('timingTapHint')?.querySelector('em');if(hintCopy)hintCopy.textContent=t('battle.tapAnywhere');attackStart=performance.now();attackDuration=TIMING_SWEEP_MS;cancelAnimationFrame(meterRAF);setBattleCopy('battle.attack',isDesktop()?'battle.attackHintDesktop':'battle.attackHintTouch');
-    function frame(now){if(phase!=='attack')return;const p=attackRouletteProgress(now);$('cursor').style.left=`${p*100}%`;meterRAF=requestAnimationFrame(frame);}
+    if(phase!=='attackArmed')return;
+    setBattlePhase('attack',false);attackRouletteValues=shuffledAttackRoulette();attackRouletteStepMs=attackRouletteSpeedMs();attackStopRequested=false;attackStopStart=0;attackStopDuration=0;attackStopFrom=0;
+    $('timingBox').dataset.stopping='0';renderAttackRoulette();setAttackRouletteFrame(0);const hintCopy=$('timingTapHint')?.querySelector('em');if(hintCopy)hintCopy.textContent=t('battle.tapAnywhere');
+    attackStart=performance.now();attackDuration=attackRouletteStepMs*attackRouletteValues.length;cancelAnimationFrame(meterRAF);setBattleCopy('battle.attack',isDesktop()?'battle.attackHintDesktop':'battle.attackHintTouch');
+    function frame(now){
+      if(phase!=='attack')return;
+      if(attackStopRequested){
+        const t=clamp((now-attackStopStart)/Math.max(1,attackStopDuration),0,1),eased=1-(1-t)*(1-t),travel=attackRouletteValues.length*eased;
+        setAttackRouletteFrame(attackStopFrom+Math.floor(travel+1e-7));
+        if(t>=1){setAttackRouletteFrame(attackStopFrom);executeAttack(attackRouletteValues[attackStopFrom]);return;}
+      }else setAttackRouletteFrame(currentAttackRouletteIndex(now));
+      meterRAF=requestAnimationFrame(frame);
+    }
     meterRAF=requestAnimationFrame(frame);
+  }
+  function requestAttackStop(){
+    if(phase!=='attack'||battleInputLocked||attackStopRequested)return;
+    attackStopRequested=true;battleInputLocked=true;attackStopFrom=attackRouletteIndex;attackStopStart=performance.now();
+    attackStopDuration=Math.max(900,attackRouletteStepMs*attackRouletteValues.length*2);
+    $('timingBox').dataset.stopping='1';sfx('cue');
   }
 
   function chargeSkills(excluded=new Set()){for(const m of partyMembers().filter(x=>x.hp>0&&!excluded.has(x.id)))skillCharge[m.id]=Math.min(skillTurnsRequired(m),(skillCharge[m.id]||0)+1);drawPartyHud()}
@@ -1141,13 +1181,13 @@
     for(const hit of plan.filter(h=>h.damage>0)){const ally=document.querySelector(`[data-ally="${hit.actorId}"]`),target=document.querySelector(`.enemyCard[data-id="${hit.targetId}"]`);if(!ally||!target)continue;const ar=ally.getBoundingClientRect(),tr=target.getBoundingClientRect(),actor=partyMembers().find(m=>m.id===hit.actorId),x1=ar.right-sr.left,y1=ar.top+ar.height/2-sr.top,x2=tr.left+tr.width/2-sr.left,y2=tr.top+tr.height/2-sr.top,dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy),angle=Math.atan2(dy,dx)*180/Math.PI,line=document.createElement('i');ally.classList.add('assignmentSource');target.classList.add('assignmentTarget');line.className='attackAssignmentLine';line.style.cssText=`left:${x1}px;top:${y1}px;width:${len}px;rotate:${angle}deg;--assign:${attrColor[actor?.attr]||'#9be7df'}`;screen.append(line);}
     setTimeout(()=>{document.querySelectorAll('.attackAssignmentLine').forEach(n=>n.remove());document.querySelectorAll('.assignmentSource,.assignmentTarget').forEach(n=>n.classList.remove('assignmentSource','assignmentTarget'));},360);
   }
-  function executeAttack(){
-    if(phase!=='attack'||battleInputLocked)return;battleInputLocked=true;const p=attackRouletteProgress(),grade=timingGradeFromProgress(p),timing=grade==='PERFECT'?'PERFECT':grade==='MISS'?'MISS':'HIT';
-    $('timingBox').classList.remove('show');cancelAnimationFrame(meterRAF);setBattlePhase('transition',true);const skillActors=new Set(partyMembers().filter(m=>m.hp>0&&skillIsReady(m)).map(m=>m.id));const plan=Monsters.planAttack(partyMembers(),living(),timing,MASTER_DATA,{attackCount:stageStats.turn+1,perfectGuard:!!S.perfectGuardBoost});S.perfectGuardBoost=false;
-    if(timing==='HIT'){const scale=timingAttackScale(grade);for(const hit of plan)if(hit.damage>0)hit.damage=Math.max(1,Math.round(hit.damage*scale));}
+  function executeAttack(multiplier=attackRouletteValues[attackRouletteIndex]??1){
+    if(phase!=='attack')return;battleInputLocked=true;attackStopRequested=false;const selected=Number(multiplier),timing=selected===0?'MISS':selected>=1.5?'PERFECT':'HIT';
+    $('timingBox').classList.remove('show');$('timingBox').dataset.stopping='0';cancelAnimationFrame(meterRAF);setBattlePhase('transition',true);const skillActors=new Set(partyMembers().filter(m=>m.hp>0&&skillIsReady(m)).map(m=>m.id));const plan=Monsters.planAttack(partyMembers(),living(),timing,MASTER_DATA,{attackCount:stageStats.turn+1,perfectGuard:!!S.perfectGuardBoost});S.perfectGuardBoost=false;
+    if(timing==='HIT'&&selected!==1){for(const hit of plan)if(hit.damage>0)hit.damage=Math.max(1,Math.round(hit.damage*selected));}
     for(const hit of plan)if(skillActors.has(hit.actorId)&&hit.damage>0){const actor=partyMembers().find(m=>m.id===hit.actorId),special=Monsters.specialPlan(actor,partyMembers(),enemies.find(e=>e.id===hit.targetId),MASTER_DATA);hit.ultimate=true;hit.special=special;hit.support=special.type==='heal'||special.type==='regen';if(hit.support)hit.damage=0;else hit.damage=Math.max(1,Math.round(hit.damage*(special.damageMultiplier||ULTIMATE_MULTIPLIER)));skillCharge[hit.actorId]=0}
     chargeSkills(skillActors);
-    if(timing==='PERFECT'){stageStats.perfect++;bumpQuest('perfect_attack_count',1);}const timingKey={PERFECT:'battle.perfect',HIT:'battle.hit',MISS:'battle.miss'}[timing],feedbackLabel=grade==='PERFECT'?t('battle.perfect'):grade==='MISS'?t('battle.miss'):grade;feedback(feedbackLabel,timing==='PERFECT'?'perfect':timing==='MISS'?'miss':'hit');setBattleCopy(timingKey,timing==='MISS'?'battle.nextMoment':'battle.coordinatedAttack');sfx(timing==='MISS'?'hit':'slash');showAttackAssignments(plan);
+    if(timing==='PERFECT'){stageStats.perfect++;bumpQuest('perfect_attack_count',1);}const timingKey={PERFECT:'battle.perfect',HIT:'battle.hit',MISS:'battle.miss'}[timing],feedbackLabel=timing==='MISS'?t('battle.miss'):`×${selected.toFixed(1)}`;feedback(feedbackLabel,timing==='PERFECT'?'perfect':timing==='MISS'?'miss':'hit');setBattleCopy(timingKey,timing==='MISS'?'battle.nextMoment':'battle.coordinatedAttack');sfx(timing==='MISS'?'hit':'slash');showAttackAssignments(plan);
     setTimeout(()=>{const totals={};for(const [i,hit]of plan.entries()){const e=enemies.find(e=>e.id===hit.targetId);if(hit.ultimate&&hit.support){showUltimateMotion(hit,i);applySpecialEffect(hit,null);continue;}if(hit.damage>0){damageMonsterTarget(e,hit);showMonsterAttack(hit,i);if(hit.ultimate){showUltimateMotion(hit,i);applySpecialEffect(hit,e);}totals[e.id]=(totals[e.id]||0)+hit.damage;}}
     for(const [id,total]of Object.entries(totals)){const e=enemies.find(e=>e.id===id);if(e.popup)e.popup.text='−'+total;}
     renderEnemies();if(!living().length)setTimeout(finishEncounter,700);else setTimeout(endPlayerTurn,350);},170);
@@ -1200,7 +1240,7 @@
     const grade=timingGradeFromProgress(progress),rate=timingGuardRate(grade),perfect=grade==='PERFECT';
     setBattlePhase('transition',true);cancelAnimationFrame(meterRAF);const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;const shouldPhysicallyClose=!!playerClosed&&!openOnlyMode();defenseToken++;opened=!shouldPhysicallyClose;if(!shouldPhysicallyClose)setDeviceClosed(false,{skipSnapshot:true});e.turnsLeft=e.attackEvery;resetBattleTimingUi();const a=patternBeat?.action,factor=a?a.factors[patternBeat.index]*a.damage:1,alive=partyMembers().filter(m=>m.hp>0),target=alive.find(m=>m.id===defenseTargetId)||alive[(stageStats.guardHits||0)%Math.max(1,alive.length)],dmg=Combat.guardDamage(e.atk,factor,rate,e.attackDown?.multiplier||1,target?.def||0,Number(MASTER_DATA.monsterRules.balance?.defenseCoefficient||.25));stageStats.guardHits=(stageStats.guardHits||0)+1;if(target){const owned=S.monsters.find(m=>m.id===target.id);owned.hp=Math.max(0,target.hp-dmg);if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':(grade==='EXCELLENT'||grade==='GREAT')?'battle.goodGuard':grade==='MISS'?'battle.miss':'battle.guard',feedbackLabel=perfect?t('battle.perfectGuard'):grade==='MISS'?t('battle.miss'):grade;if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}else sfx(dmg>0?'hit':'guard');SHUTDevice.guard(labelKey,dmg);feedback(feedbackLabel,perfect?'guard':grade==='MISS'?'miss':'hit');setBattleCopy(labelKey,'battle.damage',{name:target?.name||'',damage:dmg});defenseTargetId=null;drawPartyHud();updateBattleHeader();renderEnemies();if(S.hp<=0){setTimeout(gameOver,250);return;}const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}const reason=more?'combo':'defenseContinue';if(shouldPhysicallyClose)setTimeout(()=>enterRecoveryPhase(reason,true),200);else if(openOnlyMode())setTimeout(()=>enterRecoveryPhase(reason,false),120);else setTimeout(()=>{if(more)startGuardBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);
   }
-  function resetBattleTimingUi(){$('timingBox').classList.remove('show','guardMode','awaitStart');$('timingPhase')?.classList.remove('phaseFlash');document.querySelectorAll('.enemyCard').forEach(x=>x.classList.remove('attacking'));}
+  function resetBattleTimingUi(){$('timingBox').classList.remove('show','guardMode','awaitStart');$('timingBox').dataset.stopping='0';attackStopRequested=false;$('timingPhase')?.classList.remove('phaseFlash');document.querySelectorAll('.enemyCard').forEach(x=>x.classList.remove('attacking'));}
   function playOpenOnlyGuardDoorMotion(done){let layer=$('openOnlyGuardDoor');if(!layer){layer=document.createElement('div');layer.id='openOnlyGuardDoor';layer.setAttribute('aria-hidden','true');layer.innerHTML='<i></i><i></i>';$('battleScreen').append(layer);}layer.classList.remove('play');void layer.offsetWidth;layer.classList.add('play');sfx('door');setTimeout(()=>{layer.classList.remove('play');done?.();},430);}
   function enterRecoveryPhase(reason,physicalClose=false){recoveryReason=reason;pendingItem=null;defenseToken++;resetBattleTimingUi();setBattlePhase('recovery',true);const tray=$('recoveryTray');tray.dataset.presentation=physicalClose?'closed':'open';tray.setAttribute('aria-hidden','false');if(physicalClose){opened=false;sfx('door');document.querySelector('.outer-display')?.append(tray);setDeviceClosed(true);}else{opened=true;$('battleScreen').append(tray);SHUTDevice.setClosed(false,{skipSnapshot:true,instant:true});$('app').dataset.screen='battleScreen';}updateItemMenu();updateBattleHeader();tray.classList.add('show');}
   function updateItemMenu(){$('cntHeal').textContent=`×${S.items.heal}`;$('cntHigh').textContent=`×${S.items.high}`;$('cntElixir').textContent=`×${S.items.elixir}`;document.querySelectorAll('.itemBtn').forEach(b=>{const k=b.dataset.item;b.disabled=S.items[k]<=0||carrySlots<=0;b.classList.toggle('selected',pendingItem===k)});const itemName=key=>t({heal:'battle.heal',high:'battle.highHeal',elixir:'battle.elixir'}[key]),physical=$('recoveryTray').dataset.presentation==='closed';$('continueBattle').textContent=t(physical?'battle.openNext':'battle.continueNext');$('selectedItemText').textContent=pendingItem?t(physical?'battle.selectedItem':'battle.selectedItemOpen',{item:itemName(pendingItem)}):t('battle.noItemSelected',{slots:carrySlots});}
@@ -1333,7 +1373,7 @@
     if($('startScreen').classList.contains('show')){ startGameFlow(false); }
     else if($('battleScreen').classList.contains('show')){
       if(phase==='attackArmed')startTimingBar();
-      else if(phase==='attack')executeAttack();
+      else if(phase==='attack')requestAttackStop();
       else if(phase==='guard')executeDefense();
       else if(phase==='recovery')continueFromRecovery();
     }else if($('homeScreen').classList.contains('show')){
@@ -1352,11 +1392,10 @@
     const screen=$('battleScreen'),r=screen.getBoundingClientRect(),dot=document.createElement('span');
     dot.className='battleTapRipple';dot.style.left=(clientX-r.left)+'px';dot.style.top=(clientY-r.top)+'px';screen.append(dot);setTimeout(()=>dot.remove(),420);
   }
-  $('attackStartBtn').onclick=e=>{e.stopPropagation();if(phase!=='attackArmed'||battleInputLocked)return;startTimingBar();};
   let suppressBattleClickUntil=0;
   function handleBattlePointerAction(e){
     if(e.target.closest('#retreatBtn,.utility,[data-system-control]'))return;
-    if(phase==='attack'&&!battleInputLocked){e.preventDefault();showBattleTapFeedback(e.clientX,e.clientY);executeAttack();}
+    if(phase==='attack'&&!battleInputLocked){e.preventDefault();showBattleTapFeedback(e.clientX,e.clientY);requestAttackStop();}
     else if(phase==='guard'&&!battleInputLocked){e.preventDefault();showBattleTapFeedback(e.clientX,e.clientY);executeDefense();}
   }
   $('battleScreen').addEventListener('pointerdown',e=>{

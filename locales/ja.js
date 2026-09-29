@@ -16,7 +16,7 @@ globalThis.SHUT_LOCALES.ja={
   settings:{
     button:'設定',buttonAria:'設定を開く',title:'設定',language:'言語',japanese:'日本語',english:'English',
     audio:'サウンド',master:'全体',bgm:'BGM',se:'効果音',mute:'ミュートにする',unmute:'音を戻す',
-    playStyle:'プレイスタイル',playStyleHelp:'戦闘中の防御方法を選べます。召喚はどちらの設定でもCLOSEから始まります。',duoMode:'DUO開閉',openOnly:'OPENのみ'
+    playStyle:'プレイスタイル',playStyleHelp:'戦闘中の防御方法を選べます。スマートフォンでOPENのみを使う場合は横向きで画面いっぱいに表示します。召喚はどちらの設定でもCLOSEから始まります。',duoMode:'DUO開閉',openOnly:'OPENのみ',rotateLandscapeTitle:'スマートフォンを横向きにしてください',rotateLandscapeBody:'OPENのみでは横向きで画面いっぱいに表示します。'
   },
   closeMenu:{
     title:'CLOSE MENU',gateTitle:'GACHA GATE',description:'閉じた外側画面で、召喚と旅の状態を確認できます。',gacha:'GACHA',

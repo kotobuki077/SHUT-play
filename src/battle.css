@@ -849,3 +849,67 @@
   84%{filter:brightness(1.65) drop-shadow(0 0 8px #ffe8a5)}
   100%{filter:brightness(1.12) drop-shadow(0 0 4px #ffe8a566)}
 }
+
+
+/* v29 — ATTACK random multiplier frame roulette */
+#timingBox[data-mode="attack"] #hitZone,
+#timingBox[data-mode="attack"] #perfectZone,
+#timingBox[data-mode="attack"] #cursor,
+#timingBox[data-mode="attack"] #timingJudges,
+#timingBox[data-mode="attack"] #attackStartBtn{display:none!important}
+#attackRoulette{
+  position:absolute;
+  inset:0;
+  display:none;
+  grid-template-columns:repeat(9,minmax(0,1fr));
+  align-items:stretch;
+  z-index:2;
+}
+#timingBox[data-mode="attack"] #attackRoulette{display:grid}
+.attackRouletteCell{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-right:1px solid color-mix(in srgb,var(--timing-edge) 28%,transparent);
+  color:#e9f2ef;
+  background:#0a2732;
+  font:900 clamp(9px,1.4vw,13px)/1 system-ui,sans-serif;
+  letter-spacing:.01em;
+  font-variant-numeric:tabular-nums;
+  user-select:none;
+}
+.attackRouletteCell:last-child{border-right:0}
+.attackRouletteCell[data-miss="1"]{
+  color:#d7dde0;
+  background:#11181d;
+}
+.attackRouletteCell[data-high="1"]{
+  color:#fff0a2;
+  background:#17353a;
+}
+#attackRouletteFrame{
+  position:absolute;
+  top:-2px;
+  bottom:-2px;
+  left:0;
+  width:calc(100% / 9);
+  display:none;
+  box-sizing:border-box;
+  border:3px solid #fff1a6;
+  box-shadow:0 0 0 1px #402f08,0 0 12px #ffe78399,inset 0 0 8px #fff3b433;
+  z-index:5;
+  pointer-events:none;
+}
+#timingBox[data-mode="attack"] #attackRouletteFrame{display:block}
+#timingBox[data-mode="attack"][data-stopping="1"] #attackRouletteFrame{
+  border-color:#fff;
+  box-shadow:0 0 0 1px #4c3b12,0 0 16px #fff4bccc,inset 0 0 10px #fff7cf55;
+}
+#timingBox[data-mode="attack"] #timingTapHint{visibility:visible!important}
+#timingBox[data-mode="attack"] #timingTrack{height:30px!important}
+@media(max-height:600px) and (pointer:coarse){
+  #timingBox[data-mode="attack"] #timingTrack{height:24px!important}
+  .attackRouletteCell{font-size:8px!important}
+  #attackRouletteFrame{border-width:2px}
+}

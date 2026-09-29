@@ -211,7 +211,7 @@
   let attackStart=0, attackDuration=1000, meterRAF=null, defenseImpact=0, defenseEnemyId=null, defenseTargetId=null, attackReadyToken=0, guardSweepStart=0, guardSweepDurationMs=1000;
   let attackRouletteValues=[],attackRouletteIndex=0,attackRouletteStepMs=54,attackStopRequested=false,attackStopStart=0,attackStopDuration=0,attackStopFrom=0;
   const ATTACK_ROULETTE_BASE=[0,.8,1,1.2,1.5,1.2,1,.8,0],ATTACK_ROLE_SPEED={striker:.82,control:.90,balanced:1,support:1.08,guardian:1.16};
-  const ATTACK_STEP_MIN_MS=44,ATTACK_STEP_MAX_MS=62,ATTACK_STOP_MIN_MS=650,ATTACK_STOP_MAX_MS=850;
+  const ATTACK_STEP_MIN_MS=40,ATTACK_STEP_MAX_MS=55,ATTACK_STOP_MIN_MS=680,ATTACK_STOP_MAX_MS=900;
   const TIMING_HIT_WIDTH=.18,TIMING_PERFECT_WIDTH=.018;
   function timingGradeFromProgress(progress){
     const value=Number(progress);if(!Number.isFinite(value)||value<0||value>1)return 'MISS';const d=Math.abs(clamp(value,0,1)-.5);
@@ -288,7 +288,8 @@
   }
   function localizedAttribute(value){const id={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'}[value];return id?t('battle.attributeName.'+id):value}
   const attributeUiId={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'};
-  function attributeIcon(value,extra=''){const id=attributeUiId[value]||'wind',label=localizedAttribute(value);return `<span class="attrIcon attrIcon-${id} ${extra}" role="img" aria-label="${label}" title="${label}"></span>`}
+  const attributeAsset={fire:'assets/attr-fire.svg',water:'assets/attr-water.svg',thunder:'assets/attr-thunder.svg',earth:'assets/attr-earth.svg',wind:'assets/attr-wind.svg'};
+  function attributeIcon(value,extra=''){const id=attributeUiId[value]||'wind',label=localizedAttribute(value),asset=attributeAsset[id];return `<span class="attrIcon attrIcon-${id} ${extra}" role="img" aria-label="${label}" title="${label}"><img class="attrIconImage" src="${asset}" alt="" aria-hidden="true"></span>`}
   function localizedDataKey(entry,field){if(!entry)return null;if(entry[field==='name'?'nameKey':'descriptionKey'])return entry[field==='name'?'nameKey':'descriptionKey'];if(entry.monster_id&&field==='name')return `monsterData.${entry.monster_id}.name`;if(entry.stage_id)return `stageData.${entry.stage_id}.${field}`;if(entry.world_id&&!entry.stage_id)return `worldData.${entry.world_id}.${field}`;return null}
   function localizedDataName(entry){const key=localizedDataKey(entry,'name');if(key){const value=t(key);if(value!==key)return value}return entry?.name||''}
   function localizedDataDescription(entry){const key=localizedDataKey(entry,'description');if(key){const value=t(key);if(value!==key)return value}return entry?.description||''}
@@ -1058,14 +1059,21 @@
       const popupHTML = e.popup ? `<div class="damagePop ${e.popup.cls||''}">${e.popup.text}${e.popup.tag?`<span class="tag">${e.popup.tag}</span>`:''}</div>` : '';
       const barNow=hpBarGradient(e.attr);
       const canvasW=MASTER_DATA.sprites[e.kind].canvasSize||64, canvasH=canvasW;
+      const statusHtml=[
+        e.poison?`<span class="enemyStatus enemyStatusPoison">${t('battle.poison')}</span>`:'',
+        e.attackDown?`<span class="enemyStatus enemyStatusAtkDown">${t('battle.atkDown')}</span>`:''
+      ].filter(Boolean).join('');
       card.innerHTML=`
-        <div class="enemyAttrBadge">${attributeIcon(e.attr)}</div>
-        <div class="enemyTurnBadge ${ready?'ready':''}" aria-label="${t('battle.enemyTurns')} ${Math.max(0,e.turnsLeft)}"><b>${Math.max(0,e.turnsLeft)}</b></div>
         <div class="enemySpriteWrap">${popupHTML}<canvas width="${canvasW}" height="${canvasH}" data-id="${e.id}"></canvas></div>
-        <div class="eName"><span>${e.boss?'BOSS ':''}${displayedEnemyName(e)}</span></div>
-        <div class="ehp eBar"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div>
-        <div class="ehpText" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><span>HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}</span></div>
-        <div class="eMeta">${e.poison||e.attackDown?`<span>${[e.poison?t('battle.poison'):'',e.attackDown?t('battle.atkDown'):''].filter(Boolean).join(' · ')}</span>`:''}</div>`;
+        <div class="enemyHud">
+          <div class="enemyHudTop">
+            ${attributeIcon(e.attr,'enemyHudAttr')}
+            <div class="eName"><span>${displayedEnemyName(e)}</span></div>
+            <div class="enemyTurnBadge ${ready?'ready':''}" aria-label="${t('battle.enemyTurns')} ${Math.max(0,e.turnsLeft)}"><b>${Math.max(0,e.turnsLeft)}</b></div>
+          </div>
+          <div class="ehp eBar" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div>
+          ${statusHtml?`<div class="eMeta">${statusHtml}</div>`:''}
+        </div>`;
       area.appendChild(card);
       drawEnemy(card.querySelector('canvas'),e,animFrame);
       const nowBar=card.querySelector('.ehpNow');
@@ -1116,7 +1124,7 @@
     const alive=partyMembers().filter(m=>m.hp>0);
     if(!alive.length)return 54;
     const factor=alive.reduce((sum,m)=>sum+Number(ATTACK_ROLE_SPEED[m.role]??ATTACK_ROLE_SPEED.balanced),0)/alive.length;
-    return Math.round(clamp(54*factor,ATTACK_STEP_MIN_MS,ATTACK_STEP_MAX_MS));
+    return Math.round(clamp(50*factor,ATTACK_STEP_MIN_MS,ATTACK_STEP_MAX_MS));
   }
   function renderAttackRoulette(){
     const el=$('attackRoulette');if(!el)return;

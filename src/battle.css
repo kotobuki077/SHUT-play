@@ -890,16 +890,16 @@
 }
 #attackRouletteFrame{
   position:absolute;
-  top:-4px;
-  bottom:-4px;
+  top:0;
+  bottom:0;
   left:0;
   width:calc(100% / 9);
   display:none;
   box-sizing:border-box;
-  border:6px solid #fff1a6;
+  border:7px solid #fff1a6;
   outline:2px solid #3a2605;
-  outline-offset:-1px;
-  box-shadow:0 0 0 2px #fff7d044,0 0 20px #ffe36fcc,inset 0 0 14px #fff4b855;
+  outline-offset:-3px;
+  box-shadow:0 0 0 2px #fff7d066,0 0 22px #ffe36fee,inset 0 0 16px #fff4b877;
   z-index:6;
   pointer-events:none;
 }
@@ -926,5 +926,204 @@
 @media(max-height:600px) and (pointer:coarse){
   #timingBox[data-mode="attack"] #timingTrack{height:28px!important}
   .attackRouletteCell{font-size:8px!important}
-  #attackRouletteFrame{top:-3px;bottom:-3px;border-width:4px;outline-width:2px}
+  #attackRouletteFrame{top:0;bottom:0;border-width:5px;outline-width:2px;outline-offset:-2px}
 }
+
+/* v30 — keep the ATTACK selection frame fully inside the clipped track */
+#timingBox[data-mode="attack"] #timingTrack{overflow:hidden!important}
+#timingBox[data-mode="attack"] #attackRouletteFrame{
+  top:0!important;
+  bottom:0!important;
+  border-width:7px!important;
+}
+#timingBox[data-mode="attack"] .attackRouletteCell.rouletteActive{
+  box-shadow:inset 0 0 0 3px #fff3a855,inset 0 0 18px #fff2a655!important;
+}
+@media(max-height:600px) and (pointer:coarse){
+  #timingBox[data-mode="attack"] #attackRouletteFrame{border-width:5px!important}
+}
+
+
+/* v31 — canonical compact enemy HUD + shared battle rail */
+.enemyAttrBadge,.enemyCard .ehpText{display:none!important}
+
+.enemyCard,.enemyCard.compact{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+}
+.enemySpriteWrap{
+  order:1!important;
+  width:100%!important;
+}
+.enemyHud{
+  order:2;
+  width:100%;
+  max-width:100%;
+  margin-top:3px;
+  display:grid;
+  grid-template-rows:auto 8px auto;
+  gap:3px;
+  box-sizing:border-box;
+}
+.enemyHudTop{
+  display:grid;
+  grid-template-columns:26px minmax(0,1fr) 28px;
+  gap:5px;
+  align-items:center;
+  min-height:30px;
+  padding:3px 4px;
+  box-sizing:border-box;
+  border:1px solid #d9c88988;
+  background:#071c25e8;
+  box-shadow:inset 0 0 0 1px #0e3a42;
+}
+.attrIcon{
+  display:inline-block;
+  flex:none;
+  background-image:var(--attr-icon)!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:contain!important;
+}
+.enemyHud .enemyHudAttr{
+  width:24px!important;
+  height:24px!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+}
+.enemyHud .eName{
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:#f4edd6!important;
+  text-align:left!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.enemyTurnBadge{
+  position:static!important;
+  top:auto!important;
+  right:auto!important;
+  z-index:auto!important;
+  width:26px!important;
+  height:26px!important;
+  display:grid!important;
+  place-items:center!important;
+  box-sizing:border-box;
+  border:2px solid #bfae71!important;
+  border-radius:2px!important;
+  background:#0b2b34!important;
+  color:#f5df91!important;
+  clip-path:polygon(4px 0,calc(100% - 4px) 0,100% 4px,100% calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,0 calc(100% - 4px),0 4px);
+  box-shadow:inset 0 0 0 1px #163e45!important;
+  font:900 12px/1 ui-monospace,monospace!important;
+}
+.enemyTurnBadge.ready{
+  border-color:#ffe18a!important;
+  color:#fff4bc!important;
+  background:#392b12!important;
+  box-shadow:inset 0 0 0 1px #715b22,0 0 8px #ffe18a55!important;
+}
+.enemyCard .ehp{
+  position:relative!important;
+  width:100%!important;
+  height:8px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  border:1px solid #254f49!important;
+  background:#06181d!important;
+}
+.enemyCard .ehpNow,.enemyCard .ehpLag{top:0!important;bottom:0!important;height:auto!important}
+.enemyCard .eMeta{
+  display:flex!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  gap:3px!important;
+  min-height:0!important;
+  padding:0!important;
+  background:transparent!important;
+  text-align:left!important;
+  color:#d7e7df!important;
+}
+.enemyStatus{
+  display:inline-flex;
+  align-items:center;
+  min-height:15px;
+  padding:1px 4px;
+  box-sizing:border-box;
+  border:1px solid #52736d;
+  background:#0b242bdd;
+  color:#dbeae5;
+  font:800 8px/1 system-ui,sans-serif;
+  letter-spacing:.02em;
+  white-space:nowrap;
+}
+.enemyStatusPoison{border-color:#6d9d65;color:#c9efbd}
+.enemyStatusAtkDown{border-color:#aa6f75;color:#f2c1c6}
+
+/* ATTACK and GUARD occupy exactly the same physical rail. */
+#timingBox{
+  height:74px!important;
+  min-height:74px!important;
+  padding:0 22px!important;
+}
+#timingTrack,
+#timingBox[data-mode="attack"] #timingTrack,
+#timingBox.guardMode #timingTrack{
+  position:absolute!important;
+  left:22px!important;
+  right:22px!important;
+  bottom:18px!important;
+  width:auto!important;
+  height:30px!important;
+  margin:0!important;
+}
+#timingPhase{
+  position:absolute!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  min-height:24px!important;
+  margin:0!important;
+}
+#timingJudges{
+  position:absolute!important;
+  left:22px!important;
+  right:22px!important;
+  bottom:2px!important;
+  width:auto!important;
+  margin:0!important;
+}
+
+@media(max-height:600px) and (pointer:coarse){
+  .enemyHud{margin-top:2px;grid-template-rows:auto 6px auto;gap:2px}
+  .enemyHudTop{grid-template-columns:20px minmax(0,1fr) 23px;gap:3px;min-height:25px;padding:2px 3px}
+  .enemyHud .enemyHudAttr{width:19px!important;height:19px!important}
+  .enemyHud .eName{font-size:9px!important}
+  .enemyTurnBadge{width:22px!important;height:22px!important;border-width:1px!important;font-size:10px!important}
+  .enemyCard .ehp{height:6px!important}
+  .enemyStatus{min-height:13px;padding:1px 3px;font-size:7px}
+  #timingBox{height:58px!important;min-height:58px!important;padding-inline:8px!important}
+  #timingTrack,
+  #timingBox[data-mode="attack"] #timingTrack,
+  #timingBox.guardMode #timingTrack{
+    left:8px!important;
+    right:8px!important;
+    bottom:14px!important;
+    height:28px!important;
+  }
+  #timingPhase{min-height:18px!important}
+  #timingJudges{left:8px!important;right:8px!important;bottom:1px!important}
+}
+
+/* v31.1 — attribute emblems use real image elements so paths work on Pages and file:// */
+.attrIcon{background-image:none!important}
+.attrIconImage{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}

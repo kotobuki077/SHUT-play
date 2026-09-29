@@ -16,7 +16,7 @@ globalThis.SHUT_LOCALES.en={
   settings:{
     button:'SETTINGS',buttonAria:'Open settings',title:'SETTINGS',language:'LANGUAGE',japanese:'日本語',english:'English',
     audio:'AUDIO',master:'Master',bgm:'BGM',se:'Effects',mute:'Mute',unmute:'Unmute',
-    playStyle:'PLAY STYLE',playStyleHelp:'Choose how you guard in battle. Summons begin CLOSED in either mode.',duoMode:'DUO FOLD',openOnly:'OPEN ONLY'
+    playStyle:'PLAY STYLE',playStyleHelp:'Choose how you guard in battle. On phones, OPEN ONLY uses the full screen in landscape. Summons begin CLOSED in either mode.',duoMode:'DUO FOLD',openOnly:'OPEN ONLY',rotateLandscapeTitle:'Rotate your phone to landscape',rotateLandscapeBody:'OPEN ONLY uses the full screen in landscape.'
   },
   closeMenu:{
     title:'CLOSE MENU',gateTitle:'GACHA GATE',description:'Use the outer display to summon monsters and check your journey.',gacha:'GACHA',

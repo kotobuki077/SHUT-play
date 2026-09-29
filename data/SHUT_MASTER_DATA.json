@@ -3298,8 +3298,8 @@
       "frameMs": 150
     },
     "E002": {
-      "source": "assets/creatures-a.png",
-      "cell": 1,
+      "source": "assets/monster-e002-animation.png",
+      "cell": 0,
       "columns": 4,
       "rows": 4,
       "canvasSize": 128,
@@ -3307,65 +3307,39 @@
       "logicalHeight": 112,
       "footInset": 8,
       "placeholder": false,
-      "status": "static_only",
-      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "status": "animated_finished",
+      "provenance": "ChatGPT-only design-preserving authored-frame normalization from canonical creatures-a.png binding cell, 2026-09-29",
       "states": {
         "idle": [
-          1
-        ],
-        "attack": null,
-        "hit": null,
-        "death": null
-      },
-      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
-    },
-    "E003": {
-      "source": "assets/creatures-a.png",
-      "cell": 2,
-      "columns": 4,
-      "rows": 4,
-      "canvasSize": 128,
-      "logicalWidth": 112,
-      "logicalHeight": 112,
-      "footInset": 8,
-      "placeholder": false,
-      "status": "static_only",
-      "provenance": "New image_gen generation without reference images, 2026-09-20",
-      "states": {
-        "idle": [
-          2
-        ],
-        "attack": null,
-        "hit": null,
-        "death": null
-      },
-      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
-    },
-    "E004": {
-      "source": "assets/creatures-a.png",
-      "cell": 3,
-      "columns": 4,
-      "rows": 4,
-      "canvasSize": 128,
-      "logicalWidth": 112,
-      "logicalHeight": 112,
-      "footInset": 8,
-      "placeholder": false,
-      "status": "static_only",
-      "provenance": "New image_gen generation without reference images, 2026-09-20",
-      "states": {
-        "idle": [
+          0,
+          1,
+          2,
           3
         ],
-        "attack": null,
-        "hit": null,
-        "death": null
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
       },
-      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+      "animationStatus": "FINISHED: authored idle/attack/hit/death frames"
     },
-    "E005": {
-      "source": "assets/creatures-a.png",
-      "cell": 4,
+    "E003": {
+      "source": "assets/monster-e003-animation.png",
+      "cell": 0,
       "columns": 4,
       "rows": 4,
       "canvasSize": 128,
@@ -3373,17 +3347,115 @@
       "logicalHeight": 112,
       "footInset": 8,
       "placeholder": false,
-      "status": "static_only",
-      "provenance": "New image_gen generation without reference images, 2026-09-20",
+      "status": "animated_finished",
+      "provenance": "ChatGPT-only design-preserving authored-frame normalization from canonical creatures-a.png binding cell, 2026-09-29",
       "states": {
         "idle": [
-          4
+          0,
+          1,
+          2,
+          3
         ],
-        "attack": null,
-        "hit": null,
-        "death": null
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
       },
-      "animationStatus": "ASSET_REQUIRED: dedicated attack/hit/death frames"
+      "animationStatus": "FINISHED: authored idle/attack/hit/death frames"
+    },
+    "E004": {
+      "source": "assets/monster-e004-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "ChatGPT-only design-preserving authored-frame normalization from canonical creatures-a.png binding cell, 2026-09-29",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "FINISHED: authored idle/attack/hit/death frames"
+    },
+    "E005": {
+      "source": "assets/monster-e005-animation.png",
+      "cell": 0,
+      "columns": 4,
+      "rows": 4,
+      "canvasSize": 128,
+      "logicalWidth": 112,
+      "logicalHeight": 112,
+      "footInset": 8,
+      "placeholder": false,
+      "status": "animated_finished",
+      "provenance": "ChatGPT-only design-preserving authored-frame normalization from canonical creatures-a.png binding cell, 2026-09-29",
+      "states": {
+        "idle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attack": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "hit": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "death": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "animationStatus": "FINISHED: authored idle/attack/hit/death frames"
     },
     "E006": {
       "source": "assets/field-animation.png",

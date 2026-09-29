@@ -1088,7 +1088,7 @@
   function startEncounter(){
     clearTimeout(toast._timer);$('uiToast').classList.remove('show');$('combatFeedback').classList.remove('show');document.querySelectorAll('.monsterDrop,.monsterAttackSpark').forEach(node=>node.remove());
     defenseToken++;attackReadyToken++;encounterSettled=false;patternBeat=null;defenseQueue=[];
-    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter).slice(0,3);defenseTargetId=null;rewardDrops=[];opened=true;setBattlePhase('attackReady',false);setMusicMode(activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');resumeAudioPlayback();updateBattleHeader();renderEnemies();
+    SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter).slice(0,3);defenseTargetId=null;rewardDrops=[];opened=true;setBattlePhase('attackReady',false);const mikadoBattle=enemies.some(e=>globalThis.SHUTMikadoPresentation?.matches?.(e));setMusicMode(mikadoBattle?'mikado':activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');resumeAudioPlayback();updateBattleHeader();renderEnemies();
     $('recoveryTray').classList.remove('show');$('rewardOverlay').classList.remove('show');
     enemies.forEach(e=>{if(e.masterId)S.codex.enemies[e.masterId]=true});evaluateQuests();setBattleCopy(enemies.some(e=>e.boss)?'battle.bossBattle':'battle.encounter','battle.encounterHint',()=>({instruction:attackInstruction()}));
     $('app').style.setProperty('--world','url("'+new URL(MASTER_DATA.presentation.backgrounds[activeStageData.world_id],location.href).href+'")');

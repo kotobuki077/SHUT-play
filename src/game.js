@@ -171,7 +171,7 @@
   function addGift(title,rewardType,rewardAmount,desc='',monsterId=null){
     S.gifts.push({id:'g'+Date.now()+Math.random().toString(16).slice(2),title,rewardType,rewardAmount:Number(rewardAmount)||1,desc,monsterId});updateGiftBadge();saveGame();
   }
-  function rewardName(type){return ({monster:'モンスターの卵',gate_key:'鍵',boss_core:'ボスコア',exp_small:'経験値石・小',exp_medium:'経験値石・中',exp_large:'経験値石・大',gold:'Gold',rank_xp:'Rank EXP'})[type]||type;}
+  function rewardName(type){if(type==='gate_key'){const key='items.ITM010.name',value=t(key);return value===key?'鍵':value}return ({monster:'モンスターの卵',boss_core:'ボスコア',exp_small:'経験値石・小',exp_medium:'経験値石・中',exp_large:'経験値石・大',gold:'Gold',rank_xp:'Rank EXP'})[type]||type;}
   function applyReward(type,amount,monsterId){
     if(!Number.isSafeInteger(amount)||amount<=0)throw Error('Invalid reward amount');
     if(type==='monster'){Monsters.definition(monsterId,MASTER_DATA);const added=Array.from({length:amount},()=>Monsters.create(monsterId,crypto.randomUUID(),MASTER_DATA));S.monsters.push(...added);S.codex.monsters=S.codex.monsters||{};S.codex.monsters[monsterId]=true;}
@@ -287,8 +287,9 @@
   function localizedAttribute(value){const id={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'}[value];return id?t('battle.attributeName.'+id):value}
   const attributeUiId={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'};
   function attributeIcon(value,extra=''){const id=attributeUiId[value]||'wind',label=localizedAttribute(value);return `<span class="attrIcon attrIcon-${id} ${extra}" role="img" aria-label="${label}" title="${label}"></span>`}
-  function localizedDataName(entry){return entry?.nameKey?t(entry.nameKey):entry?.name||''}
+  function localizedDataName(entry){const key=entry?.nameKey||(entry?.monster_id?`monsterData.${entry.monster_id}.name`:null);if(key){const value=t(key);if(value!==key)return value}return entry?.name||''}
   function localizedDataDescription(entry){return entry?.descriptionKey?t(entry.descriptionKey):entry?.description||''}
+  function localizedItemName(key){const itemId={heal:'ITM001',high:'ITM002',elixir:'ITM003'}[key];if(itemId){const localeKey=`items.${itemId}.name`,value=t(localeKey);if(value!==localeKey)return value}return itemDefs[key]?.name||key}
   function displayedEnemyName(enemy){return enemy?.nameKey?t(enemy.nameKey):globalThis.SHUTMikadoPresentation?.matches(enemy)?t('mikado.name'):enemy.name}
   function refreshBattleCopy(){
     if(!currentBattleCopy)return;
@@ -1206,12 +1207,12 @@
     const chapter=MASTER_DATA.chapterProgression?.find(x=>x.chapter===Number(activeStageData?.chapter))||{goldMultiplier:1},g=Math.round(e.gold*Number(chapter.goldMultiplier||1));rewardGold+=g;rewardMonsterExp+=Monsters.battleExp(e,activeStageData,MASTER_DATA);addRankXp(Math.round(e.rankXp*(1+(Number(activeStageData?.difficulty||1)-1)*.08)));if(e.boss){const def=enemyById[e.masterId];if(def?.category==='midboss')bumpQuest('midboss_kill_count',1);else bumpQuest('boss_kill_count',1);}
     // item drops
     let r=Math.random(),drop=null;for(const entry of MASTER_DATA.monsterRules.itemDrops){r-=entry.chance;if(r<0){drop=entry.key;break;}}
-    if(drop && S.items[drop]<itemDefs[drop].max){S.items[drop]++;rewardDrops.push(itemDefs[drop].name);rewardEntries.push({kind:'item',label:itemDefs[drop].name})}
+    if(drop && S.items[drop]<itemDefs[drop].max){const itemName=localizedItemName(drop);S.items[drop]++;rewardDrops.push(itemName);rewardEntries.push({kind:'item',label:itemName})}
     const monster=MASTER_DATA.monsters.find(m=>m.acquisition.enemyId===e.masterId);
     const egg=monster&&(monster.acquisition.guaranteedEgg===true||Math.random()<monster.acquisition.eggRate),monsterName=monster?localizedDataName(monster):'';
     if(egg){const wasOwned=S.monsters.some(x=>x.monsterId===monster.monster_id),instance=Monsters.create(monster.monster_id,crypto.randomUUID(),MASTER_DATA);S.monsters.push(instance);S.codex.monsters=S.codex.monsters||{};S.codex.monsters[monster.monster_id]=true;const label=t('battle.eggDrop',{name:monsterName});e.battleEggDrop={label,rarity:monster.rarity,monsterId:monster.monster_id};rewardDrops.push(label);rewardEntries.push({kind:'egg',label,rarity:monster.rarity,monsterId:monster.monster_id,isNew:!wasOwned});saveGame();}
     const keyRule=MASTER_DATA.monsterRules.keyDrop,keyFound=keyRule.gates.includes(activeGate)&&Math.random()<keyRule.chance;if(keyFound){addWallet('gateKeys',keyRule.amount,'battle key drop');const label=t('battle.keysDrop',{amount:keyRule.amount});rewardDrops.push(label);rewardEntries.push({kind:'key',label});}
-    showMonsterDrop(e,[{label:g+' G',kind:'gold'},...(drop?[{label:itemDefs[drop].name,kind:'item'}]:[]),...(egg?[{label:t('battle.eggDrop',{name:monsterName}),kind:monster.rarity>=4?'rare':'egg'}]:[]),...(keyFound?[{label:t('battle.keysDrop',{amount:keyRule.amount}),kind:'key'}]:[])]);
+    showMonsterDrop(e,[{label:g+' G',kind:'gold'},...(drop?[{label:localizedItemName(drop),kind:'item'}]:[]),...(egg?[{label:t('battle.eggDrop',{name:monsterName}),kind:monster.rarity>=4?'rare':'egg'}]:[]),...(keyFound?[{label:t('battle.keysDrop',{amount:keyRule.amount}),kind:'key'}]:[])]);
   }
   function showMonsterDrop(enemy,drops){
     const card=document.querySelector(`.enemyCard[data-id="${enemy.id}"]`),area=$('battleScreen'),a=area.getBoundingClientRect(),r=card?.getBoundingClientRect();if(!r)return;

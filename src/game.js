@@ -1213,7 +1213,7 @@
   }
   function showMonsterDrop(enemy,drops){
     const card=document.querySelector(`.enemyCard[data-id="${enemy.id}"]`),area=$('battleScreen'),a=area.getBoundingClientRect(),r=card?.getBoundingClientRect();if(!r)return;
-    drops.forEach((drop,i)=>{const node=document.createElement('div'),iconKind=drop.kind==='rare'||drop.kind==='egg'?'egg':drop.kind;node.className='monsterDrop '+drop.kind;node.innerHTML=`${rewardIcon(iconKind,drop.kind==='rare'?4:1,'dropIcon')}<span>${drop.label}</span>`;node.style.left=(r.left+r.width/2-a.left+(i-(drops.length-1)/2)*30)+'px';node.style.top=(r.top+r.height*.6-a.top-i*17)+'px';node.style.animationDelay=(160+i*55)+'ms';node.dataset.enemy=enemy.id;area.append(node);setTimeout(()=>sfx(drop.kind),200+i*55);setTimeout(()=>node.remove(),1200);});
+    drops.forEach((drop,i)=>{const node=document.createElement('div'),iconKind=drop.kind==='rare'||drop.kind==='egg'?'egg':drop.kind,isEgg=iconKind==='egg';node.className='monsterDrop '+drop.kind+(isEgg?' physicalEggDrop':'');node.innerHTML=`${rewardIcon(iconKind,drop.kind==='rare'?4:1,'dropIcon')}<span>${drop.label}</span>`;node.style.left=(r.left+r.width/2-a.left+(i-(drops.length-1)/2)*30)+'px';node.style.top=(r.top+r.height*.6-a.top-i*17)+'px';node.style.animationDelay=(160+i*55)+'ms';node.dataset.enemy=enemy.id;area.append(node);setTimeout(()=>sfx(drop.kind),200+i*55);setTimeout(()=>node.remove(),isEgg?1780:1200);});
   }
   function grantStageRewards(rewards){for(const r of rewards||[])addGift(activeStageData.name,r.type,r.amount,'',r.monsterId);}
   function renderRewardPresentation(title,subtitle,buttonLabel,extra=''){
@@ -1457,8 +1457,6 @@
   $('soundToggle').onclick=showSettings;
   $('titleSettingsBtn').onclick=(event)=>{event.stopPropagation();showSettings()};
   document.querySelectorAll('[data-title-language]').forEach(button=>button.onclick=event=>{event.stopPropagation();I18n.setLanguage(button.dataset.titleLanguage);updateLocalizedUi()});
-  setInterval(updateBattleAction,100);
-
   function partyMembers(){return S.party.map(id=>S.monsters.find(m=>m.id===id)).filter(Boolean).map(m=>({...Monsters.stats(m,MASTER_DATA),id:m.id,status:m.status,hp:m.hp??Monsters.stats(m,MASTER_DATA).maxHp}));}
 
   function syncPartyHp(full=false){

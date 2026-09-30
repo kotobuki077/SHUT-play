@@ -1,0 +1,3984 @@
+{
+  "schemaVersion": 1,
+  "title": "SHUT Plant × Gardener Roster",
+  "rules": {
+    "pairCount": 100,
+    "sharedNumber": true,
+    "gardenerGender": "female",
+    "normalAttributes": [
+      "fire",
+      "wood",
+      "water",
+      "light",
+      "dark"
+    ],
+    "beats": {
+      "fire": "wood",
+      "wood": "water",
+      "water": "fire"
+    },
+    "mutualWeakness": [
+      [
+        "light",
+        "dark"
+      ]
+    ],
+    "mikado": {
+      "no": 16,
+      "id": "G016",
+      "rarity": 4,
+      "attribute": "fire",
+      "designLocked": true
+    },
+    "ultimate": {
+      "no": 100,
+      "rarity": 6,
+      "attribute": "rainbow"
+    },
+    "assetContract": {
+      "separateFrameFiles": true,
+      "spritesheetAllowed": false,
+      "imageRendering": "pixelated",
+      "logicalCanvas": [
+        128,
+        128
+      ],
+      "transparentPaddingMin": 12,
+      "origin": "bottom-center"
+    }
+  },
+  "pairs": [
+    {
+      "no": 1,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 1,
+      "plant": {
+        "id": "P001",
+        "name": "火の芽"
+      },
+      "gardener": {
+        "id": "G001",
+        "name": "火守 ヒバリ",
+        "gender": "female",
+        "weapon": "短剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/001/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 2,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 1,
+      "plant": {
+        "id": "P002",
+        "name": "狐火花"
+      },
+      "gardener": {
+        "id": "G002",
+        "name": "朱城 カガリ",
+        "gender": "female",
+        "weapon": "大槌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/002/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 3,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 1,
+      "plant": {
+        "id": "P003",
+        "name": "灯籠花"
+      },
+      "gardener": {
+        "id": "G003",
+        "name": "灯里 チヨ",
+        "gender": "female",
+        "weapon": "弓",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/003/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 4,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 1,
+      "plant": {
+        "id": "P004",
+        "name": "彼岸花"
+      },
+      "gardener": {
+        "id": "G004",
+        "name": "炎谷 アヤメ",
+        "gender": "female",
+        "weapon": "鎖鎌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/004/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 5,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 2,
+      "plant": {
+        "id": "P005",
+        "name": "溶岩球根"
+      },
+      "gardener": {
+        "id": "G005",
+        "name": "赫野 クロエ",
+        "gender": "female",
+        "weapon": "長槍",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/005/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 6,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 2,
+      "plant": {
+        "id": "P006",
+        "name": "鬼火草"
+      },
+      "gardener": {
+        "id": "G006",
+        "name": "焔崎 レイハ",
+        "gender": "female",
+        "weapon": "双剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/006/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 7,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 2,
+      "plant": {
+        "id": "P007",
+        "name": "炎椿"
+      },
+      "gardener": {
+        "id": "G007",
+        "name": "花守 セツカ",
+        "gender": "female",
+        "weapon": "大盾",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/007/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 8,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 2,
+      "plant": {
+        "id": "P008",
+        "name": "火茸群"
+      },
+      "gardener": {
+        "id": "G008",
+        "name": "枝折 ネネ",
+        "gender": "female",
+        "weapon": "狙撃銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/008/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 9,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 3,
+      "plant": {
+        "id": "P009",
+        "name": "火桜樹"
+      },
+      "gardener": {
+        "id": "G009",
+        "name": "森宮 シオン",
+        "gender": "female",
+        "weapon": "杖",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/009/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 10,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 3,
+      "plant": {
+        "id": "P010",
+        "name": "灼熱向日葵"
+      },
+      "gardener": {
+        "id": "G010",
+        "name": "葉月 ルナ",
+        "gender": "female",
+        "weapon": "散弾銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/010/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 11,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 3,
+      "plant": {
+        "id": "P011",
+        "name": "火山花"
+      },
+      "gardener": {
+        "id": "G011",
+        "name": "水城 ドリル",
+        "gender": "female",
+        "weapon": "薙刀",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/011/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 12,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 3,
+      "plant": {
+        "id": "P012",
+        "name": "炉茸"
+      },
+      "gardener": {
+        "id": "G012",
+        "name": "潮見 ブリケ",
+        "gender": "female",
+        "weapon": "手甲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/012/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 13,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 4,
+      "plant": {
+        "id": "P013",
+        "name": "紅蓮彼岸"
+      },
+      "gardener": {
+        "id": "G013",
+        "name": "雨宮 シグレ",
+        "gender": "female",
+        "weapon": "斧",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/013/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 14,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 4,
+      "plant": {
+        "id": "P014",
+        "name": "熾火蔓"
+      },
+      "gardener": {
+        "id": "G014",
+        "name": "波多野 ラン",
+        "gender": "female",
+        "weapon": "弩",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/014/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 15,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 4,
+      "plant": {
+        "id": "P015",
+        "name": "炉口花"
+      },
+      "gardener": {
+        "id": "G015",
+        "name": "澄川 ポピー",
+        "gender": "female",
+        "weapon": "大剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/015/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 16,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 4,
+      "plant": {
+        "id": "P016",
+        "name": "火炎桜"
+      },
+      "gardener": {
+        "id": "G016",
+        "name": "遠野 みかど",
+        "gender": "female",
+        "weapon": "刀（クリティカル時バズーカへ変形）",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": true
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          330,
+          330
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/016/{side}/{state}-{frame:02d}.png",
+        "explicitFrames": {
+          "idle": [
+            "assets/roster/016/gardener/frame-00.png",
+            "assets/roster/016/gardener/frame-01.png",
+            "assets/roster/016/gardener/frame-02.png",
+            "assets/roster/016/gardener/frame-03.png"
+          ],
+          "attack": [
+            "assets/roster/016/gardener/frame-04.png",
+            "assets/roster/016/gardener/frame-05.png",
+            "assets/roster/016/gardener/frame-06.png",
+            "assets/roster/016/gardener/frame-07.png"
+          ],
+          "skill": [
+            "assets/roster/016/gardener/frame-04.png",
+            "assets/roster/016/gardener/frame-05.png",
+            "assets/roster/016/gardener/frame-06.png",
+            "assets/roster/016/gardener/frame-07.png"
+          ],
+          "hit": [
+            "assets/roster/016/gardener/frame-08.png",
+            "assets/roster/016/gardener/frame-09.png",
+            "assets/roster/016/gardener/frame-10.png",
+            "assets/roster/016/gardener/frame-11.png"
+          ],
+          "down": [
+            "assets/roster/016/gardener/frame-12.png",
+            "assets/roster/016/gardener/frame-13.png",
+            "assets/roster/016/gardener/frame-14.png",
+            "assets/roster/016/gardener/frame-15.png"
+          ]
+        }
+      }
+    },
+    {
+      "no": 17,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 5,
+      "plant": {
+        "id": "P017",
+        "name": "神火蓮"
+      },
+      "gardener": {
+        "id": "G017",
+        "name": "光井 クレン",
+        "gender": "female",
+        "weapon": "ワイヤー",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/017/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 18,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 5,
+      "plant": {
+        "id": "P018",
+        "name": "焔梅"
+      },
+      "gardener": {
+        "id": "G018",
+        "name": "天城 ユズハ",
+        "gender": "female",
+        "weapon": "ランス",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/018/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 19,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 5,
+      "plant": {
+        "id": "P019",
+        "name": "煉獄百合"
+      },
+      "gardener": {
+        "id": "G019",
+        "name": "星宮 レイズ",
+        "gender": "female",
+        "weapon": "砲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/019/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 20,
+      "attribute": "fire",
+      "attributeJa": "火",
+      "rarity": 5,
+      "plant": {
+        "id": "P020",
+        "name": "火口鳥居樹"
+      },
+      "gardener": {
+        "id": "G020",
+        "name": "暁月 カガリナ",
+        "gender": "female",
+        "weapon": "鎌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/020/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 21,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 1,
+      "plant": {
+        "id": "P021",
+        "name": "鈴蘭蔓"
+      },
+      "gardener": {
+        "id": "G021",
+        "name": "夜坂 スズカ",
+        "gender": "female",
+        "weapon": "短剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/021/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 22,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 1,
+      "plant": {
+        "id": "P022",
+        "name": "毒茸輪"
+      },
+      "gardener": {
+        "id": "G022",
+        "name": "月影 キノハ",
+        "gender": "female",
+        "weapon": "大槌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/022/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 23,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 1,
+      "plant": {
+        "id": "P023",
+        "name": "捕食蔓"
+      },
+      "gardener": {
+        "id": "G023",
+        "name": "黒瀬 カナハ",
+        "gender": "female",
+        "weapon": "弓",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/023/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 24,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 1,
+      "plant": {
+        "id": "P024",
+        "name": "木霊切株"
+      },
+      "gardener": {
+        "id": "G024",
+        "name": "紫苑 モリト",
+        "gender": "female",
+        "weapon": "鎖鎌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/024/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 25,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 2,
+      "plant": {
+        "id": "P025",
+        "name": "茨薔薇"
+      },
+      "gardener": {
+        "id": "G025",
+        "name": "影森 ロゼ",
+        "gender": "female",
+        "weapon": "長槍",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/025/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 26,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 2,
+      "plant": {
+        "id": "P026",
+        "name": "種霊莢"
+      },
+      "gardener": {
+        "id": "G026",
+        "name": "火守 ハジメ",
+        "gender": "female",
+        "weapon": "双剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/026/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 27,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 2,
+      "plant": {
+        "id": "P027",
+        "name": "枝垂桜"
+      },
+      "gardener": {
+        "id": "G027",
+        "name": "朱城 ハルカ",
+        "gender": "female",
+        "weapon": "大盾",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/027/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 28,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 2,
+      "plant": {
+        "id": "P028",
+        "name": "社根樹"
+      },
+      "gardener": {
+        "id": "G028",
+        "name": "灯里 ダイナ",
+        "gender": "female",
+        "weapon": "狙撃銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/028/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 29,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 3,
+      "plant": {
+        "id": "P029",
+        "name": "白花鹿木"
+      },
+      "gardener": {
+        "id": "G029",
+        "name": "炎谷 ユズ",
+        "gender": "female",
+        "weapon": "杖",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/029/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 30,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 3,
+      "plant": {
+        "id": "P030",
+        "name": "眠り森札樹"
+      },
+      "gardener": {
+        "id": "G030",
+        "name": "赫野 ヨミ",
+        "gender": "female",
+        "weapon": "散弾銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/030/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 31,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 3,
+      "plant": {
+        "id": "P031",
+        "name": "苔社株"
+      },
+      "gardener": {
+        "id": "G031",
+        "name": "焔崎 ハルノ",
+        "gender": "female",
+        "weapon": "薙刀",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/031/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 32,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 3,
+      "plant": {
+        "id": "P032",
+        "name": "傘茸園"
+      },
+      "gardener": {
+        "id": "G032",
+        "name": "花守 テンコ",
+        "gender": "female",
+        "weapon": "手甲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/032/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 33,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 4,
+      "plant": {
+        "id": "P033",
+        "name": "棘薔薇王"
+      },
+      "gardener": {
+        "id": "G033",
+        "name": "枝折 カザリ",
+        "gender": "female",
+        "weapon": "斧",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/033/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 34,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 4,
+      "plant": {
+        "id": "P034",
+        "name": "夜桜木霊"
+      },
+      "gardener": {
+        "id": "G034",
+        "name": "森宮 シズク",
+        "gender": "female",
+        "weapon": "弩",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/034/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 35,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 4,
+      "plant": {
+        "id": "P035",
+        "name": "処刑顎花"
+      },
+      "gardener": {
+        "id": "G035",
+        "name": "葉月 ガブリ",
+        "gender": "female",
+        "weapon": "大剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/035/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 36,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 4,
+      "plant": {
+        "id": "P036",
+        "name": "涙柳"
+      },
+      "gardener": {
+        "id": "G036",
+        "name": "水城 ミナミ",
+        "gender": "female",
+        "weapon": "刀",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/036/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 37,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 5,
+      "plant": {
+        "id": "P037",
+        "name": "桜鳥居樹"
+      },
+      "gardener": {
+        "id": "G037",
+        "name": "潮見 レンゲ",
+        "gender": "female",
+        "weapon": "ワイヤー",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/037/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 38,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 5,
+      "plant": {
+        "id": "P038",
+        "name": "竹霊林"
+      },
+      "gardener": {
+        "id": "G038",
+        "name": "雨宮 タケル",
+        "gender": "female",
+        "weapon": "ランス",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/038/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 39,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 5,
+      "plant": {
+        "id": "P039",
+        "name": "藤幽木"
+      },
+      "gardener": {
+        "id": "G039",
+        "name": "波多野 ウツロ",
+        "gender": "female",
+        "weapon": "砲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/039/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 40,
+      "attribute": "wood",
+      "attributeJa": "木",
+      "rarity": 5,
+      "plant": {
+        "id": "P040",
+        "name": "白花世界樹"
+      },
+      "gardener": {
+        "id": "G040",
+        "name": "澄川 ユキノ",
+        "gender": "female",
+        "weapon": "鎌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/040/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 41,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 1,
+      "plant": {
+        "id": "P041",
+        "name": "月海月花"
+      },
+      "gardener": {
+        "id": "G041",
+        "name": "白峰 セレネ",
+        "gender": "female",
+        "weapon": "短剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/041/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 42,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 1,
+      "plant": {
+        "id": "P042",
+        "name": "毒睡蓮池"
+      },
+      "gardener": {
+        "id": "G042",
+        "name": "光井 カグラ",
+        "gender": "female",
+        "weapon": "大槌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/042/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 43,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 1,
+      "plant": {
+        "id": "P043",
+        "name": "流花葉"
+      },
+      "gardener": {
+        "id": "G043",
+        "name": "天城 ヒナ",
+        "gender": "female",
+        "weapon": "弓",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/043/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 44,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 1,
+      "plant": {
+        "id": "P044",
+        "name": "葦水霊"
+      },
+      "gardener": {
+        "id": "G044",
+        "name": "星宮 フウ",
+        "gender": "female",
+        "weapon": "鎖鎌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/044/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 45,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 2,
+      "plant": {
+        "id": "P045",
+        "name": "海鍛珊瑚"
+      },
+      "gardener": {
+        "id": "G045",
+        "name": "暁月 ツキヨ",
+        "gender": "female",
+        "weapon": "長槍",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/045/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 46,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 2,
+      "plant": {
+        "id": "P046",
+        "name": "氷蓮"
+      },
+      "gardener": {
+        "id": "G046",
+        "name": "夜坂 ユキノア",
+        "gender": "female",
+        "weapon": "双剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/046/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 47,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 2,
+      "plant": {
+        "id": "P047",
+        "name": "沼食花"
+      },
+      "gardener": {
+        "id": "G047",
+        "name": "月影 モモ",
+        "gender": "female",
+        "weapon": "大盾",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/047/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 48,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 2,
+      "plant": {
+        "id": "P048",
+        "name": "雨雲花"
+      },
+      "gardener": {
+        "id": "G048",
+        "name": "黒瀬 アメ",
+        "gender": "female",
+        "weapon": "狙撃銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/048/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 49,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 3,
+      "plant": {
+        "id": "P049",
+        "name": "深淵蓮"
+      },
+      "gardener": {
+        "id": "G049",
+        "name": "紫苑 ネレイス",
+        "gender": "female",
+        "weapon": "杖",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/049/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 50,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 3,
+      "plant": {
+        "id": "P050",
+        "name": "蛇池蔓"
+      },
+      "gardener": {
+        "id": "G050",
+        "name": "影森 カイリ",
+        "gender": "female",
+        "weapon": "散弾銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/050/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 51,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 3,
+      "plant": {
+        "id": "P051",
+        "name": "海月灯花"
+      },
+      "gardener": {
+        "id": "G051",
+        "name": "火守 ルリ",
+        "gender": "female",
+        "weapon": "薙刀",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/051/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 52,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 3,
+      "plant": {
+        "id": "P052",
+        "name": "白蓮珠"
+      },
+      "gardener": {
+        "id": "G052",
+        "name": "朱城 シズクナ",
+        "gender": "female",
+        "weapon": "手甲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/052/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 53,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 4,
+      "plant": {
+        "id": "P053",
+        "name": "結晶蓮"
+      },
+      "gardener": {
+        "id": "G053",
+        "name": "灯里 ナギ",
+        "gender": "female",
+        "weapon": "斧",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/053/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 54,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 4,
+      "plant": {
+        "id": "P054",
+        "name": "鯉帯水草"
+      },
+      "gardener": {
+        "id": "G054",
+        "name": "炎谷 カイ",
+        "gender": "female",
+        "weapon": "弩",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/054/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 55,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 4,
+      "plant": {
+        "id": "P055",
+        "name": "浮遊桜泉"
+      },
+      "gardener": {
+        "id": "G055",
+        "name": "赫野 ヨミコ",
+        "gender": "female",
+        "weapon": "大剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/055/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 56,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 4,
+      "plant": {
+        "id": "P056",
+        "name": "双鯉輪花"
+      },
+      "gardener": {
+        "id": "G056",
+        "name": "焔崎 ミコト",
+        "gender": "female",
+        "weapon": "刀",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/056/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 57,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 5,
+      "plant": {
+        "id": "P057",
+        "name": "鯨滝花"
+      },
+      "gardener": {
+        "id": "G057",
+        "name": "花守 アオイ",
+        "gender": "female",
+        "weapon": "ワイヤー",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/057/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 58,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 5,
+      "plant": {
+        "id": "P058",
+        "name": "氷宮花"
+      },
+      "gardener": {
+        "id": "G058",
+        "name": "枝折 トワ",
+        "gender": "female",
+        "weapon": "ランス",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/058/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 59,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 5,
+      "plant": {
+        "id": "P059",
+        "name": "水眼花"
+      },
+      "gardener": {
+        "id": "G059",
+        "name": "森宮 レイ",
+        "gender": "female",
+        "weapon": "砲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/059/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 60,
+      "attribute": "water",
+      "attributeJa": "水",
+      "rarity": 5,
+      "plant": {
+        "id": "P060",
+        "name": "災潮蓮"
+      },
+      "gardener": {
+        "id": "G060",
+        "name": "葉月 アマネ",
+        "gender": "female",
+        "weapon": "鎌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/060/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 61,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 1,
+      "plant": {
+        "id": "P061",
+        "name": "光輪花"
+      },
+      "gardener": {
+        "id": "G061",
+        "name": "水城 セラ",
+        "gender": "female",
+        "weapon": "短剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/061/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 62,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 1,
+      "plant": {
+        "id": "P062",
+        "name": "鈴光花"
+      },
+      "gardener": {
+        "id": "G062",
+        "name": "潮見 ノア",
+        "gender": "female",
+        "weapon": "大槌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/062/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 63,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 1,
+      "plant": {
+        "id": "P063",
+        "name": "結晶百合"
+      },
+      "gardener": {
+        "id": "G063",
+        "name": "雨宮 ユキノセ",
+        "gender": "female",
+        "weapon": "弓",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/063/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 64,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 1,
+      "plant": {
+        "id": "P064",
+        "name": "機関向日葵"
+      },
+      "gardener": {
+        "id": "G064",
+        "name": "波多野 ヒカリ",
+        "gender": "female",
+        "weapon": "鎖鎌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/064/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 65,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 2,
+      "plant": {
+        "id": "P065",
+        "name": "軌道花"
+      },
+      "gardener": {
+        "id": "G065",
+        "name": "澄川 ステラ",
+        "gender": "female",
+        "weapon": "長槍",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/065/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 66,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 2,
+      "plant": {
+        "id": "P066",
+        "name": "光藤"
+      },
+      "gardener": {
+        "id": "G066",
+        "name": "白峰 シラユキ",
+        "gender": "female",
+        "weapon": "双剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/066/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 67,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 2,
+      "plant": {
+        "id": "P067",
+        "name": "天使莢"
+      },
+      "gardener": {
+        "id": "G067",
+        "name": "光井 ルア",
+        "gender": "female",
+        "weapon": "大盾",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/067/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 68,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 2,
+      "plant": {
+        "id": "P068",
+        "name": "恩寵薔薇"
+      },
+      "gardener": {
+        "id": "G068",
+        "name": "天城 カレン",
+        "gender": "female",
+        "weapon": "狙撃銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/068/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 69,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 3,
+      "plant": {
+        "id": "P069",
+        "name": "天桜塔"
+      },
+      "gardener": {
+        "id": "G069",
+        "name": "星宮 アイリス",
+        "gender": "female",
+        "weapon": "杖",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/069/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 70,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 3,
+      "plant": {
+        "id": "P070",
+        "name": "空蓮晶"
+      },
+      "gardener": {
+        "id": "G070",
+        "name": "暁月 アカリ",
+        "gender": "female",
+        "weapon": "散弾銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/070/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 71,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 3,
+      "plant": {
+        "id": "P071",
+        "name": "幻桜灯"
+      },
+      "gardener": {
+        "id": "G071",
+        "name": "夜坂 レース",
+        "gender": "female",
+        "weapon": "薙刀",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/071/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 72,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 3,
+      "plant": {
+        "id": "P072",
+        "name": "月光鈴蘭"
+      },
+      "gardener": {
+        "id": "G072",
+        "name": "月影 ノクターン",
+        "gender": "female",
+        "weapon": "手甲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/072/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 73,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 4,
+      "plant": {
+        "id": "P073",
+        "name": "綿眼花"
+      },
+      "gardener": {
+        "id": "G073",
+        "name": "黒瀬 ミント",
+        "gender": "female",
+        "weapon": "斧",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/073/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 74,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 4,
+      "plant": {
+        "id": "P074",
+        "name": "日輪眼花"
+      },
+      "gardener": {
+        "id": "G074",
+        "name": "紫苑 ヒヨリ",
+        "gender": "female",
+        "weapon": "弩",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/074/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 75,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 4,
+      "plant": {
+        "id": "P075",
+        "name": "藤社光花"
+      },
+      "gardener": {
+        "id": "G075",
+        "name": "影森 コトネ",
+        "gender": "female",
+        "weapon": "大剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/075/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 76,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 4,
+      "plant": {
+        "id": "P076",
+        "name": "水晶蓮眼"
+      },
+      "gardener": {
+        "id": "G076",
+        "name": "火守 スミレ",
+        "gender": "female",
+        "weapon": "刀",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/076/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 77,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 5,
+      "plant": {
+        "id": "P077",
+        "name": "白彼岸冠"
+      },
+      "gardener": {
+        "id": "G077",
+        "name": "朱城 シエル",
+        "gender": "female",
+        "weapon": "ワイヤー",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/077/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 78,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 5,
+      "plant": {
+        "id": "P078",
+        "name": "薔薇終花束"
+      },
+      "gardener": {
+        "id": "G078",
+        "name": "灯里 ナナセ",
+        "gender": "female",
+        "weapon": "ランス",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/078/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 79,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 5,
+      "plant": {
+        "id": "P079",
+        "name": "鈴蘭灯林"
+      },
+      "gardener": {
+        "id": "G079",
+        "name": "炎谷 フローラ",
+        "gender": "female",
+        "weapon": "砲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/079/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 80,
+      "attribute": "light",
+      "attributeJa": "光",
+      "rarity": 5,
+      "plant": {
+        "id": "P080",
+        "name": "白夜眼花"
+      },
+      "gardener": {
+        "id": "G080",
+        "name": "赫野 オリカ",
+        "gender": "female",
+        "weapon": "鎌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/080/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 81,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 1,
+      "plant": {
+        "id": "P081",
+        "name": "影灯花"
+      },
+      "gardener": {
+        "id": "G081",
+        "name": "焔崎 ヨミナ",
+        "gender": "female",
+        "weapon": "短剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/081/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 82,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 1,
+      "plant": {
+        "id": "P082",
+        "name": "月影蔓"
+      },
+      "gardener": {
+        "id": "G082",
+        "name": "花守 ルナリア",
+        "gender": "female",
+        "weapon": "大槌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/082/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 83,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 1,
+      "plant": {
+        "id": "P083",
+        "name": "喰華"
+      },
+      "gardener": {
+        "id": "G083",
+        "name": "枝折 クレハ",
+        "gender": "female",
+        "weapon": "弓",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/083/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 84,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 1,
+      "plant": {
+        "id": "P084",
+        "name": "墓標百合"
+      },
+      "gardener": {
+        "id": "G084",
+        "name": "森宮 ネムリ",
+        "gender": "female",
+        "weapon": "鎖鎌",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/084/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 85,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 2,
+      "plant": {
+        "id": "P085",
+        "name": "毒百合鍋"
+      },
+      "gardener": {
+        "id": "G085",
+        "name": "葉月 シオンネ",
+        "gender": "female",
+        "weapon": "長槍",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/085/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 86,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 2,
+      "plant": {
+        "id": "P086",
+        "name": "幽藤"
+      },
+      "gardener": {
+        "id": "G086",
+        "name": "水城 カスミ",
+        "gender": "female",
+        "weapon": "双剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/086/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 87,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 2,
+      "plant": {
+        "id": "P087",
+        "name": "彼岸花沼"
+      },
+      "gardener": {
+        "id": "G087",
+        "name": "潮見 アカネ",
+        "gender": "female",
+        "weapon": "大盾",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/087/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 88,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 2,
+      "plant": {
+        "id": "P088",
+        "name": "黒蓮池"
+      },
+      "gardener": {
+        "id": "G088",
+        "name": "雨宮 レイガ",
+        "gender": "female",
+        "weapon": "狙撃銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/088/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 89,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 3,
+      "plant": {
+        "id": "P089",
+        "name": "骸桜"
+      },
+      "gardener": {
+        "id": "G089",
+        "name": "波多野 シラユキナ",
+        "gender": "female",
+        "weapon": "杖",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/089/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 90,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 3,
+      "plant": {
+        "id": "P090",
+        "name": "深淵眼花"
+      },
+      "gardener": {
+        "id": "G090",
+        "name": "澄川 マヨイ",
+        "gender": "female",
+        "weapon": "散弾銃",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/090/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 91,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 3,
+      "plant": {
+        "id": "P091",
+        "name": "災桜"
+      },
+      "gardener": {
+        "id": "G091",
+        "name": "白峰 ヨルカ",
+        "gender": "female",
+        "weapon": "薙刀",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/091/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 92,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 3,
+      "plant": {
+        "id": "P092",
+        "name": "月海月"
+      },
+      "gardener": {
+        "id": "G092",
+        "name": "光井 ミズハ",
+        "gender": "female",
+        "weapon": "手甲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/092/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 93,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 4,
+      "plant": {
+        "id": "P093",
+        "name": "暴食花"
+      },
+      "gardener": {
+        "id": "G093",
+        "name": "天城 アカリナ",
+        "gender": "female",
+        "weapon": "斧",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/093/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 94,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 4,
+      "plant": {
+        "id": "P094",
+        "name": "藤呪木"
+      },
+      "gardener": {
+        "id": "G094",
+        "name": "星宮 シノ",
+        "gender": "female",
+        "weapon": "弩",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/094/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 95,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 4,
+      "plant": {
+        "id": "P095",
+        "name": "怪映蘭"
+      },
+      "gardener": {
+        "id": "G095",
+        "name": "暁月 キララ",
+        "gender": "female",
+        "weapon": "大剣",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/095/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 96,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 4,
+      "plant": {
+        "id": "P096",
+        "name": "白眼百合"
+      },
+      "gardener": {
+        "id": "G096",
+        "name": "夜坂 ヒカリナ",
+        "gender": "female",
+        "weapon": "刀",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "attack_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/096/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 97,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 5,
+      "plant": {
+        "id": "P097",
+        "name": "彼岸眼"
+      },
+      "gardener": {
+        "id": "G097",
+        "name": "月影 クレナ",
+        "gender": "female",
+        "weapon": "ワイヤー",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "defense_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/097/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 98,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 5,
+      "plant": {
+        "id": "P098",
+        "name": "運命蓮"
+      },
+      "gardener": {
+        "id": "G098",
+        "name": "黒瀬 スイ",
+        "gender": "female",
+        "weapon": "ランス",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "speed_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/098/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 99,
+      "attribute": "dark",
+      "attributeJa": "闇",
+      "rarity": 5,
+      "plant": {
+        "id": "P099",
+        "name": "鏡灯花"
+      },
+      "gardener": {
+        "id": "G099",
+        "name": "紫苑 メイ",
+        "gender": "female",
+        "weapon": "砲",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "range_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/099/{side}/{state}-{frame:02d}.png"
+      }
+    },
+    {
+      "no": 100,
+      "attribute": "rainbow",
+      "attributeJa": "虹",
+      "rarity": 6,
+      "plant": {
+        "id": "P100",
+        "name": "百彩夢蓮"
+      },
+      "gardener": {
+        "id": "G100",
+        "name": "星宮 ルミナ",
+        "gender": "female",
+        "weapon": "星環杖",
+        "plantMode": {
+          "kind": "skill",
+          "effect": "recovery_up"
+        },
+        "designLocked": false
+      },
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/100/{side}/{state}-{frame:02d}.png"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+/* Canonical pixel-perfect rendering contract */
+.pixel-art,.pixel-art img,.pixel-art canvas,.rosterPixelFrame,.allyFaceImage{
+  image-rendering:pixelated!important;
+  image-rendering:crisp-edges!important;
+  -ms-interpolation-mode:nearest-neighbor;
+}
+.pixelStage{position:relative;isolation:isolate}
+.pixelLayer{position:absolute;inset:0;pointer-events:none}
+.pixelLayerBack{z-index:1}.pixelCharacterLayer{z-index:2}.pixelLayerFront{z-index:3}.pixelTrailLayer{z-index:4}.pixelHitLayer{z-index:5}.pixelUiLayer{z-index:6}
+.pixelActorCanvas,.pixelFxCanvas{display:block;transform:none!important;filter:none!important;opacity:1}
+.pixelActorCanvas[data-asset-status="missing"]{visibility:hidden}

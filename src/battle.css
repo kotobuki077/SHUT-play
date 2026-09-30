@@ -20,13 +20,18 @@
 #battlePartner .allyStatus{max-width:100%;overflow:visible;text-overflow:clip;white-space:nowrap}
 #battlePartner .allyHp{height:5px!important;margin:4px 0 3px!important;overflow:hidden;border:1px solid #173a43;background:#061b24!important}
 #battlePartner .allyHp i{display:block;height:100%}
-#battlePartner .skillGauge.skillSegments{display:flex!important;align-items:center!important;gap:4px!important;height:11px!important;padding:1px 3px!important;box-sizing:border-box;border:1px solid #6f877f!important;background:#061a24!important}
-#battlePartner .skillSegmentTrack{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;flex:1;height:6px}
+#battlePartner .skillGauge.skillSegments{display:flex!important;align-items:center!important;gap:4px!important;height:11px!important;padding:1px 3px!important;box-sizing:border-box;min-width:0;border:1px solid #6f877f!important;background:#061a24!important}
+#battlePartner .skillSegmentTrack{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;flex:1;min-width:0;height:6px}
 #battlePartner .skillSegment{display:block;border:1px solid #52716f;background:#071c24}
 #battlePartner .skillSegment.filled{background:#47cbd2;border-color:#9eecea}
 #battlePartner .skillGauge.skillSegments>em{position:static!important;flex:0 0 auto;font-size:8px!important;font-style:normal}
 #battlePartner .monsterHud.skillReady .skillSegment.filled{background:#efd36c;border-color:#fff0a2}
 #battlePartner .monsterHud.guardTargetAlly{border-color:#f3d47a!important;box-shadow:0 0 0 1px #f3d47a66,0 0 18px #f3d47a66!important}
+#battlePartner .skillGauge.skillSegments>em{display:flex;align-items:center;gap:4px;white-space:nowrap}
+#battlePartner .gardenerHud .skillGauge.skillSegments{gap:1px!important;padding-inline:1px!important}
+#battlePartner .plantModeRisk{font:800 8px/1 "Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;color:#ffe39b;letter-spacing:0}
+#battlePartner .monsterHud.plantModeActive{border-color:#efd36c!important;box-shadow:inset 0 0 0 1px #efd36c66!important}
+#battlePartner .monsterHud.berserkTargetAlly{border-color:#ef765f!important;box-shadow:inset 0 0 0 1px #ef765faa,0 0 12px #ef765f66!important}
 
 /* Stage HUD */
 #stageBox{grid-area:stage;position:relative!important;inset:auto!important;justify-self:end;align-self:start;width:min(270px,100%)!important;max-width:270px!important;min-width:0;padding:10px 12px!important;box-sizing:border-box;text-align:left!important;background:linear-gradient(180deg,#0d3139ed,#08252ee8)!important;border:1px solid var(--battle-edge)!important;box-shadow:inset 0 0 0 1px #031820,0 8px 18px #03182044!important}
@@ -150,6 +155,7 @@
  #battlePartner .allyHp{height:4px!important;margin:2px 0!important}
  #battlePartner .skillGauge.skillSegments{height:9px!important;padding:1px 2px!important}
  #battlePartner .skillSegmentTrack{height:5px;gap:1px}#battlePartner .skillGauge.skillSegments>em{font-size:7px!important}
+ #battlePartner .plantModeRisk{font-size:8px!important}
  #enemyArea{left:5px!important;right:5px!important;top:182px!important;bottom:78px!important;width:auto!important;gap:3px!important;padding:0 0 8px!important;align-items:flex-end}#enemyArea[data-enemy-count="2"],#enemyArea[data-enemy-count="3"]{column-gap:3px!important}
  .enemySlotDrop{width:112px;min-height:108px;padding-bottom:31px}.enemySlotEgg{width:54px;height:54px}.enemySlotEgg .slotEggIcon{width:50px;height:50px}
  .enemyCard,.enemyCard.compact{width:112px!important;max-width:112px!important;flex-basis:112px!important}.enemyCard.bossCard{max-width:196px!important;flex-basis:196px!important}
@@ -1127,3 +1133,48 @@
 /* v31.1 — attribute emblems use real image elements so paths work on Pages and file:// */
 .attrIcon{background-image:none!important}
 .attrIconImage{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+
+
+/* v32 — Gardener battle vertical slice. Independent PNG frames only. */
+.attrTextIcon{display:grid!important;place-items:center;background:#071c25;border:1px solid #d9c889!important;color:#f3e9bd!important;font-size:10px!important;line-height:1!important}
+.attrTextIcon b{font:900 10px/1 system-ui,sans-serif}
+.gardenerPartyHud .gardenerHud{min-height:54px}
+.allyFaceCrop{position:relative;width:48px;height:48px;overflow:hidden;flex:0 0 48px;border:1px solid rgba(217,200,137,.58);background:linear-gradient(180deg,rgba(14,39,48,.95),rgba(5,18,24,.98))}
+.allyFaceCrop .allyFaceCanvas{position:absolute;left:8px;top:8px;width:32px;height:32px;image-rendering:pixelated;image-rendering:crisp-edges;transform:none!important;filter:none!important}
+.allyArtPending,.gardenerRosterArt em,.plantBattleArt span{position:absolute;inset:0;display:grid;place-items:center;font:800 8px/1.2 monospace;letter-spacing:.08em;color:rgba(240,226,177,.62);text-align:center}
+.gardenerRosterArt{position:relative;display:grid;place-items:center;min-height:112px;overflow:hidden;background:rgba(4,18,25,.72);border:1px solid rgba(217,200,137,.24)}
+.gardenerRosterArt .gardenerBodyCanvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges;transform:none!important;filter:none!important}
+.gardenerDetailPortrait .gardenerRosterArt{min-height:220px}.gardenerDetailPortrait .gardenerRosterArt .gardenerBodyCanvas{display:block}
+.gardenerGrid .gardenerTile{min-height:178px}
+.plantBattleArt{position:relative;width:100%;height:100%;min-height:96px;display:grid;place-items:center}
+.plantBattleArt .plantBodyCanvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges;transform:none!important;filter:none!important}
+.plantEnemyCard.berserkGardenerEnemy .plantBattleArt{outline:1px solid rgba(239,119,108,.35);outline-offset:2px}
+.gardenerBattleMotion{position:absolute;z-index:36;width:128px;height:128px;pointer-events:none;overflow:visible}
+.gardenerBattleMotion .pixelActorCanvas{position:absolute;left:0;top:0;width:128px;height:128px;image-rendering:pixelated;image-rendering:crisp-edges;transform:none!important;filter:none!important}
+.gardenerBattleMotion span{position:absolute;left:0;right:0;bottom:-12px;text-align:center;white-space:nowrap;font:900 9px/1 monospace;letter-spacing:.08em;color:#f2e2a5;text-shadow:0 2px 0 #071c25}
+.gardenerBattleMotion.critical span::before{content:"None but shot"}
+.gardenerBattleMotion.critical span{font-size:0}.gardenerBattleMotion.critical span::before{font-size:9px}
+.pixelBattleFx{position:absolute;z-index:37;width:128px;height:128px;pointer-events:none;image-rendering:pixelated;image-rendering:crisp-edges;transform:none!important;filter:none!important}
+.pixelBattleFx.layer-trail{z-index:38}.pixelBattleFx.layer-hit{z-index:39}
+.enemySlotSeed,.seedDropIcon,.seedResultIcon{display:grid;place-items:center;border:1px solid #d9c889;background:#0a2528;color:#efe2a7;font:900 10px/1 monospace;letter-spacing:.08em}
+.enemySlotSeed{width:46px;height:30px;clip-path:polygon(50% 0,88% 25%,100% 68%,69% 100%,31% 100%,0 68%,12% 25%)}
+.physicalSeedDrop .seedDropIcon{width:38px;height:26px}
+.seedReward,.gardenerReward{border-color:rgba(217,200,137,.52)!important}
+.seedResultIcon{width:58px;height:38px;margin:auto}
+.gardenerReward>b{color:#efe2a7;letter-spacing:.08em}
+#battlePartner .allyHudTop .attrTextIcon b{grid-area:auto!important;font-size:8px!important;line-height:1!important;white-space:nowrap!important}
+#battlePartner .allyHudTop > b{overflow:hidden!important;text-overflow:ellipsis!important}
+#battlePartner .allyMeta .attrIcon{box-sizing:border-box;width:16px!important;height:16px!important;overflow:hidden}
+#battlePartner .allyMeta .attrIconImage{width:100%!important;height:100%!important}
+.enemyHud .attrTextIcon b{font-size:8px!important}
+.plantEnemyCard .ehpNow{background:var(--hp-color)!important}
+.plantEnemyCard .plantBodyCanvas{width:var(--plant-pixel-size,128px)!important;height:var(--plant-pixel-size,128px)!important;max-width:none!important;max-height:none!important}
+.plantEnemyCard .plantBattleArt span{inset:auto;box-sizing:border-box;width:min(160px,90%);min-height:56px;padding:12px 8px;border:2px solid #d9c889;background:#071c25f2;color:#f3e9bd;font:900 11px/1.35 monospace;letter-spacing:.06em}
+@media(max-height:600px){
+  .plantEnemyCard .enemySpriteWrap{height:100px!important}
+  .plantEnemyCard.bossCard .enemySpriteWrap{height:136px!important}
+  .plantEnemyCard .plantBattleArt{min-height:0}
+  .gardenerPartyHud .allyFaceCrop{width:32px;height:32px;flex-basis:32px}
+  .gardenerPartyHud .allyFaceCrop .allyFaceCanvas{left:0;top:0;width:32px;height:32px}
+  .gardenerPartyHud .allyArtPending{font-size:6px;letter-spacing:0}
+}

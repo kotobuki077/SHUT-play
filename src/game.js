@@ -5,6 +5,9 @@
   const t = (key,values) => I18n.t(key,values);
   const MASTER_DATA = globalThis.SHUT_MASTER_DATA;
   const Monsters = globalThis.SHUTMonsters;
+  const Roster = globalThis.SHUTRoster;
+  const RosterArt = globalThis.SHUTRosterArt;
+  const Gardeners = globalThis.SHUTGardeners;
   const allyFrames={};
   const Combat = globalThis.SHUTCombat;
   const Systems = globalThis.SHUTSystems;
@@ -13,7 +16,7 @@
 
   const attributes = ['火','水','雷','地','風'];
   const beats = {'火':'風','風':'地','地':'雷','雷':'水','水':'火'};
-  const attrColor = {'火':'#f06a5e','水':'#5eb5e8','雷':'#c19ae9','地':'#d2a451','風':'#68c88e'};
+  const attrColor = {'火':'#f06a5e','水':'#5eb5e8','雷':'#c19ae9','地':'#d2a451','風':'#68c88e',fire:'#f06a5e',wood:'#68c88e',water:'#5eb5e8',light:'#ead391',dark:'#a987cf',rainbow:'#efe9cf'};
   const itemDefs=MASTER_DATA.rules.items;
   const rewardAssets={eggCommon:'assets/reward-egg-common.png',eggRare:'assets/reward-egg-rare.png',key:'assets/reward-gate-key.png',item:'assets/reward-item-drop.png'};
   function rewardIcon(kind,rarity=1,extra=''){
@@ -70,6 +73,7 @@
     hp:100, maxHp:100,
     items:{heal:1,high:0,elixir:0,expSmall:0,expMedium:0,expLarge:0,retry:0,chip:0,bossFrag:0},
     monsters:[],party:[],monsterMigration:false,legacyArchive:{},
+    gardeners:[],gardenerParty:[],pendingSeeds:[],rescuedGardeners:[],
     inventory:[], equipped:null,
     materials:{bossCore:0},
     codex:{enemies:{},weapons:{},partners:{}},
@@ -101,13 +105,13 @@
     S[key]-=amount;return true;
   }
   function normalizeState(){
-    S=Monsters.migrate(S,MASTER_DATA);S.schemaVersion=6;S.inventory=[];S.equipped=null;S.partners={};S.equippedPartner=null;S.normalTickets=0;S.captureUnlocked=false;S.freeDone=true;syncPartyHp();
+    S=Monsters.migrate(S,MASTER_DATA);if(Gardeners)S=Gardeners.normalizeState(S);S.schemaVersion=7;S.inventory=[];S.equipped=null;S.partners={};S.equippedPartner=null;S.normalTickets=0;S.captureUnlocked=false;S.freeDone=true;syncPartyHp();
     S.eventFlags=S.eventFlags||{};S.stageMissions=S.stageMissions||{};S.records=Object.assign({tower:0,endless:0},S.records);S.settings=Object.assign({sound:true,openOnly:false,masterVolume:AUDIO_DEFAULTS.masterVolume,bgmVolume:AUDIO_DEFAULTS.bgmVolume,seVolume:AUDIO_DEFAULTS.seVolume},S.settings);
     S.items=Object.assign({heal:1,high:0,elixir:0,expSmall:0,expMedium:0,expLarge:0,retry:0,chip:0,bossFrag:0},S.items||{});
     if(!S.eventFlags.retiredItemsRefunded){for(const [id,key]of [['ITM008','retry'],['ITM009','chip'],['ITM011','bossFrag']]){const price=Number(MASTER_DATA.migrations.retiredItemRefunds[key]||0);addWallet('gold',Math.max(0,Math.floor(Number(S.items[key]||0)))*price,'retired item refund');S.items[key]=0;}S.eventFlags.retiredItemsRefunded=true;}
     S.inventory=Array.isArray(S.inventory)?S.inventory:[];
     S.materials=Object.assign({bossCore:0},S.materials||{}); delete S.materials.dust;
-    S.codex=S.codex||{};S.codex.enemies=S.codex.enemies||{};S.codex.weapons=S.codex.weapons||{};S.codex.partners=S.codex.partners||{};
+    S.codex=S.codex||{};S.codex.enemies=S.codex.enemies||{};S.codex.weapons=S.codex.weapons||{};S.codex.partners=S.codex.partners||{};S.codex.plants=S.codex.plants||{};S.codex.gardeners=S.codex.gardeners||{};S.codex.gardeners.G016=true;if(Array.isArray(S.gardeners))for(const g of S.gardeners)if(g?.gardenerId)S.codex.gardeners[g.gardenerId]=true;
     S.partners=S.partners||{};S.equippedPartner=S.partners[S.equippedPartner]?S.equippedPartner:null;S.captureUnlocked=!!S.captureUnlocked;
     S.storyIndex=Number.isFinite(S.storyIndex)?S.storyIndex:Math.max(0,(S.stage||1)-1);S.stageClears=S.stageClears||{};S.readEvents=S.readEvents||{};S.normalTickets=S.normalTickets||0;
     S.gifts=Array.isArray(S.gifts)?S.gifts:[];S.questProgress=S.questProgress||{};S.questDelivered=S.questDelivered||{};
@@ -163,6 +167,17 @@
   const itemById=Object.fromEntries(MASTER_DATA.items.map(x=>[x.item_id,x]));
   const itemStateKey={ITM001:'heal',ITM002:'high',ITM003:'elixir',ITM004:'expSmall',ITM005:'expMedium',ITM006:'expLarge',ITM008:'retry',ITM009:'chip',ITM011:'bossFrag'};
   let activeStageId=null,activeStageData=null,activeGate=null,encounterMax=5,discoveredThisStage=[];
+  const PLANT_GARDENER_STAGE_IDS=new Set(['S01-01']);
+  let battleDomain='plant-gardener';
+  function setBattleDomain(stageId=null,gateKind=null){
+    battleDomain=!gateKind&&PLANT_GARDENER_STAGE_IDS.has(stageId)?'plant-gardener':'legacy-monster';
+    const screen=$('battleScreen');if(screen)screen.dataset.battleDomain=battleDomain;
+    return battleDomain;
+  }
+  function resetBattleDomain(){
+    battleDomain='plant-gardener';
+    const screen=$('battleScreen');if(screen)screen.dataset.battleDomain=battleDomain;
+  }
   const masterStages=MASTER_DATA.stages;
   function currentStoryStage(){if(S.storyIndex>=masterStages.length)return null;return masterStages[Math.max(0,S.storyIndex)]||masterStages[0]}
   function randomFrom(arr){return arr[Math.floor(Math.random()*arr.length)]}
@@ -191,8 +206,6 @@
     const def=MASTER_DATA.monsters.find(m=>m.legacyPartnerId===partnerId);if(!def)return;const flag='monster-join:'+partnerId;if(S.eventFlags[flag])return;S.eventFlags[flag]=true;S.monsters.push(Monsters.create(def.monster_id,'join-'+partnerId,MASTER_DATA));saveGame();
   }
   function processStageUnlocks(stageId){
-    if(stageId==='S01-01')addPartner('P028','story');
-    
     if(stageId==='S02-02')addPartner('P029','story');
     if(stageId==='S03-01')addPartner('P030','story');
     if(stageId==='S03-05')addPartner('P027','story');
@@ -286,10 +299,19 @@
   function attackInstruction(){
     return t(isDesktop()?'battle.instructionDesktop':'battle.instructionTouch');
   }
-  function localizedAttribute(value){const id={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'}[value];return id?t('battle.attributeName.'+id):value}
-  const attributeUiId={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'};
+  function localizedAttribute(value){
+    const labels={fire:'火',wood:'木',water:'水',light:'光',dark:'闇',rainbow:'虹'};
+    if(labels[value])return t('gardener.attribute.'+value);
+    const id={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'}[value];
+    return id?t('battle.attributeName.'+id):value;
+  }
+  const attributeUiId={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind',fire:'fire',wood:'wood',water:'water',light:'light',dark:'dark',rainbow:'rainbow'};
   const attributeAsset={fire:'assets/attr-fire.svg',water:'assets/attr-water.svg',thunder:'assets/attr-thunder.svg',earth:'assets/attr-earth.svg',wind:'assets/attr-wind.svg'};
-  function attributeIcon(value,extra=''){const id=attributeUiId[value]||'wind',label=localizedAttribute(value),asset=attributeAsset[id];return `<span class="attrIcon attrIcon-${id} ${extra}" role="img" aria-label="${label}" title="${label}"><img class="attrIconImage" src="${asset}" alt="" aria-hidden="true"></span>`}
+  function attributeIcon(value,extra=''){
+    const id=attributeUiId[value]||String(value||'unknown'),label=localizedAttribute(value),asset=attributeAsset[id];
+    if(!asset)return `<span class="attrIcon attrTextIcon attrIcon-${id} ${extra}" role="img" aria-label="${label}" title="${label}"><b aria-hidden="true">${t('gardener.attributeShort.'+id)}</b></span>`;
+    return `<span class="attrIcon attrIcon-${id} ${extra}" role="img" aria-label="${label}" title="${label}"><img class="attrIconImage" src="${asset}" alt="" aria-hidden="true"></span>`;
+  }
   function localizedDataKey(entry,field){if(!entry)return null;if(entry[field==='name'?'nameKey':'descriptionKey'])return entry[field==='name'?'nameKey':'descriptionKey'];if(entry.monster_id&&field==='name')return `monsterData.${entry.monster_id}.name`;if(entry.stage_id)return `stageData.${entry.stage_id}.${field}`;if(entry.world_id&&!entry.stage_id)return `worldData.${entry.world_id}.${field}`;return null}
   function localizedDataName(entry){const key=localizedDataKey(entry,'name');if(key){const value=t(key);if(value!==key)return value}return entry?.name||''}
   function localizedDataDescription(entry){const key=localizedDataKey(entry,'description');if(key){const value=t(key);if(value!==key)return value}return entry?.description||''}
@@ -817,6 +839,7 @@
   function enterOpenMenu(){
     setDeviceClosed(false);
     show('homeScreen');
+    resetBattleDomain();
     updateHome();
     if(!hasShownCloseMenuHint && S.freeDone){
       hasShownCloseMenuHint=true;
@@ -825,6 +848,7 @@
   }
 
   async function enterCloseMenu(){
+    resetBattleDomain();
     await setDeviceClosed(true);
     show('closeMenuScreen');
     updateCloseMenu();
@@ -864,6 +888,41 @@
     const flags=`${m.favorite?'<i class="favoriteFlag" title="'+t('monsters.favorite')+'">♥</i>':''}${m.locked?'<i class="lockFlag" title="'+t('monsters.locked')+'">◆</i>':''}${S.party.includes(m.id)?'<i class="partyFlag">'+t('monsters.party')+'</i>':''}`;
     return `<button class="monsterTile attr-${s.attr} ${selected?'selected':''}" data-${mode}="${m.id}" ${disabled?'disabled':''} aria-label="${s.name}"><span class="monsterFlags">${flags}</span><canvas width="96" height="96" data-monster="${m.id}"></canvas><span class="monsterTileMeta"><b>${t('monsters.level',{level:s.level})}</b><em>★${s.rarity}</em><small>${localizedAttribute(s.attr)}</small><small class="monsterTileStats">HP ${s.maxHp} · ATK ${s.atk} · DEF ${s.def}</small></span></button>`;
   }
+  function gardenerTile(g,mode='gardener-open',selected=false){
+    const st=Gardeners.stats(g),inParty=S.gardenerParty.includes(g.id);
+    return `<button class="monsterTile gardenerTile attr-${st.attr} ${selected?'selected':''}" data-${mode}="${g.id}" aria-label="${st.name}"><span class="monsterFlags">${g.favorite?'<i class="favoriteFlag">♥</i>':''}${g.locked?'<i class="lockFlag">◆</i>':''}${inParty?'<i class="partyFlag">'+t('gardener.inTeam')+'</i>':''}</span><span class="gardenerRosterArt pixel-art"><canvas class="gardenerBodyCanvas pixel-art" width="64" height="64"></canvas><em>PIXEL ART PENDING</em></span><span class="monsterTileMeta"><b>Lv.${st.level}</b><em>★${st.rarity}</em><small>${localizedAttribute(st.attr)} · ${st.weapon}</small><small class="monsterTileStats">HP ${st.maxHp} · ATK ${st.atk} · DEF ${st.def}</small></span></button>`;
+  }
+  function mountGardenerBody(canvas,pending,no,scale=2){
+    if(!canvas||!RosterArt)return;
+    RosterArt.mount(canvas,{no,side:'gardener',state:'idle',scale,
+      onReady:()=>{canvas.hidden=false;if(pending)pending.hidden=true},
+      onMissing:()=>{canvas.hidden=true;if(pending)pending.hidden=false}
+    });
+  }
+  function drawGardenerRosterArt(root=document){
+    root.querySelectorAll('[data-gardener-open],[data-gardener-swap]').forEach(card=>{
+      const id=card.dataset.gardenerOpen||card.dataset.gardenerSwap,g=S.gardeners.find(x=>x.id===id);if(!g)return;
+      const st=Gardeners.stats(g),canvas=card.querySelector('.gardenerBodyCanvas'),pending=card.querySelector('.gardenerRosterArt em');
+      mountGardenerBody(canvas,pending,st.no,2);
+    });
+  }
+  function renderGardenerRoster(){
+    setMusicMode('equip');const rows=S.gardeners.map(g=>({g,st:Gardeners.stats(g)})).sort((a,b)=>b.st.rarity-a.st.rarity||b.st.level-a.st.level||a.st.no-b.st.no);
+    openModal(t('gardener.rosterTitle',{count:rows.length}),`<p class="managementLead">${t('gardener.rosterIntro')}</p><div class="monsterGrid gardenerGrid">${rows.map(({g})=>gardenerTile(g)).join('')}</div>`);drawGardenerRosterArt();
+    document.querySelectorAll('[data-gardener-open]').forEach(b=>b.onclick=()=>renderGardenerDetail(b.dataset.gardenerOpen));
+  }
+  function renderGardenerDetail(id){
+    const g=S.gardeners.find(x=>x.id===id);if(!g){renderGardenerRoster();return}const st=Gardeners.stats(g),chance=Math.round(Gardeners.plantModeBerserkChance(g)*100),inParty=S.gardenerParty.includes(id);
+    openModal(st.name,`<div class="monsterDetail gardenerDetail"><div class="monsterPortrait gardenerDetailPortrait"><span class="gardenerRosterArt pixel-art"><canvas class="gardenerBodyCanvas pixel-art" width="64" height="64"></canvas><em>PIXEL ART PENDING</em></span><div class="detailFlags">No.${String(st.no).padStart(3,'0')} · ★${st.rarity} · ${localizedAttribute(st.attr)}</div></div><div class="monsterDetailInfo"><div class="detailStats"><span>Lv.${st.level}</span><span>HP ${st.maxHp}</span><span>ATK ${st.atk}</span><span>DEF ${st.def}</span><span>${t('gardener.weapon',{weapon:st.weapon})}</span><span>${t('gardener.strain',{value:Math.round(g.plantStrain||0)})}</span><span>${t('gardener.berserkChance',{chance})}</span></div><section><b>${t('gardener.plantModeTitle')}</b><p>${t('gardener.plantModeDescription')}</p></section>${st.no===16?`<section><b>${t('gardener.criticalTitle')}</b><p>${t('gardener.criticalDescription')}</p></section>`:''}<div class="detailActions"><button id="gardenerFavorite" class="btn ${g.favorite?'gold':'secondary'}">♥</button><button id="gardenerLock" class="btn ${g.locked?'gold':'secondary'}">◆</button><button id="gardenerTeam" class="btn" ${inParty?'disabled':''}>${t('gardener.assign')}</button><button id="gardenerBack" class="btn secondary">${t('gardener.back')}</button></div></div></div>`);
+    const wrap=$('modalBody'),canvas=wrap.querySelector('.gardenerBodyCanvas'),pending=wrap.querySelector('.gardenerRosterArt em');mountGardenerBody(canvas,pending,st.no,3);
+    $('gardenerFavorite').onclick=()=>{g.favorite=!g.favorite;saveGame();renderGardenerDetail(id)};$('gardenerLock').onclick=()=>{g.locked=!g.locked;saveGame();renderGardenerDetail(id)};$('gardenerBack').onclick=renderGardenerRoster;$('gardenerTeam').onclick=()=>renderGardenerReplacement(id);
+  }
+  function renderGardenerReplacement(newId){
+    if(S.gardenerParty.length<3){S.gardenerParty.push(newId);syncPartyHp(true);saveGame();renderGardenerDetail(newId);return}
+    openModal(t('gardener.replaceTitle'),`<div class="partyReplaceGrid gardenerGrid">${S.gardenerParty.map(id=>gardenerTile(S.gardeners.find(g=>g.id===id),'gardener-swap')).join('')}</div>`);drawGardenerRosterArt();
+    document.querySelectorAll('[data-gardener-swap]').forEach(b=>b.onclick=()=>{const old=b.dataset.gardenerSwap,index=S.gardenerParty.indexOf(old);if(index>=0)S.gardenerParty[index]=newId;syncPartyHp(true);saveGame();renderGardenerDetail(newId)});
+  }
+
   function renderEquipment(){
     setMusicMode('equip');const rows=visibleMonsters(),sortOptions=Object.entries(monsterSortLabels).map(([value,key])=>`<option value="${value}" ${monsterView.sort===value?'selected':''}>${t(key)}</option>`).join(''),rarityOptions=[0,1,2,3,4,5,6].map(r=>`<option value="${r}" ${monsterView.rarity===r?'selected':''}>${r?'★'+r:t('monsters.allRarities')}</option>`).join('');
     const directionKey=monsterView.direction>0?'monsters.directionAsc':'monsters.directionDesc';
@@ -882,8 +941,19 @@
     openModal(t('monsters.chooseReplacement'),`<div class="partyReplaceGrid">${partyMembers().map(m=>monsterTile(S.monsters.find(x=>x.id===m.id),m,'swap')).join('')}</div>`);drawMonsterRoster();document.querySelectorAll('[data-swap]').forEach(b=>b.onclick=()=>{S.party[S.party.indexOf(b.dataset.swap)]=newId;syncPartyHp(true);saveGame();renderMonsterDetail(newId)});
   }
   function renderCollection(){
-    const rows=MASTER_DATA.monsters.map(d=>{const seen=S.monsters.some(m=>m.monsterId===d.monster_id)||S.codex.monsters?.[d.monster_id];return '<div class="libraryCard"><b>'+(seen?d.name:'？？？')+'</b><p>'+(seen?stars(d.rarity)+' · '+d.attribute:'未発見')+'</p>'+(seen?'<canvas width="96" height="96" data-species="'+d.monster_id+'"></canvas>':'')+'</div>';}).join('');
-    openModal('モンスター図鑑','<div class="libraryGrid">'+rows+'</div>');document.querySelectorAll('[data-species]').forEach(cv=>{const d=Monsters.definition(cv.dataset.species,MASTER_DATA),a=MASTER_DATA.sprites[d.sprite];SHUTArt.image(a.source,img=>SHUTArt.drawCell(cv,img,{...a,cell:a.states.idle[0]},.08));});
+    if(!Roster){openModal(t('gardener.codexTitle'),`<p>${t('gardener.rosterUnavailable')}</p>`);return;}
+    const rows=Roster.data.pairs.map(p=>{
+      const plantSeen=!!S.codex.plants?.[p.plant.id],gardenerSeen=!!S.codex.gardeners?.[p.gardener.id]||p.no===16;
+      const rarity='★'.repeat(p.rarity);
+      return `<article class="rosterPairCard" data-roster-no="${p.no}" data-attr="${p.attribute}">
+        <div class="rosterPairHead"><span class="rosterPairNo">No.${String(p.no).padStart(3,'0')}</span><span class="rosterAttr">${localizedAttribute(p.attribute)}</span><span class="rosterPairStars">${rarity}</span></div>
+        <div class="rosterPairBodies">
+          <div class="rosterSide rosterPlant"><small>${t('gardener.plantLabel')}</small><b>${plantSeen?p.plant.name:'？？？'}</b><em>${plantSeen?p.plant.id:t('gardener.undiscovered')}</em></div>
+          <div class="rosterSide rosterGardener"><small>${t('gardener.gardenerLabel')}</small><b>${gardenerSeen?p.gardener.name:'？？？'}</b><em>${gardenerSeen?p.gardener.weapon:t('gardener.unrescued')}</em></div>
+        </div>
+      </article>`;
+    }).join('');
+    openModal(t('gardener.codexTitle'),'<div class="rosterPairGrid">'+rows+'</div>');
   }
   function renderShop(){
     setMusicMode('shop');const entries=shopEntries();if(!shopSelection||!entries.some(e=>e.shop_id===shopSelection))shopSelection=entries[0]?.shop_id||null;const selected=entries.find(e=>e.shop_id===shopSelection),max=selected?maxPurchase(selected):0;shopQuantity=clamp(shopQuantity,0,max);openModal(t('shop.title'),`<div class="shopHeader"><p>${t('shop.intro')}</p><strong>${t('shop.currentGold',{gold:S.gold})}</strong></div><div class="shopLayout"><div class="shopCatalog">${entries.map(e=>{const item=itemById[e.ref],owned=S.items[itemStateKey[e.ref]]||0,stock=shopStockRemaining(e);return `<button class="shopCatalogItem ${e===selected?'selected':''}" data-shop-select="${e.shop_id}">${itemIcon(e.ref,'small')}<span><b>${t('shop.items.'+e.ref+'.name')}</b><small>${t('shop.unitPrice',{price:e.price})}</small><small>${t('shop.owned',{count:owned})} · ${t('shop.stock',{count:stock})}</small></span></button>`}).join('')}</div>${selected?shopDetail(selected,max):`<p>${t('shop.selectItem')}</p>`}</div>`);bindShop(entries,selected);
@@ -941,15 +1011,16 @@
     openModal('未知の門',rows||'<p>まだ、未知の反応はない。物語を進めよう。</p>');document.querySelectorAll('[data-gateclaim]').forEach(b=>b.onclick=()=>runGateExpedition(b.dataset.gateclaim));
   }
   function runGateExpedition(kind,resume=false){
+    setBattleDomain(null,kind);
     if(!resume)syncPartyHp(true);
     const resumeHp=S.hp,resumeSlots=S.run?.slots??3;
-    if(!resume&&!Systems.gateAvailable(kind,S,MASTER_DATA))return;
+    if(!resume&&!Systems.gateAvailable(kind,S,MASTER_DATA)){resetBattleDomain();return;}
     const cfg=MASTER_DATA.expeditions[kind];if(!resume){if(cfg.limited)S.gateAttempts[kind]--;S.run={kind,floor:kind==='TOWER'?Math.floor(S.records.tower/5)*5+1:1,bank:0,summary:{gold:0,goldCredited:0,entries:[],monsterExp:0,monsterExpCredited:0,expChanges:[]}};if(S.run.floor>10)S.run.floor=1;}
     S.run.summary=S.run.summary||{gold:0,goldCredited:0,entries:[],monsterExp:0,monsterExpCredited:0,expChanges:[]};
     rewardGold=Number(S.run.summary.gold||0);rewardGoldCredited=Number(S.run.summary.goldCredited||0);rewardEntries=Array.isArray(S.run.summary.entries)?structuredClone(S.run.summary.entries):[];rewardDrops=[];rewardMonsterExp=Number(S.run.summary.monsterExp||0);rewardMonsterExpCredited=Number(S.run.summary.monsterExpCredited||0);rewardExpChanges=Array.isArray(S.run.summary.expChanges)?structuredClone(S.run.summary.expChanges):[];
     activeGate=kind;gateFinished=false;const unlocked=masterStages.filter(st=>S.stageClears[st.stage_id]&&st.stage_type!=='forced_loss');const base=unlocked.at(-1)||masterStages[0];
     activeStageId='GATE_'+kind;activeStageData=JSON.parse(JSON.stringify(base));activeStageData.stage_id=activeStageId;activeStageData.name=cfg.name;activeStageData.stage_type='expedition';activeStageData.encounters={count:cfg.count||999999,bosses:[]};
-    encounterMax=cfg.count||999999;encounter=S.run.floor;carrySlots=resume?resumeSlots:3;S.run.slots=carrySlots;pendingItem=null;if(!resume)skillCharge=Object.fromEntries(S.party.map(id=>[id,0]));stageStats={perfect:0,guard:0,turn:0,guardHits:0,attackIntroShown:false};S.hp=resume?Math.max(1,Math.min(playerMaxHp(),resumeHp)):playerMaxHp();$('modal').classList.remove('show');setDeviceClosed(false);show('battleScreen');saveGame();startEncounter();
+    encounterMax=cfg.count||999999;encounter=S.run.floor;carrySlots=resume?resumeSlots:3;S.run.slots=carrySlots;pendingItem=null;if(!resume)skillCharge=Object.fromEntries(partyMembers().map(m=>[m.id,0]));stageStats={perfect:0,guard:0,turn:0,guardHits:0,attackIntroShown:false};S.hp=resume?Math.max(1,Math.min(playerMaxHp(),resumeHp)):playerMaxHp();$('modal').classList.remove('show');setDeviceClosed(false);show('battleScreen');saveGame();startEncounter();
   }
 
   function renderStoryMap(chapter=null){
@@ -982,7 +1053,19 @@
     if(activeGate==='ENDLESS'){const extra=1+Math.min(2,(encounter-1)*.045);stats.hp=stats.maxHp=Math.round(stats.hp*extra);stats.atk=Math.round(stats.atk*Math.min(1.8,extra));}
     return {...def,...stats,id:'e'+Date.now()+Math.random().toString(16).slice(2),attr:def.attr,prevHp:stats.hp,gold:rnd(def.gold[0],def.gold[1]),boss:isBoss,dead:false,animationState:'idle',popup:null,popupTimer:null,flashUntil:0,hpAnimTimer:null};
   }
+  function makePlantEnemy(no,isBoss=false,berserk=false){
+    const pair=Roster?.pair(no);if(!pair)throw Error('Unknown Plant roster no: '+no);
+    const stage=activeStageData||currentStoryStage()||masterStages[0],level=Math.max(1,Number(stage.recommended_rank||1)),rarity=Number(pair.rarity||1);
+    const maxHp=Math.round((berserk?125:72)+rarity*24+level*11),atk=Math.round((berserk?18:11)+rarity*3+level*1.5),def=Math.round(7+rarity*2+level*.8);
+    return {id:'p'+Date.now()+Math.random().toString(16).slice(2),plantNo:no,berserkGardenerNo:berserk?no:null,seedNo:berserk?no:null,name:berserk?t('gardener.berserkName',{name:pair.gardener.name}):pair.plant.name,attr:pair.attribute,rarity,role:isBoss?'boss':'normal',category:isBoss?'boss':'plant',boss:isBoss,hp:maxHp,maxHp,prevHp:maxHp,atk,def,gold:12+rarity*8,rankXp:10+rarity*4,attackEvery:isBoss?2:3,turnsLeft:isBoss?2:3,plantAction:{beats:[900],factors:[1],damage:1,heal:0,barrier:0,shift:false},dead:false,animationState:'idle',popup:null,popupTimer:null,flashUntil:0,hpAnimTimer:null};
+  }
+
   function generateEncounter(n){
+    if(!activeGate&&activeStageData?.stage_id==='S01-01'){
+      const patterns={1:[21],2:[1,41]};
+      if(n>=3)return [makePlantEnemy(1,true,true)];
+      return (patterns[n]||[21]).map(no=>makePlantEnemy(no,false,false));
+    }
     if(activeGate){const cfg=MASTER_DATA.expeditions[activeGate];let ids=[];
       if(activeGate==='BOSSRUSH'){const cleared=cfg.bosses.filter(id=>masterStages.some(st=>S.stageClears[st.stage_id]&&st.encounters.bosses.includes(id)));const pool=cleared.length?cleared:['E008'];encounterMax=pool.length;ids=[pool[(n-1)%pool.length]];}
       else if(activeGate==='TOWER'&&n%5===0)ids=[n===10?'E019':'E012'];else if(activeGate==='HIDDEN'&&n===cfg.count)ids=[cfg.boss];else if(activeGate==='ENDLESS'&&n%5===0)ids=[n%10===0?'E026':'E013'];
@@ -1033,60 +1116,25 @@
     return {row:1,col:cols[Math.min(index,total-1)]};
   }
   function renderEnemies(){
-    const area=$('enemyArea');area.innerHTML='';
-    const alive=living(),slotCount=enemies.length;
-    area.className='';
-    area.id='enemyArea';
-    area.dataset.enemyCount=String(slotCount);
-    area.dataset.enemyGrid=slotCount>1?'1':'0';
-    if(slotCount===1 && enemies[0]?.boss) area.classList.add('bossOnly');
-    else if(slotCount===1) area.classList.add('single');
-    else if(slotCount===2) area.classList.add('multi','enemyGrid2');
-    else area.classList.add('multi','enemyGrid3');
-    
+    const area=$('enemyArea');area.innerHTML='';const slotCount=enemies.length;
+    area.className='';area.id='enemyArea';area.dataset.enemyCount=String(slotCount);area.dataset.enemyGrid=slotCount>1?'1':'0';
+    if(slotCount===1&&enemies[0]?.boss)area.classList.add('bossOnly');else if(slotCount===1)area.classList.add('single');else if(slotCount===2)area.classList.add('multi','enemyGrid2');else area.classList.add('multi','enemyGrid3');
     enemies.forEach((e,slot)=>{
       const ready=!e.dead&&e.turnsLeft<=0,settledDead=e.dead&&performance.now()>=(e.defeatUntil||0),formation=enemyFormationSlot(slot,slotCount);
-      if(settledDead&&e.battleEggDrop){
-        const drop=document.createElement('div');drop.className='enemySlotDrop egg';drop.dataset.slot=String(slot);drop.style.gridColumn=String(formation.col);drop.style.gridRow=String(formation.row);drop.setAttribute('aria-label',e.battleEggDrop.label||'EGG');drop.innerHTML=`<div class="enemySlotEgg">${rewardIcon('egg',e.battleEggDrop.rarity||1,'slotEggIcon')}</div>`;area.appendChild(drop);
-      }
-      const card=document.createElement('div');
-      const hpRatio=Math.max(0,e.hp/e.maxHp);
-      const prevRatio=Math.max(hpRatio,Math.max(0,(e.prevHp ?? e.hp)/e.maxHp));
-      const flashing=performance.now() < (e.flashUntil||0);
-      const compact=enemies.length>=3 && !e.boss;
-      card.className='enemyCard kind-'+e.kind+(compact?' compact':'')+(e.boss?' bossCard':'')+(e.dead?(performance.now()<(e.defeatUntil||0)?' defeated':' dead'):'')+(hpRatio<.35?' lowhp':'')+(flashing?' hitFlash':'')+(e.id===defenseEnemyId&&phase==='guard'?' attacking':'');
+      if(settledDead&&(e.battleEggDrop||e.battleSeedDrop)){const seed=!!e.battleSeedDrop,drop=document.createElement('div');drop.className='enemySlotDrop '+(seed?'seed':'egg');drop.dataset.slot=String(slot);drop.style.gridColumn=String(formation.col);drop.style.gridRow=String(formation.row);drop.setAttribute('aria-label',(seed?e.battleSeedDrop:e.battleEggDrop)?.label||'DROP');drop.innerHTML=seed?'<div class="enemySlotSeed">SEED</div>':`<div class="enemySlotEgg">${rewardIcon('egg',e.battleEggDrop.rarity||1,'slotEggIcon')}</div>`;area.appendChild(drop);}
+      const card=document.createElement('div'),hpRatio=Math.max(0,e.hp/e.maxHp),prevRatio=Math.max(hpRatio,Math.max(0,(e.prevHp??e.hp)/e.maxHp)),flashing=performance.now()<(e.flashUntil||0),compact=enemies.length>=3&&!e.boss,isNewWorld=!!e.plantNo;
+      card.className='enemyCard '+(isNewWorld?'plantEnemyCard ':'kind-'+e.kind+' ')+(compact?'compact ':'')+(e.boss?'bossCard ':'')+(e.dead?(performance.now()<(e.defeatUntil||0)?'defeated ':'dead '):'')+(hpRatio<.35?'lowhp ':'')+(flashing?'hitFlash ':'')+(e.id===defenseEnemyId&&phase==='guard'?'attacking ':'')+(e.berserkGardenerNo?'berserkGardenerEnemy':'');
       card.dataset.id=e.id;card.dataset.masterId=e.masterId||'';card.dataset.slot=String(slot);if(slotCount>1){card.style.gridColumn=String(formation.col);card.style.gridRow=String(formation.row);}
-      const popupHTML = e.popup ? `<div class="damagePop ${e.popup.cls||''}">${e.popup.text}${e.popup.tag?`<span class="tag">${e.popup.tag}</span>`:''}</div>` : '';
-      const barNow=hpBarGradient(e.attr);
-      const canvasW=MASTER_DATA.sprites[e.kind].canvasSize||64, canvasH=canvasW;
-      const statusHtml=[
-        e.poison?`<span class="enemyStatus enemyStatusPoison">${t('battle.poison')}</span>`:'',
-        e.attackDown?`<span class="enemyStatus enemyStatusAtkDown">${t('battle.atkDown')}</span>`:''
-      ].filter(Boolean).join('');
-      card.innerHTML=`
-        <div class="enemySpriteWrap">${popupHTML}<canvas width="${canvasW}" height="${canvasH}" data-id="${e.id}"></canvas></div>
-        <div class="enemyHud">
-          <div class="enemyHudTop">
-            ${attributeIcon(e.attr,'enemyHudAttr')}
-            <div class="eName"><span>${displayedEnemyName(e)}</span></div>
-            <div class="enemyTurnBadge ${ready?'ready':''}" aria-label="${t('battle.enemyTurns')} ${Math.max(0,e.turnsLeft)}"><b>${Math.max(0,e.turnsLeft)}</b></div>
-          </div>
-          <div class="ehp eBar" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div>
-          ${statusHtml?`<div class="eMeta">${statusHtml}</div>`:''}
-        </div>`;
+      const popupHTML=e.popup?`<div class="damagePop ${e.popup.cls||''}">${e.popup.text}${e.popup.tag?`<span class="tag">${e.popup.tag}</span>`:''}</div>`:'',barNow=hpBarGradient(e.attr),statusHtml=[e.poison?`<span class="enemyStatus enemyStatusPoison">${t('battle.poison')}</span>`:'',e.attackDown?`<span class="enemyStatus enemyStatusAtkDown">${t('battle.atkDown')}</span>`:''].filter(Boolean).join('');
+      const spriteHtml=isNewWorld?`<div class="plantBattleArt pixel-art"><canvas class="plantBodyCanvas pixel-art" width="64" height="64"></canvas><span>PIXEL ART PENDING</span></div>`:`<canvas width="${MASTER_DATA.sprites[e.kind].canvasSize||64}" height="${MASTER_DATA.sprites[e.kind].canvasSize||64}" data-id="${e.id}"></canvas>`;
+      card.innerHTML=`<div class="enemySpriteWrap">${popupHTML}${spriteHtml}</div><div class="enemyHud"><div class="enemyHudTop">${attributeIcon(e.attr,'enemyHudAttr')}<div class="eName"><span>${displayedEnemyName(e)}</span></div><div class="enemyTurnBadge ${ready?'ready':''}" aria-label="${t('battle.enemyTurns')} ${Math.max(0,e.turnsLeft)}"><b>${Math.max(0,e.turnsLeft)}</b></div></div><div class="ehp eBar" aria-label="HP ${Math.max(0,Math.ceil(e.hp))} / ${e.maxHp}"><div class="ehpLag" style="width:${prevRatio*100}%"></div><div class="ehpNow" style="width:${prevRatio*100}%;--hp-color:${barNow};background:${barNow}"></div></div>${statusHtml?`<div class="eMeta">${statusHtml}</div>`:''}</div>`;
       area.appendChild(card);
-      drawEnemy(card.querySelector('canvas'),e,animFrame);
-      const nowBar=card.querySelector('.ehpNow');
-      const lagBar=card.querySelector('.ehpLag');
-      if(nowBar && lagBar){
-        requestAnimationFrame(()=>{
-          nowBar.style.width=`${hpRatio*100}%`;
-          setTimeout(()=>{ lagBar.style.width=`${hpRatio*100}%`; },160);
-        });
-      }
+      if(isNewWorld){const canvas=card.querySelector('.plantBattleArt .plantBodyCanvas'),pending=card.querySelector('.plantBattleArt span'),side=e.berserkGardenerNo?'gardener':'plant',state=e.dead?'dead':performance.now()<e.flashUntil?'hit':e.id===defenseEnemyId&&phase==='guard'?'attack':'idle',profile=globalThis.SHUTPixelManifest?.profile(e.plantNo,side),scale=profile?.width===128||window.innerHeight<=600?1:2;card.style.setProperty('--plant-pixel-size',(profile?.width||64)*scale+'px');if(canvas&&RosterArt)RosterArt.mount(canvas,{no:e.plantNo,side,state,scale,onReady:()=>{canvas.hidden=false;if(pending)pending.hidden=true},onMissing:()=>{canvas.hidden=true;if(pending)pending.hidden=false}});}
+      else drawEnemy(card.querySelector('canvas'),e,animFrame);
+      const nowBar=card.querySelector('.ehpNow'),lagBar=card.querySelector('.ehpLag');if(nowBar&&lagBar)requestAnimationFrame(()=>{nowBar.style.width=`${hpRatio*100}%`;setTimeout(()=>{lagBar.style.width=`${hpRatio*100}%`;},160);});
     });
-    
   }
+
   function living(){return enemies.filter(e=>!e.dead)}
 
   function playBossEntrance(e,done){
@@ -1100,15 +1148,17 @@
   function startStage(){renderStoryMap()}
   function startStoryStage(stageId){
     discoveredThisStage=[];
-    if(S.party.length!==3){localeToast('battle.partyRequired');return;}syncPartyHp(true);
-    activeGate=null;activeStageId=stageId;activeStageData=stageById[stageId];encounterMax=activeStageData.encounters.count;S.stage=masterStages.findIndex(x=>x.stage_id===stageId)+1;setDeviceClosed(false);show('battleScreen');encounter=1;carrySlots=3;S.hp=playerMaxHp();pendingItem=null;skillCharge=Object.fromEntries(S.party.map(id=>[id,0]));rewardGold=0;rewardGoldCredited=0;rewardDrops=[];rewardEntries=[];rewardMonsterExp=0;rewardMonsterExpCredited=0;rewardExpChanges=[];battleInputLocked=false;stageStats={perfect:0,guard:0,turn:0,guardHits:0,attackIntroShown:false};startEncounter();
+    activeGate=null;activeStageId=stageId;activeStageData=stageById[stageId];setBattleDomain(stageId,null);
+    if(!activeStageData){resetBattleDomain();return;}
+    if(partyMembers().length!==3){localeToast('battle.partyRequired');resetBattleDomain();return;}syncPartyHp(true);
+    encounterMax=activeStageData.encounters.count;S.stage=masterStages.findIndex(x=>x.stage_id===stageId)+1;setDeviceClosed(false);show('battleScreen');encounter=1;carrySlots=3;S.hp=playerMaxHp();pendingItem=null;skillCharge=Object.fromEntries(partyMembers().map(m=>[m.id,0]));rewardGold=0;rewardGoldCredited=0;rewardDrops=[];rewardEntries=[];rewardMonsterExp=0;rewardMonsterExpCredited=0;rewardExpChanges=[];battleInputLocked=false;stageStats={perfect:0,guard:0,turn:0,guardHits:0,attackIntroShown:false};startEncounter();
   }
   function startEncounter(){
     clearTimeout(toast._timer);$('uiToast').classList.remove('show');$('combatFeedback').classList.remove('show');document.querySelectorAll('.monsterDrop,.monsterAttackSpark').forEach(node=>node.remove());
     defenseToken++;attackReadyToken++;encounterSettled=false;patternBeat=null;defenseQueue=[];
     SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter).slice(0,3);defenseTargetId=null;rewardDrops=[];opened=true;setBattlePhase('attackReady',false);const mikadoBattle=enemies.some(e=>globalThis.SHUTMikadoPresentation?.matches?.(e));setMusicMode(mikadoBattle?'mikado':activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');resumeAudioPlayback();updateBattleHeader();renderEnemies();
     $('recoveryTray').classList.remove('show');$('rewardOverlay').classList.remove('show');
-    enemies.forEach(e=>{if(e.masterId)S.codex.enemies[e.masterId]=true});evaluateQuests();setBattleCopy(enemies.some(e=>e.boss)?'battle.bossBattle':'battle.encounter','battle.encounterHint',()=>({instruction:attackInstruction()}));
+    enemies.forEach(e=>{if(e.masterId)S.codex.enemies[e.masterId]=true;if(e.plantNo){const p=Roster.pair(e.plantNo);if(p)S.codex.plants[p.plant.id]=true;}});evaluateQuests();setBattleCopy(enemies.some(e=>e.boss)?'battle.bossBattle':'battle.encounter','battle.encounterHint',()=>({instruction:attackInstruction()}));
     $('app').style.setProperty('--world','url("'+new URL(MASTER_DATA.presentation.backgrounds[activeStageData.world_id],location.href).href+'")');
     syncBattleStateUi();const ready=()=>{const boss=enemies.find(e=>e.boss);if(boss)playBossEntrance(boss,beginAttack);else setTimeout(beginAttack,300)};
     if(!activeGate&&enemies.some(e=>e.boss))playEvents(activeStageId,'before_boss',ready);else ready();
@@ -1196,21 +1246,73 @@
     setTimeout(()=>{document.querySelectorAll('.attackAssignmentLine').forEach(n=>n.remove());document.querySelectorAll('.assignmentSource,.assignmentTarget').forEach(n=>n.classList.remove('assignmentSource','assignmentTarget'));},360);
   }
   function executeAttack(multiplier=attackRouletteValues[attackRouletteIndex]??1){
-    if(phase!=='attack')return;battleInputLocked=true;attackStopRequested=false;const selected=Number(multiplier),timing=selected===0?'MISS':selected>=1.5?'PERFECT':'HIT';
-    $('timingBox').classList.remove('show');$('timingBox').dataset.stopping='0';cancelAnimationFrame(meterRAF);setBattlePhase('transition',true);const skillActors=new Set(partyMembers().filter(m=>m.hp>0&&skillIsReady(m)).map(m=>m.id));const plan=Monsters.planAttack(partyMembers(),living(),timing,MASTER_DATA,{attackCount:stageStats.turn+1,perfectGuard:!!S.perfectGuardBoost});S.perfectGuardBoost=false;
+    if(phase!=='attack')return;
+    battleInputLocked=true;attackStopRequested=false;
+    const selected=Number(multiplier),timing=selected===0?'MISS':selected>=1.5?'PERFECT':'HIT',members=partyMembers();
+    $('timingBox').classList.remove('show');$('timingBox').dataset.stopping='0';cancelAnimationFrame(meterRAF);setBattlePhase('transition',true);
+    const skillActors=new Set(members.filter(m=>m.hp>0&&skillIsReady(m)).map(m=>m.id));
+    const plan=usingGardenerParty()?Gardeners.planAttack(members,living(),timing,{attackCount:stageStats.turn+1,perfectGuard:!!S.perfectGuardBoost}):Monsters.planAttack(members,living(),timing,MASTER_DATA,{attackCount:stageStats.turn+1,perfectGuard:!!S.perfectGuardBoost});
+    S.perfectGuardBoost=false;
     if(timing==='HIT'&&selected!==1){for(const hit of plan)if(hit.damage>0)hit.damage=Math.max(1,Math.round(hit.damage*selected));}
-    for(const hit of plan)if(skillActors.has(hit.actorId)&&hit.damage>0){const actor=partyMembers().find(m=>m.id===hit.actorId),special=Monsters.specialPlan(actor,partyMembers(),enemies.find(e=>e.id===hit.targetId),MASTER_DATA);hit.ultimate=true;hit.special=special;hit.support=special.type==='heal'||special.type==='regen';if(hit.support)hit.damage=0;else hit.damage=Math.max(1,Math.round(hit.damage*(special.damageMultiplier||ULTIMATE_MULTIPLIER)));skillCharge[hit.actorId]=0}
+    if(usingGardenerParty()){
+      for(const hit of plan){
+        const actor=members.find(m=>m.id===hit.actorId),owned=partyOwnedById(hit.actorId);
+        if(timing==='PERFECT'&&actor?.no===16)hit.criticalName='None but shot';
+        if(skillActors.has(hit.actorId)&&owned&&hit.damage>0){
+          const mode=Gardeners.usePlantMode(owned,Math.random);Object.assign(owned,mode.gardener);hit.ultimate=true;hit.plantMode=mode;skillCharge[hit.actorId]=0;
+          if(mode.berserk){
+            const target=Gardeners.berserkTarget(members,hit.actorId,Math.random);hit.berserkTargetId=target?.id||null;hit.damage=Math.max(1,Math.round((actor?.atk||1)*mode.power));hit.targetId=null;
+          }else if(mode.effect==='attack_up')hit.damage=Math.max(1,Math.round(hit.damage*mode.power));
+        }
+      }
+    }else{
+      for(const hit of plan)if(skillActors.has(hit.actorId)&&hit.damage>0){const actor=members.find(m=>m.id===hit.actorId),special=Monsters.specialPlan(actor,members,enemies.find(e=>e.id===hit.targetId),MASTER_DATA);hit.ultimate=true;hit.special=special;hit.support=special.type==='heal'||special.type==='regen';if(hit.support)hit.damage=0;else hit.damage=Math.max(1,Math.round(hit.damage*(special.damageMultiplier||ULTIMATE_MULTIPLIER)));skillCharge[hit.actorId]=0}
+    }
     chargeSkills(skillActors);
-    if(timing==='PERFECT'){stageStats.perfect++;bumpQuest('perfect_attack_count',1);}const timingKey={PERFECT:'battle.perfect',HIT:'battle.hit',MISS:'battle.miss'}[timing],feedbackLabel=timing==='MISS'?t('battle.miss'):`×${selected.toFixed(1)}`;feedback(feedbackLabel,timing==='PERFECT'?'perfect':timing==='MISS'?'miss':'hit');setBattleCopy(timingKey,timing==='MISS'?'battle.nextMoment':'battle.coordinatedAttack');sfx(timing==='MISS'?'hit':'slash');showAttackAssignments(plan);
-    setTimeout(()=>{const totals={};for(const [i,hit]of plan.entries()){const e=enemies.find(e=>e.id===hit.targetId);if(hit.ultimate&&hit.support){showUltimateMotion(hit,i);applySpecialEffect(hit,null);continue;}if(hit.damage>0){damageMonsterTarget(e,hit);showMonsterAttack(hit,i);if(hit.ultimate){showUltimateMotion(hit,i);applySpecialEffect(hit,e);}totals[e.id]=(totals[e.id]||0)+hit.damage;}}
-    for(const [id,total]of Object.entries(totals)){const e=enemies.find(e=>e.id===id);if(e.popup)e.popup.text='−'+total;}
-    renderEnemies();if(!living().length)setTimeout(finishEncounter,700);else setTimeout(endPlayerTurn,350);},170);
+    if(timing==='PERFECT'){stageStats.perfect++;bumpQuest('perfect_attack_count',1);}
+    const timingKey={PERFECT:'battle.perfect',HIT:'battle.hit',MISS:'battle.miss'}[timing],feedbackLabel=timing==='MISS'?t('battle.miss'):`×${selected.toFixed(1)}`;
+    feedback(feedbackLabel,timing==='PERFECT'?'perfect':timing==='MISS'?'miss':'hit');setBattleCopy(timingKey,timing==='MISS'?'battle.nextMoment':'battle.coordinatedAttack');sfx(timing==='MISS'?'hit':'slash');showAttackAssignments(plan.filter(x=>x.targetId));
+
+    if(usingGardenerParty()){
+      const totals={},resolved=new Set();
+      const applyAtImpact=(hit,i)=>{
+        const key=i+':'+hit.actorId;if(resolved.has(key))return;resolved.add(key);
+        if(hit.berserkTargetId){
+          const ally=partyOwnedById(hit.berserkTargetId),targetStats=members.find(m=>m.id===hit.berserkTargetId);
+          if(ally&&targetStats){ally.hp=Math.max(0,(ally.hp??targetStats.maxHp)-hit.damage);allyFrames[hit.berserkTargetId]={state:ally.hp?'hit':'death',start:performance.now(),until:performance.now()+700};feedback(t('gardener.berserkHit',{name:targetStats.name,damage:hit.damage}),'miss');}
+        }else{
+          const e=enemies.find(e=>e.id===hit.targetId);
+          if(e&&hit.damage>0){damageMonsterTarget(e,hit);totals[e.id]=(totals[e.id]||0)+hit.damage;}
+        }
+        syncPartyHp();drawPartyHud();renderEnemies();
+      };
+      Promise.all(plan.map((hit,i)=>showGardenerBattleMotion(hit,i,()=>applyAtImpact(hit,i)))).then(()=>{
+        for(const [id,total]of Object.entries(totals)){const e=enemies.find(e=>e.id===id);if(e?.popup)e.popup.text='−'+total;}
+        syncPartyHp();drawPartyHud();renderEnemies();
+        if(S.hp<=0){setTimeout(gameOver,180);return;}
+        if(!living().length)setTimeout(finishEncounter,260);else setTimeout(endPlayerTurn,180);
+      });
+      return;
+    }
+
+    setTimeout(()=>{
+      const totals={};
+      for(const [i,hit]of plan.entries()){
+        const e=enemies.find(e=>e.id===hit.targetId);
+        if(hit.ultimate&&hit.support){showUltimateMotion(hit,i);applySpecialEffect(hit,null);continue;}
+        if(e&&hit.damage>0){damageMonsterTarget(e,hit);showMonsterAttack(hit,i);if(hit.ultimate){showUltimateMotion(hit,i);applySpecialEffect(hit,e);}totals[e.id]=(totals[e.id]||0)+hit.damage;}
+      }
+      for(const [id,total]of Object.entries(totals)){const e=enemies.find(e=>e.id===id);if(e?.popup)e.popup.text='−'+total;}
+      syncPartyHp();drawPartyHud();renderEnemies();
+      if(S.hp<=0){setTimeout(gameOver,300);return;}
+      if(!living().length)setTimeout(finishEncounter,700);else setTimeout(endPlayerTurn,350);
+    },170);
   }
 
   function endPlayerTurn(){
-    for(const id of S.party){const m=S.monsters.find(x=>x.id===id);if(!m||m.hp<=0||!m.regen)continue;const max=Monsters.stats(m,MASTER_DATA).maxHp;m.hp=Math.min(max,m.hp+Math.max(1,Math.round(max*m.regen.rate)));if(--m.regen.turns<=0)delete m.regen;}
+    for(const id of partyInstanceIds()){const m=partyOwnedById(id);if(!m||m.hp<=0||!m.regen)continue;const max=usingGardenerParty()?Gardeners.stats(m).maxHp:Monsters.stats(m,MASTER_DATA).maxHp;m.hp=Math.min(max,m.hp+Math.max(1,Math.round(max*m.regen.rate)));if(--m.regen.turns<=0)delete m.regen;}
     for(const e of living()){if(!e.poison)continue;const damage=Math.max(1,Math.round(e.maxHp*e.poison.rate));damageMonsterTarget(e,{damage,attribute:1,timing:'HIT'});if(--e.poison.turns<=0)delete e.poison;}
-    for(const m of S.monsters){if(m.status&&--m.status.turns<=0)delete m.status;}syncPartyHp();
+    const ownedList=usingGardenerParty()?S.gardeners:S.monsters;for(const m of ownedList){if(m.status&&--m.status.turns<=0)delete m.status;}syncPartyHp();
     if(!living().length){finishEncounter();return}
     stageStats.turn++;
     if(activeStageData.stage_type==='survival'&&stageStats.turn>=activeStageData.survival_turns){enemies.forEach(e=>e.dead=true);finishEncounter();return;}
@@ -1218,20 +1320,14 @@
     living().forEach(e=>e.turnsLeft=Math.max(0,e.turnsLeft-1));
     renderEnemies();
     const ready=living().filter(e=>e.turnsLeft<=0);
-    if(ready.length){
-      setBattlePhase('guard',true);defenseQueue=[...ready].sort((a,b)=>a.attackEvery-b.attackEvery);nextEnemyAttack();
-    }else{
-      setBattlePhase('transition',true);
-      const soon=Math.min(...living().map(e=>e.turnsLeft));
-      setBattleCopy('battle.enemyWait','battle.enemyWaitTurns',{turns:soon});
-      setTimeout(beginAttack,420);
-    }
+    if(ready.length){setBattlePhase('guard',true);defenseQueue=[...ready].sort((a,b)=>a.attackEvery-b.attackEvery);nextEnemyAttack();}
+    else{setBattlePhase('transition',true);const soon=Math.min(...living().map(e=>e.turnsLeft));setBattleCopy('battle.enemyWait','battle.enemyWaitTurns',{turns:soon});setTimeout(beginAttack,420);}
   }
 
 
   // ---------- GUARD / RECOVERY ----------
   function playEnemyAttackMotion(e){const card=document.querySelector(`.enemyCard[data-id="${e.id}"]`);if(!card)return;card.classList.remove('enemyAttack');void card.offsetWidth;card.classList.add('enemyAttack');setTimeout(()=>card.classList.remove('enemyAttack'),760);if(e.boss){$('battleScreen').classList.remove('bossShake');void $('battleScreen').offsetWidth;$('battleScreen').classList.add('bossShake');setTimeout(()=>$('battleScreen').classList.remove('bossShake'),500);}}
-  function nextEnemyAttack(){if(!defenseQueue.length){beginAttack();return;}const e=defenseQueue.shift();if(e.dead){nextEnemyAttack();return;}const def=MASTER_DATA.enemies.find(x=>x.enemy_id===e.masterId),action=Systems.action(e,def,MASTER_DATA);if(action.heal&&(e.healCount||0)<2){e.hp=Math.min(e.maxHp,e.hp+Math.round(e.maxHp*action.heal));e.healCount=(e.healCount||0)+1;}if(action.barrier)e.barrier=action.barrier;if(action.shift)e.attr=attributes[(attributes.indexOf(e.attr)+1)%attributes.length];patternBeat={enemy:e,action,index:0};const start=()=>startGuardBeat();if(e.pendingPhaseEvent&&!activeGate){const timing=e.pendingPhaseEvent;e.pendingPhaseEvent=null;playEvents(activeStageId,timing,start)}else start();}
+  function nextEnemyAttack(){if(!defenseQueue.length){beginAttack();return;}const e=defenseQueue.shift();if(e.dead){nextEnemyAttack();return;}const def=e.masterId?MASTER_DATA.enemies.find(x=>x.enemy_id===e.masterId):null,action=e.plantAction||Systems.action(e,def,MASTER_DATA);if(action.heal&&(e.healCount||0)<2){e.hp=Math.min(e.maxHp,e.hp+Math.round(e.maxHp*action.heal));e.healCount=(e.healCount||0)+1;}if(action.barrier)e.barrier=action.barrier;if(action.shift)e.attr=attributes[(attributes.indexOf(e.attr)+1)%attributes.length];patternBeat={enemy:e,action,index:0};const start=()=>startGuardBeat();if(e.pendingPhaseEvent&&!activeGate){const timing=e.pendingPhaseEvent;e.pendingPhaseEvent=null;playEvents(activeStageId,timing,start)}else start();}
   function startGuardBeat(){
     if(!patternBeat)return;
     const {enemy:e,action,index}=patternBeat;
@@ -1252,7 +1348,7 @@
   function resolveDefense(progress,playerClosed=true){
     if(battleInputLocked)return;
     const grade=timingGradeFromProgress(progress),rate=timingGuardRate(grade),perfect=grade==='PERFECT';
-    setBattlePhase('transition',true);cancelAnimationFrame(meterRAF);const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;const shouldPhysicallyClose=!!playerClosed&&!openOnlyMode();defenseToken++;opened=!shouldPhysicallyClose;if(!shouldPhysicallyClose)setDeviceClosed(false,{skipSnapshot:true});e.turnsLeft=e.attackEvery;resetBattleTimingUi();const a=patternBeat?.action,factor=a?a.factors[patternBeat.index]*a.damage:1,alive=partyMembers().filter(m=>m.hp>0),target=alive.find(m=>m.id===defenseTargetId)||alive[(stageStats.guardHits||0)%Math.max(1,alive.length)],dmg=Combat.guardDamage(e.atk,factor,rate,e.attackDown?.multiplier||1,target?.def||0,Number(MASTER_DATA.monsterRules.balance?.defenseCoefficient||.25));stageStats.guardHits=(stageStats.guardHits||0)+1;if(target){const owned=S.monsters.find(m=>m.id===target.id);owned.hp=Math.max(0,target.hp-dmg);if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':(grade==='EXCELLENT'||grade==='GREAT')?'battle.goodGuard':grade==='MISS'?'battle.miss':'battle.guard',feedbackLabel=perfect?t('battle.perfectGuard'):grade==='MISS'?t('battle.miss'):grade;if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}else sfx(dmg>0?'hit':'guard');SHUTDevice.guard(labelKey,dmg);feedback(feedbackLabel,perfect?'guard':grade==='MISS'?'miss':'hit');setBattleCopy(labelKey,'battle.damage',{name:target?.name||'',damage:dmg});defenseTargetId=null;drawPartyHud();updateBattleHeader();renderEnemies();if(S.hp<=0){setTimeout(gameOver,250);return;}const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}const reason=more?'combo':'defenseContinue';if(shouldPhysicallyClose)setTimeout(()=>enterRecoveryPhase(reason,true),200);else if(openOnlyMode())setTimeout(()=>enterRecoveryPhase(reason,false),120);else setTimeout(()=>{if(more)startGuardBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);
+    setBattlePhase('transition',true);cancelAnimationFrame(meterRAF);const e=enemies.find(x=>x.id===defenseEnemyId);if(!e)return;const shouldPhysicallyClose=!!playerClosed&&!openOnlyMode();defenseToken++;opened=!shouldPhysicallyClose;if(!shouldPhysicallyClose)setDeviceClosed(false,{skipSnapshot:true});e.turnsLeft=e.attackEvery;resetBattleTimingUi();const a=patternBeat?.action,factor=a?a.factors[patternBeat.index]*a.damage:1,alive=partyMembers().filter(m=>m.hp>0),target=alive.find(m=>m.id===defenseTargetId)||alive[(stageStats.guardHits||0)%Math.max(1,alive.length)],dmg=Combat.guardDamage(e.atk,factor,rate,e.attackDown?.multiplier||1,target?.def||0,Number(MASTER_DATA.monsterRules.balance?.defenseCoefficient||.25));stageStats.guardHits=(stageStats.guardHits||0)+1;if(target){const owned=partyOwnedById(target.id);owned.hp=Math.max(0,target.hp-dmg);if(dmg)allyFrames[target.id]={state:owned.hp?'hit':'death',start:performance.now(),until:performance.now()+600};const effect=e.masterId?MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId)?.onHitStatus:null;if(dmg>0&&effect)owned.status=structuredClone(effect);}syncPartyHp();const labelKey=perfect?'battle.perfectGuard':(grade==='EXCELLENT'||grade==='GREAT')?'battle.goodGuard':grade==='MISS'?'battle.miss':'battle.guard',feedbackLabel=perfect?t('battle.perfectGuard'):grade==='MISS'?t('battle.miss'):grade;if(perfect){stageStats.guard++;bumpQuest('perfect_guard_count',1);S.perfectGuardBoost=true;sfx('guard');}else sfx(dmg>0?'hit':'guard');SHUTDevice.guard(labelKey,dmg);feedback(feedbackLabel,perfect?'guard':grade==='MISS'?'miss':'hit');setBattleCopy(labelKey,'battle.damage',{name:target?.name||'',damage:dmg});defenseTargetId=null;drawPartyHud();updateBattleHeader();renderEnemies();if(S.hp<=0){setTimeout(gameOver,250);return;}const more=patternBeat&&++patternBeat.index<patternBeat.action.beats.length;if(!more){patternBeat=null;if(e.attackDown&&--e.attackDown.turns<=0)delete e.attackDown;}const reason=more?'combo':'defenseContinue';if(shouldPhysicallyClose)setTimeout(()=>enterRecoveryPhase(reason,true),200);else if(openOnlyMode())setTimeout(()=>enterRecoveryPhase(reason,false),120);else setTimeout(()=>{if(more)startGuardBeat();else if(defenseQueue.length)nextEnemyAttack();else beginAttack();},650);
   }
   function resetBattleTimingUi(){$('timingBox').classList.remove('show','guardMode','awaitStart');$('timingBox').dataset.stopping='0';attackStopRequested=false;$('timingPhase')?.classList.remove('phaseFlash');document.querySelectorAll('.enemyCard').forEach(x=>x.classList.remove('attacking'));}
   function playOpenOnlyGuardDoorMotion(done){let layer=$('openOnlyGuardDoor');if(!layer){layer=document.createElement('div');layer.id='openOnlyGuardDoor';layer.setAttribute('aria-hidden','true');layer.innerHTML='<i></i><i></i>';$('battleScreen').append(layer);}layer.classList.remove('play');void layer.offsetWidth;layer.classList.add('play');sfx('door');setTimeout(()=>{layer.classList.remove('play');done?.();},430);}
@@ -1261,41 +1357,49 @@
   async function continueFromRecovery(){if(phase!=='recovery'||SHUTDevice.busy)return;const tray=$('recoveryTray'),physical=tray.dataset.presentation==='closed';setBattlePhase('transition',true);tray.classList.remove('show');tray.setAttribute('aria-hidden','true');if(physical){sfx('door');await setDeviceClosed(false);}else sfx('confirm');$('battleScreen').append(tray);opened=true;if(pendingItem){const it=itemDefs[pendingItem],itemName=t({heal:'battle.heal',high:'battle.highHeal',elixir:'battle.elixir'}[pendingItem]);S.items[pendingItem]--;carrySlots--;if(S.run)S.run.slots=carrySlots;healParty(it.heal);setBattleCopy('battle.itemUsed','battle.hpRecovered',{item:itemName,percent:Math.round(it.heal*100)});pendingItem=null;}updateBattleHeader();if(recoveryReason==='tutorial'){finishTutorial();return;}setTimeout(()=>{if(recoveryReason==='combo'){startGuardBeat();return;}if(recoveryReason==='defenseContinue'&&defenseQueue.length){setBattlePhase('guard',true);nextEnemyAttack()}else beginAttack();},200);}
   // ---------- REWARDS ----------
   function grantEnemyRewards(e){
-    const chapter=MASTER_DATA.chapterProgression?.find(x=>x.chapter===Number(activeStageData?.chapter))||{goldMultiplier:1},g=Math.round(e.gold*Number(chapter.goldMultiplier||1));rewardGold+=g;rewardMonsterExp+=Monsters.battleExp(e,activeStageData,MASTER_DATA);addRankXp(Math.round(e.rankXp*(1+(Number(activeStageData?.difficulty||1)-1)*.08)));if(e.boss){const def=enemyById[e.masterId];if(def?.category==='midboss')bumpQuest('midboss_kill_count',1);else bumpQuest('boss_kill_count',1);}
-    // item drops
+    const isPlant=!!e.plantNo,chapter=MASTER_DATA.chapterProgression?.find(x=>x.chapter===Number(activeStageData?.chapter))||{goldMultiplier:1},g=Math.round(Number(e.gold||0)*Number(chapter.goldMultiplier||1));
+    rewardGold+=g;rewardMonsterExp+=isPlant?Math.max(20,28+Number(e.rarity||1)*14):Monsters.battleExp(e,activeStageData,MASTER_DATA);addRankXp(Math.round(Number(e.rankXp||0)*(1+(Number(activeStageData?.difficulty||1)-1)*.08)));
+    if(e.boss&&!isPlant){const def=enemyById[e.masterId];if(def?.category==='midboss')bumpQuest('midboss_kill_count',1);else bumpQuest('boss_kill_count',1);}
     let r=Math.random(),drop=null;for(const entry of MASTER_DATA.monsterRules.itemDrops){r-=entry.chance;if(r<0){drop=entry.key;break;}}
-    if(drop && S.items[drop]<itemDefs[drop].max){const itemName=localizedItemName(drop);S.items[drop]++;rewardDrops.push(itemName);rewardEntries.push({kind:'item',label:itemName})}
-    const monster=MASTER_DATA.monsters.find(m=>m.acquisition.enemyId===e.masterId);
-    const egg=monster&&(monster.acquisition.guaranteedEgg===true||Math.random()<monster.acquisition.eggRate),monsterName=monster?localizedDataName(monster):'';
-    if(egg){const wasOwned=S.monsters.some(x=>x.monsterId===monster.monster_id),instance=Monsters.create(monster.monster_id,crypto.randomUUID(),MASTER_DATA);S.monsters.push(instance);S.codex.monsters=S.codex.monsters||{};S.codex.monsters[monster.monster_id]=true;const label=t('battle.eggDrop',{name:monsterName});e.battleEggDrop={label,rarity:monster.rarity,monsterId:monster.monster_id};rewardDrops.push(label);rewardEntries.push({kind:'egg',label,rarity:monster.rarity,monsterId:monster.monster_id,isNew:!wasOwned});saveGame();}
+    if(drop&&S.items[drop]<itemDefs[drop].max){const itemName=localizedItemName(drop);S.items[drop]++;rewardDrops.push(itemName);rewardEntries.push({kind:'item',label:itemName});}
+    let egg=false,monster=null,monsterName='';
+    if(!isPlant){monster=MASTER_DATA.monsters.find(m=>m.acquisition.enemyId===e.masterId);egg=monster&&(monster.acquisition.guaranteedEgg===true||Math.random()<monster.acquisition.eggRate);monsterName=monster?localizedDataName(monster):'';if(egg){const wasOwned=S.monsters.some(x=>x.monsterId===monster.monster_id),instance=Monsters.create(monster.monster_id,crypto.randomUUID(),MASTER_DATA);S.monsters.push(instance);S.codex.monsters=S.codex.monsters||{};S.codex.monsters[monster.monster_id]=true;const label=t('battle.eggDrop',{name:monsterName});e.battleEggDrop={label,rarity:monster.rarity,monsterId:monster.monster_id};rewardDrops.push(label);rewardEntries.push({kind:'egg',label,rarity:monster.rarity,monsterId:monster.monster_id,isNew:!wasOwned});saveGame();}}
+    let seed=null;if(e.seedNo&&Gardeners){const pair=Roster.pair(e.seedNo);S=Gardeners.queueSeed(S,e.seedNo);seed={no:e.seedNo,label:t('gardener.seedDrop',{name:pair.gardener.name}),rarity:pair.rarity};e.battleSeedDrop=seed;rewardDrops.push(seed.label);rewardEntries.push({kind:'seed',label:seed.label,rarity:seed.rarity,no:seed.no});saveGame();}
     const keyRule=MASTER_DATA.monsterRules.keyDrop,keyFound=keyRule.gates.includes(activeGate)&&Math.random()<keyRule.chance;if(keyFound){addWallet('gateKeys',keyRule.amount,'battle key drop');const label=t('battle.keysDrop',{amount:keyRule.amount});rewardDrops.push(label);rewardEntries.push({kind:'key',label});}
-    showMonsterDrop(e,[{label:g+' G',kind:'gold'},...(drop?[{label:localizedItemName(drop),kind:'item'}]:[]),...(egg?[{label:t('battle.eggDrop',{name:monsterName}),kind:monster.rarity>=4?'rare':'egg'}]:[]),...(keyFound?[{label:t('battle.keysDrop',{amount:keyRule.amount}),kind:'key'}]:[])]);
+    showMonsterDrop(e,[{label:g+' G',kind:'gold'},...(drop?[{label:localizedItemName(drop),kind:'item'}]:[]),...(seed?[{label:seed.label,kind:'seed'}]:[]),...(egg?[{label:t('battle.eggDrop',{name:monsterName}),kind:monster.rarity>=4?'rare':'egg'}]:[]),...(keyFound?[{label:t('battle.keysDrop',{amount:keyRule.amount}),kind:'key'}]:[])]);
   }
+
   function showMonsterDrop(enemy,drops){
     const card=document.querySelector(`.enemyCard[data-id="${enemy.id}"]`),area=$('battleScreen'),a=area.getBoundingClientRect(),r=card?.getBoundingClientRect();if(!r)return;
-    drops.forEach((drop,i)=>{const node=document.createElement('div'),iconKind=drop.kind==='rare'||drop.kind==='egg'?'egg':drop.kind,isEgg=iconKind==='egg';node.className='monsterDrop '+drop.kind+(isEgg?' physicalEggDrop':'');node.innerHTML=`${rewardIcon(iconKind,drop.kind==='rare'?4:1,'dropIcon')}<span>${drop.label}</span>`;node.style.left=(r.left+r.width/2-a.left+(i-(drops.length-1)/2)*30)+'px';node.style.top=(r.top+r.height*.6-a.top-i*17)+'px';node.style.animationDelay=(160+i*55)+'ms';node.dataset.enemy=enemy.id;area.append(node);setTimeout(()=>sfx(drop.kind),200+i*55);setTimeout(()=>node.remove(),isEgg?1780:1200);});
+    drops.forEach((drop,i)=>{const node=document.createElement('div'),iconKind=drop.kind==='rare'||drop.kind==='egg'?'egg':drop.kind,isEgg=iconKind==='egg',isSeed=drop.kind==='seed';node.className='monsterDrop '+drop.kind+(isEgg?' physicalEggDrop':'')+(isSeed?' physicalSeedDrop':'');node.innerHTML=isSeed?`<b class="seedDropIcon">SEED</b><span>${drop.label}</span>`:`${rewardIcon(iconKind,drop.kind==='rare'?4:1,'dropIcon')}<span>${drop.label}</span>`;node.style.left=(r.left+r.width/2-a.left+(i-(drops.length-1)/2)*30)+'px';node.style.top=(r.top+r.height*.6-a.top-i*17)+'px';node.style.animationDelay=(160+i*55)+'ms';node.dataset.enemy=enemy.id;area.append(node);setTimeout(()=>sfx(isSeed?'rare':drop.kind),200+i*55);setTimeout(()=>node.remove(),isEgg||isSeed?1780:1200);});
   }
+
   function grantStageRewards(rewards){for(const r of rewards||[])addGift(activeStageData.name,r.type,r.amount,'',r.monsterId);}
   function renderRewardPresentation(title,subtitle,buttonLabel,extra=''){
-    $('rewardTitle').textContent=title;const entries=[{kind:'gold',label:`+${rewardGold} G`},...rewardEntries],eggs=entries.filter(x=>x.kind==='egg');
-    const expHtml=rewardExpChanges.length?`<div class="resultMonsterExp">${rewardExpChanges.map(change=>{const m=S.monsters.find(x=>x.id===change.id),s=m&&Monsters.stats(m,MASTER_DATA),pct=change.next?Math.round(change.afterXp/change.next*100):100;return `<div><b>${s?.name||change.id} ${t('battle.monsterExp',{exp:change.amount})}</b><span>Lv.${change.beforeLevel} → Lv.${change.afterLevel}</span><i><em style="width:${pct}%"></em></i>${change.levelUp?`<strong>${t('battle.levelUp',{name:s?.name||change.id,level:change.afterLevel})}</strong>`:''}</div>`}).join('')}</div>`:'',rankHtml=`<div class="resultRankProgress">RANK ${S.rank}<span>${S.rankXp} / ${S.rankNeed}</span></div>`;
-    $('rewardBody').innerHTML=`<div class="resultVictory">${t('battle.victory')}</div><div class="rewardLine">${subtitle}</div><div class="resultLoot">${entries.map((x,i)=>x.kind==='egg'?`<div class="resultDrop eggReward rarity-${x.rarity}" style="--i:${i}" data-hatch="${x.monsterId}"><div class="rarityEgg" data-rarity="★${x.rarity}">${rewardIcon('egg',x.rarity,'eggIcon')}</div><b>${stars(x.rarity)}</b><span>${x.label}</span><canvas width="96" height="96"></canvas><em>${t(x.isNew?'battle.newMonster':'battle.monsterJoined')}</em></div>`:`<div class="resultDrop ${x.kind}" style="--i:${i}">${x.kind==='gold'?'<b>G</b>':rewardIcon(x.kind,1,'resultIcon')}<span>${x.label}</span></div>`).join('')}</div>${expHtml}${rankHtml}${extra}`;
+    $('rewardTitle').textContent=title;const entries=[{kind:'gold',label:`+${rewardGold} G`},...rewardEntries],eggs=entries.filter(x=>x.kind==='egg'),rescued=entries.filter(x=>x.kind==='gardener'),rescuedNos=new Set(rescued.map(x=>x.no)),seedByNo=new Map(entries.filter(x=>x.kind==='seed').map(x=>[x.no,x])),visibleEntries=entries.filter(x=>x.kind!=='gardener'&&!(x.kind==='seed'&&rescuedNos.has(x.no)));
+    const expHtml=rewardExpChanges.length?`<div class="resultMonsterExp">${rewardExpChanges.map(change=>{const owned=partyOwnedById(change.id),st=owned?(usingGardenerParty()?Gardeners.stats(owned):Monsters.stats(owned,MASTER_DATA)):null,pct=change.next?Math.round(Number(change.afterXp||0)/change.next*100):100;return `<div><b>${st?.name||change.id} EXP +${change.amount}</b><span>Lv.${change.beforeLevel} → Lv.${change.afterLevel}</span><i><em style="width:${pct}%"></em></i>${change.levelUp?`<strong>LEVEL UP · ${st?.name||change.id} Lv.${change.afterLevel}</strong>`:''}</div>`}).join('')}</div>`:'',rankHtml=`<div class="resultRankProgress">RANK ${S.rank}<span>${S.rankXp} / ${S.rankNeed}</span></div>`;
+    const loot=visibleEntries.map((x,i)=>x.kind==='egg'?`<div class="resultDrop eggReward rarity-${x.rarity}" style="--i:${i}" data-hatch="${x.monsterId}"><div class="rarityEgg" data-rarity="★${x.rarity}">${rewardIcon('egg',x.rarity,'eggIcon')}</div><b>${stars(x.rarity)}</b><span>${x.label}</span><canvas width="96" height="96"></canvas><em>${t(x.isNew?'battle.newMonster':'battle.monsterJoined')}</em></div>`:x.kind==='seed'?`<div class="resultDrop seedReward rarity-${x.rarity}" style="--i:${i}"><b class="seedResultIcon">SEED</b><span>${x.label}</span><em>${t('gardener.restoreAfterClear')}</em></div>`:`<div class="resultDrop ${x.kind}" style="--i:${i}">${x.kind==='gold'?'<b>G</b>':rewardIcon(x.kind,1,'resultIcon')}<span>${x.label}</span></div>`).join('');
+    const rescueHtml=rescued.length?`<div class="resultRescues">${rescued.map((x,i)=>{const seed=seedByNo.get(x.no);return `<div class="rescueSequence rarity-${x.rarity}" data-rescue-no="${x.no}" data-rescue-stage="seed" style="--i:${i}"><div class="rescueStep rescueSeedStep"><b class="seedResultIcon">SEED</b><span>${seed?.label||x.label}</span><em>${t('gardener.restoring')}</em></div><div class="rescueStepArrow" aria-hidden="true">→</div><div class="rescueStep rescueGardenerStep"><span class="rescueGardenerArt pixel-art"><canvas class="gardenerBodyCanvas pixel-art" width="64" height="64"></canvas><em>PIXEL ART PENDING</em></span><div class="rescueGardenerCopy"><b>${t('gardener.restored')}</b><span>No.${String(x.no).padStart(3,'0')} · ${x.label}</span><em>${t('gardener.joined')}</em></div></div></div>`}).join('')}</div>`:''; 
+    $('rewardBody').innerHTML=`<div class="resultVictory">${t('battle.victory')}</div><div class="rewardLine">${subtitle}</div><div class="resultLoot">${loot}</div>${rescueHtml}${expHtml}${rankHtml}${extra}`;
     $('rewardNext').textContent=buttonLabel;$('rewardNext').disabled=true;$('rewardOverlay').classList.add('show');
     document.querySelectorAll('[data-hatch]').forEach(node=>{const def=Monsters.definition(node.dataset.hatch,MASTER_DATA),sprite=MASTER_DATA.sprites[def.sprite],canvas=node.querySelector('canvas');SHUTArt.image(sprite.source,img=>SHUTArt.drawCell(canvas,img,{...sprite,cell:sprite.states.idle?.[0]??sprite.cell},.08))});
-    setTimeout(()=>{$('rewardNext').disabled=false;if(eggs.length)sfx('gacha')},eggs.length?1900:850);
+    document.querySelectorAll('[data-rescue-no]').forEach((node,i)=>{const no=Number(node.dataset.rescueNo),canvas=node.querySelector('.gardenerBodyCanvas'),pending=node.querySelector('.rescueGardenerArt em');mountGardenerBody(canvas,pending,no,2);setTimeout(()=>{node.dataset.rescueStage='restored';sfx('rare')},650+i*120)});
+    const unlockDelay=Math.max(eggs.length?1900:850,rescued.length?1350+(rescued.length-1)*120:0);setTimeout(()=>{$('rewardNext').disabled=false;if(eggs.length)sfx('gacha')},unlockDelay);
   }
+
   function mergeRewardExpChanges(changes){
     for(const change of changes){const prior=rewardExpChanges.find(x=>x.id===change.id);if(!prior){rewardExpChanges.push({...change});continue;}prior.amount+=change.amount;prior.afterLevel=change.afterLevel;prior.afterXp=change.afterXp;prior.next=change.next;prior.levelUp=prior.levelUp||change.levelUp;}
   }
   function creditStoryEncounterRewards(){
     const pendingGold=Math.max(0,rewardGold-rewardGoldCredited);if(pendingGold){addWallet('gold',pendingGold,'story battle reward');rewardGoldCredited=rewardGold;}
-    const pendingExp=Math.max(0,rewardMonsterExp-rewardMonsterExpCredited);if(pendingExp){const expResult=Monsters.grantBattleExp(S,[...S.party],pendingExp,MASTER_DATA);S=expResult.state;rewardMonsterExpCredited=rewardMonsterExp;mergeRewardExpChanges(expResult.changes);}
+    const pendingExp=Math.max(0,rewardMonsterExp-rewardMonsterExpCredited);if(pendingExp){const expResult=usingGardenerParty()?Gardeners.grantBattleExp(S,partyInstanceIds(),pendingExp):Monsters.grantBattleExp(S,[...S.party],pendingExp,MASTER_DATA);S=expResult.state;rewardMonsterExpCredited=rewardMonsterExp;mergeRewardExpChanges(expResult.changes);}
   }
   function finishEncounter(){
     if(encounterSettled)return;encounterSettled=true;attackReadyToken++;defenseToken++;battleInputLocked=true;stageStats.clear=true;
     if(activeGate){creditGateEncounterRewards();finishExpeditionBattle();return;}
     creditStoryEncounterRewards();healParty(MASTER_DATA.balance.storyRestRate);resetBattleTimingUi();$('timingBox').classList.remove('show');saveGame();updateBattleHeader();
     if(encounter<encounterMax){setBattlePhase('transition',true);const timing='after_battle'+encounter;playEvents(activeStageId,timing,()=>{encounter++;startEncounter()});return;}
+    if(usingGardenerParty()&&S.pendingSeeds?.length){const restored=Gardeners.restoreSeedsAfterStage(S,()=>crypto.randomUUID());S=restored.state;for(const g of restored.rescued){const st=Gardeners.stats(g);S.codex.gardeners[g.gardenerId]=true;rewardEntries.push({kind:'gardener',label:st.name,rarity:st.rarity,no:st.no});}}
     setBattlePhase('reward',true);setMusicMode('victory');sfx('win');updateHome();
     const first=!S.stageClears[activeStageId];S.stageClears[activeStageId]=true;if(first){grantStageRewards(activeStageData.first_clear_rewards);S.questProgress[`stage_clear:${activeStageId}`]=1;}
     const idx=masterStages.findIndex(x=>x.stage_id===activeStageId);if(idx>=S.storyIndex)S.storyIndex=Math.min(masterStages.length,idx+1);grantStageRewards(activeStageData.repeat_rewards);processStageUnlocks(activeStageId);unlockJourneyGates();settleMissions();rollSpecialGate();refreshShopStock();
@@ -1359,7 +1463,7 @@
   });
   bindTouchSafeButton('gachaBtn',()=>enterGacha('hub'));
   bindTouchSafeButton('closeGachaBtn',()=>enterGacha('hub'));
-  $('equipBtn').onclick=renderEquipment;
+  $('equipBtn').onclick=()=>Gardeners?renderGardenerRoster():renderEquipment;
   $('synthesisBtn').onclick=renderSynthesis;
   $('shopBtn').onclick=()=>renderShop('weapon');
   $('partnerBtn').onclick=renderPartner;
@@ -1469,7 +1573,7 @@
     encounter++;setTimeout(startEncounter,420);
   }
   function syncBattleStateUi(){
-    $('app').dataset.phase=phase;
+    $('app').dataset.phase=phase;$('battleScreen').dataset.battleDomain=battleDomain;
     syncOpenOnlyPresentation();
     drawPartyHud();
     updateBattleHeader();
@@ -1515,14 +1619,20 @@
   $('soundToggle').onclick=showSettings;
   $('titleSettingsBtn').onclick=(event)=>{event.stopPropagation();showSettings()};
   document.querySelectorAll('[data-title-language]').forEach(button=>button.onclick=event=>{event.stopPropagation();I18n.setLanguage(button.dataset.titleLanguage);updateLocalizedUi()});
-  function partyMembers(){return S.party.map(id=>S.monsters.find(m=>m.id===id)).filter(Boolean).map(m=>({...Monsters.stats(m,MASTER_DATA),id:m.id,status:m.status,hp:m.hp??Monsters.stats(m,MASTER_DATA).maxHp}));}
+  function usingGardenerParty(){return battleDomain==='plant-gardener'&&!!Gardeners&&Array.isArray(S.gardenerParty)&&S.gardenerParty.length>0}
+  function partyOwnedById(id){return usingGardenerParty()?S.gardeners.find(g=>g.id===id):S.monsters.find(m=>m.id===id)}
+  function partyInstanceIds(){return usingGardenerParty()?[...S.gardenerParty]:[...S.party]}
+  function partyMembers(){
+    if(usingGardenerParty())return S.gardenerParty.map(id=>S.gardeners.find(g=>g.id===id)).filter(Boolean).map(g=>{const st=Gardeners.stats(g);return {...st,id:g.id,gardenerId:g.gardenerId,status:g.status,hp:g.hp??st.maxHp,plantStrain:Number(g.plantStrain)||0}});
+    return S.party.map(id=>S.monsters.find(m=>m.id===id)).filter(Boolean).map(m=>({...Monsters.stats(m,MASTER_DATA),id:m.id,status:m.status,hp:m.hp??Monsters.stats(m,MASTER_DATA).maxHp}));
+  }
 
   function syncPartyHp(full=false){
-    const members=partyMembers();for(const p of members){const m=S.monsters.find(m=>m.id===p.id);if(full)delete m.status;m.hp=full?p.maxHp:clamp(m.hp??p.maxHp,0,p.maxHp);}
+    const members=partyMembers();for(const p of members){const owned=partyOwnedById(p.id);if(!owned)continue;if(full)delete owned.status;owned.hp=full?p.maxHp:clamp(owned.hp??p.maxHp,0,p.maxHp);}
     S.maxHp=partyMembers().reduce((n,m)=>n+m.maxHp,0);S.hp=partyMembers().reduce((n,m)=>n+m.hp,0);
   }
 
-  function healParty(rate){for(const p of partyMembers()){const m=S.monsters.find(m=>m.id===p.id);m.hp=Math.min(p.maxHp,p.hp+Math.round(p.maxHp*rate));}syncPartyHp();}
+  function healParty(rate){for(const p of partyMembers()){const owned=partyOwnedById(p.id);if(owned)owned.hp=Math.min(p.maxHp,p.hp+Math.round(p.maxHp*rate));}syncPartyHp();}
 
   function monsterIcon(canvas,instance){const s=Monsters.stats(instance,MASTER_DATA),p=MASTER_DATA.sprites[s.sprite];if(!p)return;const motion=allyFrames[instance.id],now=performance.now(),state=instance.hp===0?'death':motion&&now<motion.until?motion.state:'idle',idleFrames=p.states.idle||[p.cell],attackFrames=p.states.attack||idleFrames,ultimateFrames=[idleFrames.at(-1),...attackFrames,attackFrames.at(-1)],frames=state==='ultimate'?ultimateFrames:p.states[state]||idleFrames,elapsed=state==='idle'?now:now-(motion?.start||0),step=state==='idle'?Math.max(320,p.frameMs||0):state==='ultimate'?105:150,frame=frames[state==='idle'?Math.floor(elapsed/step)%frames.length:Math.min(frames.length-1,Math.max(0,Math.floor(elapsed/step)))];canvas.dataset.animationState=state;canvas.dataset.frame=frame;canvas.dataset.assetStatus=p.status;SHUTArt.image(p.source,img=>SHUTArt.drawCell(canvas,img,{...p,cell:frame},.08));}
   function monsterFaceIcon(canvas,instance){
@@ -1532,7 +1642,9 @@
   }
 
   function drawPartyHud(){
-    const el=$('battlePartner');el.className='monsterPartyHud';el.innerHTML=partyMembers().map(m=>{const charge=skillCharge[m.id]||0,required=skillTurnsRequired(m),ready=charge>=required,motion=allyFrames[m.id],active=motion&&performance.now()<motion.until,owned=S.monsters.find(x=>x.id===m.id),segments=Array.from({length:required},(_,i)=>`<i class="skillSegment ${i<charge?'filled':''}"></i>`).join('');return `<div class="monsterHud ${m.hp<=0?'fainted':''} ${active&&motion.state==='attack'?'attacking':''} ${active&&motion.state==='ultimate'?'ultimate':''} ${ready?'skillReady':''} ${phase==='guard'&&m.id===defenseTargetId?'guardTargetAlly':''}" data-ally="${m.id}"><canvas class="allyFaceCanvas" width="64" height="64"></canvas><div class="allyHudBody"><div class="allyHudTop"><b>${m.name}</b><span class="allyMeta">${attributeIcon(m.attr)}<span class="allyLevel">Lv.${m.level}</span><span class="allyStatus">${m.status?'↓'+m.status.name:''}${owned?.regen?' · '+t('battle.regen'):''}</span></span><small>HP ${m.hp}/${m.maxHp}</small></div><div class="allyHp"><i style="width:${m.hp/m.maxHp*100}%;background:${attrColor[m.attr]}"></i></div><div class="skillGauge skillSegments" aria-label="${t('battle.skillGauge',{value:charge+' / '+required})}"><span class="skillSegmentTrack">${segments}</span><em>${ready?t('battle.skillReady'):'SKILL'}</em></div></div></div>`}).join('');el.querySelectorAll('[data-ally]').forEach(n=>monsterFaceIcon(n.querySelector('canvas'),S.monsters.find(m=>m.id===n.dataset.ally)));
+    const members=partyMembers(),el=$('battlePartner');el.className='monsterPartyHud gardenerPartyHud';
+    el.innerHTML=members.map(m=>{const charge=skillCharge[m.id]||0,required=skillTurnsRequired(m),ready=charge>=required,motion=allyFrames[m.id],active=motion&&performance.now()<motion.until,owned=partyOwnedById(m.id),gardenerMode=usingGardenerParty(),risk=gardenerMode&&owned?Math.round(Gardeners.plantModeBerserkChance(owned)*100):null,segments=Array.from({length:required},(_,i)=>`<i class="skillSegment ${i<charge?'filled':''}"></i>`).join(''),art=gardenerMode?'<div class="allyFaceCrop pixel-art"><canvas class="allyFaceCanvas pixel-art" width="32" height="32"></canvas><span class="allyArtPending">ART</span></div>':'<canvas class="allyFaceCanvas" width="64" height="64"></canvas>';return `<div class="monsterHud gardenerHud ${m.hp<=0?'fainted':''} ${active&&motion.state==='attack'?'attacking':''} ${active&&motion.state==='ultimate'?'ultimate plantModeActive':''} ${ready?'skillReady':''} ${phase==='guard'&&m.id===defenseTargetId?'guardTargetAlly':''}" data-ally="${m.id}">${art}<div class="allyHudBody"><div class="allyHudTop"><b>${m.name}</b><span class="allyMeta">${attributeIcon(m.attr)}<span class="allyLevel">Lv.${m.level}</span><span class="allyStatus">${m.status?'↓'+(m.status.name||m.status.kind||'STATUS'):''}${gardenerMode?' · '+t('gardener.strain',{value:Math.round(Number(owned?.plantStrain)||0)}):owned?.regen?' · '+t('battle.regen'):''}</span></span><small>HP ${m.hp}/${m.maxHp}</small></div><div class="allyHp"><i style="width:${m.hp/m.maxHp*100}%;background:${attrColor[m.attr]||'#9be7df'}"></i></div><div class="skillGauge skillSegments" aria-label="${t('battle.skillGauge',{value:charge+' / '+required})}${gardenerMode&&risk!==null?' · '+t('gardener.riskShort',{chance:risk}):''}"><span class="skillSegmentTrack">${segments}</span><em>${gardenerMode&&risk!==null?`<small class="plantModeRisk">${t('gardener.riskShort',{chance:risk})}</small>`:t('battle.ultimate')}</em></div></div></div>`}).join('');
+    el.querySelectorAll('[data-ally]').forEach(n=>{const m=members.find(x=>x.id===n.dataset.ally);if(!m)return;if(usingGardenerParty()){const canvas=n.querySelector('.allyFaceCanvas'),pending=n.querySelector('.allyArtPending');if(canvas&&RosterArt)RosterArt.mountFace(canvas,{no:m.no,side:'gardener',scale:1,onReady:()=>{canvas.hidden=false;if(pending)pending.hidden=true},onMissing:()=>{canvas.hidden=true;if(pending)pending.hidden=false}});}else monsterFaceIcon(n.querySelector('canvas'),S.monsters.find(x=>x.id===n.dataset.ally));});
   }
 
   function drawMonsterRoster(){document.querySelectorAll('[data-monster]').forEach(cv=>{const m=S.monsters.find(m=>m.id===cv.dataset.monster);if(m)monsterIcon(cv,m);});}
@@ -1562,22 +1674,60 @@
 
   function damageMonsterTarget(e,hit){
     e.prevHp=e.hp;e.hp=Math.max(0,e.hp-hit.damage);if(hit.timing==='PERFECT')e.barrier=0;e.flashUntil=performance.now()+320;e.popup={text:'−'+hit.damage,tag:hit.attribute>1?'WEAK':hit.attribute<1?'RESIST':'',cls:hit.attribute>1?'weak':''};clearTimeout(e.popupTimer);e.popupTimer=setTimeout(()=>{e.popup=null;renderEnemies();},620);
-    const oldPhase=e.phaseIndex||0,action=Systems.action(e,MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId),MASTER_DATA);e.phaseIndex=action.phaseIndex;if(e.boss&&e.hp>0&&e.phaseIndex>oldPhase){feedback(action.phase,'perfect');e.pendingPhaseEvent=e.phaseIndex===1?'boss_phase2':'boss_phase3';}
+    if(e.masterId){const oldPhase=e.phaseIndex||0,action=Systems.action(e,MASTER_DATA.enemies.find(d=>d.enemy_id===e.masterId),MASTER_DATA);e.phaseIndex=action.phaseIndex;if(e.boss&&e.hp>0&&e.phaseIndex>oldPhase){feedback(action.phase,'perfect');e.pendingPhaseEvent=e.phaseIndex===1?'boss_phase2':'boss_phase3';}}
     if(!e.hp&&!e.dead){e.dead=true;e.defeatUntil=performance.now()+600;if(hit.attribute>1)bumpQuest('weak_kill_count',1);bumpQuest('enemy_kill_count',1);grantEnemyRewards(e);}
   }
+
+  function spawnBattlePixelEffect(event,sourceRect,targetRect){
+    const effects=globalThis.SHUTPixelEffects;if(!effects||event?.type!=='spawnEffect')return;
+    const cut=String(event.effect||'').lastIndexOf('_');if(cut<1)return;
+    const element=event.effect.slice(0,cut),kind=event.effect.slice(cut+1),def=effects.defaultDefinitions?.[element]?.[kind];if(!def)return;
+    const area=$('battleScreen').getBoundingClientRect(),anchorRect=event.anchor==='target'?targetRect:sourceRect;if(!anchorRect)return;
+    const canvas=document.createElement('canvas');canvas.className='pixelBattleFx pixel-art layer-'+(event.layer||'front');
+    const displaySize=128,x=Math.round(anchorRect.left+anchorRect.width/2-area.left-displaySize/2),y=Math.round(anchorRect.top+anchorRect.height/2-area.top-displaySize/2);
+    canvas.style.left=x+'px';canvas.style.top=y+'px';$('battleScreen').append(canvas);
+    effects.play(canvas,def,{scale:2,onDone:()=>canvas.remove()});
+  }
+  function showGardenerBattleMotion(hit,index,onImpact){
+    return new Promise(resolve=>{
+      const actor=partyMembers().find(m=>m.id===hit.actorId),ally=document.querySelector(`[data-ally="${hit.actorId}"]`),target=hit.berserkTargetId?document.querySelector(`[data-ally="${hit.berserkTargetId}"]`):document.querySelector(`.enemyCard[data-id="${hit.targetId}"]`);
+      let impacted=false,finished=false,actionStarted=false,timer=0,motion=null;
+      const impact=()=>{if(impacted)return;impacted=true;onImpact?.()};
+      const finish=()=>{if(finished)return;finished=true;clearTimeout(timer);target?.classList.remove('berserkTargetAlly');motion?.remove();resolve()};
+      if(!actor||!ally||!target||!RosterArt){impact();resolve();return}
+      const area=$('battleScreen').getBoundingClientRect(),a=ally.getBoundingClientRect(),b=target.getBoundingClientRect(),state=hit.ultimate?'skill':'attack',motionLabel=hit.criticalName||(hit.plantMode?.berserk?t('gardener.berserk'):hit.ultimate?t('gardener.plantModeShort'):'');
+      motion=document.createElement('div');motion.className='gardenerBattleMotion pixelStage'+(hit.criticalName?' critical':'')+(hit.ultimate?' plantMode':'')+(hit.plantMode?.berserk?' berserk':'');
+      motion.style.left=Math.round(Math.max(0,Math.min(area.width-128,a.right-area.left+8)))+'px';
+      motion.style.top=Math.round(Math.max(0,Math.min(area.height-140,a.top-area.top-20)))+'px';
+      motion.innerHTML=`<canvas class="pixelActorCanvas pixel-art" width="64" height="64"></canvas><span>${motionLabel}</span>`;
+      if(hit.berserkTargetId)target.classList.add('berserkTargetAlly');
+      $('battleScreen').append(motion);
+      if(hit.ultimate)showUltimateMotion(hit,index);
+      const canvas=motion.querySelector('canvas'),profile=globalThis.SHUTPixelManifest?.profile(actor.no,'gardener'),def=profile?.animations?.[state],duration=def?Math.ceil(def.frames.length/def.fps*1000)+250:1400;
+      const onEvent=event=>{if(event.type==='impact')impact();else if(event.type==='spawnEffect')spawnBattlePixelEffect(event,motion.getBoundingClientRect(),b)};
+      RosterArt.mount(canvas,{no:actor.no,side:'gardener',state,scale:2,onEvent,
+        onState:next=>{if(next===state)actionStarted=true;else if(actionStarted&&next==='idle')finish()},
+        onMissing:()=>{impact();setTimeout(finish,120)}
+      });
+      timer=setTimeout(()=>{impact();finish()},duration);
+    });
+  }
   function showMonsterAttack(hit,index){
-    allyFrames[hit.actorId]={state:hit.ultimate?'ultimate':'attack',start:performance.now(),until:performance.now()+(hit.ultimate?820:560)};
-    const ally=document.querySelector(`[data-ally="${hit.actorId}"]`),target=document.querySelector(`.enemyCard[data-id="${hit.targetId}"]`);if(!ally||!target)return;const area=$('battleScreen').getBoundingClientRect(),a=ally.getBoundingClientRect(),b=target.getBoundingClientRect(),actor=partyMembers().find(m=>m.id===hit.actorId),node=document.createElement('i');node.className='monsterAttackSpark';node.style.cssText=`left:${a.left+a.width/2-area.left}px;top:${a.top-area.top}px;--dx:${b.left+b.width/2-a.left-a.width/2}px;--dy:${b.top+b.height*.45-a.top}px;--spark:${attrColor[actor.attr]};animation-delay:${index*45}ms`;$('battleScreen').append(node);setTimeout(()=>node.remove(),600);
+    allyFrames[hit.actorId]={state:hit.ultimate?'ultimate':'attack',start:performance.now(),until:performance.now()+(hit.ultimate?900:600)};
+    const ally=document.querySelector(`[data-ally="${hit.actorId}"]`),target=document.querySelector(`.enemyCard[data-id="${hit.targetId}"]`);if(!ally||!target)return;
+    const area=$('battleScreen').getBoundingClientRect(),a=ally.getBoundingClientRect(),b=target.getBoundingClientRect(),actor=partyMembers().find(m=>m.id===hit.actorId);
+    const node=document.createElement('i');node.className='monsterAttackSpark';node.style.cssText=`left:${Math.round(a.left+a.width/2-area.left)}px;top:${Math.round(a.top-area.top)}px;--dx:${Math.round(b.left+b.width/2-a.left-a.width/2)}px;--dy:${Math.round(b.top+b.height*.45-a.top)}px;--spark:${attrColor[actor?.attr]||'#9be7df'};animation-delay:${index*45}ms`;$('battleScreen').append(node);setTimeout(()=>node.remove(),600);
   }
 
   function showUltimateMotion(hit,index){
-    const actor=partyMembers().find(m=>m.id===hit.actorId);if(!actor)return;const node=document.createElement('div');node.className='ultimateMotion attr-'+({'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind'}[actor.attr]||'wind');node.style.setProperty('--delay',index*60+'ms');node.innerHTML=`<div class="ultimateSeal"><i></i><i></i><i></i></div><strong>${t('battle.ultimate')}</strong><span>${actor.special?.name||actor.name}</span>`;$('battleScreen').append(node);sfx('cue');setTimeout(()=>node.remove(),1050);
+    const actor=partyMembers().find(m=>m.id===hit.actorId);if(!actor)return;const attrClass=attributeUiId[actor.attr]||actor.attr||'fire',node=document.createElement('div'),plantMode=!!hit.plantMode,label=plantMode?t(hit.plantMode.berserk?'gardener.berserk':'gardener.plantModeShort'):t('battle.ultimate');
+    node.className='ultimateMotion attr-'+attrClass+(plantMode?' plantModeMotion':'')+(hit.plantMode?.berserk?' berserk':'');if(plantMode)node.dataset.plantModeState=hit.plantMode.berserk?'berserk':'controlled';node.style.setProperty('--delay',index*60+'ms');node.innerHTML=`<div class="ultimateSeal"><i></i><i></i><i></i></div><strong>${label}</strong><span>${actor.name}</span>`;$('battleScreen').append(node);sfx('cue');setTimeout(()=>node.remove(),1050);
   }
 
   function applySpecialEffect(hit,enemy){
     const plan=hit.special;if(!plan)return;
-    if(plan.type==='heal'&&plan.allyId){const m=S.monsters.find(x=>x.id===plan.allyId),max=m&&Monsters.stats(m,MASTER_DATA).maxHp;if(m&&m.hp>0)m.hp=Math.min(max,m.hp+plan.heal);feedback(t('battle.heal'),'perfect');}
-    if(plan.type==='regen'&&plan.allyId){const m=S.monsters.find(x=>x.id===plan.allyId);if(m)m.regen={...plan.status};feedback(t('battle.regen'),'perfect');}
+    if(plan.type==='heal'&&plan.allyId){const m=partyOwnedById(plan.allyId),max=m&&(usingGardenerParty()?Gardeners.stats(m).maxHp:Monsters.stats(m,MASTER_DATA).maxHp);if(m&&m.hp>0)m.hp=Math.min(max,m.hp+plan.heal);feedback(t('battle.heal'),'perfect');}
+    if(plan.type==='regen'&&plan.allyId){const m=partyOwnedById(plan.allyId);if(m)m.regen={...plan.status};feedback(t('battle.regen'),'perfect');}
     if(plan.type==='poison'&&enemy&&!enemy.dead){enemy.poison={...plan.status};feedback(t('battle.poison'),'hit');}
     if(plan.type==='atk_down'&&enemy&&!enemy.dead){enemy.attackDown={...plan.status};feedback(t('battle.atkDown'),'hit');}
     syncPartyHp();

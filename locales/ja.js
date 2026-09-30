@@ -8,9 +8,9 @@ globalThis.SHUT_LOCALES.ja={
   },
   menu:{
     eyebrow:'YOUR JOURNEY',preparation:'旅の支度',fold:'扉を閉じる · GACHA',foldHint:'Space で開く / 閉じる',
-    story:'旅の地図',storyDesc:'章・ステージを選ぶ',monsters:'モンスター',monstersDesc:'一覧・編成・詳細',synthesis:'合成',synthesisDesc:'素材を選んで強化',
+    story:'旅の地図',storyDesc:'章・ステージを選ぶ',monsters:'園芸師',monstersDesc:'3人編成・能力・プラントモード',synthesis:'合成',synthesisDesc:'素材を選んで強化',
     shop:'旅商人',shopDesc:'道具を買う',partner:'仲間',partnerDesc:'支援と絆',quests:'依頼帳',questsDesc:'挑戦と報酬',
-    presents:'贈り物',presentsDesc:'報酬を受け取る',gates:'未知の門',gatesDesc:'発見した道へ',library:'旅の図鑑',libraryDesc:'出会いの記録',
+    presents:'贈り物',presentsDesc:'報酬を受け取る',gates:'未知の門',gatesDesc:'発見した道へ',library:'図鑑',libraryDesc:'プラント × 園芸師',
     resumeExpedition:'遠征を再開 →',continueJourney:'旅を続ける →',memoryGate:'記憶の門へ →',readyHint:'旅の準備はできた？ 金色のボタンから次の門へ。'
   },
   settings:{
@@ -37,8 +37,8 @@ globalThis.SHUT_LOCALES.ja={
     welcomeTitle:'SHUTへようこそ',welcomeBody:'SHUTはDuoの開閉を戦闘に使うRPGです。まずは5つの基本を覚えましょう。',
     attackTitle:'攻撃',attackBody:'OPENにするだけでは攻撃しません。<b>READY? → GO!</b> の後に入力してバーを開始し、もう一度入力して止めます。1回の判定が3体の攻撃へ適用されます。',
     guardTitle:'防御',guardBody:'敵の攻撃予告中に、自分でDuoをCLOSEして防御します。<b>PERFECT GUARD</b>は被ダメージを10%まで軽減します。強敵からは最低1ダメージを受けます。ゲーム側が自動でCLOSEまたはOPENすることはありません。',
-    teamTitle:'3体の仲間',teamBody:'3体は同時に戦い、それぞれ個別のHPを持ちます。敵が落とす卵で仲間が増え、モンスターとGoldを使った合成でレベルアップと進化ができます。',
-    gachaTitle:'モンスターゲート',gachaBody:'1回は5 Keys、10連は45 Keysです。最初の45 Keysは贈り物へ届きます。召喚はDuoを閉じた外側画面で行います。',
+    teamTitle:'3人の園芸師',teamBody:'園芸師3人で同時に戦い、それぞれ個別のHPを持ちます。暴走園芸師を倒すと種が残り、ステージクリア後に本人を復元・救出できます。',
+    gachaTitle:'GACHA',gachaBody:'園芸師はストーリー・ガチャ・暴走園芸師の救出で仲間になります。ガチャ画面は新しい園芸師仕様へ順次移行します。',
     practiceTitle:'閉じて、守って。',practiceBody:'光が満ちたら、Spaceまたは下のボタンで自分からDuoを閉じてください。',practiceAction:'閉じて防御',
     perfectGuard:'PERFECT GUARD',guard:'GUARD',tryAgain:'TRY AGAIN',openJourney:'開いて、冒険へ',openNext:'開いて、次へ →'
   },
@@ -58,6 +58,16 @@ globalThis.SHUT_LOCALES.ja={
     gateClear:'GATE CLEAR',floorClear:'FLOOR {floor} CLEAR',gateFloorClear:'GATE {floor} CLEAR',earnedGold:'獲得 {gold} G',expeditionReward:'遠征報酬を受け取りました',extract:'報酬を持って帰還',deeper:'さらに奥へ →',
     defeat:'DEFEAT',rewardsKept:'獲得済みGold・経験値は保持されます。',returnHome:'ホームへ',retreatConfirm:'この戦闘から帰還しますか？ 特殊ゲートの挑戦回数は戻りません。',
     monstersCount:'MONSTERS × {count}',battleCount:'BATTLE {current} / {total}{boss}',endlessGate:'第 {floor} 門',itemSlots:'ITEM {slots} / 3',eggDrop:'{name}の卵',keysDrop:'Keys ×{amount}',attribute:'{attribute}属性',enemyMeta:'{attribute} / ATK {attack}',enemyReady:'攻撃準備',enemyTurns:'行動まで',partyRequired:'3体を編成してください',gateFound:'新しい門を発見 · {name}',attributeName:{fire:'火',water:'水',thunder:'雷',earth:'地',wind:'風'}
+  },
+  gardener:{
+    attribute:{fire:'火',wood:'木',water:'水',light:'光',dark:'闇',rainbow:'虹'},attributeShort:{fire:'火',wood:'木',water:'水',light:'光',dark:'闇',rainbow:'虹'},
+    rosterTitle:'園芸師 · {count}人',rosterIntro:'園芸師3人を編成してプラント災害へ。No.016 遠野みかどが主人公です。',inTeam:'編成中',
+    weapon:'武器 {weapon}',strain:'負荷 {value}',berserkChance:'現在の暴走率 {chance}%',riskShort:'暴走 {chance}%',
+    plantModeTitle:'SKILL · PLANT MODE',plantModeShort:'PLANT MODE',plantModeDescription:'プラントの力を引き上げる。低Lvほど暴走しやすく、暴走時は味方を攻撃する。',
+    criticalTitle:'CRITICAL · None but shot',criticalDescription:'クリティカル時、刀が大型バズーカへ変形して攻撃する。',
+    assign:'編成する',back:'一覧へ',replaceTitle:'交代する園芸師',berserkName:'{name}（暴走）',berserkHit:'暴走 · {name} −{damage}',berserk:'暴走',
+    seedDrop:'{name}の種',restoreAfterClear:'ステージクリアで復元',restoring:'種から身体を復元',restored:'身体復元完了',rescued:'救出',joined:'園芸師として加入',
+    codexTitle:'プラント × 園芸師図鑑',rosterUnavailable:'図鑑データを読み込めません。',plantLabel:'プラント',gardenerLabel:'園芸師',undiscovered:'未発見',unrescued:'未救出'
   },
   monsters:{
     title:'MONSTERS · {count}',all:'すべて解除',sort:'並び順',directionAsc:'昇順',directionDesc:'降順',sortLevel:'レベル',sortRarity:'レア度',sortAttribute:'属性',sortAcquired:'入手順',sortName:'名前',rarityFilter:'レア度',allRarities:'全レア度',favoriteOnly:'お気に入り',lockedOnly:'保護中',empty:'条件に合うモンスターはいません。',party:'編成中',favorite:'お気に入り',notFavorite:'お気に入りにする',locked:'保護中',unlocked:'保護する',details:'詳細',back:'一覧へ戻る',level:'Lv.{level}',exp:'EXP {current} / {next}',expMax:'EXP MAX',hp:'HP',atk:'ATK',def:'DEF',roleLabel:'役割',trainingSpeed:'育成速度',trainingFast:'速い',trainingNormal:'標準',trainingSlow:'遅い',materialExp:'素材EXP {exp}',roles:{striker:'攻撃型',guardian:'防御型',support:'支援型',control:'妨害型',balanced:'バランス型'},skill:'パッシブ',special:'SKILL',specialGauge:'SKILLゲージ',specialGaugeInfo:'SKILLはターン経過で蓄積します。強いSKILLほど発動までに必要なターン数が長くなります。',evolution:'進化',evolvesAt:'Lv.{level}で {name} へ進化',noEvolution:'これ以上進化しません。',teamIn:'編成中',teamAdd:'編成する',chooseReplacement:'交代するモンスターを選ぶ',acquiredOrder:'入手 #{order}'

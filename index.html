@@ -6,10 +6,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>SHUT — The Gatebound Journey</title>
+<title>SHUT — Plant Disaster</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="src/game.css?v=20260926-ios-gacha-final"><link rel="stylesheet" href="src/device.css?v=20260929-mobile-open-landscape"><link rel="stylesheet" href="src/experience.css">
-<link rel="stylesheet" href="src/monsters.css"><link rel="stylesheet" href="src/mikado.css"><link rel="stylesheet" href="src/title.css"><link rel="stylesheet" href="src/polish.css?v=20260928-ui-polish"><link rel="stylesheet" href="src/management.css?v=20260928-balance-v35"><link rel="stylesheet" href="src/battle.css?v=20260929-enemy-hud-v31"></head>
+<link rel="stylesheet" href="src/monsters.css"><link rel="stylesheet" href="src/mikado.css"><link rel="stylesheet" href="src/title.css"><link rel="stylesheet" href="src/polish.css?v=20260928-ui-polish"><link rel="stylesheet" href="src/management.css?v=20260928-balance-v35"><link rel="stylesheet" href="src/battle.css?v=20260930-plant-mode-d1"><link rel="stylesheet" href="src/roster.css?v=20260929-plant-gardener-v1"><link rel="stylesheet" href="src/pixel.css?v=20260929-pixel-standard-v1"></head>
 <body>
 <div id="app" class="closedDevice">
   <div id="openOnlyOrientationGate" aria-live="polite" aria-hidden="true">
@@ -115,12 +115,12 @@
       <div class="menuGrid openMenuGrid">
         <button id="battleBtn" class="menuBtn primary"><strong data-i18n="menu.story">STORY</strong><small data-i18n="menu.storyDesc">章・ステージを選んで出撃</small></button>
         <button id="equipBtn" class="menuBtn"><strong data-i18n="menu.monsters">EQUIPMENT</strong><small data-i18n="menu.monstersDesc">編成・合成・進化</small></button>
-        <button id="synthesisBtn" class="menuBtn"><strong data-i18n="menu.synthesis">SYNTHESIS</strong><small data-i18n="menu.synthesisDesc">モンスターを強化</small></button>
+        <button id="synthesisBtn" class="menuBtn" hidden aria-hidden="true"><strong data-i18n="menu.synthesis">SYNTHESIS</strong><small data-i18n="menu.synthesisDesc">旧システム移行中</small></button>
         <button id="shopBtn" class="menuBtn"><strong data-i18n="menu.shop">SHOP</strong><small data-i18n="menu.shopDesc">回復アイテム</small></button>
-        <button id="partnerBtn" class="menuBtn"><strong data-i18n="menu.partner">PARTNER</strong><small data-i18n="menu.partnerDesc">モンスター</small></button>
+        <button id="partnerBtn" class="menuBtn" hidden aria-hidden="true"><strong data-i18n="menu.partner">PARTNER</strong><small data-i18n="menu.partnerDesc">旧システム移行中</small></button>
         <button id="questBtn" class="menuBtn"><strong data-i18n="menu.quests">QUEST</strong><small data-i18n="menu.questsDesc">達成条件と報酬</small></button>
         <button id="giftBtn" class="menuBtn"><strong data-i18n="menu.presents">PRESENT</strong><small data-i18n="menu.presentsDesc">報酬を受け取る</small><span id="giftBadge" class="notifyBadge">0</span></button>
-        <button id="gateBtn" class="menuBtn"><strong data-i18n="menu.gates">SPECIAL GATE</strong><small data-i18n="menu.gatesDesc">EXP・GOLD・隠しゲート</small></button>
+        <button id="gateBtn" class="menuBtn" hidden aria-hidden="true"><strong data-i18n="menu.gates">SPECIAL GATE</strong><small data-i18n="menu.gatesDesc">旧システム移行中</small></button>
         <button id="collectionBtn" class="menuBtn"><strong data-i18n="menu.library">LIBRARY</strong><small data-i18n="menu.libraryDesc">モンスター図鑑</small></button>
       </div>
       <div class="menuHint"><button id="foldHome" class="btn secondary" data-i18n="menu.fold">扉を閉じる · GACHA</button><span data-i18n="menu.foldHint">Space で開く / 閉じる</span></div>
@@ -242,9 +242,8 @@
   </div>
 </div>
 
-<script src="vendor/tone-15.1.22.js"></script><script src="locales/ja.js?v=20260929-loc-content-02"></script><script src="locales/en.js?v=20260929-loc-content-02"></script><script src="src/i18n.js"></script><script src="src/master-data.js?v=20260928-balance-v35"></script><script src="src/monsters.js?v=20260929-loc-content-01"></script><script src="src/combat.js?v=20260928-balance-v35"></script><script src="src/systems.js"></script><script src="src/narrative.js?v=20260929-loc-content-02"></script><script src="src/device.js?v=20260929-mobile-open-landscape"></script><script src="src/save.js?v=20260927-save-migration-resilience"></script><script src="src/art.js"></script><script src="src/mikado.js"></script><script>SHUTArt.ready.then(()=>{const s=document.createElement("script");s.src="src/game.js?v=20260929-enemy-hud-v31";document.body.append(s)})</script>
+<script src="vendor/tone-15.1.22.js"></script><script src="locales/ja.js?v=20260930-plant-mode-d1"></script><script src="locales/en.js?v=20260930-plant-mode-d1"></script><script src="src/i18n.js"></script><script src="src/master-data.js?v=20260928-balance-v35"></script><script src="src/roster-data.js?v=20260929-plant-gardener-v1"></script><script src="src/pixel-standard.js?v=20260929-pixel-standard-v1"></script><script src="src/pixel-runtime.js?v=20260929-pixel-runtime-v1"></script><script src="src/pixel-effects.js?v=20260929-pixel-vfx-v1"></script><script src="src/pixel-manifest.js?v=20260929-pixel-manifest-v1"></script><script src="src/roster-art.js?v=20260929-pixel-runtime-v1"></script><script src="src/gardeners.js?v=20260929-gardener-battle-v1"></script><script src="src/monsters.js?v=20260929-loc-content-01"></script><script src="src/combat.js?v=20260928-balance-v35"></script><script src="src/systems.js"></script><script src="src/narrative.js?v=20260929-loc-content-02"></script><script src="src/device.js?v=20260929-mobile-open-landscape"></script><script src="src/save.js?v=20260927-save-migration-resilience"></script><script src="src/art.js"></script><script src="src/mikado.js"></script><script>SHUTArt.ready.then(()=>{const s=document.createElement("script");s.src="src/game.js?v=20260930-plant-mode-d1";document.body.append(s)})</script>
 </body>
 </html>
-
 
 

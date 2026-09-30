@@ -8,9 +8,9 @@ globalThis.SHUT_LOCALES.en={
   },
   menu:{
     eyebrow:'YOUR JOURNEY',preparation:'PREPARE',fold:'CLOSE · GACHA',foldHint:'Space to open / close',
-    story:'STORY MAP',storyDesc:'Choose a chapter and stage',monsters:'MONSTERS',monstersDesc:'Roster, team, and details',synthesis:'SYNTHESIS',synthesisDesc:'Strengthen a monster',
+    story:'STORY MAP',storyDesc:'Choose a chapter and stage',monsters:'GARDENERS',monstersDesc:'3-person team, abilities, Plant Mode',synthesis:'SYNTHESIS',synthesisDesc:'Strengthen a monster',
     shop:'TRAVELER SHOP',shopDesc:'Buy supplies',partner:'ALLIES',partnerDesc:'Support and bonds',quests:'QUESTS',questsDesc:'Objectives and rewards',
-    presents:'PRESENTS',presentsDesc:'Claim rewards',gates:'SPECIAL GATES',gatesDesc:'Explore discovered gates',library:'LIBRARY',libraryDesc:'Records of encounters',
+    presents:'PRESENTS',presentsDesc:'Claim rewards',gates:'SPECIAL GATES',gatesDesc:'Explore discovered gates',library:'CODEX',libraryDesc:'Plants × Gardeners',
     resumeExpedition:'RESUME EXPEDITION →',continueJourney:'CONTINUE JOURNEY →',memoryGate:'GATE OF MEMORY →',readyHint:'Ready to travel? Use the gold button to enter the next gate.'
   },
   settings:{
@@ -37,8 +37,8 @@ globalThis.SHUT_LOCALES.en={
     welcomeTitle:'WELCOME TO SHUT',welcomeBody:'SHUT is an RPG where folding the Duo is part of battle. Learn these five basics to begin.',
     attackTitle:'ATTACK',attackBody:'OPEN does not attack by itself. After <b>READY? → GO!</b>, press once to start the shared timing bar and again to stop it. One timing result applies to all three monsters.',
     guardTitle:'DEFEND',guardBody:'During an enemy warning, close the Duo yourself to guard. A <b>PERFECT GUARD</b> reduces damage to 10%. Strong enemies still deal at least 1 damage. The game never closes or opens the Duo automatically.',
-    teamTitle:'THREE MONSTERS',teamBody:'All three fight at once and have separate HP. Enemy eggs add new allies. Synthesis uses monsters and Gold for levels and evolution.',
-    gachaTitle:'MONSTER GATE',gachaBody:'A Single Pull costs 5 Keys and a 10 Pull costs 45 Keys. Your first 45 Keys arrive as a Present. Summoning takes place on the outer display while the Duo is closed.',
+    teamTitle:'THREE GARDENERS',teamBody:'Three Gardeners fight together with separate HP. Defeated berserk Gardeners leave seeds; after the stage, the person is restored and rescued.',
+    gachaTitle:'GACHA',gachaBody:'Gardeners join through story progress, gacha, or rescue from a berserk state. The gacha screen is being migrated to the Gardener system.',
     practiceTitle:'CLOSE TO GUARD',practiceBody:'When the light fills, close the Duo yourself with Space or the button below.',practiceAction:'CLOSE TO GUARD',
     perfectGuard:'PERFECT GUARD',guard:'GUARD',tryAgain:'TRY AGAIN',openJourney:'OPEN TO BEGIN',openNext:'OPEN · CONTINUE →'
   },
@@ -58,6 +58,16 @@ globalThis.SHUT_LOCALES.en={
     gateClear:'GATE CLEAR',floorClear:'FLOOR {floor} CLEAR',gateFloorClear:'GATE {floor} CLEAR',earnedGold:'Earned {gold} G',expeditionReward:'Expedition reward claimed',extract:'RETURN WITH REWARDS',deeper:'GO DEEPER →',
     defeat:'DEFEAT',rewardsKept:'Gold and EXP already earned are kept.',returnHome:'RETURN HOME',retreatConfirm:'Retreat from this battle? Special Gate attempts will not be restored.',
     monstersCount:'MONSTERS × {count}',battleCount:'BATTLE {current} / {total}{boss}',endlessGate:'Gate {floor}',itemSlots:'ITEM {slots} / 3',eggDrop:'{name} Egg',keysDrop:'Keys ×{amount}',attribute:'{attribute}',enemyMeta:'{attribute} / ATK {attack}',enemyReady:'ATTACK READY',enemyTurns:'ATTACK IN',partyRequired:'Form a team of three monsters.',gateFound:'New Gate discovered · {name}',attributeName:{fire:'Fire',water:'Water',thunder:'Thunder',earth:'Earth',wind:'Wind'}
+  },
+  gardener:{
+    attribute:{fire:'Fire',wood:'Wood',water:'Water',light:'Light',dark:'Dark',rainbow:'Rainbow'},attributeShort:{fire:'Fi',wood:'Wo',water:'Wa',light:'Li',dark:'Da',rainbow:'Rb'},
+    rosterTitle:'GARDENERS · {count}',rosterIntro:'Form a team of three Gardeners against the Plant disaster. No.016 Tono Mikado is the protagonist.',inTeam:'IN TEAM',
+    weapon:'Weapon {weapon}',strain:'Strain {value}',berserkChance:'Current berserk chance {chance}%',riskShort:'RISK {chance}%',
+    plantModeTitle:'SKILL · PLANT MODE',plantModeShort:'PLANT MODE',plantModeDescription:'Draws on Plant power. Lower-level Gardeners are more likely to go berserk and attack allies.',
+    criticalTitle:'CRITICAL · None but shot',criticalDescription:'On a critical hit, the sword transforms into a large bazooka and fires.',
+    assign:'ADD TO TEAM',back:'BACK TO ROSTER',replaceTitle:'CHOOSE A GARDENER TO REPLACE',berserkName:'{name} (Berserk)',berserkHit:'BERSERK · {name} −{damage}',berserk:'BERSERK',
+    seedDrop:'{name} Seed',restoreAfterClear:'Restored after Stage Clear',restoring:'Restoring body from seed',restored:'BODY RESTORED',rescued:'RESCUED',joined:'JOINED YOUR GARDENERS',
+    codexTitle:'PLANT × GARDENER CODEX',rosterUnavailable:'The roster data could not be loaded.',plantLabel:'PLANT',gardenerLabel:'GARDENER',undiscovered:'UNDISCOVERED',unrescued:'NOT RESCUED'
   },
   monsters:{
     title:'MONSTERS · {count}',all:'CLEAR FILTERS',sort:'SORT',directionAsc:'ASCENDING',directionDesc:'DESCENDING',sortLevel:'LEVEL',sortRarity:'RARITY',sortAttribute:'ATTRIBUTE',sortAcquired:'ACQUIRED',sortName:'NAME',rarityFilter:'RARITY',allRarities:'ALL RARITIES',favoriteOnly:'FAVORITES',lockedOnly:'LOCKED',empty:'No monsters match these filters.',party:'IN TEAM',favorite:'FAVORITE',notFavorite:'ADD FAVORITE',locked:'LOCKED',unlocked:'LOCK',details:'DETAILS',back:'BACK TO ROSTER',level:'Lv.{level}',exp:'EXP {current} / {next}',expMax:'EXP MAX',hp:'HP',atk:'ATK',def:'DEF',roleLabel:'ROLE',trainingSpeed:'GROWTH',trainingFast:'FAST',trainingNormal:'NORMAL',trainingSlow:'SLOW',materialExp:'MATERIAL EXP {exp}',roles:{striker:'STRIKER',guardian:'GUARDIAN',support:'SUPPORT',control:'CONTROL',balanced:'BALANCED'},skill:'PASSIVE',special:'SKILL',specialGauge:'SKILL GAUGE',specialGaugeInfo:'SKILL charges by turns. Stronger SKILLs require more turns before activation.',evolution:'EVOLUTION',evolvesAt:'Evolves into {name} at Lv.{level}',noEvolution:'No further evolution.',teamIn:'IN TEAM',teamAdd:'ADD TO TEAM',chooseReplacement:'CHOOSE A MONSTER TO REPLACE',acquiredOrder:'Acquired #{order}'

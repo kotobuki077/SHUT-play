@@ -1,6 +1,10 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "title": "SHUT Plant × Gardener Roster",
+  "source": {
+    "characterSettings": "dev/art-source/roster-redesign-20260930/CHARACTER_SETTINGS_SOURCE.txt",
+    "authority": "canonical_text"
+  },
   "rules": {
     "pairCount": 100,
     "sharedNumber": true,
@@ -23,9 +27,106 @@
         "dark"
       ]
     ],
+    "singleAttributeCounts": {
+      "fire": 16,
+      "wood": 16,
+      "water": 16,
+      "light": 16,
+      "dark": 16
+    },
+    "singleAttributeRarityCounts": {
+      "1": 6,
+      "2": 4,
+      "3": 3,
+      "4": 2,
+      "5": 1
+    },
+    "rainbowCount": 20,
+    "rainbowCombinations": {
+      "100": [
+        "light",
+        "dark"
+      ],
+      "081": [
+        "fire",
+        "wood"
+      ],
+      "082": [
+        "fire",
+        "wood"
+      ],
+      "083": [
+        "fire",
+        "water"
+      ],
+      "084": [
+        "fire",
+        "water"
+      ],
+      "085": [
+        "fire",
+        "light"
+      ],
+      "086": [
+        "fire",
+        "light"
+      ],
+      "087": [
+        "fire",
+        "dark"
+      ],
+      "088": [
+        "fire",
+        "dark"
+      ],
+      "089": [
+        "wood",
+        "water"
+      ],
+      "090": [
+        "wood",
+        "water"
+      ],
+      "091": [
+        "wood",
+        "light"
+      ],
+      "092": [
+        "wood",
+        "light"
+      ],
+      "093": [
+        "wood",
+        "dark"
+      ],
+      "094": [
+        "wood",
+        "dark"
+      ],
+      "095": [
+        "water",
+        "light"
+      ],
+      "096": [
+        "water",
+        "light"
+      ],
+      "097": [
+        "water",
+        "dark"
+      ],
+      "098": [
+        "water",
+        "dark"
+      ],
+      "099": [
+        "light",
+        "dark"
+      ]
+    },
     "mikado": {
-      "no": 16,
-      "id": "G016",
+      "no": 15,
+      "id": "G015",
       "rarity": 4,
       "attribute": "fire",
       "designLocked": true
@@ -33,7 +134,11 @@
     "ultimate": {
       "no": 100,
       "rarity": 6,
-      "attribute": "rainbow"
+      "attribute": "rainbow",
+      "attributes": [
+        "light",
+        "dark"
+      ]
     },
     "assetContract": {
       "separateFrameFiles": true,
@@ -51,23 +156,32 @@
     {
       "no": 1,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 1,
       "plant": {
         "id": "P001",
-        "name": "火の芽"
+        "name": "チリフレア",
+        "nameEn": "Chiliflare"
       },
       "gardener": {
         "id": "G001",
-        "name": "火守 ヒバリ",
+        "name": "柊あかね",
+        "nameEn": "Hiiragi Akane",
         "gender": "female",
-        "weapon": "短剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "唐辛子を中心に葉と炎を組み合わせた小型Plant。Gardenerは赤系の髪と炎をまとった棒状武器を持ち、唐辛子の赤・緑・炎色を人間側へ移している。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -84,29 +198,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/001/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/001/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 2,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 1,
       "plant": {
         "id": "P002",
-        "name": "狐火花"
+        "name": "カンデリカ",
+        "nameEn": "Candelica"
       },
       "gardener": {
         "id": "G002",
-        "name": "朱城 カガリ",
+        "name": "灯川ゆら",
+        "nameEn": "Tomokawa Yura",
         "gender": "female",
-        "weapon": "大槌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "溶けた蝋と花・炎を合わせたキャンドル型Plant。Gardenerは淡色の髪と暖色系衣装、炎の灯る杖を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -123,29 +247,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/002/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/002/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 3,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 1,
       "plant": {
         "id": "P003",
-        "name": "灯籠花"
+        "name": "スミサボ",
+        "nameEn": "Sumicacto"
       },
       "gardener": {
         "id": "G003",
-        "name": "灯里 チヨ",
+        "name": "墨田こはる",
+        "nameEn": "Sumida Koharu",
         "gender": "female",
-        "weapon": "弓",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "炭化した黒いサボテン状のPlantで、内部に赤熱した光が見える。Gardenerは黒系ショートヘアで、炭・棘を思わせる大型の棘付き武器を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -162,29 +296,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/003/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/003/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 4,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 1,
       "plant": {
         "id": "P004",
-        "name": "彼岸花"
+        "name": "ハナビア",
+        "nameEn": "Hanabia"
       },
       "gardener": {
         "id": "G004",
-        "name": "炎谷 アヤメ",
+        "name": "朝倉さき",
+        "nameEn": "Asakura Saki",
         "gender": "female",
-        "weapon": "鎖鎌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "花弁が花火のように放射する赤橙色のPlant。Gardenerも赤い花と花火状の発光表現を持つ武器を使用する。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -201,29 +345,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/004/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/004/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 5,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
-      "rarity": 2,
+      "attributeDetailJa": "火",
+      "rarity": 1,
       "plant": {
         "id": "P005",
-        "name": "溶岩球根"
+        "name": "マグベリ",
+        "nameEn": "Magberry"
       },
       "gardener": {
         "id": "G005",
-        "name": "赫野 クロエ",
+        "name": "岩城もも",
+        "nameEn": "Iwaki Momo",
         "gender": "female",
-        "weapon": "長槍",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "溶岩のように発光する実を房状につけたPlant。Gardenerはピンク系の髪と、同じ発光する実を思わせる大型ガントレットを装備。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -240,29 +394,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/005/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/005/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 6,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
-      "rarity": 2,
+      "attributeDetailJa": "火",
+      "rarity": 1,
       "plant": {
         "id": "P006",
-        "name": "鬼火草"
+        "name": "トースグラス",
+        "nameEn": "Toastgrass"
       },
       "gardener": {
         "id": "G006",
-        "name": "焔崎 レイハ",
+        "name": "麦野かのん",
+        "nameEn": "Mugino Kanon",
         "gender": "female",
-        "weapon": "双剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "焦げた穂・麦を束ねたようなPlant。Gardenerは麦色の長髪と穂の装飾、加熱された大型打撃武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -279,29 +443,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/006/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/006/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 7,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 2,
       "plant": {
         "id": "P007",
-        "name": "炎椿"
+        "name": "サラマロエ",
+        "nameEn": "Salamaloe"
       },
       "gardener": {
         "id": "G007",
-        "name": "花守 セツカ",
+        "name": "芦屋れん",
+        "nameEn": "Ashiya Ren",
         "gender": "female",
-        "weapon": "大盾",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "アロエ状の鋭い葉とサラマンダー風の頭部を組み合わせたPlant。Gardenerは赤髪で、細長い葉を思わせる槍を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -318,29 +492,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/007/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/007/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 8,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 2,
       "plant": {
         "id": "P008",
-        "name": "火茸群"
+        "name": "フェニツバキ",
+        "nameEn": "Phoenitsubaki"
       },
       "gardener": {
         "id": "G008",
-        "name": "枝折 ネネ",
+        "name": "椿原ひな",
+        "nameEn": "Tsubakihara Hina",
         "gender": "female",
-        "weapon": "狙撃銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "椿の花とフェニックスの翼を融合したPlant。Gardenerも椿の髪飾りと炎の翼を思わせる大型武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -357,29 +541,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/008/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/008/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 9,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
-      "rarity": 3,
+      "attributeDetailJa": "火",
+      "rarity": 2,
       "plant": {
         "id": "P009",
-        "name": "火桜樹"
+        "name": "ブレイズアイリ",
+        "nameEn": "Blazeiris"
       },
       "gardener": {
         "id": "G009",
-        "name": "森宮 シオン",
+        "name": "綾瀬きり",
+        "nameEn": "Ayase Kiri",
         "gender": "female",
-        "weapon": "杖",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "アイリス系の細長い葉を赤黒く燃焼させたPlant。Gardenerは寒色系の髪に赤い花飾りを合わせ、鋭い炎状武器を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -396,29 +590,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/009/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/009/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 10,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
-      "rarity": 3,
+      "attributeDetailJa": "火",
+      "rarity": 2,
       "plant": {
         "id": "P010",
-        "name": "灼熱向日葵"
+        "name": "フレアソレイユ",
+        "nameEn": "Flare Soleil"
       },
       "gardener": {
         "id": "G010",
-        "name": "葉月 ルナ",
+        "name": "日向まな",
+        "nameEn": "Hinata Mana",
         "gender": "female",
-        "weapon": "散弾銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "中心部が黒く燃え、花弁が炎のように広がるヒマワリ型Plant。Gardenerはヒマワリ装飾と太陽輪状の大型武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -435,29 +639,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/010/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/010/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 11,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 3,
       "plant": {
         "id": "P011",
-        "name": "火山花"
+        "name": "ヒノローザ",
+        "nameEn": "Hinorosa"
       },
       "gardener": {
         "id": "G011",
-        "name": "水城 ドリル",
+        "name": "小倉えま",
+        "nameEn": "Ogura Ema",
         "gender": "female",
-        "weapon": "薙刀",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒い茎葉の上に大きく燃える赤薔薇を持つPlant。Gardenerは赤い巻き髪と薔薇装飾を持つ剣士型。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -474,29 +688,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/011/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/011/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 12,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 3,
       "plant": {
         "id": "P012",
-        "name": "炉茸"
+        "name": "リュウカドラ",
+        "nameEn": "Ryukadra"
       },
       "gardener": {
         "id": "G012",
-        "name": "潮見 ブリケ",
+        "name": "竜崎るか",
+        "nameEn": "Ryuzaki Ruka",
         "gender": "female",
-        "weapon": "手甲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "植物質の葉・棘を持つ炎の竜型Plant。Gardenerは赤系ヘアに植物状アクセントを加え、大型砲を装備。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -513,29 +737,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/012/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/012/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 13,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
-      "rarity": 4,
+      "attributeDetailJa": "火",
+      "rarity": 3,
       "plant": {
         "id": "P013",
-        "name": "紅蓮彼岸"
+        "name": "カエンモミジ",
+        "nameEn": "Kaenmomiji"
       },
       "gardener": {
         "id": "G013",
-        "name": "雨宮 シグレ",
+        "name": "楓原いぶき",
+        "nameEn": "Kaedehara Ibuki",
         "gender": "female",
-        "weapon": "斧",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "紅葉の葉が炎のように燃える樹木型Plant。Gardenerは紅葉の髪飾りと扇状・葉状の武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -552,29 +786,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/013/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/013/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 14,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 4,
       "plant": {
         "id": "P014",
-        "name": "熾火蔓"
+        "name": "インフェルリリ",
+        "nameEn": "Inferlily"
       },
       "gardener": {
         "id": "G014",
-        "name": "波多野 ラン",
+        "name": "百合園しおり",
+        "nameEn": "Yurizono Shiori",
         "gender": "female",
-        "weapon": "弩",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "白・赤・黒の大型百合を炎化したPlant。Gardenerは白髪と赤い百合飾り、炎をまとう長柄武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -591,68 +835,38 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/014/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/014/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 15,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 4,
       "plant": {
         "id": "P015",
-        "name": "炉口花"
+        "name": "カグツバキ",
+        "nameEn": "Kagutsubaki"
       },
       "gardener": {
         "id": "G015",
-        "name": "澄川 ポピー",
+        "name": "遠野みかど",
+        "nameEn": "Tono Mikado",
         "gender": "female",
-        "weapon": "大剣",
-        "plantMode": {
-          "kind": "skill",
-          "effect": "recovery_up"
-        },
-        "designLocked": false
-      },
-      "assets": {
-        "mode": "separate_frames",
-        "logicalCanvas": [
-          128,
-          128
-        ],
-        "displayScale": 2,
-        "pixelPerfect": true,
-        "atlasAllowed": false,
-        "states": {
-          "idle": 4,
-          "attack": 4,
-          "skill": 5,
-          "hit": 2,
-          "down": 3
-        },
-        "pathPattern": "assets/roster/015/{side}/{state}-{frame:02d}.png"
-      }
-    },
-    {
-      "no": 16,
-      "attribute": "fire",
-      "attributeJa": "火",
-      "rarity": 4,
-      "plant": {
-        "id": "P016",
-        "name": "火炎桜"
-      },
-      "gardener": {
-        "id": "G016",
-        "name": "遠野 みかど",
-        "gender": "female",
-        "weapon": "刀（クリティカル時バズーカへ変形）",
+        "weapon": "刀",
+        "weaponStatus": "confirmed",
         "plantMode": {
           "kind": "skill",
           "effect": "attack_up"
         },
         "designLocked": true
       },
+      "designSummary": "Plantは赤い椿を中心に黒い葉と砲身状構造を持つ。Gardener側は既存の遠野みかど正式デザインをそのまま使用。黒髪、赤い花飾り、薄紫系上着、制服、刀の既存構成を変更していない。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -669,61 +883,71 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/016/{side}/{state}-{frame:02d}.png",
+        "pathPattern": "assets/roster/015/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "ready",
         "explicitFrames": {
           "idle": [
-            "assets/roster/016/gardener/frame-00.png",
-            "assets/roster/016/gardener/frame-01.png",
-            "assets/roster/016/gardener/frame-02.png",
-            "assets/roster/016/gardener/frame-03.png"
+            "assets/roster/015/gardener/frame-00.png",
+            "assets/roster/015/gardener/frame-01.png",
+            "assets/roster/015/gardener/frame-02.png",
+            "assets/roster/015/gardener/frame-03.png"
           ],
           "attack": [
-            "assets/roster/016/gardener/frame-04.png",
-            "assets/roster/016/gardener/frame-05.png",
-            "assets/roster/016/gardener/frame-06.png",
-            "assets/roster/016/gardener/frame-07.png"
+            "assets/roster/015/gardener/frame-04.png",
+            "assets/roster/015/gardener/frame-05.png",
+            "assets/roster/015/gardener/frame-06.png",
+            "assets/roster/015/gardener/frame-07.png"
           ],
           "skill": [
-            "assets/roster/016/gardener/frame-04.png",
-            "assets/roster/016/gardener/frame-05.png",
-            "assets/roster/016/gardener/frame-06.png",
-            "assets/roster/016/gardener/frame-07.png"
+            "assets/roster/015/gardener/frame-04.png",
+            "assets/roster/015/gardener/frame-05.png",
+            "assets/roster/015/gardener/frame-06.png",
+            "assets/roster/015/gardener/frame-07.png"
           ],
           "hit": [
-            "assets/roster/016/gardener/frame-08.png",
-            "assets/roster/016/gardener/frame-09.png",
-            "assets/roster/016/gardener/frame-10.png",
-            "assets/roster/016/gardener/frame-11.png"
+            "assets/roster/015/gardener/frame-08.png",
+            "assets/roster/015/gardener/frame-09.png",
+            "assets/roster/015/gardener/frame-10.png",
+            "assets/roster/015/gardener/frame-11.png"
           ],
           "down": [
-            "assets/roster/016/gardener/frame-12.png",
-            "assets/roster/016/gardener/frame-13.png",
-            "assets/roster/016/gardener/frame-14.png",
-            "assets/roster/016/gardener/frame-15.png"
+            "assets/roster/015/gardener/frame-12.png",
+            "assets/roster/015/gardener/frame-13.png",
+            "assets/roster/015/gardener/frame-14.png",
+            "assets/roster/015/gardener/frame-15.png"
           ]
         }
       }
     },
     {
-      "no": 17,
+      "no": 16,
       "attribute": "fire",
+      "attributes": [
+        "fire"
+      ],
       "attributeJa": "火",
+      "attributeDetailJa": "火",
       "rarity": 5,
       "plant": {
-        "id": "P017",
-        "name": "神火蓮"
+        "id": "P016",
+        "name": "グレンボタン",
+        "nameEn": "Gurenbotan"
       },
       "gardener": {
-        "id": "G017",
-        "name": "光井 クレン",
+        "id": "G016",
+        "name": "九重かえで",
+        "nameEn": "Kokonoe Kaede",
         "gender": "female",
-        "weapon": "ワイヤー",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "岩盤と溶岩を押し割って咲く巨大な牡丹型Plant。Gardenerは黒・赤・金を中心とした強いシルエットと大型刀剣を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -740,29 +964,88 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/017/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/016/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
+      }
+    },
+    {
+      "no": 17,
+      "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
+      "attributeJa": "木",
+      "attributeDetailJa": "木",
+      "rarity": 1,
+      "plant": {
+        "id": "P017",
+        "name": "ササカマキ",
+        "nameEn": "Sasakamaki"
+      },
+      "gardener": {
+        "id": "G017",
+        "name": "真竹すず",
+        "nameEn": "Matake Suzu",
+        "gender": "female",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
+        "plantMode": {
+          "kind": "skill",
+          "effect": null,
+          "status": "DECISION_REQUIRED"
+        },
+        "designLocked": false
+      },
+      "designSummary": "笹・竹葉から構成されたカマキリ状Plant。Gardenerは深緑の長髪と葉型の槍を持つ。",
+      "assets": {
+        "mode": "separate_frames",
+        "logicalCanvas": [
+          128,
+          128
+        ],
+        "displayScale": 2,
+        "pixelPerfect": true,
+        "atlasAllowed": false,
+        "states": {
+          "idle": 4,
+          "attack": 4,
+          "skill": 5,
+          "hit": 2,
+          "down": 3
+        },
+        "pathPattern": "assets/roster/017/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 18,
-      "attribute": "fire",
-      "attributeJa": "火",
-      "rarity": 5,
+      "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
+      "attributeJa": "木",
+      "attributeDetailJa": "木",
+      "rarity": 1,
       "plant": {
         "id": "P018",
-        "name": "焔梅"
+        "name": "クロバニー",
+        "nameEn": "Clobunny"
       },
       "gardener": {
         "id": "G018",
-        "name": "天城 ユズハ",
+        "name": "四葉みのり",
+        "nameEn": "Yotsuba Minori",
         "gender": "female",
-        "weapon": "ランス",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "クローバーと白いウサギを融合したPlant。Gardenerは茶髪ツインテールとクローバー装飾、クローバー型武器を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -779,29 +1062,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/018/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/018/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 19,
-      "attribute": "fire",
-      "attributeJa": "火",
-      "rarity": 5,
+      "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
+      "attributeJa": "木",
+      "attributeDetailJa": "木",
+      "rarity": 1,
       "plant": {
         "id": "P019",
-        "name": "煉獄百合"
+        "name": "ドングリア",
+        "nameEn": "Dongria"
       },
       "gardener": {
         "id": "G019",
-        "name": "星宮 レイズ",
+        "name": "栗栖まめ",
+        "nameEn": "Kurisu Mame",
         "gender": "female",
-        "weapon": "砲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "ドングリと樹皮を丸い身体にまとめたPlant。Gardenerは茶色系の帽子と木製の大型ハンマーを持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -818,29 +1111,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/019/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/019/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 20,
-      "attribute": "fire",
-      "attributeJa": "火",
-      "rarity": 5,
+      "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
+      "attributeJa": "木",
+      "attributeDetailJa": "木",
+      "rarity": 1,
       "plant": {
         "id": "P020",
-        "name": "火口鳥居樹"
+        "name": "ツルベル",
+        "nameEn": "Tsurubell"
       },
       "gardener": {
         "id": "G020",
-        "name": "暁月 カガリナ",
+        "name": "蔦谷るり",
+        "nameEn": "Tsutaya Ruri",
         "gender": "female",
-        "weapon": "鎌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "蔓から複数の紫色の釣鐘花が垂れるPlant。Gardenerは青紫の長髪と、蔓・鐘花を組み込んだ杖を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -857,29 +1160,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/020/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/020/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 21,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
+      "attributeDetailJa": "木",
       "rarity": 1,
       "plant": {
         "id": "P021",
-        "name": "鈴蘭蔓"
+        "name": "コケシメジ",
+        "nameEn": "Kokeshimeji"
       },
       "gardener": {
         "id": "G021",
-        "name": "夜坂 スズカ",
+        "name": "苔野うた",
+        "nameEn": "Kokeno Uta",
         "gender": "female",
-        "weapon": "短剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "苔むしたキノコ塊型Plant。Gardenerは大きなキノコ帽子、ランタン、木製道具を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -896,29 +1209,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/021/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/021/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 22,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
+      "attributeDetailJa": "木",
       "rarity": 1,
       "plant": {
         "id": "P022",
-        "name": "毒茸輪"
+        "name": "シダレノ",
+        "nameEn": "Shidareno"
       },
       "gardener": {
         "id": "G022",
-        "name": "月影 キノハ",
+        "name": "柳瀬しの",
+        "nameEn": "Yanase Shino",
         "gender": "female",
-        "weapon": "大槌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "枝葉が垂れ下がる柳・シダ系Plant。Gardenerは長い緑髪と垂れ葉を思わせる衣装、枝状武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -935,29 +1258,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/022/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/022/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 23,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
-      "rarity": 1,
+      "attributeDetailJa": "木",
+      "rarity": 2,
       "plant": {
         "id": "P023",
-        "name": "捕食蔓"
+        "name": "トゲローザ",
+        "nameEn": "Thornerosa"
       },
       "gardener": {
         "id": "G023",
-        "name": "黒瀬 カナハ",
+        "name": "茨沢りん",
+        "nameEn": "Ibarazawa Rin",
         "gender": "female",
-        "weapon": "弓",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "薔薇と棘蔓で構成されたPlant。Gardenerは灰色系髪に薔薇飾りを付け、棘付きの蔓鞭を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -974,29 +1307,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/023/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/023/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 24,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
-      "rarity": 1,
+      "attributeDetailJa": "木",
+      "rarity": 2,
       "plant": {
         "id": "P024",
-        "name": "木霊切株"
+        "name": "ハスガルド",
+        "nameEn": "Hasguard"
       },
       "gardener": {
         "id": "G024",
-        "name": "紫苑 モリト",
+        "name": "蓮見さや",
+        "nameEn": "Hasumi Saya",
         "gender": "female",
-        "weapon": "鎖鎌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "巨大な蓮葉を盾のように展開するPlant。Gardenerも蓮花を備えた大型円盾を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1013,29 +1356,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/024/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/024/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 25,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
+      "attributeDetailJa": "木",
       "rarity": 2,
       "plant": {
         "id": "P025",
-        "name": "茨薔薇"
+        "name": "イガグリム",
+        "nameEn": "Igagrim"
       },
       "gardener": {
         "id": "G025",
-        "name": "影森 ロゼ",
+        "name": "栗山のの",
+        "nameEn": "Kuriyama Nono",
         "gender": "female",
-        "weapon": "長槍",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "栗のイガで全身を覆ったPlant。Gardenerは栗・イガを意匠化した棘付きフレイルを持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1052,29 +1405,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/025/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/025/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 26,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
+      "attributeDetailJa": "木",
       "rarity": 2,
       "plant": {
         "id": "P026",
-        "name": "種霊莢"
+        "name": "ミントラップ",
+        "nameEn": "Mintwrap"
       },
       "gardener": {
         "id": "G026",
-        "name": "火守 ハジメ",
+        "name": "薬師寺せな",
+        "nameEn": "Yakushiji Sena",
         "gender": "female",
-        "weapon": "双剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "ミントなどの薬草に包まれたPlant。Gardenerは緑髪と薬草系衣装、注射器状の武器・道具を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1091,29 +1454,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/026/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/026/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 27,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
-      "rarity": 2,
+      "attributeDetailJa": "木",
+      "rarity": 3,
       "plant": {
         "id": "P027",
-        "name": "枝垂桜"
+        "name": "オルキバイン",
+        "nameEn": "Orchivine"
       },
       "gardener": {
         "id": "G027",
-        "name": "朱城 ハルカ",
+        "name": "蘭堂かな",
+        "nameEn": "Randou Kana",
         "gender": "female",
-        "weapon": "大盾",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "蘭と蔓、捕食器官を合わせたPlant。Gardenerは紫の蘭を髪飾りとして使い、蔓型武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1130,29 +1503,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/027/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/027/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 28,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
-      "rarity": 2,
+      "attributeDetailJa": "木",
+      "rarity": 3,
       "plant": {
         "id": "P028",
-        "name": "社根樹"
+        "name": "スギランサ",
+        "nameEn": "Sugilance"
       },
       "gardener": {
         "id": "G028",
-        "name": "灯里 ダイナ",
+        "name": "杉浦ほのか",
+        "nameEn": "Sugiura Honoka",
         "gender": "female",
-        "weapon": "狙撃銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "杉の樹形を槍のような細長いシルエットへまとめたPlant。Gardenerは深緑の長髪と大型槍を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1169,29 +1552,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/028/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/028/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 29,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
+      "attributeDetailJa": "木",
       "rarity": 3,
       "plant": {
         "id": "P029",
-        "name": "白花鹿木"
+        "name": "ウツロッカ",
+        "nameEn": "Utsurocca"
       },
       "gardener": {
         "id": "G029",
-        "name": "炎谷 ユズ",
+        "name": "宇津木まどか",
+        "nameEn": "Utsugi Madoka",
         "gender": "female",
-        "weapon": "杖",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "巨大な食虫植物型Plant。Gardenerは深い茶髪と食虫植物の袋状モチーフを組み込んだ武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1208,29 +1601,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/029/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/029/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 30,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
-      "rarity": 3,
+      "attributeDetailJa": "木",
+      "rarity": 4,
       "plant": {
         "id": "P030",
-        "name": "眠り森札樹"
+        "name": "サクラミコ",
+        "nameEn": "Sakuramiko"
       },
       "gardener": {
         "id": "G030",
-        "name": "赫野 ヨミ",
+        "name": "桜庭ひより",
+        "nameEn": "Sakuraba Hiyori",
         "gender": "female",
-        "weapon": "散弾銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "満開の桜を人型に近い樹形へまとめたPlant。Gardenerは桃色の長髪と桜花装飾、和風の長柄刀を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1247,29 +1650,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/030/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/030/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 31,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
-      "rarity": 3,
+      "attributeDetailJa": "木",
+      "rarity": 4,
       "plant": {
         "id": "P031",
-        "name": "苔社株"
+        "name": "バンヨルド",
+        "nameEn": "Banyold"
       },
       "gardener": {
         "id": "G031",
-        "name": "焔崎 ハルノ",
+        "name": "榎本つかさ",
+        "nameEn": "Enomoto Tsukasa",
         "gender": "female",
-        "weapon": "薙刀",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "巨大な根と複数の幹からなる古木型Plant。Gardenerは長い茶髪と樹木装飾、大型の斧・杖系武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1286,29 +1699,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/031/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/031/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 32,
       "attribute": "wood",
+      "attributes": [
+        "wood"
+      ],
       "attributeJa": "木",
-      "rarity": 3,
+      "attributeDetailJa": "木",
+      "rarity": 5,
       "plant": {
         "id": "P032",
-        "name": "傘茸園"
+        "name": "フジセラ",
+        "nameEn": "Fujisera"
       },
       "gardener": {
         "id": "G032",
-        "name": "花守 テンコ",
+        "name": "藤宮れいな",
+        "nameEn": "Fujimiya Reina",
         "gender": "female",
-        "weapon": "手甲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "大量の藤花を垂らす大型Plant。Gardenerは長い紫髪と藤花をまとい、大型の花杖を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1325,29 +1748,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/032/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/032/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 33,
-      "attribute": "wood",
-      "attributeJa": "木",
-      "rarity": 4,
+      "attribute": "water",
+      "attributes": [
+        "water"
+      ],
+      "attributeJa": "水",
+      "attributeDetailJa": "水",
+      "rarity": 1,
       "plant": {
         "id": "P033",
-        "name": "棘薔薇王"
+        "name": "アワモ",
+        "nameEn": "Awamo"
       },
       "gardener": {
         "id": "G033",
-        "name": "枝折 カザリ",
+        "name": "泡坂みう",
+        "nameEn": "Awasaka Miu",
         "gender": "female",
-        "weapon": "斧",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "泡を房状にまとった小型Plant。Gardenerは水色ツインテールと巨大な泡状先端の武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1364,29 +1797,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/033/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/033/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 34,
-      "attribute": "wood",
-      "attributeJa": "木",
-      "rarity": 4,
+      "attribute": "water",
+      "attributes": [
+        "water"
+      ],
+      "attributeJa": "水",
+      "attributeDetailJa": "水",
+      "rarity": 1,
       "plant": {
         "id": "P034",
-        "name": "夜桜木霊"
+        "name": "レインリリ",
+        "nameEn": "Rainlily"
       },
       "gardener": {
         "id": "G034",
-        "name": "森宮 シズク",
+        "name": "雨宮りお",
+        "nameEn": "Amemiya Rio",
         "gender": "female",
-        "weapon": "弩",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "雨粒をまとった白青のユリ型Plant。Gardenerは透明感のある傘と青白い衣装を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1403,29 +1846,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/034/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/034/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 35,
-      "attribute": "wood",
-      "attributeJa": "木",
-      "rarity": 4,
+      "attribute": "water",
+      "attributes": [
+        "water"
+      ],
+      "attributeJa": "水",
+      "attributeDetailJa": "水",
+      "rarity": 1,
       "plant": {
         "id": "P035",
-        "name": "処刑顎花"
+        "name": "セセラギ",
+        "nameEn": "Seseragi"
       },
       "gardener": {
         "id": "G035",
-        "name": "葉月 ガブリ",
+        "name": "瀬川なな",
+        "nameEn": "Segawa Nana",
         "gender": "female",
-        "weapon": "大剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "水が流れ落ちる葉・花弁で構成されたPlant。Gardenerは濃紺ツインテールと水滴型の双武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1442,29 +1895,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/035/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/035/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 36,
-      "attribute": "wood",
-      "attributeJa": "木",
-      "rarity": 4,
+      "attribute": "water",
+      "attributes": [
+        "water"
+      ],
+      "attributeJa": "水",
+      "attributeDetailJa": "水",
+      "rarity": 1,
       "plant": {
         "id": "P036",
-        "name": "涙柳"
+        "name": "クラゲハス",
+        "nameEn": "Kuragehasu"
       },
       "gardener": {
         "id": "G036",
-        "name": "水城 ミナミ",
+        "name": "水月あおい",
+        "nameEn": "Mizutsuki Aoi",
         "gender": "female",
-        "weapon": "刀",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "蓮花とクラゲの触手を融合したPlant。Gardenerは淡い紫髪とクラゲの傘を連想させるパラソルを持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1481,29 +1944,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/036/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/036/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 37,
-      "attribute": "wood",
-      "attributeJa": "木",
-      "rarity": 5,
+      "attribute": "water",
+      "attributes": [
+        "water"
+      ],
+      "attributeJa": "水",
+      "attributeDetailJa": "水",
+      "rarity": 1,
       "plant": {
         "id": "P037",
-        "name": "桜鳥居樹"
+        "name": "サンゴネ",
+        "nameEn": "Sangone"
       },
       "gardener": {
         "id": "G037",
-        "name": "潮見 レンゲ",
+        "name": "珊瑚院めい",
+        "nameEn": "Sangoin Mei",
         "gender": "female",
-        "weapon": "ワイヤー",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "赤い珊瑚と花を融合したPlant。Gardenerは桃色髪と珊瑚状の髪飾り、三叉槍を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1520,29 +1993,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/037/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/037/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 38,
-      "attribute": "wood",
-      "attributeJa": "木",
-      "rarity": 5,
+      "attribute": "water",
+      "attributes": [
+        "water"
+      ],
+      "attributeJa": "水",
+      "attributeDetailJa": "水",
+      "rarity": 1,
       "plant": {
         "id": "P038",
-        "name": "竹霊林"
+        "name": "シズクゴケ",
+        "nameEn": "Shizukoke"
       },
       "gardener": {
         "id": "G038",
-        "name": "雨宮 タケル",
+        "name": "雫田ふみ",
+        "nameEn": "Shizukuda Fumi",
         "gender": "female",
-        "weapon": "ランス",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "水滴を蓄えた苔と岩の塊型Plant。Gardenerは灰緑色の短髪と木製・樽状の打撃武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1559,29 +2042,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/038/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/038/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 39,
-      "attribute": "wood",
-      "attributeJa": "木",
-      "rarity": 5,
+      "attribute": "water",
+      "attributes": [
+        "water"
+      ],
+      "attributeJa": "水",
+      "attributeDetailJa": "水",
+      "rarity": 2,
       "plant": {
         "id": "P039",
-        "name": "藤幽木"
+        "name": "アクアアジサイ",
+        "nameEn": "Aquajisai"
       },
       "gardener": {
         "id": "G039",
-        "name": "波多野 ウツロ",
+        "name": "紫藤すい",
+        "nameEn": "Shido Sui",
         "gender": "female",
-        "weapon": "砲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "青紫の紫陽花と水を組み合わせたPlant。Gardenerは濃紺長髪と紫陽花飾り、水紋を思わせる扇を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1598,29 +2091,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/039/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/039/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 40,
-      "attribute": "wood",
-      "attributeJa": "木",
-      "rarity": 5,
+      "attribute": "water",
+      "attributes": [
+        "water"
+      ],
+      "attributeJa": "水",
+      "attributeDetailJa": "水",
+      "rarity": 2,
       "plant": {
         "id": "P040",
-        "name": "白花世界樹"
+        "name": "ミズグルマ",
+        "nameEn": "Mizuguruma"
       },
       "gardener": {
         "id": "G040",
-        "name": "澄川 ユキノ",
+        "name": "車谷しほ",
+        "nameEn": "Kurumatani Shiho",
         "gender": "female",
-        "weapon": "鎌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "花弁と水車を融合した円形Plant。Gardenerも水車・花弁を意匠化した円形武器を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1637,29 +2140,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/040/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/040/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 41,
       "attribute": "water",
+      "attributes": [
+        "water"
+      ],
       "attributeJa": "水",
-      "rarity": 1,
+      "attributeDetailJa": "水",
+      "rarity": 2,
       "plant": {
         "id": "P041",
-        "name": "月海月花"
+        "name": "コナミモ",
+        "nameEn": "Konamimo"
       },
       "gardener": {
         "id": "G041",
-        "name": "白峰 セレネ",
+        "name": "小波ゆい",
+        "nameEn": "Konami Yui",
         "gender": "female",
-        "weapon": "短剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "ガマの穂と小波を組み合わせたPlant。Gardenerは短い黒髪と水色アクセント、槍系武器を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1676,29 +2189,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/041/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/041/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 42,
       "attribute": "water",
+      "attributes": [
+        "water"
+      ],
       "attributeJa": "水",
-      "rarity": 1,
+      "attributeDetailJa": "水",
+      "rarity": 2,
       "plant": {
         "id": "P042",
-        "name": "毒睡蓮池"
+        "name": "シンジュモ",
+        "nameEn": "Shinjumo"
       },
       "gardener": {
         "id": "G042",
-        "name": "光井 カグラ",
+        "name": "真珠沢えり",
+        "nameEn": "Shinjuzawa Eri",
         "gender": "female",
-        "weapon": "大槌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "真珠状の球体を海藻が包むPlant。Gardenerは長い黒髪と真珠の連なりを武器・装飾へ使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1715,29 +2238,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/042/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/042/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 43,
       "attribute": "water",
+      "attributes": [
+        "water"
+      ],
       "attributeJa": "水",
-      "rarity": 1,
+      "attributeDetailJa": "水",
+      "rarity": 3,
       "plant": {
         "id": "P043",
-        "name": "流花葉"
+        "name": "ヒョウラン",
+        "nameEn": "Hyoran"
       },
       "gardener": {
         "id": "G043",
-        "name": "天城 ヒナ",
+        "name": "氷室かなめ",
+        "nameEn": "Himuro Kaname",
         "gender": "female",
-        "weapon": "弓",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "氷晶と蓮花を融合したPlant。Gardenerも氷結した花弁を思わせる鋭い長柄武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1754,29 +2287,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/043/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/043/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 44,
       "attribute": "water",
+      "attributes": [
+        "water"
+      ],
       "attributeJa": "水",
-      "rarity": 1,
+      "attributeDetailJa": "水",
+      "rarity": 3,
       "plant": {
         "id": "P044",
-        "name": "葦水霊"
+        "name": "シオローザ",
+        "nameEn": "Shiorosa"
       },
       "gardener": {
         "id": "G044",
-        "name": "星宮 フウ",
+        "name": "汐見つむぎ",
+        "nameEn": "Shiomi Tsumugi",
         "gender": "female",
-        "weapon": "鎖鎌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "青い薔薇と波を組み合わせたPlant。Gardenerは青薔薇の髪飾りと長剣を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1793,29 +2336,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/044/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/044/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 45,
       "attribute": "water",
+      "attributes": [
+        "water"
+      ],
       "attributeJa": "水",
-      "rarity": 2,
+      "attributeDetailJa": "水",
+      "rarity": 3,
       "plant": {
         "id": "P045",
-        "name": "海鍛珊瑚"
+        "name": "フンスイリス",
+        "nameEn": "Fountainisiris"
       },
       "gardener": {
         "id": "G045",
-        "name": "暁月 ツキヨ",
+        "name": "泉あやめ",
+        "nameEn": "Izumi Ayame",
         "gender": "female",
-        "weapon": "長槍",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "アイリスから噴水のように水が噴き出すPlant。Gardenerは紫の花飾りと長槍を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1832,29 +2385,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/045/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/045/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 46,
       "attribute": "water",
+      "attributes": [
+        "water"
+      ],
       "attributeJa": "水",
-      "rarity": 2,
+      "attributeDetailJa": "水",
+      "rarity": 4,
       "plant": {
         "id": "P046",
-        "name": "氷蓮"
+        "name": "リヴァリリ",
+        "nameEn": "Rivallily"
       },
       "gardener": {
         "id": "G046",
-        "name": "夜坂 ユキノア",
+        "name": "龍宮せり",
+        "nameEn": "Ryugu Seri",
         "gender": "female",
-        "weapon": "双剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "百合の花を頭部に持つ水龍・蛇型Plant。Gardenerは花と波を意匠化した大型槍を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1871,29 +2434,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/046/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/046/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 47,
       "attribute": "water",
+      "attributes": [
+        "water"
+      ],
       "attributeJa": "水",
-      "rarity": 2,
+      "attributeDetailJa": "水",
+      "rarity": 4,
       "plant": {
         "id": "P047",
-        "name": "沼食花"
+        "name": "ツナミダケ",
+        "nameEn": "Tsunamidake"
       },
       "gardener": {
         "id": "G047",
-        "name": "月影 モモ",
+        "name": "波崎こよみ",
+        "nameEn": "Hazaki Koyomi",
         "gender": "female",
-        "weapon": "大盾",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "竹と巨大な波を融合したPlant。Gardenerは青い長髪と水流をまとう刀・長柄武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1910,29 +2483,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/047/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/047/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 48,
       "attribute": "water",
+      "attributes": [
+        "water"
+      ],
       "attributeJa": "水",
-      "rarity": 2,
+      "attributeDetailJa": "水",
+      "rarity": 5,
       "plant": {
         "id": "P048",
-        "name": "雨雲花"
+        "name": "ゲッカスイ",
+        "nameEn": "Gekkasui"
       },
       "gardener": {
         "id": "G048",
-        "name": "黒瀬 アメ",
+        "name": "月瀬しずく",
+        "nameEn": "Tsukise Shizuku",
         "gender": "female",
-        "weapon": "狙撃銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "月・水・花を統合した大型Plant。Gardenerも三日月装飾と深い青の水流表現を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1949,29 +2532,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/048/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/048/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 49,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 3,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 1,
       "plant": {
         "id": "P049",
-        "name": "深淵蓮"
+        "name": "ランプデイジ",
+        "nameEn": "Lampdaisy"
       },
       "gardener": {
         "id": "G049",
-        "name": "紫苑 ネレイス",
+        "name": "灯里ひかる",
+        "nameEn": "Akari Hikaru",
         "gender": "female",
-        "weapon": "杖",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "デイジーの花と灯火を融合した小型Plant。Gardenerは白黄の花飾りとランプ型武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -1988,29 +2581,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/049/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/049/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 50,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 3,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 1,
       "plant": {
         "id": "P050",
-        "name": "蛇池蔓"
+        "name": "ハイローバ",
+        "nameEn": "Halover"
       },
       "gardener": {
         "id": "G050",
-        "name": "影森 カイリ",
+        "name": "四宮ひより",
+        "nameEn": "Shinomiya Hiyori",
         "gender": "female",
-        "weapon": "散弾銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "クローバーに光輪を組み合わせたPlant。Gardenerもクローバーと円形光輪を武器に採用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2027,29 +2630,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/050/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/050/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 51,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 3,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 1,
       "plant": {
         "id": "P051",
-        "name": "海月灯花"
+        "name": "レモスパ",
+        "nameEn": "Lemonspa"
       },
       "gardener": {
         "id": "G051",
-        "name": "火守 ルリ",
+        "name": "柚木まこ",
+        "nameEn": "Yuzuki Mako",
         "gender": "female",
-        "weapon": "薙刀",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "レモンと白花を組み合わせた明るいPlant。Gardenerは黒髪ツインテールに黄色い花を付ける。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2066,29 +2679,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/051/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/051/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 52,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 3,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 1,
       "plant": {
         "id": "P052",
-        "name": "白蓮珠"
+        "name": "アサヒルル",
+        "nameEn": "Asahiruru"
       },
       "gardener": {
         "id": "G052",
-        "name": "朱城 シズクナ",
+        "name": "朝比奈るる",
+        "nameEn": "Asahina Ruru",
         "gender": "female",
-        "weapon": "手甲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "朝顔系の青い花と日の出を合わせたPlant。Gardenerは淡い青紫髪と花付きの長柄武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2105,29 +2728,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/052/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/052/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 53,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 4,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 1,
       "plant": {
         "id": "P053",
-        "name": "結晶蓮"
+        "name": "ワタフワラ",
+        "nameEn": "Watafuwara"
       },
       "gardener": {
         "id": "G053",
-        "name": "灯里 ナギ",
+        "name": "綿貫そら",
+        "nameEn": "Watanuki Sora",
         "gender": "female",
-        "weapon": "斧",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "綿花の白い房を丸い身体にまとめたPlant。Gardenerも綿花を巨大な打撃部として使用する。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2144,29 +2777,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/053/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/053/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 54,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 4,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 1,
       "plant": {
         "id": "P054",
-        "name": "鯉帯水草"
+        "name": "キラユリ",
+        "nameEn": "Kirayuri"
       },
       "gardener": {
         "id": "G054",
-        "name": "炎谷 カイ",
+        "name": "白石ゆの",
+        "nameEn": "Shiraishi Yuno",
         "gender": "female",
-        "weapon": "弩",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "白青の発光ユリ型Plant。Gardenerは長い黒髪と白い百合、結晶状の長槍を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2183,29 +2826,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/054/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/054/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 55,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 4,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 2,
       "plant": {
         "id": "P055",
-        "name": "浮遊桜泉"
+        "name": "ミラハス",
+        "nameEn": "Mirahasu"
       },
       "gardener": {
         "id": "G055",
-        "name": "赫野 ヨミコ",
+        "name": "鏡原しおん",
+        "nameEn": "Kagamihara Shion",
         "gender": "female",
-        "weapon": "大剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "蓮と鏡・プリズムを融合したPlant。Gardenerは大型の鏡型武器を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2222,29 +2875,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/055/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/055/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 56,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 4,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 2,
       "plant": {
         "id": "P056",
-        "name": "双鯉輪花"
+        "name": "カナリフロラ",
+        "nameEn": "Canariflora"
       },
       "gardener": {
         "id": "G056",
-        "name": "焔崎 ミコト",
+        "name": "黄瀬つばさ",
+        "nameEn": "Kise Tsubasa",
         "gender": "female",
-        "weapon": "刀",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黄色い花弁が放射するPlant。Gardenerは金髪と黄色・白の衣装、翼状の意匠を持つ槍を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2261,29 +2924,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/056/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/056/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 57,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 5,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 2,
       "plant": {
         "id": "P057",
-        "name": "鯨滝花"
+        "name": "プリズマム",
+        "nameEn": "Prismum"
       },
       "gardener": {
         "id": "G057",
-        "name": "花守 アオイ",
+        "name": "宝生こまち",
+        "nameEn": "Hosho Komachi",
         "gender": "female",
-        "weapon": "ワイヤー",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "多面体結晶と花を組み合わせたPlant。Gardenerは白髪とプリズム装飾、大型の鏡・杖型武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2300,29 +2973,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/057/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/057/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 58,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 5,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 2,
       "plant": {
         "id": "P058",
-        "name": "氷宮花"
+        "name": "セイントベル",
+        "nameEn": "Saintbell"
       },
       "gardener": {
         "id": "G058",
-        "name": "枝折 トワ",
+        "name": "聖川みお",
+        "nameEn": "Hijirikawa Mio",
         "gender": "female",
-        "weapon": "ランス",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "青白い釣鐘花と金の鐘を融合したPlant。Gardenerも大型の鐘を武器として使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2339,29 +3022,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/058/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/058/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 59,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 5,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 3,
       "plant": {
         "id": "P059",
-        "name": "水眼花"
+        "name": "オーロボタン",
+        "nameEn": "Aurobotan"
       },
       "gardener": {
         "id": "G059",
-        "name": "森宮 レイ",
+        "name": "久遠ひなた",
+        "nameEn": "Kuon Hinata",
         "gender": "female",
-        "weapon": "砲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "虹色・オーロラ色の牡丹Plant。Gardenerは桃色の長髪と多色の花飾りを持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2378,29 +3071,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/059/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/059/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 60,
-      "attribute": "water",
-      "attributeJa": "水",
-      "rarity": 5,
+      "attribute": "light",
+      "attributes": [
+        "light"
+      ],
+      "attributeJa": "光",
+      "attributeDetailJa": "光",
+      "rarity": 3,
       "plant": {
         "id": "P060",
-        "name": "災潮蓮"
+        "name": "サンスピナ",
+        "nameEn": "Sunspina"
       },
       "gardener": {
         "id": "G060",
-        "name": "葉月 アマネ",
+        "name": "日野あすか",
+        "nameEn": "Hino Asuka",
         "gender": "female",
-        "weapon": "鎌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "太陽状に鋭い花弁を放射するPlant。Gardenerは黒髪と金色の太陽意匠、大型の太陽杖を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2417,29 +3120,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/060/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/060/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 61,
       "attribute": "light",
+      "attributes": [
+        "light"
+      ],
       "attributeJa": "光",
-      "rarity": 1,
+      "attributeDetailJa": "光",
+      "rarity": 3,
       "plant": {
         "id": "P061",
-        "name": "光輪花"
+        "name": "コメットススキ",
+        "nameEn": "Cometsusuki"
       },
       "gardener": {
         "id": "G061",
-        "name": "水城 セラ",
+        "name": "星見さな",
+        "nameEn": "Hoshimi Sana",
         "gender": "female",
-        "weapon": "短剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "ススキの穂を彗星の尾のように広げたPlant。Gardenerは白髪と星型装飾、星型の杖を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2456,29 +3169,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/061/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/061/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 62,
       "attribute": "light",
+      "attributes": [
+        "light"
+      ],
       "attributeJa": "光",
-      "rarity": 1,
+      "attributeDetailJa": "光",
+      "rarity": 4,
       "plant": {
         "id": "P062",
-        "name": "鈴光花"
+        "name": "セラローザ",
+        "nameEn": "Serarosa"
       },
       "gardener": {
         "id": "G062",
-        "name": "潮見 ノア",
+        "name": "天音るか",
+        "nameEn": "Amane Ruka",
         "gender": "female",
-        "weapon": "大槌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "白薔薇、翼、光輪を組み合わせたPlant。Gardenerも白系衣装、薔薇、翼意匠を持つ長柄武器を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2495,29 +3218,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/062/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/062/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 63,
       "attribute": "light",
+      "attributes": [
+        "light"
+      ],
       "attributeJa": "光",
-      "rarity": 1,
+      "attributeDetailJa": "光",
+      "rarity": 4,
       "plant": {
         "id": "P063",
-        "name": "結晶百合"
+        "name": "ハクモクレン",
+        "nameEn": "Hakumokuren"
       },
       "gardener": {
         "id": "G063",
-        "name": "雨宮 ユキノセ",
+        "name": "白峰このみ",
+        "nameEn": "Shiramine Konomi",
         "gender": "female",
-        "weapon": "弓",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "白木蓮と透明結晶を組み合わせたPlant。Gardenerも白髪・白花・結晶状武器で統一。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2534,29 +3267,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/063/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/063/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 64,
       "attribute": "light",
+      "attributes": [
+        "light"
+      ],
       "attributeJa": "光",
-      "rarity": 1,
+      "attributeDetailJa": "光",
+      "rarity": 5,
       "plant": {
         "id": "P064",
-        "name": "機関向日葵"
+        "name": "ソルオーキス",
+        "nameEn": "Solorchis"
       },
       "gardener": {
         "id": "G064",
-        "name": "波多野 ヒカリ",
+        "name": "日向いぶき",
+        "nameEn": "Hinata Ibuki",
         "gender": "female",
-        "weapon": "鎖鎌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "太陽と蘭を組み合わせた高レアPlant。Gardenerは白金色を基調に太陽輪と大型杖を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2573,29 +3316,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/064/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/064/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 65,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 2,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 1,
       "plant": {
         "id": "P065",
-        "name": "軌道花"
+        "name": "ヨルベリ",
+        "nameEn": "Yoruberry"
       },
       "gardener": {
         "id": "G065",
-        "name": "澄川 ステラ",
+        "name": "夜坂えな",
+        "nameEn": "Yosaka Ena",
         "gender": "female",
-        "weapon": "長槍",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒紫の実を大量につけたPlant。Gardenerは黒髪と紫の実を意匠化した武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2612,29 +3365,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/065/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/065/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 66,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 2,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 1,
       "plant": {
         "id": "P066",
-        "name": "光藤"
+        "name": "コウモルヅル",
+        "nameEn": "Koumoruzuru"
       },
       "gardener": {
         "id": "G066",
-        "name": "白峰 シラユキ",
+        "name": "羽黒まゆ",
+        "nameEn": "Haguro Mayu",
         "gender": "female",
-        "weapon": "双剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "蔓と蝙蝠の翼を融合したPlant。Gardenerは紫黒の髪と巨大な鎌を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2651,29 +3414,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/066/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/066/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 67,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 2,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 1,
       "plant": {
         "id": "P067",
-        "name": "天使莢"
+        "name": "カゲゴケ",
+        "nameEn": "Kagegoke"
       },
       "gardener": {
         "id": "G067",
-        "name": "光井 ルア",
+        "name": "影山つき",
+        "nameEn": "Kageyama Tsuki",
         "gender": "female",
-        "weapon": "大盾",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒い苔と紫花、煙状の影からなるPlant。Gardenerはフード付き衣装と暗色の打撃武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2690,29 +3463,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/067/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/067/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 68,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 2,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 1,
       "plant": {
         "id": "P068",
-        "name": "恩寵薔薇"
+        "name": "インクローザ",
+        "nameEn": "Inkrosa"
       },
       "gardener": {
         "id": "G068",
-        "name": "天城 カレン",
+        "name": "墨谷れむ",
+        "nameEn": "Sumitani Remu",
         "gender": "female",
-        "weapon": "狙撃銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒いインクが滴る紫黒の薔薇Plant。Gardenerにも黒い滴・薔薇の意匠を反映。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2729,29 +3512,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/068/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/068/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 69,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 3,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 1,
       "plant": {
         "id": "P069",
-        "name": "天桜塔"
+        "name": "カラスイバラ",
+        "nameEn": "Karasuibara"
       },
       "gardener": {
         "id": "G069",
-        "name": "星宮 アイリス",
+        "name": "烏丸りつ",
+        "nameEn": "Karasuma Ritsu",
         "gender": "female",
-        "weapon": "杖",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "カラスの翼と黒赤い茨を融合したPlant。Gardenerは黒髪と赤い薔薇、黒赤の刃物を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2768,29 +3561,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/069/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/069/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 70,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 3,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 1,
       "plant": {
         "id": "P070",
-        "name": "空蓮晶"
+        "name": "ムーンアザミ",
+        "nameEn": "Moonazami"
       },
       "gardener": {
         "id": "G070",
-        "name": "暁月 アカリ",
+        "name": "月原るい",
+        "nameEn": "Tsukihara Rui",
         "gender": "female",
-        "weapon": "散弾銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "紫色のアザミと三日月を融合したPlant。Gardenerは紫髪と月型アクセサリー、三日月型武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2807,29 +3610,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/070/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/070/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 71,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 3,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 2,
       "plant": {
         "id": "P071",
-        "name": "幻桜灯"
+        "name": "ドクリンゴ",
+        "nameEn": "Dokuringo"
       },
       "gardener": {
         "id": "G071",
-        "name": "夜坂 レース",
+        "name": "毒島りな",
+        "nameEn": "Busujima Rina",
         "gender": "female",
-        "weapon": "薙刀",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "毒液を垂らす暗赤色のリンゴPlant。Gardenerは赤黒の衣装と毒液を思わせる小瓶・刃物を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2846,29 +3659,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/071/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/071/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 72,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 3,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 2,
       "plant": {
         "id": "P072",
-        "name": "月光鈴蘭"
+        "name": "ヒガンバナ",
+        "nameEn": "Higanbana"
       },
       "gardener": {
         "id": "G072",
-        "name": "月影 ノクターン",
+        "name": "緋村さき",
+        "nameEn": "Himura Saki",
         "gender": "female",
-        "weapon": "手甲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "赤黒い彼岸花Plant。Gardenerは長い黒髪と彼岸花飾り、大型の鎌を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2885,29 +3708,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/072/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/072/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 73,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 4,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 2,
       "plant": {
         "id": "P073",
-        "name": "綿眼花"
+        "name": "コフィサボ",
+        "nameEn": "Cofficacto"
       },
       "gardener": {
         "id": "G073",
-        "name": "黒瀬 ミント",
+        "name": "樋川しの",
+        "nameEn": "Hitsukawa Shino",
         "gender": "female",
-        "weapon": "斧",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "棺桶型のサボテンPlant。Gardenerも棺桶型の大型盾・武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2924,29 +3757,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/073/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/073/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 74,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 4,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 2,
       "plant": {
         "id": "P074",
-        "name": "日輪眼花"
+        "name": "エクリフロラ",
+        "nameEn": "Ecliflora"
       },
       "gardener": {
         "id": "G074",
-        "name": "紫苑 ヒヨリ",
+        "name": "蝕谷のあ",
+        "nameEn": "Shokutani Noa",
         "gender": "female",
-        "weapon": "弩",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "花の中心が日食のような黒い円になったPlant。Gardenerは同じ黒い円環を大型武器として使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -2963,29 +3806,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/074/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/074/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 75,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 4,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 3,
       "plant": {
         "id": "P075",
-        "name": "藤社光花"
+        "name": "レイヴンラン",
+        "nameEn": "Ravenran"
       },
       "gardener": {
         "id": "G075",
-        "name": "影森 コトネ",
+        "name": "黒羽いろは",
+        "nameEn": "Kuroba Iroha",
         "gender": "female",
-        "weapon": "大剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒紫の花弁を鳥翼のように展開するPlant。Gardenerも黒い羽と紫花、長槍を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3002,29 +3855,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/075/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/075/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 76,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 4,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 3,
       "plant": {
         "id": "P076",
-        "name": "水晶蓮眼"
+        "name": "アビスモ",
+        "nameEn": "Abysmo"
       },
       "gardener": {
         "id": "G076",
-        "name": "火守 スミレ",
+        "name": "深海ゆら",
+        "nameEn": "Fukami Yura",
         "gender": "female",
-        "weapon": "刀",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "深海色の青紫花Plant。Gardenerは黒髪と青紫の花飾り、三叉槍を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3041,29 +3904,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/076/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/076/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 77,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 5,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 3,
       "plant": {
         "id": "P077",
-        "name": "白彼岸冠"
+        "name": "ナイトチューリ",
+        "nameEn": "Nighttulie"
       },
       "gardener": {
         "id": "G077",
-        "name": "朱城 シエル",
+        "name": "夢野まひる",
+        "nameEn": "Yumeno Mahiru",
         "gender": "female",
-        "weapon": "ワイヤー",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒紫のチューリップ型Plant。Gardenerはフード状の花弁シルエットと大型暗色武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3080,29 +3953,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/077/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/077/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 78,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 5,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 4,
       "plant": {
         "id": "P078",
-        "name": "薔薇終花束"
+        "name": "グリムロゼ",
+        "nameEn": "Grimrose"
       },
       "gardener": {
         "id": "G078",
-        "name": "灯里 ナナセ",
+        "name": "黒森きりか",
+        "nameEn": "Kuromori Kirika",
         "gender": "female",
-        "weapon": "ランス",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒い枝に血赤の薔薇を咲かせる樹木型Plant。Gardenerも黒赤の薔薇と長柄武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3119,29 +4002,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/078/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/078/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 79,
-      "attribute": "light",
-      "attributeJa": "光",
-      "rarity": 5,
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
+      "rarity": 4,
       "plant": {
         "id": "P079",
-        "name": "鈴蘭灯林"
+        "name": "オニザサ",
+        "nameEn": "Onizasa"
       },
       "gardener": {
         "id": "G079",
-        "name": "炎谷 フローラ",
+        "name": "鬼塚いちか",
+        "nameEn": "Onizuka Ichika",
         "gender": "female",
-        "weapon": "砲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒竹を束ね、先端を鬼角のようにしたPlant。Gardenerは角状装飾と黒赤の槍を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3158,29 +4051,39 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/079/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/079/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 80,
-      "attribute": "light",
-      "attributeJa": "光",
+      "attribute": "dark",
+      "attributes": [
+        "dark"
+      ],
+      "attributeJa": "闇",
+      "attributeDetailJa": "闇",
       "rarity": 5,
       "plant": {
         "id": "P080",
-        "name": "白夜眼花"
+        "name": "ルナクイナ",
+        "nameEn": "Lunaquina"
       },
       "gardener": {
         "id": "G080",
-        "name": "赫野 オリカ",
+        "name": "宵待せつな",
+        "nameEn": "Yoimachi Setsuna",
         "gender": "female",
-        "weapon": "鎌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "月光・蓮・黒紫の花を組み合わせた高レアPlant。Gardenerは黒髪、白花、月輪、大型の月型杖を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3197,29 +4100,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/080/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/080/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 81,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 1,
+      "attribute": "rainbow",
+      "attributes": [
+        "fire",
+        "wood"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "火＋木",
+      "rarity": 5,
       "plant": {
         "id": "P081",
-        "name": "影灯花"
+        "name": "カグヤダケ",
+        "nameEn": "Kaguyadake"
       },
       "gardener": {
         "id": "G081",
-        "name": "焔崎 ヨミナ",
+        "name": "竹森かえで",
+        "nameEn": "Takemori Kaede",
         "gender": "female",
-        "weapon": "短剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "竹の節から炎が噴き出すPlant。Gardenerは黒髪と赤花、竹・炎を合わせた槍を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3236,29 +4150,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/081/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/081/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 82,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 1,
+      "attribute": "rainbow",
+      "attributes": [
+        "fire",
+        "wood"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "火＋木",
+      "rarity": 5,
       "plant": {
         "id": "P082",
-        "name": "月影蔓"
+        "name": "モエモミジ",
+        "nameEn": "Moemomiji"
       },
       "gardener": {
         "id": "G082",
-        "name": "花守 ルナリア",
+        "name": "紅林すず",
+        "nameEn": "Kurebayashi Suzu",
         "gender": "female",
-        "weapon": "大槌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "紅葉した樹木と溶岩・炎を融合したPlant。Gardenerは茶髪と紅葉の髪飾り、火炎剣を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3275,29 +4200,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/082/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/082/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 83,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 1,
+      "attribute": "rainbow",
+      "attributes": [
+        "fire",
+        "water"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "火＋水",
+      "rarity": 5,
       "plant": {
         "id": "P083",
-        "name": "喰華"
+        "name": "スチームハス",
+        "nameEn": "Steamlotus"
       },
       "gardener": {
         "id": "G083",
-        "name": "枝折 クレハ",
+        "name": "湯浅しずね",
+        "nameEn": "Yuasa Shizune",
         "gender": "female",
-        "weapon": "弓",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "水面に咲く赤熱した蓮から蒸気が立つPlant。Gardenerは白銀髪と赤花、蒸気・水滴を連想させる環状武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3314,29 +4250,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/083/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/083/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 84,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 1,
+      "attribute": "rainbow",
+      "attributes": [
+        "fire",
+        "water"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "火＋水",
+      "rarity": 5,
       "plant": {
         "id": "P084",
-        "name": "墓標百合"
+        "name": "オンセンゴ",
+        "nameEn": "Onsengo"
       },
       "gardener": {
         "id": "G084",
-        "name": "森宮 ネムリ",
+        "name": "温水かな",
+        "nameEn": "Nukui Kana",
         "gender": "female",
-        "weapon": "鎖鎌",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "温泉と赤い珊瑚状植物を融合したPlant。Gardenerは青髪と蒸気表現、三叉槍を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3353,29 +4300,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/084/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/084/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 85,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 2,
+      "attribute": "rainbow",
+      "attributes": [
+        "fire",
+        "light"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "火＋光",
+      "rarity": 5,
       "plant": {
         "id": "P085",
-        "name": "毒百合鍋"
+        "name": "アサヒマワリ",
+        "nameEn": "Asahimawari"
       },
       "gardener": {
         "id": "G085",
-        "name": "葉月 シオンネ",
+        "name": "朝日みれい",
+        "nameEn": "Asahi Mirei",
         "gender": "female",
-        "weapon": "長槍",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "太陽光と火炎をまとった巨大ヒマワリPlant。Gardenerは金髪と太陽冠、太陽杖を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3392,29 +4350,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/085/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/085/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 86,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 2,
+      "attribute": "rainbow",
+      "attributes": [
+        "fire",
+        "light"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "火＋光",
+      "rarity": 5,
       "plant": {
         "id": "P086",
-        "name": "幽藤"
+        "name": "フレアクリス",
+        "nameEn": "Flarecrys"
       },
       "gardener": {
         "id": "G086",
-        "name": "水城 カスミ",
+        "name": "輝崎のの",
+        "nameEn": "Teruzaki Nono",
         "gender": "female",
-        "weapon": "双剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "赤熱する結晶と薔薇を融合したPlant。Gardenerは白髪と赤い薔薇、結晶型の杖を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3431,29 +4400,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/086/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/086/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 87,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 2,
+      "attribute": "rainbow",
+      "attributes": [
+        "fire",
+        "dark"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "火＋闇",
+      "rarity": 5,
       "plant": {
         "id": "P087",
-        "name": "彼岸花沼"
+        "name": "コクエンツバキ",
+        "nameEn": "Kokuentsubaki"
       },
       "gardener": {
         "id": "G087",
-        "name": "潮見 アカネ",
+        "name": "黒火あや",
+        "nameEn": "Kurohi Aya",
         "gender": "female",
-        "weapon": "大盾",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒い椿の中心から赤い炎が漏れるPlant。Gardenerは黒髪、赤椿、黒炎をまとった刀を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3470,29 +4450,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/087/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/087/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 88,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 2,
+      "attribute": "rainbow",
+      "attributes": [
+        "fire",
+        "dark"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "火＋闇",
+      "rarity": 5,
       "plant": {
         "id": "P088",
-        "name": "黒蓮池"
+        "name": "ススヒガン",
+        "nameEn": "Susuhigan"
       },
       "gardener": {
         "id": "G088",
-        "name": "雨宮 レイガ",
+        "name": "灰原みさ",
+        "nameEn": "Haibara Misa",
         "gender": "female",
-        "weapon": "狙撃銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "煤で黒化した彼岸花と火種を合わせたPlant。Gardenerは灰色髪と黒赤の花、巨大な鎌を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3509,29 +4500,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/088/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/088/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 89,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 3,
+      "attribute": "rainbow",
+      "attributes": [
+        "wood",
+        "water"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "木＋水",
+      "rarity": 5,
       "plant": {
         "id": "P089",
-        "name": "骸桜"
+        "name": "ミズキネ",
+        "nameEn": "Mizukine"
       },
       "gardener": {
         "id": "G089",
-        "name": "波多野 シラユキナ",
+        "name": "森川うらら",
+        "nameEn": "Morikawa Urara",
         "gender": "female",
-        "weapon": "杖",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "水中に根を張る樹木Plant。Gardenerは暗緑色の髪と青い花飾り、水・葉を組み合わせた長柄武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3548,29 +4550,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/089/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/089/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 90,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 3,
+      "attribute": "rainbow",
+      "attributes": [
+        "wood",
+        "water"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "木＋水",
+      "rarity": 5,
       "plant": {
         "id": "P090",
-        "name": "深淵眼花"
+        "name": "クラヅル",
+        "nameEn": "Kuradzuru"
       },
       "gardener": {
         "id": "G090",
-        "name": "澄川 マヨイ",
+        "name": "葉月みお",
+        "nameEn": "Hazuki Mio",
         "gender": "female",
-        "weapon": "散弾銃",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "蔓と葉からクラゲ状の傘・触手を形成したPlant。Gardenerは水色髪と植物性の傘状装備を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3587,29 +4600,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/090/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/090/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 91,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 3,
+      "attribute": "rainbow",
+      "attributes": [
+        "wood",
+        "light"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "木＋光",
+      "rarity": 5,
       "plant": {
         "id": "P091",
-        "name": "災桜"
+        "name": "コウリンカバ",
+        "nameEn": "Korinkaba"
       },
       "gardener": {
         "id": "G091",
-        "name": "白峰 ヨルカ",
+        "name": "白樺ひまり",
+        "nameEn": "Shirakaba Himari",
         "gender": "female",
-        "weapon": "薙刀",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "白樺系の白い幹と発光する花を組み合わせたPlant。Gardenerは白髪と白黄の花、枝状の長柄武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3626,29 +4650,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/091/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/091/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 92,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 3,
+      "attribute": "rainbow",
+      "attributes": [
+        "wood",
+        "light"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "木＋光",
+      "rarity": 5,
       "plant": {
         "id": "P092",
-        "name": "月海月"
+        "name": "ルミクローバ",
+        "nameEn": "Lumiclover"
       },
       "gardener": {
         "id": "G092",
-        "name": "光井 ミズハ",
+        "name": "光葉ゆず",
+        "nameEn": "Mitsuba Yuzu",
         "gender": "female",
-        "weapon": "手甲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "発光するクローバーを密集させたPlant。Gardenerは淡い緑白の髪とクローバー花、輪状武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3665,29 +4700,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/092/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/092/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 93,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 4,
+      "attribute": "rainbow",
+      "attributes": [
+        "wood",
+        "dark"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "木＋闇",
+      "rarity": 5,
       "plant": {
         "id": "P093",
-        "name": "暴食花"
+        "name": "ノロイヅル",
+        "nameEn": "Noroizuru"
       },
       "gardener": {
         "id": "G093",
-        "name": "天城 アカリナ",
+        "name": "黒蔦さな",
+        "nameEn": "Kurotsuta Sana",
         "gender": "female",
-        "weapon": "斧",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒紫の薔薇と呪術的な蔓を大量に伸ばすPlant。Gardenerは黒髪と紫花、棘蔓型の武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3704,29 +4750,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/093/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/093/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 94,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 4,
+      "attribute": "rainbow",
+      "attributes": [
+        "wood",
+        "dark"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "木＋闇",
+      "rarity": 5,
       "plant": {
         "id": "P094",
-        "name": "藤呪木"
+        "name": "ヤミシメジ",
+        "nameEn": "Yamishimeji"
       },
       "gardener": {
         "id": "G094",
-        "name": "星宮 シノ",
+        "name": "森月しき",
+        "nameEn": "Moritsuki Shiki",
         "gender": "female",
-        "weapon": "弩",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "黒紫の巨大キノコ群と発光菌を融合したPlant。Gardenerは淡紫髪とキノコ帽子、ランタン付きの武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3743,29 +4800,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/094/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/094/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 95,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 4,
+      "attribute": "rainbow",
+      "attributes": [
+        "water",
+        "light"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "水＋光",
+      "rarity": 5,
       "plant": {
         "id": "P095",
-        "name": "怪映蘭"
+        "name": "プリズラゲ",
+        "nameEn": "Prizurage"
       },
       "gardener": {
         "id": "G095",
-        "name": "暁月 キララ",
+        "name": "水瀬ひかり",
+        "nameEn": "Minase Hikari",
         "gender": "female",
-        "weapon": "大剣",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "虹色に屈折する透明なクラゲ型Plant。Gardenerは淡い水色髪と光る水晶球を持つ杖を使用。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3782,29 +4850,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/095/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/095/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 96,
-      "attribute": "dark",
-      "attributeJa": "闇",
-      "rarity": 4,
+      "attribute": "rainbow",
+      "attributes": [
+        "water",
+        "light"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "水＋光",
+      "rarity": 5,
       "plant": {
         "id": "P096",
-        "name": "白眼百合"
+        "name": "ニジアメラン",
+        "nameEn": "Nijiameran"
       },
       "gardener": {
         "id": "G096",
-        "name": "夜坂 ヒカリナ",
+        "name": "雨野せな",
+        "nameEn": "Ameno Sena",
         "gender": "female",
-        "weapon": "刀",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "attack_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "雨滴と虹色の花弁を組み合わせたPlant。Gardenerは水色髪と虹光を反射する大型槍を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3821,29 +4900,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/096/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/096/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 97,
-      "attribute": "dark",
-      "attributeJa": "闇",
+      "attribute": "rainbow",
+      "attributes": [
+        "water",
+        "dark"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "水＋闇",
       "rarity": 5,
       "plant": {
         "id": "P097",
-        "name": "彼岸眼"
+        "name": "アビサジサイ",
+        "nameEn": "Abysajisai"
       },
       "gardener": {
         "id": "G097",
-        "name": "月影 クレナ",
+        "name": "深水るな",
+        "nameEn": "Fukami Runa",
         "gender": "female",
-        "weapon": "ワイヤー",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "defense_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "深海色の濃紺・紫陽花と黒い水滴を組み合わせたPlant。Gardenerも紫陽花と黒青の水表現を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3860,29 +4950,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/097/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/097/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 98,
-      "attribute": "dark",
-      "attributeJa": "闇",
+      "attribute": "rainbow",
+      "attributes": [
+        "water",
+        "dark"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "水＋闇",
       "rarity": 5,
       "plant": {
         "id": "P098",
-        "name": "運命蓮"
+        "name": "ユウレイモ",
+        "nameEn": "Yureimo"
       },
       "gardener": {
         "id": "G098",
-        "name": "黒瀬 スイ",
+        "name": "幽谷なみ",
+        "nameEn": "Yutani Nami",
         "gender": "female",
-        "weapon": "ランス",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "speed_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "海藻から幽霊状の青白い頭部が立ち上がるPlant。Gardenerは灰銀髪と鎖・青白い霊光を組み合わせた武器を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3899,29 +5000,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/098/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/098/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 99,
-      "attribute": "dark",
-      "attributeJa": "闇",
+      "attribute": "rainbow",
+      "attributes": [
+        "light",
+        "dark"
+      ],
+      "attributeJa": "虹",
+      "attributeDetailJa": "光＋闇",
       "rarity": 5,
       "plant": {
         "id": "P099",
-        "name": "鏡灯花"
+        "name": "トワイリリ",
+        "nameEn": "Twilily"
       },
       "gardener": {
         "id": "G099",
-        "name": "紫苑 メイ",
+        "name": "暁月れい",
+        "nameEn": "Akatsuki Rei",
         "gender": "female",
-        "weapon": "砲",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "range_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "白と黒紫の花弁を左右・内外で混在させた百合型Plant。Gardenerも白黒の髪・衣装と光闇双方の色を用いた刃物を持つ。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3938,29 +5050,40 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/099/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/099/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     },
     {
       "no": 100,
       "attribute": "rainbow",
+      "attributes": [
+        "light",
+        "dark"
+      ],
       "attributeJa": "虹",
+      "attributeDetailJa": "光＋闇",
       "rarity": 6,
       "plant": {
         "id": "P100",
-        "name": "百彩夢蓮"
+        "name": "ルクスノクス",
+        "nameEn": "Luxnox"
       },
       "gardener": {
         "id": "G100",
-        "name": "星宮 ルミナ",
+        "name": "神代つむぎ",
+        "nameEn": "Kamishiro Tsumugi",
         "gender": "female",
-        "weapon": "星環杖",
+        "weapon": null,
+        "weaponStatus": "DECISION_REQUIRED",
         "plantMode": {
           "kind": "skill",
-          "effect": "recovery_up"
+          "effect": null,
+          "status": "DECISION_REQUIRED"
         },
         "designLocked": false
       },
+      "designSummary": "100体中の特別枠。Plantは白・黒・金・紫を中心に、花・翼・光輪・闇の円環を統合した非常に人型に近いシルエット。Gardenerも黒・白・金・紫の配色を共有し、光と闇の円環を伴う大型武器を持つ。★6として他のPlant/Gardenerより存在感を強くしている。",
       "assets": {
         "mode": "separate_frames",
         "logicalCanvas": [
@@ -3977,7 +5100,8 @@
           "hit": 2,
           "down": 3
         },
-        "pathPattern": "assets/roster/100/{side}/{state}-{frame:02d}.png"
+        "pathPattern": "assets/roster/100/{side}/{state}-{frame:02d}.png",
+        "productionStatus": "pending"
       }
     }
   ]

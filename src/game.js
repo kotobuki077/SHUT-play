@@ -73,7 +73,7 @@
     hp:100, maxHp:100,
     items:{heal:1,high:0,elixir:0,expSmall:0,expMedium:0,expLarge:0,retry:0,chip:0,bossFrag:0},
     monsters:[],party:[],monsterMigration:false,legacyArchive:{},
-    gardeners:[],gardenerParty:[],pendingSeeds:[],rescuedGardeners:[],
+    gardeners:[],gardenerParty:[],pendingSeeds:[],rescuedGardeners:[],rosterSchemaVersion:0,
     inventory:[], equipped:null,
     materials:{bossCore:0},
     codex:{enemies:{},weapons:{},partners:{}},
@@ -111,7 +111,7 @@
     if(!S.eventFlags.retiredItemsRefunded){for(const [id,key]of [['ITM008','retry'],['ITM009','chip'],['ITM011','bossFrag']]){const price=Number(MASTER_DATA.migrations.retiredItemRefunds[key]||0);addWallet('gold',Math.max(0,Math.floor(Number(S.items[key]||0)))*price,'retired item refund');S.items[key]=0;}S.eventFlags.retiredItemsRefunded=true;}
     S.inventory=Array.isArray(S.inventory)?S.inventory:[];
     S.materials=Object.assign({bossCore:0},S.materials||{}); delete S.materials.dust;
-    S.codex=S.codex||{};S.codex.enemies=S.codex.enemies||{};S.codex.weapons=S.codex.weapons||{};S.codex.partners=S.codex.partners||{};S.codex.plants=S.codex.plants||{};S.codex.gardeners=S.codex.gardeners||{};S.codex.gardeners.G016=true;if(Array.isArray(S.gardeners))for(const g of S.gardeners)if(g?.gardenerId)S.codex.gardeners[g.gardenerId]=true;
+    S.codex=S.codex||{};S.codex.enemies=S.codex.enemies||{};S.codex.weapons=S.codex.weapons||{};S.codex.partners=S.codex.partners||{};S.codex.plants=S.codex.plants||{};S.codex.gardeners=S.codex.gardeners||{};S.codex.gardeners.G015=true;if(Array.isArray(S.gardeners))for(const g of S.gardeners)if(g?.gardenerId)S.codex.gardeners[g.gardenerId]=true;
     S.partners=S.partners||{};S.equippedPartner=S.partners[S.equippedPartner]?S.equippedPartner:null;S.captureUnlocked=!!S.captureUnlocked;
     S.storyIndex=Number.isFinite(S.storyIndex)?S.storyIndex:Math.max(0,(S.stage||1)-1);S.stageClears=S.stageClears||{};S.readEvents=S.readEvents||{};S.normalTickets=S.normalTickets||0;
     S.gifts=Array.isArray(S.gifts)?S.gifts:[];S.questProgress=S.questProgress||{};S.questDelivered=S.questDelivered||{};
@@ -157,7 +157,7 @@
       S=before;updateHome();return {ok:false,kind:'mutation',error};
     }
   }
-  function loadGame(){const loaded=SHUTSave.read(S);if(!loaded)return false;S=loaded;normalizeState();return true;}
+  function loadGame(){const loaded=SHUTSave.read(S);if(!loaded)return false;S=loaded;const oldRosterSchema=Number(S.rosterSchemaVersion)||0;normalizeState();if(oldRosterSchema<2)try{SHUTSave.write(S)}catch{}return true;}
   function clearSave(){try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
 
 
@@ -318,7 +318,8 @@
   function localizedQuestName(q){const key=`questData.${q?.quest_id}.name`,value=t(key);return value===key?q?.name||'':value}
   function localizedMissionName(m){const key=`missionData.${m?.key}.name`,value=t(key);return value===key?m?.name||'':value}
   function localizedItemName(key){const itemId={heal:'ITM001',high:'ITM002',elixir:'ITM003'}[key];if(itemId){const localeKey=`items.${itemId}.name`,value=t(localeKey);if(value!==localeKey)return value}return itemDefs[key]?.name||key}
-  function displayedEnemyName(enemy){return enemy?.nameKey?t(enemy.nameKey):globalThis.SHUTMikadoPresentation?.matches(enemy)?t('mikado.name'):enemy.name}
+  function localizedRosterName(entry){return I18n?.language==='en'?(entry?.nameEn||entry?.name||''):entry?.name||''}
+  function displayedEnemyName(enemy){if(enemy?.plantNo&&Roster){const pair=Roster.pair(enemy.plantNo);if(pair)return enemy.berserkGardenerNo?t('gardener.berserkName',{name:localizedRosterName(pair.gardener)}):localizedRosterName(pair.plant)}return enemy?.nameKey?t(enemy.nameKey):globalThis.SHUTMikadoPresentation?.matches(enemy)?t('mikado.name'):enemy.name}
   function refreshBattleCopy(){
     if(!currentBattleCopy)return;
     const values=typeof currentBattleCopy.values==='function'?currentBattleCopy.values():currentBattleCopy.values;
@@ -890,7 +891,7 @@
   }
   function gardenerTile(g,mode='gardener-open',selected=false){
     const st=Gardeners.stats(g),inParty=S.gardenerParty.includes(g.id);
-    return `<button class="monsterTile gardenerTile attr-${st.attr} ${selected?'selected':''}" data-${mode}="${g.id}" aria-label="${st.name}"><span class="monsterFlags">${g.favorite?'<i class="favoriteFlag">♥</i>':''}${g.locked?'<i class="lockFlag">◆</i>':''}${inParty?'<i class="partyFlag">'+t('gardener.inTeam')+'</i>':''}</span><span class="gardenerRosterArt pixel-art"><canvas class="gardenerBodyCanvas pixel-art" width="64" height="64"></canvas><em>PIXEL ART PENDING</em></span><span class="monsterTileMeta"><b>Lv.${st.level}</b><em>★${st.rarity}</em><small>${localizedAttribute(st.attr)} · ${st.weapon}</small><small class="monsterTileStats">HP ${st.maxHp} · ATK ${st.atk} · DEF ${st.def}</small></span></button>`;
+    return `<button class="monsterTile gardenerTile attr-${st.attr} ${selected?'selected':''}" data-${mode}="${g.id}" aria-label="${st.name}"><span class="monsterFlags">${g.favorite?'<i class="favoriteFlag">♥</i>':''}${g.locked?'<i class="lockFlag">◆</i>':''}${inParty?'<i class="partyFlag">'+t('gardener.inTeam')+'</i>':''}</span><span class="gardenerRosterArt pixel-art"><canvas class="gardenerBodyCanvas pixel-art" width="64" height="64"></canvas><em>PIXEL ART PENDING</em></span><span class="monsterTileMeta"><b>Lv.${st.level}</b><em>★${st.rarity}</em><small>${localizedAttribute(st.attr)} · ${st.weapon||'—'}</small><small class="monsterTileStats">HP ${st.maxHp} · ATK ${st.atk} · DEF ${st.def}</small></span></button>`;
   }
   function mountGardenerBody(canvas,pending,no,scale=2){
     if(!canvas||!RosterArt)return;
@@ -913,7 +914,7 @@
   }
   function renderGardenerDetail(id){
     const g=S.gardeners.find(x=>x.id===id);if(!g){renderGardenerRoster();return}const st=Gardeners.stats(g),chance=Math.round(Gardeners.plantModeBerserkChance(g)*100),inParty=S.gardenerParty.includes(id);
-    openModal(st.name,`<div class="monsterDetail gardenerDetail"><div class="monsterPortrait gardenerDetailPortrait"><span class="gardenerRosterArt pixel-art"><canvas class="gardenerBodyCanvas pixel-art" width="64" height="64"></canvas><em>PIXEL ART PENDING</em></span><div class="detailFlags">No.${String(st.no).padStart(3,'0')} · ★${st.rarity} · ${localizedAttribute(st.attr)}</div></div><div class="monsterDetailInfo"><div class="detailStats"><span>Lv.${st.level}</span><span>HP ${st.maxHp}</span><span>ATK ${st.atk}</span><span>DEF ${st.def}</span><span>${t('gardener.weapon',{weapon:st.weapon})}</span><span>${t('gardener.strain',{value:Math.round(g.plantStrain||0)})}</span><span>${t('gardener.berserkChance',{chance})}</span></div><section><b>${t('gardener.plantModeTitle')}</b><p>${t('gardener.plantModeDescription')}</p></section>${st.no===16?`<section><b>${t('gardener.criticalTitle')}</b><p>${t('gardener.criticalDescription')}</p></section>`:''}<div class="detailActions"><button id="gardenerFavorite" class="btn ${g.favorite?'gold':'secondary'}">♥</button><button id="gardenerLock" class="btn ${g.locked?'gold':'secondary'}">◆</button><button id="gardenerTeam" class="btn" ${inParty?'disabled':''}>${t('gardener.assign')}</button><button id="gardenerBack" class="btn secondary">${t('gardener.back')}</button></div></div></div>`);
+    openModal(st.name,`<div class="monsterDetail gardenerDetail"><div class="monsterPortrait gardenerDetailPortrait"><span class="gardenerRosterArt pixel-art"><canvas class="gardenerBodyCanvas pixel-art" width="64" height="64"></canvas><em>PIXEL ART PENDING</em></span><div class="detailFlags">No.${String(st.no).padStart(3,'0')} · ★${st.rarity} · ${localizedAttribute(st.attr)}</div></div><div class="monsterDetailInfo"><div class="detailStats"><span>Lv.${st.level}</span><span>HP ${st.maxHp}</span><span>ATK ${st.atk}</span><span>DEF ${st.def}</span><span>${t('gardener.weapon',{weapon:st.weapon||'—'})}</span><span>${t('gardener.strain',{value:Math.round(g.plantStrain||0)})}</span><span>${t('gardener.berserkChance',{chance})}</span></div><section><b>${t('gardener.plantModeTitle')}</b><p>${t('gardener.plantModeDescription')}</p></section>${st.no===15?`<section><b>${t('gardener.criticalTitle')}</b><p>${t('gardener.criticalDescription')}</p></section>`:''}<div class="detailActions"><button id="gardenerFavorite" class="btn ${g.favorite?'gold':'secondary'}">♥</button><button id="gardenerLock" class="btn ${g.locked?'gold':'secondary'}">◆</button><button id="gardenerTeam" class="btn" ${inParty?'disabled':''}>${t('gardener.assign')}</button><button id="gardenerBack" class="btn secondary">${t('gardener.back')}</button></div></div></div>`);
     const wrap=$('modalBody'),canvas=wrap.querySelector('.gardenerBodyCanvas'),pending=wrap.querySelector('.gardenerRosterArt em');mountGardenerBody(canvas,pending,st.no,3);
     $('gardenerFavorite').onclick=()=>{g.favorite=!g.favorite;saveGame();renderGardenerDetail(id)};$('gardenerLock').onclick=()=>{g.locked=!g.locked;saveGame();renderGardenerDetail(id)};$('gardenerBack').onclick=renderGardenerRoster;$('gardenerTeam').onclick=()=>renderGardenerReplacement(id);
   }
@@ -943,13 +944,13 @@
   function renderCollection(){
     if(!Roster){openModal(t('gardener.codexTitle'),`<p>${t('gardener.rosterUnavailable')}</p>`);return;}
     const rows=Roster.data.pairs.map(p=>{
-      const plantSeen=!!S.codex.plants?.[p.plant.id],gardenerSeen=!!S.codex.gardeners?.[p.gardener.id]||p.no===16;
+      const plantSeen=!!S.codex.plants?.[p.plant.id],gardenerSeen=!!S.codex.gardeners?.[p.gardener.id]||p.no===15;
       const rarity='★'.repeat(p.rarity);
       return `<article class="rosterPairCard" data-roster-no="${p.no}" data-attr="${p.attribute}">
         <div class="rosterPairHead"><span class="rosterPairNo">No.${String(p.no).padStart(3,'0')}</span><span class="rosterAttr">${localizedAttribute(p.attribute)}</span><span class="rosterPairStars">${rarity}</span></div>
         <div class="rosterPairBodies">
-          <div class="rosterSide rosterPlant"><small>${t('gardener.plantLabel')}</small><b>${plantSeen?p.plant.name:'？？？'}</b><em>${plantSeen?p.plant.id:t('gardener.undiscovered')}</em></div>
-          <div class="rosterSide rosterGardener"><small>${t('gardener.gardenerLabel')}</small><b>${gardenerSeen?p.gardener.name:'？？？'}</b><em>${gardenerSeen?p.gardener.weapon:t('gardener.unrescued')}</em></div>
+          <div class="rosterSide rosterPlant"><small>${t('gardener.plantLabel')}</small><b>${plantSeen?localizedRosterName(p.plant):'？？？'}</b><em>${plantSeen?p.plant.id:t('gardener.undiscovered')}</em></div>
+          <div class="rosterSide rosterGardener"><small>${t('gardener.gardenerLabel')}</small><b>${gardenerSeen?localizedRosterName(p.gardener):'？？？'}</b><em>${gardenerSeen?(p.gardener.weapon||'—'):t('gardener.unrescued')}</em></div>
         </div>
       </article>`;
     }).join('');
@@ -1057,7 +1058,7 @@
     const pair=Roster?.pair(no);if(!pair)throw Error('Unknown Plant roster no: '+no);
     const stage=activeStageData||currentStoryStage()||masterStages[0],level=Math.max(1,Number(stage.recommended_rank||1)),rarity=Number(pair.rarity||1);
     const maxHp=Math.round((berserk?125:72)+rarity*24+level*11),atk=Math.round((berserk?18:11)+rarity*3+level*1.5),def=Math.round(7+rarity*2+level*.8);
-    return {id:'p'+Date.now()+Math.random().toString(16).slice(2),plantNo:no,berserkGardenerNo:berserk?no:null,seedNo:berserk?no:null,name:berserk?t('gardener.berserkName',{name:pair.gardener.name}):pair.plant.name,attr:pair.attribute,rarity,role:isBoss?'boss':'normal',category:isBoss?'boss':'plant',boss:isBoss,hp:maxHp,maxHp,prevHp:maxHp,atk,def,gold:12+rarity*8,rankXp:10+rarity*4,attackEvery:isBoss?2:3,turnsLeft:isBoss?2:3,plantAction:{beats:[900],factors:[1],damage:1,heal:0,barrier:0,shift:false},dead:false,animationState:'idle',popup:null,popupTimer:null,flashUntil:0,hpAnimTimer:null};
+    return {id:'p'+Date.now()+Math.random().toString(16).slice(2),plantNo:no,berserkGardenerNo:berserk?no:null,seedNo:berserk?no:null,name:berserk?t('gardener.berserkName',{name:localizedRosterName(pair.gardener)}):pair.plant.name,attr:pair.attribute,rarity,role:isBoss?'boss':'normal',category:isBoss?'boss':'plant',boss:isBoss,hp:maxHp,maxHp,prevHp:maxHp,atk,def,gold:12+rarity*8,rankXp:10+rarity*4,attackEvery:isBoss?2:3,turnsLeft:isBoss?2:3,plantAction:{beats:[900],factors:[1],damage:1,heal:0,barrier:0,shift:false},dead:false,animationState:'idle',popup:null,popupTimer:null,flashUntil:0,hpAnimTimer:null};
   }
 
   function generateEncounter(n){
@@ -1257,7 +1258,7 @@
     if(usingGardenerParty()){
       for(const hit of plan){
         const actor=members.find(m=>m.id===hit.actorId),owned=partyOwnedById(hit.actorId);
-        if(timing==='PERFECT'&&actor?.no===16)hit.criticalName='None but shot';
+        if(timing==='PERFECT'&&actor?.no===15)hit.criticalName='None but shot';
         if(skillActors.has(hit.actorId)&&owned&&hit.damage>0){
           const mode=Gardeners.usePlantMode(owned,Math.random);Object.assign(owned,mode.gardener);hit.ultimate=true;hit.plantMode=mode;skillCharge[hit.actorId]=0;
           if(mode.berserk){
@@ -1364,7 +1365,7 @@
     if(drop&&S.items[drop]<itemDefs[drop].max){const itemName=localizedItemName(drop);S.items[drop]++;rewardDrops.push(itemName);rewardEntries.push({kind:'item',label:itemName});}
     let egg=false,monster=null,monsterName='';
     if(!isPlant){monster=MASTER_DATA.monsters.find(m=>m.acquisition.enemyId===e.masterId);egg=monster&&(monster.acquisition.guaranteedEgg===true||Math.random()<monster.acquisition.eggRate);monsterName=monster?localizedDataName(monster):'';if(egg){const wasOwned=S.monsters.some(x=>x.monsterId===monster.monster_id),instance=Monsters.create(monster.monster_id,crypto.randomUUID(),MASTER_DATA);S.monsters.push(instance);S.codex.monsters=S.codex.monsters||{};S.codex.monsters[monster.monster_id]=true;const label=t('battle.eggDrop',{name:monsterName});e.battleEggDrop={label,rarity:monster.rarity,monsterId:monster.monster_id};rewardDrops.push(label);rewardEntries.push({kind:'egg',label,rarity:monster.rarity,monsterId:monster.monster_id,isNew:!wasOwned});saveGame();}}
-    let seed=null;if(e.seedNo&&Gardeners){const pair=Roster.pair(e.seedNo);S=Gardeners.queueSeed(S,e.seedNo);seed={no:e.seedNo,label:t('gardener.seedDrop',{name:pair.gardener.name}),rarity:pair.rarity};e.battleSeedDrop=seed;rewardDrops.push(seed.label);rewardEntries.push({kind:'seed',label:seed.label,rarity:seed.rarity,no:seed.no});saveGame();}
+    let seed=null;if(e.seedNo&&Gardeners){const pair=Roster.pair(e.seedNo);S=Gardeners.queueSeed(S,e.seedNo);seed={no:e.seedNo,label:t('gardener.seedDrop',{name:localizedRosterName(pair.gardener)}),rarity:pair.rarity};e.battleSeedDrop=seed;rewardDrops.push(seed.label);rewardEntries.push({kind:'seed',label:seed.label,rarity:seed.rarity,no:seed.no});saveGame();}
     const keyRule=MASTER_DATA.monsterRules.keyDrop,keyFound=keyRule.gates.includes(activeGate)&&Math.random()<keyRule.chance;if(keyFound){addWallet('gateKeys',keyRule.amount,'battle key drop');const label=t('battle.keysDrop',{amount:keyRule.amount});rewardDrops.push(label);rewardEntries.push({kind:'key',label});}
     showMonsterDrop(e,[{label:g+' G',kind:'gold'},...(drop?[{label:localizedItemName(drop),kind:'item'}]:[]),...(seed?[{label:seed.label,kind:'seed'}]:[]),...(egg?[{label:t('battle.eggDrop',{name:monsterName}),kind:monster.rarity>=4?'rare':'egg'}]:[]),...(keyFound?[{label:t('battle.keysDrop',{amount:keyRule.amount}),kind:'key'}]:[])]);
   }

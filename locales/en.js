@@ -1,5 +1,6 @@
 globalThis.SHUT_LOCALES=globalThis.SHUT_LOCALES||{};
 globalThis.SHUT_LOCALES.en={
+  graphics:{backgroundPending:'PIXEL ART PENDING',rewardLabel:{"eggCommon":"Common Egg","eggRare":"Rare Egg","key":"Key","item":"Item"}},
   title:{
     eyebrow:'THE GATEBOUND JOURNEY',tagline:'Close the device. Open the world.',
     lead1:'One moment can change your fate.',lead2:'A journey through the lost gates.',
@@ -57,7 +58,7 @@ globalThis.SHUT_LOCALES.en={
     victory:'VICTORY',stageClear:'STAGE CLEAR',battleClear:'BATTLE CLEAR',rewardObtained:'REWARDS',firstClearReward:'FIRST CLEAR → PRESENT BOX',noItemDrop:'No item drop',newMonster:'NEW MONSTER',monsterJoined:'JOINED YOUR ROSTER',returnBase:'RETURN TO BASE',nextBattle:'NEXT BATTLE',restoredHp:'Gate blessing restored {percent}% HP',newPath:'A NEW PATH AWAKENS',unknownGate:'A hidden gate answered.',challengeFromGate:'Challenge it from Special Gates at your base.',
     gateClear:'GATE CLEAR',floorClear:'FLOOR {floor} CLEAR',gateFloorClear:'GATE {floor} CLEAR',earnedGold:'Earned {gold} G',expeditionReward:'Expedition reward claimed',extract:'RETURN WITH REWARDS',deeper:'GO DEEPER →',
     defeat:'DEFEAT',rewardsKept:'Gold and EXP already earned are kept.',returnHome:'RETURN HOME',retreatConfirm:'Retreat from this battle? Special Gate attempts will not be restored.',
-    monstersCount:'MONSTERS × {count}',battleCount:'BATTLE {current} / {total}{boss}',endlessGate:'Gate {floor}',itemSlots:'ITEM {slots} / 3',eggDrop:'{name} Egg',keysDrop:'Keys ×{amount}',attribute:'{attribute}',enemyMeta:'{attribute} / ATK {attack}',enemyReady:'ATTACK READY',enemyTurns:'ATTACK IN',partyRequired:'Form a team of three monsters.',gateFound:'New Gate discovered · {name}',attributeName:{fire:'Fire',water:'Water',thunder:'Thunder',earth:'Earth',wind:'Wind'}
+    monstersCount:'MONSTERS × {count}',battleCount:'BATTLE {current} / {total}{boss}',endlessGate:'Gate {floor}',itemSlots:'ITEM {slots} / 3',eggDrop:'{name} Egg',keysDrop:'Keys ×{amount}',attribute:'{attribute}',enemyMeta:'{attribute} / ATK {attack}',enemyReady:'ATTACK READY',enemyTurns:'ATTACK IN',partyRequired:'Form a team of three monsters.',gateFound:'New Gate discovered · {name}',attributeShort:{"thunder":"Th","earth":"Ea","wind":"Wi"},attributeName:{fire:'Fire',water:'Water',thunder:'Thunder',earth:'Earth',wind:'Wind'}
   },
   gardener:{
     attribute:{fire:'Fire',wood:'Wood',water:'Water',light:'Light',dark:'Dark',rainbow:'Rainbow'},attributeShort:{fire:'Fi',wood:'Wo',water:'Wa',light:'Li',dark:'Da',rainbow:'Rb'},

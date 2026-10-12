@@ -1,0 +1,7 @@
+/* Neutral development surfaces, never approved production artwork. */
+#app,.screen,#dialogueOverlay{background-color:#182126;background-image:none}
+.screen:before,#startScreen:before,#startScreen:after{background:none;content:none}
+.closeDoorBadge,#gDoorFrame,#gDoor{background-image:none;background-color:#182126;box-shadow:none}
+.backgroundPendingTitle{color:#bbccc8;font:600 10px/1.5 system-ui,sans-serif;margin-top:8px}
+.backgroundPendingLabel{position:absolute;top:60px;left:16px;z-index:2;pointer-events:none;white-space:nowrap;color:#bbccc8;font:600 9px/1.4 system-ui,sans-serif}
+#battleScreen .backgroundPendingLabel{top:auto;bottom:4px;left:16px}

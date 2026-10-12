@@ -1,5 +1,6 @@
 globalThis.SHUT_LOCALES=globalThis.SHUT_LOCALES||{};
 globalThis.SHUT_LOCALES.ja={
+  graphics:{backgroundPending:'PIXEL ART PENDING',rewardLabel:{"eggCommon":"通常卵","eggRare":"希少卵","key":"鍵","item":"アイテム"}},
   title:{
     eyebrow:'THE GATEBOUND JOURNEY',tagline:'閉じて、世界をひらく。',
     lead1:'その一瞬が、運命を変える。',lead2:'失われた門を巡る、開閉の物語。',
@@ -57,7 +58,7 @@ globalThis.SHUT_LOCALES.ja={
     victory:'VICTORY',stageClear:'STAGE CLEAR',battleClear:'BATTLE CLEAR',rewardObtained:'獲得報酬',firstClearReward:'初回報酬 → PRESENT BOX',noItemDrop:'アイテムドロップなし',newMonster:'NEW MONSTER',monsterJoined:'仲間に加わった',returnBase:'旅の拠点へ',nextBattle:'次の戦闘',restoredHp:'門の加護でHP {percent}%回復',newPath:'A NEW PATH AWAKENS',unknownGate:'未知の門が、応えた。',challengeFromGate:'旅の拠点の「未知の門」から挑戦できます。',
     gateClear:'GATE CLEAR',floorClear:'FLOOR {floor} CLEAR',gateFloorClear:'GATE {floor} CLEAR',earnedGold:'獲得 {gold} G',expeditionReward:'遠征報酬を受け取りました',extract:'報酬を持って帰還',deeper:'さらに奥へ →',
     defeat:'DEFEAT',rewardsKept:'獲得済みGold・経験値は保持されます。',returnHome:'ホームへ',retreatConfirm:'この戦闘から帰還しますか？ 特殊ゲートの挑戦回数は戻りません。',
-    monstersCount:'MONSTERS × {count}',battleCount:'BATTLE {current} / {total}{boss}',endlessGate:'第 {floor} 門',itemSlots:'ITEM {slots} / 3',eggDrop:'{name}の卵',keysDrop:'Keys ×{amount}',attribute:'{attribute}属性',enemyMeta:'{attribute} / ATK {attack}',enemyReady:'攻撃準備',enemyTurns:'行動まで',partyRequired:'3体を編成してください',gateFound:'新しい門を発見 · {name}',attributeName:{fire:'火',water:'水',thunder:'雷',earth:'地',wind:'風'}
+    monstersCount:'MONSTERS × {count}',battleCount:'BATTLE {current} / {total}{boss}',endlessGate:'第 {floor} 門',itemSlots:'ITEM {slots} / 3',eggDrop:'{name}の卵',keysDrop:'Keys ×{amount}',attribute:'{attribute}属性',enemyMeta:'{attribute} / ATK {attack}',enemyReady:'攻撃準備',enemyTurns:'行動まで',partyRequired:'3体を編成してください',gateFound:'新しい門を発見 · {name}',attributeShort:{"thunder":"雷","earth":"地","wind":"風"},attributeName:{fire:'火',water:'水',thunder:'雷',earth:'地',wind:'風'}
   },
   gardener:{
     attribute:{fire:'火',wood:'木',water:'水',light:'光',dark:'闇',rainbow:'虹'},attributeShort:{fire:'火',wood:'木',water:'水',light:'光',dark:'闇',rainbow:'虹'},

@@ -41,3 +41,8 @@ body,button,input{font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto S
 
 
 /* Battle layout moved to src/battle.css. */
+
+/* Neutral semantic labels; not approved production icon artwork. */
+.rewardText{display:inline-flex;align-items:center;justify-content:center;max-width:100%;min-width:0;box-sizing:border-box;font:700 10px/1.25 system-ui,sans-serif;white-space:normal;overflow-wrap:anywhere;text-align:center}
+.rarityEgg .rewardText{width:60px;height:60px;padding:3px}
+.monsterDrop .rewardText.dropIcon{width:auto;height:auto;max-width:72px;font-size:9px}

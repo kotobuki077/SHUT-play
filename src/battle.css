@@ -716,7 +716,7 @@
   #timingJudges{width:98%!important;font-size:7px!important;gap:1px!important}
 }
 
-/* v24 — tap-to-start ATTACK, variable GUARD speed, illustrated recovery items */
+/* v24 — tap-to-start ATTACK, variable GUARD speed, named recovery items */
 #timingBox.awaitStart #cursor{display:none!important}
 #attackStartBtn{
   display:none;
@@ -743,18 +743,12 @@
 }
 .recoveryCard .itemBtn{
   display:grid!important;
-  grid-template-columns:42px minmax(0,1fr) auto!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
   align-items:center!important;
   gap:7px!important;
   text-align:left!important;
 }
-.recoveryItemIcon{
-  width:38px!important;
-  height:38px!important;
-  object-fit:contain!important;
-  image-rendering:pixelated;
-  filter:drop-shadow(0 3px 2px #02141b88);
-}
+
 .recoveryCard .itemBtn>span:first-of-type{
   min-width:0;
   font-weight:800;
@@ -767,8 +761,7 @@
   #timingTapHint{display:flex!important;flex-direction:row!important;gap:5px!important;justify-content:center!important;align-items:center!important;margin-top:2px!important;font-size:8px!important}
   #timingTapHint[hidden]{display:flex!important;visibility:hidden!important}
   #timingTapHint span{font-size:10px!important}
-  .recoveryCard .itemBtn{grid-template-columns:32px minmax(0,1fr) auto!important;gap:4px!important}
-  .recoveryItemIcon{width:29px!important;height:29px!important}
+  .recoveryCard .itemBtn{grid-template-columns:minmax(0,1fr) auto!important;gap:4px!important}
 }
 
 
@@ -1178,3 +1171,11 @@
   .gardenerPartyHud .allyFaceCrop .allyFaceCanvas{left:0;top:0;width:32px;height:32px}
   .gardenerPartyHud .allyArtPending{font-size:6px;letter-spacing:0}
 }
+
+/* Narrow landscape: an empty art slot must not consume readable HUD width. */
+@media (max-width:700px) and (max-height:600px){
+ #battlePartner .gardenerHud:has(.allyFaceCanvas[data-asset-status="pending"]) .allyFaceCrop{display:none}
+ #battlePartner .gardenerHud .allyHudTop>b{font-size:9px!important;white-space:normal;overflow-wrap:anywhere}
+}
+
+.recoveryCard .itemBtn>span:first-of-type{white-space:normal;overflow-wrap:anywhere;line-height:1.3}

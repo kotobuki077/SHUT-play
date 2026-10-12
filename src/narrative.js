@@ -1,11 +1,11 @@
 // A small dialogue player, independent of combat state. Completion is called once.
-globalThis.SHUTNarrative=function({data,read,mark,apply,onChange}){
+globalThis.SHUTNarrative=function({data,read,mark,apply,onChange,legacyPortraits=()=>true}){
  const $=id=>document.getElementById(id),tr=(key,fallback,values={})=>{const t=globalThis.SHUTI18n?.t;if(!t)return fallback;const value=t(key,values);return value===key?fallback:value};let queue=[],index=0,done=null,auto=false,timer=null;
  function stopTimer(){clearTimeout(timer);timer=null;}
  function render(){stopTimer();const item=queue[index];if(!item){$('dialogueOverlay').classList.remove('show');const cb=done;done=null;onChange(false);if(cb)cb();return;}
-  const {event,line,lineIndex}=item,p=data.presentation.portraits[line.speaker],base=`storyEvents.${event.event_id}`,speaker=tr(`${base}.l${lineIndex}.speaker`,line.speaker),text=tr(`${base}.l${lineIndex}.text`,line.text),title=tr(`${base}.title`,event.title);
+  const {event,line,lineIndex}=item,p=legacyPortraits()?data.presentation.portraits[line.speaker]:null,base=`storyEvents.${event.event_id}`,speaker=tr(`${base}.l${lineIndex}.speaker`,line.speaker),text=tr(`${base}.l${lineIndex}.text`,line.text),title=tr(`${base}.title`,event.title);
   $('dialogueOverlay').classList.add('show');$('dialogueOverlay').dataset.position=line.position||'left';$('dialogueSpeaker').textContent=speaker;$('dialogueText').textContent=text;$('dialogueChapter').textContent=title;$('dialogueCount').textContent=`${index+1} / ${queue.length}`;
-  const img=$('dialoguePortrait');img.hidden=!p;if(p)SHUTArt.portrait(img,p.expressions?.[line.expression]||p);img.dataset.placeholder=String(p?.placeholder??true);$('dialogueMonogram').hidden=!!p;$('dialogueMonogram').textContent=speaker.charAt(0);
+  const img=$('dialoguePortrait');img.hidden=!p;if(p)SHUTArt.portrait(img,p.expressions?.[line.expression]||p);else SHUTArt.pending(img);img.dataset.placeholder=String(p?.placeholder??true);$('dialogueMonogram').hidden=!!p;$('dialogueMonogram').textContent=speaker.charAt(0);
   $('dialogueSkip').textContent=read(event.event_id)?tr('storyUi.readSkip','既読スキップ'):tr('storyUi.skip','スキップ');$('dialogueAuto').textContent=auto?tr('storyUi.autoOn','AUTO ON'):tr('storyUi.auto','AUTO');$('dialogueNext').textContent=tr('storyUi.next','次へ ▷');if(auto)timer=setTimeout(next,Math.max(1800,text.length*65));
  }
  function next(){const item=queue[index];if(!item)return;if(!queue[index+1]||queue[index+1].event!==item.event){mark(item.event.event_id);apply(item.event);}index++;render();}

@@ -4646,12 +4646,7 @@
   "presentation": {
     "edition": "THE GATEBOUND JOURNEY",
     "palette": "ivory / jade / antique gold",
-    "backgrounds": {
-      "W01": "assets/verdant-gate.png",
-      "W02": "assets/tidal-gate.png",
-      "W03": "assets/sky-gate.png",
-      "W04": "assets/eden-mikado-bg.png"
-    },
+    "backgrounds": {},
     "specialEncounters": {
       "mikado": {
         "enemyId": "E029",
@@ -4661,7 +4656,7 @@
         ],
         "worldId": "W04",
         "encounterRate": 0.01,
-        "background": "assets/eden-mikado-bg.png",
+        "background": null,
         "introMs": 15000,
         "characterAsset": "assets/mikado-animation.png",
         "characterAssetStatus": "finished"

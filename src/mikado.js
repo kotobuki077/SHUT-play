@@ -30,7 +30,7 @@
     if(!matches(enemy))return false;
     const battle=document.getElementById('battleScreen'),overlay=document.getElementById('mikadoEncounter'),app=document.getElementById('app'),c=config();
     battle?.classList.add('mikadoBattle');
-    if(c.background&&app)app.style.setProperty('--world',`url("${new URL(c.background,location.href).href}")`);
+    if(app)SHUTBackgrounds.apply(app);
     fillPetals(document.getElementById('mikadoPetals'));
     overlay?.setAttribute('aria-hidden','true');
     return true;

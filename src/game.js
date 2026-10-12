@@ -18,10 +18,8 @@
   const beats = {'火':'風','風':'地','地':'雷','雷':'水','水':'火'};
   const attrColor = {'火':'#f06a5e','水':'#5eb5e8','雷':'#c19ae9','地':'#d2a451','風':'#68c88e',fire:'#f06a5e',wood:'#68c88e',water:'#5eb5e8',light:'#ead391',dark:'#a987cf',rainbow:'#efe9cf'};
   const itemDefs=MASTER_DATA.rules.items;
-  const rewardAssets={eggCommon:'assets/reward-egg-common.png',eggRare:'assets/reward-egg-rare.png',key:'assets/reward-gate-key.png',item:'assets/reward-item-drop.png'};
   function rewardIcon(kind,rarity=1,extra=''){
-    const source=kind==='egg'?(rarity>=4?rewardAssets.eggRare:rewardAssets.eggCommon):rewardAssets[kind];
-    return source?`<img class="rewardPixelIcon ${extra}" src="${source}" alt="" aria-hidden="true">`:'';
+    return SHUTIconPresentation.reward(kind,rarity,extra,battleDomain==='legacy-monster');
   }
 
   function masterEnemyToDef(x){return {masterId:x.enemy_id,kind:x.sprite||'orbeye',name:x.name,nameKey:x.nameKey,category:x.category,world:x.world,attr:x.attribute,tier:Number(x.tier),hp:Number(x.base_hp),atk:Number(x.base_atk),gold:[Math.max(1,Math.round(Number(x.gold_base)*.75)),Math.max(2,Math.round(Number(x.gold_base)*1.25))],rankXp:Number(x.rank_exp),attackEvery:Number(x.attack_every),attackPattern:x.attack_pattern,scriptedOnly:!!x.scripted_only};}
@@ -306,11 +304,10 @@
     return id?t('battle.attributeName.'+id):value;
   }
   const attributeUiId={'火':'fire','水':'water','雷':'thunder','地':'earth','風':'wind',fire:'fire',wood:'wood',water:'water',light:'light',dark:'dark',rainbow:'rainbow'};
-  const attributeAsset={fire:'assets/attr-fire.svg',water:'assets/attr-water.svg',thunder:'assets/attr-thunder.svg',earth:'assets/attr-earth.svg',wind:'assets/attr-wind.svg'};
   function attributeIcon(value,extra=''){
-    const id=attributeUiId[value]||String(value||'unknown'),label=localizedAttribute(value),asset=attributeAsset[id];
-    if(!asset)return `<span class="attrIcon attrTextIcon attrIcon-${id} ${extra}" role="img" aria-label="${label}" title="${label}"><b aria-hidden="true">${t('gardener.attributeShort.'+id)}</b></span>`;
-    return `<span class="attrIcon attrIcon-${id} ${extra}" role="img" aria-label="${label}" title="${label}"><img class="attrIconImage" src="${asset}" alt="" aria-hidden="true"></span>`;
+    const id=attributeUiId[value]||String(value||'unknown'),label=localizedAttribute(value);
+    const short=t((['thunder','earth','wind'].includes(id)?'battle.attributeShort.':'gardener.attributeShort.')+id);
+    return SHUTIconPresentation.attribute(id,label,short,extra,battleDomain==='legacy-monster');
   }
   function localizedDataKey(entry,field){if(!entry)return null;if(entry[field==='name'?'nameKey':'descriptionKey'])return entry[field==='name'?'nameKey':'descriptionKey'];if(entry.monster_id&&field==='name')return `monsterData.${entry.monster_id}.name`;if(entry.stage_id)return `stageData.${entry.stage_id}.${field}`;if(entry.world_id&&!entry.stage_id)return `worldData.${entry.world_id}.${field}`;return null}
   function localizedDataName(entry){const key=localizedDataKey(entry,'name');if(key){const value=t(key);if(value!==key)return value}return entry?.name||''}
@@ -670,15 +667,8 @@
   function compactTouchDevice(){return Math.min(innerWidth,innerHeight)<600}
   function drawGachaResultMonster(canvas,w){
     if(!canvas||!w?.monsterInstance)return;
-    if(!compactTouchDevice()){canvas.style.background='';drawWeapon(canvas,w);return;}
-    const stats=Monsters.stats(w.monsterInstance,MASTER_DATA),sprite=MASTER_DATA.sprites[stats.sprite];if(!sprite)return;
-    const frames=sprite.states?.idle||[sprite.cell||0],cell=frames[0]??sprite.cell??0,cols=Number(sprite.columns||1),rows=Number(sprite.rows||1),col=cell%cols,row=Math.floor(cell/cols);
-    canvas.getContext('2d')?.clearRect(0,0,canvas.width,canvas.height);
-    canvas.style.backgroundImage=`url("${new URL(sprite.source,location.href).href}")`;
-    canvas.style.backgroundSize=`${cols*100}% ${rows*100}%`;
-    canvas.style.backgroundPosition=`${cols>1?col/(cols-1)*100:0}% ${rows>1?row/(rows-1)*100:0}%`;
-    canvas.style.backgroundRepeat='no-repeat';canvas.style.imageRendering='pixelated';
-    canvas.dataset.animationState='idle';canvas.dataset.frame=String(cell);canvas.dataset.assetStatus=sprite.status;
+    // Gacha acquisition remains unchanged; legacy Monster art is not current Gardener art.
+    SHUTArt.pending(canvas);
   }
 
   function showSingleWeaponReveal(w){
@@ -860,8 +850,8 @@
     $('rankPill').textContent=`Rank ${S.rank}`;$('stagePill').textContent=st?`${st.stage_id} ${localizedDataName(st)}`:`STORY CLEAR`;$('homeGold').textContent=`${S.gold} G`;$('homeKeys').textContent=t('currency.keys',{count:S.gateKeys});
     updateGiftBadge();evaluateQuests();saveGame();if($('closeGold'))updateCloseMenu();
     const world=worldById[st?.world_id||'W03'];
-    const portrait=MASTER_DATA.presentation.portraits[partnerById[S.equippedPartner]?.name]||MASTER_DATA.presentation.portraits['ミナ'];SHUTArt.portrait($('campPortrait'),MASTER_DATA.presentation.portraits[partnerById[S.equippedPartner]?.name]||MASTER_DATA.presentation.portraits['ミナ']);
-    $('app').style.setProperty('--world','url("'+new URL(MASTER_DATA.presentation.backgrounds[world.world_id],location.href).href+'")');
+    SHUTArt.pending($('campPortrait'));
+    SHUTBackgrounds.apply($('app'));
     $('journeyTitle').textContent=S.run?'まだ見ぬ、門の奥へ':(st?localizedDataName(st):'地図の余白へ');
     $('journeyObjective').textContent=S.run?MASTER_DATA.expeditions[S.run.kind].name+' の続きから再開できます。':(st?localizedDataName(world)+' · 推奨Rank '+st.recommended_rank+'。'+(S.gifts.some(g=>g.rewardAmount===45)?'旅立ちの贈り物が届いています。':'3体の仲間と、次の物語へ。'):'物語の先にも、門は続いている。塔と再戦で力を試そう。');
     $('nextJourney').textContent=S.run?t('menu.resumeExpedition'):st?t('menu.continueJourney'):t('menu.memoryGate');
@@ -957,14 +947,12 @@
     openModal(t('gardener.codexTitle'),'<div class="rosterPairGrid">'+rows+'</div>');
   }
   function renderShop(){
-    setMusicMode('shop');const entries=shopEntries();if(!shopSelection||!entries.some(e=>e.shop_id===shopSelection))shopSelection=entries[0]?.shop_id||null;const selected=entries.find(e=>e.shop_id===shopSelection),max=selected?maxPurchase(selected):0;shopQuantity=clamp(shopQuantity,0,max);openModal(t('shop.title'),`<div class="shopHeader"><p>${t('shop.intro')}</p><strong>${t('shop.currentGold',{gold:S.gold})}</strong></div><div class="shopLayout"><div class="shopCatalog">${entries.map(e=>{const item=itemById[e.ref],owned=S.items[itemStateKey[e.ref]]||0,stock=shopStockRemaining(e);return `<button class="shopCatalogItem ${e===selected?'selected':''}" data-shop-select="${e.shop_id}">${itemIcon(e.ref,'small')}<span><b>${t('shop.items.'+e.ref+'.name')}</b><small>${t('shop.unitPrice',{price:e.price})}</small><small>${t('shop.owned',{count:owned})} · ${t('shop.stock',{count:stock})}</small></span></button>`}).join('')}</div>${selected?shopDetail(selected,max):`<p>${t('shop.selectItem')}</p>`}</div>`);bindShop(entries,selected);
+    setMusicMode('shop');const entries=shopEntries();if(!shopSelection||!entries.some(e=>e.shop_id===shopSelection))shopSelection=entries[0]?.shop_id||null;const selected=entries.find(e=>e.shop_id===shopSelection),max=selected?maxPurchase(selected):0;shopQuantity=clamp(shopQuantity,0,max);openModal(t('shop.title'),`<div class="shopHeader"><p>${t('shop.intro')}</p><strong>${t('shop.currentGold',{gold:S.gold})}</strong></div><div class="shopLayout"><div class="shopCatalog">${entries.map(e=>{const item=itemById[e.ref],owned=S.items[itemStateKey[e.ref]]||0,stock=shopStockRemaining(e);return `<button class="shopCatalogItem ${e===selected?'selected':''}" data-shop-select="${e.shop_id}" data-item-id="${e.ref}" data-asset-status="pending" aria-pressed="${e===selected}"><span><b>${t('shop.items.'+e.ref+'.name')}</b><small>${t('shop.unitPrice',{price:e.price})}</small><small>${t('shop.owned',{count:owned})} · ${t('shop.stock',{count:stock})}</small></span></button>`}).join('')}</div>${selected?shopDetail(selected,max):`<p>${t('shop.selectItem')}</p>`}</div>`);bindShop(entries,selected);
   }
   function shopEntries(){return MASTER_DATA.shop.filter(e=>e.category==='item'&&e.enabled==='yes'&&['ITM001','ITM002','ITM003'].includes(e.ref))}
   function shopStockRemaining(entry){const stock=Number(entry.stock);if(!Number.isFinite(stock))return 999999;if(!Number.isFinite(S.shopStock[entry.shop_id]))S.shopStock[entry.shop_id]=Math.max(0,Math.floor(stock));return S.shopStock[entry.shop_id]}
   function maxPurchase(entry){const item=itemById[entry.ref],owned=S.items[itemStateKey[entry.ref]]||0;return Math.max(0,Math.min(item.max_stack-owned,Math.floor(S.gold/entry.price),shopStockRemaining(entry)))}
-  const shopIconAssets={ITM001:'assets/shop-itm001-repair-mist.png',ITM002:'assets/shop-itm002-high-repair.png',ITM003:'assets/shop-itm003-full-core.png'};
-  function itemIcon(ref,size='large'){const name=t('shop.items.'+ref+'.name');return `<img class="itemIcon ${size}" data-asset-status="finished" src="${shopIconAssets[ref]}" alt="${name}">`}
-  function shopDetail(entry,max){const item=itemById[entry.ref],owned=S.items[itemStateKey[entry.ref]]||0,total=shopQuantity*entry.price,afterGold=S.gold-total;return `<div class="shopDetail">${itemIcon(entry.ref)}<div><h3>${t('shop.items.'+entry.ref+'.name')}</h3><p><b>${t('shop.effect')}</b><br>${t('shop.items.'+entry.ref+'.effect')}</p><div class="shopFacts"><span>${t('shop.unitPrice',{price:entry.price})}</span><span>${t('shop.owned',{count:owned})}</span><span>${t('shop.inventoryCap',{cap:item.max_stack})}</span><span>${t('shop.stock',{count:shopStockRemaining(entry)})}</span></div></div><div class="quantityPanel"><b>${t('shop.quantity')}</b><output id="shopQuantity">${shopQuantity}</output><div class="quantitySteps">${[-10,-1,1,10].map(n=>`<button class="btn secondary" data-quantity-step="${n}">${n>0?'+':''}${n}</button>`).join('')}<button class="btn secondary" data-quantity-max>MAX</button></div><div class="purchaseSummary"><span>${t('shop.afterOwned',{count:owned+shopQuantity})}</span><span>${t('shop.total',{total})}</span><span>${t('shop.currentGold',{gold:S.gold})}</span><strong>${t('shop.afterGold',{gold:afterGold})}</strong></div><button id="confirmShopPurchase" class="btn gold" ${shopQuantity<1||shopQuantity>max?'disabled':''}>${max?t('shop.buy'):t('shop.soldOut')}</button></div></div>`}
+  function shopDetail(entry,max){const item=itemById[entry.ref],owned=S.items[itemStateKey[entry.ref]]||0,total=shopQuantity*entry.price,afterGold=S.gold-total;return `<div class="shopDetail" data-item-id="${entry.ref}" data-asset-status="pending"><div><h3>${t('shop.items.'+entry.ref+'.name')}</h3><p><b>${t('shop.effect')}</b><br>${t('shop.items.'+entry.ref+'.effect')}</p><div class="shopFacts"><span>${t('shop.unitPrice',{price:entry.price})}</span><span>${t('shop.owned',{count:owned})}</span><span>${t('shop.inventoryCap',{cap:item.max_stack})}</span><span>${t('shop.stock',{count:shopStockRemaining(entry)})}</span></div></div><div class="quantityPanel"><b>${t('shop.quantity')}</b><output id="shopQuantity">${shopQuantity}</output><div class="quantitySteps">${[-10,-1,1,10].map(n=>`<button class="btn secondary" data-quantity-step="${n}">${n>0?'+':''}${n}</button>`).join('')}<button class="btn secondary" data-quantity-max>MAX</button></div><div class="purchaseSummary"><span>${t('shop.afterOwned',{count:owned+shopQuantity})}</span><span>${t('shop.total',{total})}</span><span>${t('shop.currentGold',{gold:S.gold})}</span><strong>${t('shop.afterGold',{gold:afterGold})}</strong></div><button id="confirmShopPurchase" class="btn gold" ${shopQuantity<1||shopQuantity>max?'disabled':''}>${max?t('shop.buy'):t('shop.soldOut')}</button></div></div>`}
   function bindShop(entries,selected){
     document.querySelectorAll('[data-shop-select]').forEach(b=>b.onclick=()=>{shopSelection=b.dataset.shopSelect;shopQuantity=1;renderShop()});
     if(!selected)return;
@@ -1081,12 +1069,19 @@
 
   const enemySpriteSources = Object.fromEntries(Object.entries(MASTER_DATA.sprites).map(([k,v])=>[k,v.source]));
   const enemySpriteImages = {};
-  Object.entries(enemySpriteSources).forEach(([k,src])=>{{ const im=new Image(); im.src=src; enemySpriteImages[k]=im; }});
+  // Compatibility sprites are requested only by the legacy enemy renderer.
+  // Current Plant/Gardener art is resolved exclusively by RosterArt.
+  function legacyEnemySprite(kind){
+    const src=enemySpriteSources[kind];
+    if(!src)return null;
+    if(!enemySpriteImages[src]){const image=new Image();enemySpriteImages[src]=image;image.src=src;}
+    return enemySpriteImages[src];
+  }
 
   // ---------- PIXEL ART ----------
   function drawEnemy(canvas,e,frame){
     const c=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;c.clearRect(0,0,cw,ch);c.imageSmoothingEnabled=false;
-    const img=enemySpriteImages[e.kind],meta=MASTER_DATA.sprites[e.kind];
+    const img=legacyEnemySprite(e.kind),meta=MASTER_DATA.sprites[e.kind];
     e.animationState=e.dead?'death':performance.now()<e.flashUntil?'hit':e.id===defenseEnemyId&&phase==='guard'?'attack':'idle';
     canvas.dataset.animationState=e.animationState;canvas.dataset.placeholder=String(meta.placeholder);
     if(e.lastAnimationState!==e.animationState){e.lastAnimationState=e.animationState;e.animationStart=performance.now();}const frames=meta.states[e.animationState]||[meta.cell];const elapsed=performance.now()-(e.animationStart||0),frameMs=e.animationState==='idle'?Math.max(320,meta.frameMs||0):(meta.frameMs||150);const ix=Math.floor(elapsed/frameMs);const cell=frames[e.animationState==='idle'||e.animationState==='attack'?ix%frames.length:Math.min(ix,frames.length-1)];canvas.dataset.frame=cell;
@@ -1160,7 +1155,7 @@
     SHUTMikadoPresentation?.clear();enemies=generateEncounter(encounter).slice(0,3);defenseTargetId=null;rewardDrops=[];opened=true;setBattlePhase('attackReady',false);const mikadoBattle=enemies.some(e=>globalThis.SHUTMikadoPresentation?.matches?.(e));setMusicMode(mikadoBattle?'mikado':activeGate==='BOSSRUSH'?'bossrush':enemies.some(e=>e.boss)?'boss':activeGate?activeGate.toLowerCase():'battle');resumeAudioPlayback();updateBattleHeader();renderEnemies();
     $('recoveryTray').classList.remove('show');$('rewardOverlay').classList.remove('show');
     enemies.forEach(e=>{if(e.masterId)S.codex.enemies[e.masterId]=true;if(e.plantNo){const p=Roster.pair(e.plantNo);if(p)S.codex.plants[p.plant.id]=true;}});evaluateQuests();setBattleCopy(enemies.some(e=>e.boss)?'battle.bossBattle':'battle.encounter','battle.encounterHint',()=>({instruction:attackInstruction()}));
-    $('app').style.setProperty('--world','url("'+new URL(MASTER_DATA.presentation.backgrounds[activeStageData.world_id],location.href).href+'")');
+    SHUTBackgrounds.apply($('app'));
     syncBattleStateUi();const ready=()=>{const boss=enemies.find(e=>e.boss);if(boss)playBossEntrance(boss,beginAttack);else setTimeout(beginAttack,300)};
     if(!activeGate&&enemies.some(e=>e.boss))playEvents(activeStageId,'before_boss',ready);else ready();
   }
@@ -1354,8 +1349,8 @@
   function resetBattleTimingUi(){$('timingBox').classList.remove('show','guardMode','awaitStart');$('timingBox').dataset.stopping='0';attackStopRequested=false;$('timingPhase')?.classList.remove('phaseFlash');document.querySelectorAll('.enemyCard').forEach(x=>x.classList.remove('attacking'));}
   function playOpenOnlyGuardDoorMotion(done){let layer=$('openOnlyGuardDoor');if(!layer){layer=document.createElement('div');layer.id='openOnlyGuardDoor';layer.setAttribute('aria-hidden','true');layer.innerHTML='<i></i><i></i>';$('battleScreen').append(layer);}layer.classList.remove('play');void layer.offsetWidth;layer.classList.add('play');sfx('door');setTimeout(()=>{layer.classList.remove('play');done?.();},430);}
   function enterRecoveryPhase(reason,physicalClose=false){recoveryReason=reason;pendingItem=null;defenseToken++;resetBattleTimingUi();setBattlePhase('recovery',true);const tray=$('recoveryTray');tray.dataset.presentation=physicalClose?'closed':'open';tray.setAttribute('aria-hidden','false');if(physicalClose){opened=false;sfx('door');document.querySelector('.outer-display')?.append(tray);setDeviceClosed(true);}else{opened=true;$('battleScreen').append(tray);SHUTDevice.setClosed(false,{skipSnapshot:true,instant:true});$('app').dataset.screen='battleScreen';}updateItemMenu();updateBattleHeader();tray.classList.add('show');}
-  function updateItemMenu(){$('cntHeal').textContent=`×${S.items.heal}`;$('cntHigh').textContent=`×${S.items.high}`;$('cntElixir').textContent=`×${S.items.elixir}`;document.querySelectorAll('.itemBtn').forEach(b=>{const k=b.dataset.item;b.disabled=S.items[k]<=0||carrySlots<=0;b.classList.toggle('selected',pendingItem===k)});const itemName=key=>t({heal:'battle.heal',high:'battle.highHeal',elixir:'battle.elixir'}[key]),physical=$('recoveryTray').dataset.presentation==='closed';$('continueBattle').textContent=t(physical?'battle.openNext':'battle.continueNext');$('selectedItemText').textContent=pendingItem?t(physical?'battle.selectedItem':'battle.selectedItemOpen',{item:itemName(pendingItem)}):t('battle.noItemSelected',{slots:carrySlots});}
-  async function continueFromRecovery(){if(phase!=='recovery'||SHUTDevice.busy)return;const tray=$('recoveryTray'),physical=tray.dataset.presentation==='closed';setBattlePhase('transition',true);tray.classList.remove('show');tray.setAttribute('aria-hidden','true');if(physical){sfx('door');await setDeviceClosed(false);}else sfx('confirm');$('battleScreen').append(tray);opened=true;if(pendingItem){const it=itemDefs[pendingItem],itemName=t({heal:'battle.heal',high:'battle.highHeal',elixir:'battle.elixir'}[pendingItem]);S.items[pendingItem]--;carrySlots--;if(S.run)S.run.slots=carrySlots;healParty(it.heal);setBattleCopy('battle.itemUsed','battle.hpRecovered',{item:itemName,percent:Math.round(it.heal*100)});pendingItem=null;}updateBattleHeader();if(recoveryReason==='tutorial'){finishTutorial();return;}setTimeout(()=>{if(recoveryReason==='combo'){startGuardBeat();return;}if(recoveryReason==='defenseContinue'&&defenseQueue.length){setBattlePhase('guard',true);nextEnemyAttack()}else beginAttack();},200);}
+  function updateItemMenu(){$('cntHeal').textContent=`×${S.items.heal}`;$('cntHigh').textContent=`×${S.items.high}`;$('cntElixir').textContent=`×${S.items.elixir}`;document.querySelectorAll('.itemBtn').forEach(b=>{const k=b.dataset.item;b.disabled=S.items[k]<=0||carrySlots<=0;b.classList.toggle('selected',pendingItem===k);b.setAttribute('aria-pressed',String(pendingItem===k))});const itemName=key=>t({heal:'shop.items.ITM001.name',high:'shop.items.ITM002.name',elixir:'shop.items.ITM003.name'}[key]),physical=$('recoveryTray').dataset.presentation==='closed';$('continueBattle').textContent=t(physical?'battle.openNext':'battle.continueNext');$('selectedItemText').textContent=pendingItem?t(physical?'battle.selectedItem':'battle.selectedItemOpen',{item:itemName(pendingItem)}):t('battle.noItemSelected',{slots:carrySlots});}
+  async function continueFromRecovery(){if(phase!=='recovery'||SHUTDevice.busy)return;const tray=$('recoveryTray'),physical=tray.dataset.presentation==='closed';setBattlePhase('transition',true);tray.classList.remove('show');tray.setAttribute('aria-hidden','true');if(physical){sfx('door');await setDeviceClosed(false);}else sfx('confirm');$('battleScreen').append(tray);opened=true;if(pendingItem){const it=itemDefs[pendingItem],itemName=t({heal:'shop.items.ITM001.name',high:'shop.items.ITM002.name',elixir:'shop.items.ITM003.name'}[pendingItem]);S.items[pendingItem]--;carrySlots--;if(S.run)S.run.slots=carrySlots;healParty(it.heal);setBattleCopy('battle.itemUsed','battle.hpRecovered',{item:itemName,percent:Math.round(it.heal*100)});pendingItem=null;}updateBattleHeader();if(recoveryReason==='tutorial'){finishTutorial();return;}setTimeout(()=>{if(recoveryReason==='combo'){startGuardBeat();return;}if(recoveryReason==='defenseContinue'&&defenseQueue.length){setBattlePhase('guard',true);nextEnemyAttack()}else beginAttack();},200);}
   // ---------- REWARDS ----------
   function grantEnemyRewards(e){
     const isPlant=!!e.plantNo,chapter=MASTER_DATA.chapterProgression?.find(x=>x.chapter===Number(activeStageData?.chapter))||{goldMultiplier:1},g=Math.round(Number(e.gold||0)*Number(chapter.goldMultiplier||1));
@@ -1383,7 +1378,7 @@
     const rescueHtml=rescued.length?`<div class="resultRescues">${rescued.map((x,i)=>{const seed=seedByNo.get(x.no);return `<div class="rescueSequence rarity-${x.rarity}" data-rescue-no="${x.no}" data-rescue-stage="seed" style="--i:${i}"><div class="rescueStep rescueSeedStep"><b class="seedResultIcon">SEED</b><span>${seed?.label||x.label}</span><em>${t('gardener.restoring')}</em></div><div class="rescueStepArrow" aria-hidden="true">→</div><div class="rescueStep rescueGardenerStep"><span class="rescueGardenerArt pixel-art"><canvas class="gardenerBodyCanvas pixel-art" width="64" height="64"></canvas><em>PIXEL ART PENDING</em></span><div class="rescueGardenerCopy"><b>${t('gardener.restored')}</b><span>No.${String(x.no).padStart(3,'0')} · ${x.label}</span><em>${t('gardener.joined')}</em></div></div></div>`}).join('')}</div>`:''; 
     $('rewardBody').innerHTML=`<div class="resultVictory">${t('battle.victory')}</div><div class="rewardLine">${subtitle}</div><div class="resultLoot">${loot}</div>${rescueHtml}${expHtml}${rankHtml}${extra}`;
     $('rewardNext').textContent=buttonLabel;$('rewardNext').disabled=true;$('rewardOverlay').classList.add('show');
-    document.querySelectorAll('[data-hatch]').forEach(node=>{const def=Monsters.definition(node.dataset.hatch,MASTER_DATA),sprite=MASTER_DATA.sprites[def.sprite],canvas=node.querySelector('canvas');SHUTArt.image(sprite.source,img=>SHUTArt.drawCell(canvas,img,{...sprite,cell:sprite.states.idle?.[0]??sprite.cell},.08))});
+    document.querySelectorAll('[data-hatch]').forEach(node=>{const def=Monsters.definition(node.dataset.hatch,MASTER_DATA),sprite=MASTER_DATA.sprites[def.sprite],canvas=node.querySelector('canvas');if(usingGardenerParty()){SHUTArt.pending(canvas);return;}SHUTArt.render(canvas,sprite.source,img=>SHUTArt.drawCell(canvas,img,{...sprite,cell:sprite.states.idle?.[0]??sprite.cell},.08))});
     document.querySelectorAll('[data-rescue-no]').forEach((node,i)=>{const no=Number(node.dataset.rescueNo),canvas=node.querySelector('.gardenerBodyCanvas'),pending=node.querySelector('.rescueGardenerArt em');mountGardenerBody(canvas,pending,no,2);setTimeout(()=>{node.dataset.rescueStage='restored';sfx('rare')},650+i*120)});
     const unlockDelay=Math.max(eggs.length?1900:850,rescued.length?1350+(rescued.length-1)*120:0);setTimeout(()=>{$('rewardNext').disabled=false;if(eggs.length)sfx('gacha')},unlockDelay);
   }
@@ -1531,7 +1526,7 @@
   function playerMaxHp(){return partyMembers().reduce((n,m)=>n+m.maxHp,0);}
   let feedbackTimer;
   function feedback(text,kind){clearTimeout(feedbackTimer);feedbackTimer=setTimeout(()=>$('combatFeedback').classList.remove('show'),720);const el=$('combatFeedback');el.style.animationDuration=650+'ms';el.textContent=text;el.dataset.kind=kind;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');if(kind==='perfect'){sfx('cue');tone(1568,.15,'triangle',.045,sfxGain,.09)}if(kind==='miss')sfx('hit');}
-  const narrative=globalThis.SHUTNarrative({data:MASTER_DATA,read:id=>!!S.readEvents[id],mark:id=>{S.readEvents[id]=true;saveGame()},apply:event=>{
+  const narrative=globalThis.SHUTNarrative({data:MASTER_DATA,legacyPortraits:()=>battleDomain==='legacy-monster',read:id=>!!S.readEvents[id],mark:id=>{S.readEvents[id]=true;saveGame()},apply:event=>{
     if(S.eventFlags[event.event_id])return;S.eventFlags[event.event_id]=true;
     
     const join=/^(P\d+)_join/.exec(event.result||'');if(join)addPartner(join[1],'contract');
@@ -1635,7 +1630,7 @@
 
   function healParty(rate){for(const p of partyMembers()){const owned=partyOwnedById(p.id);if(owned)owned.hp=Math.min(p.maxHp,p.hp+Math.round(p.maxHp*rate));}syncPartyHp();}
 
-  function monsterIcon(canvas,instance){const s=Monsters.stats(instance,MASTER_DATA),p=MASTER_DATA.sprites[s.sprite];if(!p)return;const motion=allyFrames[instance.id],now=performance.now(),state=instance.hp===0?'death':motion&&now<motion.until?motion.state:'idle',idleFrames=p.states.idle||[p.cell],attackFrames=p.states.attack||idleFrames,ultimateFrames=[idleFrames.at(-1),...attackFrames,attackFrames.at(-1)],frames=state==='ultimate'?ultimateFrames:p.states[state]||idleFrames,elapsed=state==='idle'?now:now-(motion?.start||0),step=state==='idle'?Math.max(320,p.frameMs||0):state==='ultimate'?105:150,frame=frames[state==='idle'?Math.floor(elapsed/step)%frames.length:Math.min(frames.length-1,Math.max(0,Math.floor(elapsed/step)))];canvas.dataset.animationState=state;canvas.dataset.frame=frame;canvas.dataset.assetStatus=p.status;SHUTArt.image(p.source,img=>SHUTArt.drawCell(canvas,img,{...p,cell:frame},.08));}
+  function monsterIcon(canvas,instance){const s=Monsters.stats(instance,MASTER_DATA),p=MASTER_DATA.sprites[s.sprite];if(!p)return;const motion=allyFrames[instance.id],now=performance.now(),state=instance.hp===0?'death':motion&&now<motion.until?motion.state:'idle',idleFrames=p.states.idle||[p.cell],attackFrames=p.states.attack||idleFrames,ultimateFrames=[idleFrames.at(-1),...attackFrames,attackFrames.at(-1)],frames=state==='ultimate'?ultimateFrames:p.states[state]||idleFrames,elapsed=state==='idle'?now:now-(motion?.start||0),step=state==='idle'?Math.max(320,p.frameMs||0):state==='ultimate'?105:150,frame=frames[state==='idle'?Math.floor(elapsed/step)%frames.length:Math.min(frames.length-1,Math.max(0,Math.floor(elapsed/step)))];canvas.dataset.animationState=state;canvas.dataset.frame=frame;canvas.dataset.assetStatus=p.status;SHUTArt.render(canvas,p.source,img=>SHUTArt.drawCell(canvas,img,{...p,cell:frame},.08));}
   function monsterFaceIcon(canvas,instance){
     const s=Monsters.stats(instance,MASTER_DATA),p=MASTER_DATA.sprites[s.sprite];if(!p)return;
     const frame=(p.states?.idle||[p.cell])[0]??p.cell;canvas.dataset.assetStatus=p.status;canvas.dataset.frame=frame;
@@ -1652,7 +1647,7 @@
   function presentSynthesis(p,baseId){
     setMusicMode('synthesis');
     openModal(p.evolves?'EVOLUTION':t('synthesis.title'),`<div class="synthesisScene"><div class="synthesisEnergy"><i></i><i></i><i></i></div><canvas id="synthesisPortrait" width="192" height="192"></canvas><h3 id="synthesisTitle">${t('synthesis.powerUnites')}</h3><div class="synthesisExp"><i></i></div><p>${t('synthesis.expGain',{exp:p.exp})} · ${t('synthesis.levelChange',{before:p.before.level,after:p.after.level})} · ${t('synthesis.levelGain',{levels:p.levelGain})}</p><p class="synthesisStats">HP ${p.before.maxHp} → ${p.after.maxHp} · ATK ${p.before.atk} → ${p.after.atk} · DEF ${p.before.def} → ${p.after.def}<br>${p.after.skill.description||p.after.skill.name}</p></div>`);
-    const canvas=$('synthesisPortrait'),title=$('synthesisTitle'),scene=canvas.parentElement,old=MASTER_DATA.sprites[p.before.sprite];SHUTArt.image(old.source,img=>SHUTArt.drawCell(canvas,img,{...old,cell:old.states.idle[0]},.08));sfx('synthesis');
+    const canvas=$('synthesisPortrait'),title=$('synthesisTitle'),scene=canvas.parentElement,old=MASTER_DATA.sprites[p.before.sprite];SHUTArt.render(canvas,old.source,img=>SHUTArt.drawCell(canvas,img,{...old,cell:old.states.idle[0]},.08));sfx('synthesis');
     setTimeout(()=>{title.textContent=p.evolves?'EVOLUTION':p.after.level>p.before.level?'LEVEL UP':p.after.name;scene.classList.toggle('evolving',p.evolves);sfx(p.evolves?'evolution':'level');},650);
     setTimeout(()=>{monsterIcon(canvas,S.monsters.find(m=>m.id===baseId));title.textContent=p.after.name;scene.classList.add('revealed');},p.evolves?1150:800);
   }

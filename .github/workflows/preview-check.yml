@@ -1,23 +1,27 @@
-name: Preview safety
+name: New SHUT root and legacy safety
 on:
   pull_request:
     branches: [main]
 jobs:
-  preview:
+  root-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Preview syntax and save isolation
+      - name: Syntax, independent runtime and separate saves
         run: |
-          find preview -name '*.js' -exec node --check {} \;
+          node --check build-info.js
+          find state gameplay ui i18n data -name '*.js' -exec node --check {} \;
           node <<'NODE'
-          const fs=require('fs'),assert=require('assert/strict'),m=require('./preview/state/model.js'),s=require('./preview/state/save.js');
-          const values=new Map([['shut_save_v2','original-save-sentinel']]);const store={getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v)};const api=s.create(store);
+          const fs=require('fs'),assert=require('assert/strict'),m=require('./state/model.js'),s=require('./state/save.js');
+          const values=new Map([['shut_save_v2','original-save-sentinel']]);const storage={getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v)},api=s.create(storage);
           assert(api.save(m.fresh()).ok);assert.equal(values.get('shut_save_v2'),'original-save-sentinel');assert.equal(api.load().state.domain,'plant-gardener');
-          assert(fs.readFileSync('index.html','utf8').includes('href="preview/"'));assert(fs.readFileSync('preview/index.html','utf8').includes('ui/app.js'));
-          for(const f of ['preview/index.html','preview/ui/app.js','preview/ui/style.css'])assert(!/src\/game\.(js|css)|assets\//.test(fs.readFileSync(f,'utf8')));
-          console.log('PASS preview syntax, original-save isolation, entrance and independent runtime');
+          assert(fs.readFileSync('index.html','utf8').includes('ui/app.js'));assert(fs.readFileSync('legacy/index.html','utf8').includes('src/game.js'));
+          assert(fs.readFileSync('preview/index.html','utf8').includes('url=../'));
+          for(const f of ['index.html','ui/app.js','ui/style.css'])assert(!/src\/game\.(js|css)|assets\//.test(fs.readFileSync(f,'utf8')));
+          const manifest=JSON.parse(fs.readFileSync('release-manifest.json')),crypto=require('crypto');for(const x of manifest.legacyFiles){assert.equal(crypto.createHash('sha256').update(fs.readFileSync('legacy/'+x.path)).digest('hex'),x.sha256,x.path)}
+          for(const f of ['src','data','assets','locales','vendor'])assert(fs.statSync('legacy/'+f).isDirectory());
+          console.log('PASS new root/save isolation/independent runtime/preserved legacy hashes/alias');
           NODE

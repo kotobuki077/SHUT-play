@@ -1,0 +1,23 @@
+name: Preview safety
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preview syntax and save isolation
+        run: |
+          find preview -name '*.js' -exec node --check {} \;
+          node <<'NODE'
+          const fs=require('fs'),assert=require('assert/strict'),m=require('./preview/state/model.js'),s=require('./preview/state/save.js');
+          const values=new Map([['shut_save_v2','original-save-sentinel']]);const store={getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v)};const api=s.create(store);
+          assert(api.save(m.fresh()).ok);assert.equal(values.get('shut_save_v2'),'original-save-sentinel');assert.equal(api.load().state.domain,'plant-gardener');
+          assert(fs.readFileSync('index.html','utf8').includes('href="preview/"'));assert(fs.readFileSync('preview/index.html','utf8').includes('ui/app.js'));
+          for(const f of ['preview/index.html','preview/ui/app.js','preview/ui/style.css'])assert(!/src\/game\.(js|css)|assets\//.test(fs.readFileSync(f,'utf8')));
+          console.log('PASS preview syntax, original-save isolation, entrance and independent runtime');
+          NODE

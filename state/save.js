@@ -7,6 +7,7 @@
   return {key:KEY,backup:BACKUP,
    load(){try{const raw=storage.getItem(KEY);if(raw===null)return {status:'empty',state:null};const state=parse(raw);if(state)return {status:'loaded',state};const previous=parse(storage.getItem(BACKUP));return previous?{status:'recovered',state:previous}:{status:'invalid',state:null};}catch{return {status:'unavailable',state:null};}},
    save(s){if(!model.validate(s))return {ok:false,reason:'invalid'};try{const previous=storage.getItem(KEY);if(parse(previous))storage.setItem(BACKUP,previous);storage.setItem(KEY,JSON.stringify(s));return {ok:true};}catch{return {ok:false,reason:'storage'};}},
+   commit(expected,next){try{if(storage.getItem(KEY)!==expected)return {ok:false,reason:'conflict'};}catch{return {ok:false,reason:'storage'};}return this.save(next);},
    legacy(){try{return storage.getItem(LEGACY);}catch{return null;}},
    export(){try{return storage.getItem(KEY);}catch{return null;}}
   };

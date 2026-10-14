@@ -1,9 +1,9 @@
 {
-  "sourcePrivate": "2580bcafa95d12edd59c7a961a479503d18fdebd",
-  "rollbackPublic": "1635093209329784112dca24e61d57840a016785",
+  "sourcePrivate": "7697720a68897d12025aebc8aa80b87df5d07191",
+  "rollbackPublic": "8e490c0453480d28520a5782087a6d5f602d12d5",
   "preview": true,
-  "version": "0.2.0-m2",
-  "technicalPercent": 50,
+  "version": "0.3.0-m3",
+  "technicalPercent": 70,
   "oldSave": "shut_save_v2",
   "newSave": "shut_rebuild_save_v1",
   "legacyFiles": [
@@ -566,5 +566,5 @@
       "changed": false
     }
   ],
-  "updatedAt": "2026-10-13T08:25:09.146Z"
+  "updatedAt": "2026-10-14T06:18:14.105Z"
 }

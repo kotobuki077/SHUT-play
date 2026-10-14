@@ -13,7 +13,7 @@ jobs:
       - name: Syntax, independent runtime and separate saves
         run: |
           node --check build-info.js
-          find state gameplay ui i18n data -name '*.js' -exec node --check {} \;
+          find state gameplay ui i18n data audio -name '*.js' -exec node --check {} \;
           node <<'NODE'
           const fs=require('fs'),assert=require('assert/strict'),m=require('./state/model.js'),s=require('./state/save.js');
           const values=new Map([['shut_save_v2','original-save-sentinel']]);const storage={getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v)},api=s.create(storage);

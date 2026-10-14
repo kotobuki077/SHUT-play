@@ -5,6 +5,7 @@
  function validate(s){
   if(!s||s.schemaVersion!==schemaVersion||s.domain!=='plant-gardener')return false;
   if(!s.settings||!['ja','en'].includes(s.settings.language)||typeof s.settings.openOnly!=='boolean'||!['open','close'].includes(s.output))return false;
+  if(s.legacyImport!==undefined&&(!s.legacyImport||s.legacyImport.version!==1||!['shut_save_v2','shut_save_v37_master'].includes(s.legacyImport.sourceKey)||!Number.isInteger(s.legacyImport.rosterVersion)||s.legacyImport.rosterVersion<0||s.legacyImport.rosterVersion>2))return false;
   if(!s.wallet||!['gold','keys'].every(k=>Number.isSafeInteger(s.wallet[k])&&s.wallet[k]>=0))return false;
   if(!Array.isArray(s.gardeners)||!s.gardeners.every(g=>g&&typeof g.id==='string'&&/^G(?:00[1-9]|0[1-9][0-9]|100)$/.test(g.id)))return false;
   if(s.gardeners.some(g=>g.instanceId!==undefined&&(typeof g.instanceId!=='string'||g.instanceId.length<1||g.instanceId.length>100)))return false;

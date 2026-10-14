@@ -1,9 +1,9 @@
 {
-  "sourcePrivate": "212d392589dfe3a8d609719e06091742a7fe091d",
-  "rollbackPublic": "d57f67a5590234f9d1b890093b1f395e9ee200b2",
+  "sourcePrivate": "47853acabb8cd5731ec201a57e67e84c6ff7fe51",
+  "rollbackPublic": "f2219890a62fd2536f69b5322869e77704b7b324",
   "preview": true,
-  "version": "0.4.0-m4-foundation",
-  "technicalPercent": 78,
+  "version": "0.5.0-m5-save",
+  "technicalPercent": 88,
   "oldSave": "shut_save_v2",
   "newSave": "shut_rebuild_save_v1",
   "legacyFiles": [
@@ -566,7 +566,8 @@
       "changed": false
     }
   ],
-  "updatedAt": "2026-10-14T06:38:51.020Z",
+  "updatedAt": "2026-10-14T07:05:08.220Z",
   "formalAudioSources": 0,
-  "audioListeningVerified": false
+  "audioListeningVerified": false,
+  "legacyImport": "explicit reviewed replacement, readonly original, preimport backups; unsupported content retained in legacy"
 }
